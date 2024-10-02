@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragmentEditPet_CardView"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
+        android:elevation="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/fragmentEditPet_scrollView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginBottom="35dp"
+                app:layout_constraintBottom_toTopOf="@+id/fragmentEditPet_btnConfirmar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.485"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_margin="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/fragmentEditPet_ImageView"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="30dp"
+                        app:layout_constraintBottom_toTopOf="@+id/fragmentEditPet_scrollView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0"
+                        app:srcCompat="@drawable/perro" />
+
+                    <TextView
+                        android:id="@+id/fragmentEditPet_txtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
+                        android:textStyle="bold"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="40dp"
+                        android:textSize="30sp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/fragmentEditPet_txtTextInputAlergias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/fa_txtTextInputAlergias" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/fragmentEditPet_lytTextInputAlergias"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:hint="@string/fa_hintTextInputAlergias"
+                        android:layerType="none"
+                        android:layoutMode="clipBounds">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/fragmentEditPet_TextInputAlergias"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:breakStrategy="simple"
+                            android:ellipsize="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <TextView
+                        android:id="@+id/fragmentEditPet_txtSpinnerPeso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/fa_txtSpinnerPeso" />
+
+
+                    <TextView
+                        android:id="@+id/fragmentEditPet_txtWeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="" />
+
+                    <SeekBar
+                        android:id="@+id/fragmentEditPet_sbWeight"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:max="1000"
+                        android:padding="10dp"
+                        android:pointerIcon="none"
+                        android:progress="3" />
+
+
+                    <TextView
+                        android:id="@+id/fragmentEditPet_txtSpinnerEsterilizado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/fa_txtSpinnerEsterilizado" />
+
+                    <RadioGroup
+                        android:id="@+id/fragmentEditPet_rgEsterilizado"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="20dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        >
+
+                        <RadioButton
+                            android:id="@+id/fragmentEditPet_rbSterilized1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="130dp"
+                            android:text="Si" />
+
+                        <RadioButton
+                            android:id="@+id/fragmentEditPet_rbSterilized2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No" />
+                    </RadioGroup>
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <Button
+                android:id="@+id/fragmentEditPet_btnConfirmar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_txtButtonEnviarFormulario"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.162"
+                app:layout_constraintStart_toEndOf="@id/fragmentEditPet_btnCancelar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.956" />
+
+            <Button
+                android:id="@+id/fragmentEditPet_btnCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_txtButtonCancelarEdicion"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fragmentEditPet_btnConfirmar"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.956" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

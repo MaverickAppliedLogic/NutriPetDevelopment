@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormActivity"
+    android:layout_gravity="center_horizontal">
+
+    <ImageButton
+        android:id="@+id/fa_btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/homeAsUpIndicator" />
+
+    <ImageView
+        android:id="@+id/fa_imgSelectAnimal"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fa_btnBack"
+        app:srcCompat="@drawable/perro" />
+
+    <EditText
+        android:id="@+id/fa_etPetName"
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="80dp"
+        android:ems="10"
+        android:autofillHints="name"
+        android:hint="@string/fa_hintEtPetName"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toEndOf="@+id/fa_imgSelectAnimal" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="362dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/ma_btnCommit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/ma_txtTextInputAlergias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/fa_txtTextInputAlergias" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ma_lytTextInputAlergias"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:hint="@string/fa_hintTextInputAlergias"
+                android:layerType="none"
+                android:layoutMode="clipBounds">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fa_TextInputAlergias"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:breakStrategy="simple"
+                    android:ellipsize="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/ma_txtSpinnerEdad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/ma_txtSpinnerEdad" />
+
+            <Spinner
+                android:id="@+id/fa_SpinnerEdad"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/fa_txtSpinnerPeso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/fa_txtSpinnerPeso"/>
+
+
+            <TextView
+                android:id="@+id/fa_txtWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/fa_txtSbWeight" />
+
+            <SeekBar
+                android:id="@+id/fa_sbWeight"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:padding="10dp"
+                android:pointerIcon="none"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/ma_txtSpinnerSexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/fa_txtSpinnerSexo" />
+
+            <Spinner
+                android:id="@+id/fa_SpinnerSexo"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/ma_txtRgSterilized"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/fa_txtRgSterilized"/>
+
+            <RadioGroup
+                android:id="@+id/fa_rgEsterilizado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/fa_rbEsterilizado1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:text="Si" />
+
+                <RadioButton
+                    android:id="@+id/fa_rbEsterilizado2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No" />
+            </RadioGroup>
+
+
+
+
+            <TextView
+                android:id="@+id/ma_txtSpinnerActividad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/fa_txtSpinnerActividadFisica" />
+
+            <Spinner
+                android:id="@+id/fa_SpinnerActividad"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/ma_txtSpinnerObjetivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/fa_txtSpinnerObjetivo" />
+
+            <Spinner
+                android:id="@+id/fa_SpinnerObjetivo"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                 />
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/ma_btnCommit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/fa_txtButtonEnviarFormulario"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,58 @@
+<resources>
+    //FormActivity Strings
+    <string name="app_name">Feed\'m</string>
+    <string name="fa_hintEtPetName">Buddy name</string>
+    <string name="ma_txtSpinnerEdad">Edad</string>
+    <array name="fa_arraySpinnerEdad">
+        <item>Cachorro menos de 1 año-</item>
+        <item>Adulto 1-7 años-</item>
+        <item>Senior más de 7 años-</item>
+    </array>
+    <string name="fa_txtSpinnerPeso">Peso actual</string>
+    <string name="fa_txtSpinnerSexo">Sexo</string>
+    <string-array name="fa_arraySpinnerSexo">
+        <item>Macho</item>
+        <item>Hembra</item>
+    </string-array>
+    <string name="fa_txtSpinnerEsterilizado">¿Esta esterilizado?</string>
+    <string-array name="fa_arraySpinnerEsterilizado">
+        <item>Esterilizado</item>
+        <item>No esterilizado</item>
+    </string-array>
+    <string name="fa_txtSpinnerActividadFisica">Nivel de actividad física</string>
+    <string-array name="fa_arraySpinnerActividadFisica">
+        <item>Alta</item>
+        <item>Media</item>
+        <item>Baja</item>
+    </string-array>
+    <string name="fa_txtSpinnerObjetivo">Objetivo principal de la dieta</string>
+    <string-array name="fa_arraySpinnerObjetivo">
+        <item>Mantenimiento</item>
+        <item>Pérdida de peso</item>
+        <item>Aumento de peso</item>
+        <item>Mejora de la salud general</item>
+    </string-array>
+    <string name="fa_txtButtonEnviarFormulario">Confirmar</string>
+    <string name="fa_txtButtonCancelarEdicion">Cancelar</string>
+    <string name="fa_txtTextInputAlergias">¿Alergias o intolerancias alimentarias?</string>
+    <string name="fa_hintTextInputAlergias">p.ej. Atun</string>
+    <string name="fa_txtRgSterilized">¿Esta esterilizado/a?</string>
+    <string name="fa_txtSbWeight">0.0 Kg</string>
+    <string
+        name="fa_toastErrorGetData">Hay apartados sin rellenar. Por favor revise el formulario
+    </string>
+    <string name="fa_toastGetDataSuccess">Compañero registrado correctamente :D</string>
+
+
+    //Search Activity Strings
+    <string name="sa_txtHeader">Piensos para $nombre</string>
+    <string name="query">Comida-para-%1$s-%2$s-%3$s-de-%4$f-de-peso</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+
+</resources>

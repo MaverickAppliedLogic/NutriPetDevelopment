@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Feedm" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/darker_orange</item>
+        <item name="colorAccent">@color/orange</item>
+        <item name="colorOnBackground">@color/soft_white</item>
+    </style>
+
+    <style name="ErrorView" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="colorAccent">@color/red</item>
+    </style>
+
+    <style name="Theme.Feedm" parent="Base.Theme.Feedm" />
+</resources>
