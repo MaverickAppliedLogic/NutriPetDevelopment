@@ -46,7 +46,7 @@ class SearchActivity : AppCompatActivity() {
 
         txtNamePet.text = pet.nombre
         if (pet.animal.equals("dog"))imgPet.setImageDrawable(AppCompatResources
-            .getDrawable(this,R.drawable.perro))
+            .getDrawable(this,R.drawable.img_dog_illustration))
         else imgPet.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.gato))
 
         hacerBusqueda(pet.query){resultados ->

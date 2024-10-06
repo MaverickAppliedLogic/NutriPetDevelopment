@@ -29,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.17"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fa_btnBack"
-        app:srcCompat="@drawable/perro" />
+        app:srcCompat="@drawable/img_dog_illustration" />
 
     <EditText
         android:id="@+id/fa_etPetName"
