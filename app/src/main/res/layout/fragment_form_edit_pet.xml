@@ -53,7 +53,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="1.0"
-                        app:srcCompat="@drawable/perro" />
+                        app:srcCompat="@drawable/img_dog_illustration" />
 
                     <TextView
                         android:id="@+id/fragmentEditPet_txtName"

@@ -21,7 +21,7 @@ class MyPetsAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: PetViewHolder, position: Int) {
         val item = items[position]
-        if (item.animal.equals("dog"))holder.imageView.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.perro))
+        if (item.animal.equals("dog"))holder.imageView.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.img_dog_illustration))
         else holder.imageView.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.gato))
         holder.name.text = item.nombre
         holder.itemView.setOnClickListener{onItemClick(item)}

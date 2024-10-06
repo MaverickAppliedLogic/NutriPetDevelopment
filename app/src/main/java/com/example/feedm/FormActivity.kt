@@ -153,7 +153,7 @@ class FormActivity : AppCompatActivity() {
             sbWeight.max = 250
             "cat"
         } else {
-            faImgSelectAnimal.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.perro))
+            faImgSelectAnimal.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.img_dog_illustration))
             sbWeight.max = 800
             "dog"
         }

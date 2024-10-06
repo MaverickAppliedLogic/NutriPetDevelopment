@@ -101,7 +101,7 @@ class FragmentEditPet : Fragment() {
         fragmenteditpetTxtName.text = name
         if(animal.equals("dog")){
             fragmenteditpetImgpet.setImageDrawable(ResourcesCompat.getDrawable(resources,
-                R.drawable.perro,null))
+                R.drawable.img_dog_illustration,null))
         }
         else {
             fragmenteditpetImgpet.setImageDrawable(ResourcesCompat.getDrawable(resources,

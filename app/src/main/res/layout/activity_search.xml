@@ -28,7 +28,7 @@
         android:layout_marginBottom="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/perro" />
+        app:srcCompat="@drawable/img_dog_illustration" />
 
     <FrameLayout
         android:id="@+id/sa_lytRecyclerView"
