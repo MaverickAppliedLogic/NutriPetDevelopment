@@ -1,4 +1,4 @@
-package com.example.feedm.data
+package com.example.feedm.core
 
 
 import com.example.feedm.data.model.remoteResultModel.ExaRemoteResult
@@ -25,7 +25,7 @@ data class SearchRequest(
 )
 
 object RetrofitServiceExaFactory {
-    fun makeRetrofitServiceExa(): RetrofitServiceExa{
+    fun makeRetrofitServiceExa(): RetrofitServiceExa {
         return Retrofit.Builder()
             .baseUrl("https://api.exa.ai/")
             .addConverterFactory(GsonConverterFactory.create())

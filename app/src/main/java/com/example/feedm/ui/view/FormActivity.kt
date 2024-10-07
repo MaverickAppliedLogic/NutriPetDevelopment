@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.feedm.R
 import com.example.feedm.data.model.PetModel
-import com.example.feedm.managementClasses.PetsManager
+import com.example.feedm.ui.view.managementClasses.PetsManager
 
 class FormActivity : AppCompatActivity() {
 

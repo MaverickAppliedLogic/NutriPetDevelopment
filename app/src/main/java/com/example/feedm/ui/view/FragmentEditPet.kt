@@ -20,7 +20,7 @@ import androidx.core.content.res.ResourcesCompat
 import android.util.Log
 import com.example.feedm.R
 
-import com.example.feedm.managementClasses.PetsManager
+import com.example.feedm.ui.view.managementClasses.PetsManager
 
 import kotlin.math.roundToInt
 

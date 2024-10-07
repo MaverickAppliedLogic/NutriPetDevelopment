@@ -1,4 +1,4 @@
-package com.example.feedm.managementClasses
+package com.example.feedm.ui.view.managementClasses
 
 
 import android.content.Context
