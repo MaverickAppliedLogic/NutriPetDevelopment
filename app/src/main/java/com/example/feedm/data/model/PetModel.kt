@@ -1,8 +1,8 @@
-package com.example.feedm.data
+package com.example.feedm.data.model
 
 import java.io.Serializable
 
-data class Pet (
+data class PetModel (
     var id: Int,
     var animal: String,
     var nombre: String,
@@ -19,7 +19,7 @@ data class Pet (
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Pet
+        other as PetModel
 
         return id == other.id
     }
@@ -29,7 +29,7 @@ data class Pet (
     }
 
     override fun toString(): String {
-        return "Pet(actividad='$actividad', id=$id, animal='$animal', nombre='$nombre', " +
+        return "PetModel(actividad='$actividad', id=$id, animal='$animal', nombre='$nombre', " +
                 "edad='$edad', peso='$peso', sexo='$sexo', esterilizado='$esterilizado', " +
                 "objetivo='$objetivo', alergia='$alergia', query='$query')"
     }

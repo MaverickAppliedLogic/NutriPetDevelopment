@@ -44,8 +44,17 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     implementation(libs.retrofit)
+    //Coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
+    //ViewModel
+    implementation(libs.lifecycle.viewmodel.ktx)
+    //LiveData
+    implementation(libs.androidx.lifecycle.livedata)
+    //Fragment
+    implementation(libs.androidx.fragment.ktx)
+    //Activity
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.jsoup)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)

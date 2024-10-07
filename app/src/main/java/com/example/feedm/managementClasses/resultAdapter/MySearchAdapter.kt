@@ -1,20 +1,12 @@
 package com.example.feedm.managementClasses.resultAdapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.feedm.R
-import com.example.feedm.data.RetrofitServiceGoogleFactory
-import com.example.feedm.data.model.ExaRemoteResult
-import com.example.feedm.data.model.GoogleRemoteResult
-import com.example.feedm.data.model.Item
-import com.example.feedm.data.model.Result
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.feedm.data.model.remoteResultModel.GoogleRemoteResult
+import com.example.feedm.data.model.remoteResultModel.Item
 
 class MySearchAdapter(private var items: GoogleRemoteResult, private val onItemClick:(Item)->Unit): RecyclerView.Adapter<ResultViewHolder>()
 {

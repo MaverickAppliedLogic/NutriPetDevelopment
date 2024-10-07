@@ -1,4 +1,4 @@
-package com.example.feedm
+package com.example.feedm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.feedm.data.Pet
+import com.example.feedm.R
+import com.example.feedm.data.model.PetModel
 import com.example.feedm.managementClasses.PetsManager
 
 class FormActivity : AppCompatActivity() {
@@ -58,8 +59,8 @@ class FormActivity : AppCompatActivity() {
         faBtnCommit.setOnClickListener {
             if (recogerDatos()) {
                 // Crear y guardar una nueva mascota
-                val pet = Pet(id, animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
-                PetsManager(this).addPet(pet)
+                val petModel = PetModel(id, animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
+                PetsManager(this).addPet(petModel)
                 Toast.makeText(this, R.string.fa_toastGetDataSuccess, Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             } else {
@@ -112,9 +113,15 @@ class FormActivity : AppCompatActivity() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 // Restablecer el color al tocar el SeekBar
-                sbWeight.thumbTintList = ContextCompat.getColorStateList(baseContext,R.color.tintilist_seekbar_standard)
-                sbWeight.progressBackgroundTintList = ContextCompat.getColorStateList(baseContext,R.color.tintlist_standard)
-                sbWeight.progressTintList = ContextCompat.getColorStateList(baseContext,R.color.tintilist_seekbar_standard)
+                sbWeight.thumbTintList = ContextCompat.getColorStateList(baseContext,
+                    R.color.tintilist_seekbar_standard
+                )
+                sbWeight.progressBackgroundTintList = ContextCompat.getColorStateList(baseContext,
+                    R.color.tintlist_standard
+                )
+                sbWeight.progressTintList = ContextCompat.getColorStateList(baseContext,
+                    R.color.tintilist_seekbar_standard
+                )
                 txtWeight.setTextColor(resources.getColor(R.color.black, null))
             }
 
@@ -141,7 +148,9 @@ class FormActivity : AppCompatActivity() {
         faRgEsterilizado.setOnCheckedChangeListener { radioGroup, _ ->
             for(i in 0 until faRgEsterilizado.childCount){
                 val radioButton = faRgEsterilizado.getChildAt(i) as RadioButton
-                radioButton.buttonTintList = ContextCompat.getColorStateList(this,R.color.tintlist_standard)
+                radioButton.buttonTintList = ContextCompat.getColorStateList(this,
+                    R.color.tintlist_standard
+                )
             }
         }
     }
@@ -153,7 +162,9 @@ class FormActivity : AppCompatActivity() {
             sbWeight.max = 250
             "cat"
         } else {
-            faImgSelectAnimal.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.img_dog_illustration))
+            faImgSelectAnimal.setImageDrawable(AppCompatResources.getDrawable(this,
+                R.drawable.img_dog_illustration
+            ))
             sbWeight.max = 800
             "dog"
         }
@@ -179,8 +190,10 @@ class FormActivity : AppCompatActivity() {
 
         // Validar el peso
         if (sbWeight.progress == 0) {
-            sbWeight.thumbTintList = ContextCompat.getColorStateList(this,R.color.tintlist_error)
-            sbWeight.progressBackgroundTintList = ContextCompat.getColorStateList(this,R.color.tintlist_error)
+            sbWeight.thumbTintList = ContextCompat.getColorStateList(this, R.color.tintlist_error)
+            sbWeight.progressBackgroundTintList = ContextCompat.getColorStateList(this,
+                R.color.tintlist_error
+            )
             txtWeight.setTextColor(resources.getColor(R.color.red, null))
             return false
         }
@@ -199,7 +212,9 @@ class FormActivity : AppCompatActivity() {
         if (esterilizado.isEmpty()) {
             for(i in 0 until faRgEsterilizado.childCount){
                 val radioButton = faRgEsterilizado.getChildAt(i) as RadioButton
-                radioButton.buttonTintList = ContextCompat.getColorStateList(this,R.color.tintlist_error)
+                radioButton.buttonTintList = ContextCompat.getColorStateList(this,
+                    R.color.tintlist_error
+                )
             }
             return false
         }

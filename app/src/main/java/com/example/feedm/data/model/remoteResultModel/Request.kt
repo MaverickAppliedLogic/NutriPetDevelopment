@@ -1,6 +1,6 @@
-package com.example.feedm.data.model
+package com.example.feedm.data.model.remoteResultModel
 
-data class NextPage(
+data class Request(
     val count: Int,
     val cx: String,
     val inputEncoding: String,
