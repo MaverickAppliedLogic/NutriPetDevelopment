@@ -14,10 +14,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.feedm.R
-import com.example.feedm.data.RetrofitServiceGoogleFactory
+import com.example.feedm.core.RetrofitServiceGoogleFactory
 import com.example.feedm.data.model.remoteResultModel.GoogleRemoteResult
-import com.example.feedm.managementClasses.PetsManager
-import com.example.feedm.managementClasses.resultAdapter.MySearchAdapter
+import com.example.feedm.ui.view.managementClasses.PetsManager
+import com.example.feedm.ui.view.managementClasses.resultAdapter.MySearchAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

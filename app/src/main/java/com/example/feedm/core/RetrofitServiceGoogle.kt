@@ -1,4 +1,4 @@
-package com.example.feedm.data
+package com.example.feedm.core
 
 import com.example.feedm.data.model.remoteResultModel.GoogleRemoteResult
 import retrofit2.Retrofit
@@ -12,7 +12,7 @@ interface RetrofitServiceGoogle{
 }
 
 object RetrofitServiceGoogleFactory{
-    fun makeRetrofitServiceGoogle(): RetrofitServiceGoogle{
+    fun makeRetrofitServiceGoogle(): RetrofitServiceGoogle {
         return Retrofit.Builder()
             .baseUrl("https://www.googleapis.com/customsearch/")
             .addConverterFactory(GsonConverterFactory.create())

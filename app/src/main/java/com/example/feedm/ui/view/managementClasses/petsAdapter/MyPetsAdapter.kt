@@ -1,4 +1,4 @@
-package com.example.feedm.managementClasses.petsAdapter
+package com.example.feedm.ui.view.managementClasses.petsAdapter
 
 import android.content.Context
 import android.view.LayoutInflater

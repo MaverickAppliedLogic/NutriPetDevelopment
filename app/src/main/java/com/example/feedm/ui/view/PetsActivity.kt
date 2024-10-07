@@ -21,8 +21,8 @@ import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_STERILIZED
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_WEIGHT
 import com.example.feedm.data.model.PetModel
-import com.example.feedm.managementClasses.PetsManager
-import com.example.feedm.managementClasses.petsAdapter.MyPetsAdapter
+import com.example.feedm.ui.view.managementClasses.PetsManager
+import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PetsActivity : AppCompatActivity() {

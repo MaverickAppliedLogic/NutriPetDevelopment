@@ -1,4 +1,4 @@
-package com.example.feedm.managementClasses.resultAdapter
+package com.example.feedm.ui.view.managementClasses.resultAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
