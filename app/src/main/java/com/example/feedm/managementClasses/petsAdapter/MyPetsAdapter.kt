@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import com.example.feedm.data.Pet
+import com.example.feedm.data.model.PetModel
 import com.example.feedm.R
 
 class MyPetsAdapter(private val context: Context,
-                    private val items: List<Pet>, private val onItemClick:(Pet)->Unit,
-                    private val onItemLongClick:(View, Pet, Int)->Unit): RecyclerView.Adapter<PetViewHolder>()
+                    private val items: List<PetModel>, private val onItemClick:(PetModel)->Unit,
+                    private val onItemLongClick:(View, PetModel, Int)->Unit): RecyclerView.Adapter<PetViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetViewHolder {
         val view = LayoutInflater.from(parent.context).

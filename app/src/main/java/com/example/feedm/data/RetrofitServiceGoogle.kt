@@ -1,12 +1,9 @@
 package com.example.feedm.data
 
-import com.example.feedm.data.model.GoogleRemoteResult
+import com.example.feedm.data.model.remoteResultModel.GoogleRemoteResult
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
-import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface RetrofitServiceGoogle{

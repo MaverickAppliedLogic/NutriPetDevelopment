@@ -1,7 +1,7 @@
 package com.example.feedm.data
 
 
-import com.example.feedm.data.model.ExaRemoteResult
+import com.example.feedm.data.model.remoteResultModel.ExaRemoteResult
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body

@@ -5,7 +5,7 @@
     android:id="@+id/pa_lytConstraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PetsActivity">
+    tools:context=".ui.view.PetsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/pa_lytRecyclerView"

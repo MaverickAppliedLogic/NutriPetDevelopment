@@ -1,4 +1,4 @@
-package com.example.feedm
+package com.example.feedm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,8 +13,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.feedm.R
 import com.example.feedm.data.RetrofitServiceGoogleFactory
-import com.example.feedm.data.model.GoogleRemoteResult
+import com.example.feedm.data.model.remoteResultModel.GoogleRemoteResult
 import com.example.feedm.managementClasses.PetsManager
 import com.example.feedm.managementClasses.resultAdapter.MySearchAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -46,8 +47,8 @@ class SearchActivity : AppCompatActivity() {
 
         txtNamePet.text = pet.nombre
         if (pet.animal.equals("dog"))imgPet.setImageDrawable(AppCompatResources
-            .getDrawable(this,R.drawable.img_dog_illustration))
-        else imgPet.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.gato))
+            .getDrawable(this, R.drawable.img_dog_illustration))
+        else imgPet.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.gato))
 
         hacerBusqueda(pet.query){resultados ->
             actualizarRecyclerView(resultados)
@@ -81,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun actualizarRecyclerView(resultados: GoogleRemoteResult){
-        val intent = Intent(this,PetsActivity::class.java)
+        val intent = Intent(this, PetsActivity::class.java)
         Log.d("actualizarRecyclerView","EL RESULT EN ACTUALIZAR ES $resultados")
         val adapter = MySearchAdapter(resultados){ _ ->
             startActivity(intent)

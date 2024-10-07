@@ -1,4 +1,4 @@
-package com.example.feedm
+package com.example.feedm.ui.view
 
 
 import android.graphics.RenderEffect
@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import android.util.Log
+import com.example.feedm.R
 
 import com.example.feedm.managementClasses.PetsManager
 
@@ -154,8 +155,8 @@ class FragmentEditPet : Fragment() {
             pet.alergia = fragmenteditpetEtAllergies.text.toString()
             pet.peso = fragmenteditpetSbWeight.progress.div(10).toDouble()
             when(fragmenteditpetRgSterilized.checkedRadioButtonId){
-                R.id.fragmentEditPet_rbSterilized1-> pet.esterilizado = "Si"
-                R.id.fragmentEditPet_rbSterilized2-> pet.esterilizado = "No"
+                R.id.fragmentEditPet_rbSterilized1 -> pet.esterilizado = "Si"
+                R.id.fragmentEditPet_rbSterilized2 -> pet.esterilizado = "No"
         }
         PetsManager(requireContext()).editPet(pet,pos)
         bundle.putBoolean("finished", true)

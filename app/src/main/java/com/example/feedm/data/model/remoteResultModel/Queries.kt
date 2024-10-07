@@ -1,4 +1,4 @@
-package com.example.feedm.data.model
+package com.example.feedm.data.model.remoteResultModel
 
 data class Queries(
     val nextPage: List<NextPage>,

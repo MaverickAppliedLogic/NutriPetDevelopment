@@ -1,4 +1,4 @@
-package com.example.feedm
+package com.example.feedm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,14 +12,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_ALLERGIES
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_ANIMAL
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_ID
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_NAME
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_POS
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_STERILIZED
-import com.example.feedm.FragmentEditPet.Companion.BUNDLE_WEIGHT
-import com.example.feedm.data.Pet
+import com.example.feedm.R
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ALLERGIES
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ANIMAL
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ID
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_NAME
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_STERILIZED
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_WEIGHT
+import com.example.feedm.data.model.PetModel
 import com.example.feedm.managementClasses.PetsManager
 import com.example.feedm.managementClasses.petsAdapter.MyPetsAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -74,9 +75,9 @@ class PetsActivity : AppCompatActivity() {
     }
 
     // Actualiza el RecyclerView con la lista de mascotas
-    private fun updateRecyclerView(pets: List<Pet>) {
+    private fun updateRecyclerView(petModels: List<PetModel>) {
         val intent = Intent(this, SearchActivity::class.java)
-        val adapter = MyPetsAdapter(this, pets,
+        val adapter = MyPetsAdapter(this, petModels,
             // Al hacer clic en un item, inicia la actividad de búsqueda con la información de la mascota
             onItemClick = { pet ->
                 val bundle = Bundle()
@@ -113,8 +114,8 @@ class PetsActivity : AppCompatActivity() {
     }
 
     // Elimina la mascota seleccionada
-    private fun eliminarMascota(pet: Pet) {
-        PetsManager(this).deletePet(pet)  // Llama al método para eliminar la mascota en PetsManager
+    private fun eliminarMascota(petModel: PetModel) {
+        PetsManager(this).deletePet(petModel)  // Llama al método para eliminar la mascota en PetsManager
     }
 
     // Configura el listener para recibir resultados del fragmento de edición
@@ -131,19 +132,19 @@ class PetsActivity : AppCompatActivity() {
     }
 
     // Muestra el fragmento de edición de mascotas
-    private fun showFragment(pet: Pet, pos: Int) {
+    private fun showFragment(petModel: PetModel, pos: Int) {
         if (!fragmentWasStarted) {
             Log.i("step2", "showFragment()")
 
             // Crea un bundle con la información de la mascota seleccionada
             val bundle = bundleOf(
-                BUNDLE_ID to pet.id,
+                BUNDLE_ID to petModel.id,
                 BUNDLE_POS to pos,
-                BUNDLE_ANIMAL to pet.animal,
-                BUNDLE_NAME to pet.nombre,
-                BUNDLE_STERILIZED to pet.esterilizado,
-                BUNDLE_ALLERGIES to pet.alergia,
-                BUNDLE_WEIGHT to pet.peso
+                BUNDLE_ANIMAL to petModel.animal,
+                BUNDLE_NAME to petModel.nombre,
+                BUNDLE_STERILIZED to petModel.esterilizado,
+                BUNDLE_ALLERGIES to petModel.alergia,
+                BUNDLE_WEIGHT to petModel.peso
             )
 
             // Inicia el fragmento de edición de mascotas
