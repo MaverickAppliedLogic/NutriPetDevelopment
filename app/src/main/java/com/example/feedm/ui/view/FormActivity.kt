@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -11,7 +12,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.feedm.R
 import com.example.feedm.data.model.PetModel
-import com.example.feedm.ui.view.managementClasses.PetsManager
+import com.example.feedm.data.model.PetsRepository
+import com.example.feedm.ui.viewmodel.PetViewModel
 
 class FormActivity : AppCompatActivity() {
 
@@ -38,6 +40,8 @@ class FormActivity : AppCompatActivity() {
     private lateinit var alergia: String
     private lateinit var query: String
 
+    private val petViewModel: PetViewModel by  viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -60,7 +64,7 @@ class FormActivity : AppCompatActivity() {
             if (recogerDatos()) {
                 // Crear y guardar una nueva mascota
                 val petModel = PetModel(id, animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
-                PetsManager(this).addPet(petModel)
+                PetsRepository(this).addPet(petModel)
                 Toast.makeText(this, R.string.fa_toastGetDataSuccess, Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             } else {
@@ -173,8 +177,8 @@ class FormActivity : AppCompatActivity() {
     // Recoge los datos del formulario y valida la información
     private fun recogerDatos(): Boolean {
         // Asignar ID basado en la cantidad de mascotas ya registradas
-        if (PetsManager(this).getPetList().isNotEmpty()) {
-            id = PetsManager(this).getPetList().size
+        if (!petViewModel.pets.value.isNullOrEmpty()) {
+            id = petViewModel.pets.value!!.size
         }
 
         // Validar nombre de la mascota

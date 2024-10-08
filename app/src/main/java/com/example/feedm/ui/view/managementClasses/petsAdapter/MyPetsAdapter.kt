@@ -10,7 +10,7 @@ import com.example.feedm.data.model.PetModel
 import com.example.feedm.R
 
 class MyPetsAdapter(private val context: Context,
-                    private val items: List<PetModel>, private val onItemClick:(PetModel)->Unit,
+                    private var items: List<PetModel>, private val onItemClick:(PetModel)->Unit,
                     private val onItemLongClick:(View, PetModel, Int)->Unit): RecyclerView.Adapter<PetViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetViewHolder {
@@ -32,6 +32,11 @@ class MyPetsAdapter(private val context: Context,
 
     override fun getItemCount(): Int {
        return items.size
+    }
+
+    fun setPets(pets: List<PetModel>){
+        items = pets
+        notifyDataSetChanged()
     }
 
 
