@@ -20,7 +20,7 @@ import androidx.core.content.res.ResourcesCompat
 import android.util.Log
 import com.example.feedm.R
 
-import com.example.feedm.ui.view.managementClasses.PetsManager
+import com.example.feedm.data.model.PetsRepository
 
 import kotlin.math.roundToInt
 
@@ -151,14 +151,14 @@ class FragmentEditPet : Fragment() {
 
     private fun commitEditPet(){
         Log.i("step4","commitEditPet()")
-            val pet = PetsManager(requireContext()).getPet(id)
+            val pet = PetsRepository(requireContext()).getPet(id)
             pet.alergia = fragmenteditpetEtAllergies.text.toString()
             pet.peso = fragmenteditpetSbWeight.progress.div(10).toDouble()
             when(fragmenteditpetRgSterilized.checkedRadioButtonId){
                 R.id.fragmentEditPet_rbSterilized1 -> pet.esterilizado = "Si"
                 R.id.fragmentEditPet_rbSterilized2 -> pet.esterilizado = "No"
         }
-        PetsManager(requireContext()).editPet(pet,pos)
+        PetsRepository(requireContext()).editPet(pet,pos)
         bundle.putBoolean("finished", true)
         parentFragmentManager.setFragmentResult("result", bundle)
         Log.i("step3223","ENVIADO")

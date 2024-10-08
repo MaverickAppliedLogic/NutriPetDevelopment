@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.replace
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.feedm.R
@@ -21,8 +23,9 @@ import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_STERILIZED
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_WEIGHT
 import com.example.feedm.data.model.PetModel
-import com.example.feedm.ui.view.managementClasses.PetsManager
+import com.example.feedm.data.model.PetsRepository
 import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
+import com.example.feedm.ui.viewmodel.PetViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PetsActivity : AppCompatActivity() {
@@ -34,10 +37,13 @@ class PetsActivity : AppCompatActivity() {
     // Controla si el RecyclerView ha sido inicializado
     private var recyclerViewIsInitialized = false
 
+    private val petViewModel: PetViewModel by  viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_pets)
+        petViewModel.onCreate()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.pa_lytConstraint)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -51,9 +57,9 @@ class PetsActivity : AppCompatActivity() {
     // Inicializa y configura las vistas del Activity
     private fun innitViews() {
         // Si hay mascotas registradas, crea y actualiza el RecyclerView
-        if (PetsManager(this).getPetList().isNotEmpty()) {
+        if (petViewModel.pets.isInitialized) {
             createRecyclerView()
-            updateRecyclerView(PetsManager(this).getPetList())
+            updateRecyclerView()
         }
 
         // Botón flotante para añadir nuevas mascotas
@@ -66,6 +72,7 @@ class PetsActivity : AppCompatActivity() {
         paRecyclerView = findViewById(R.id.pa_RecyclerView)
         paRecyclerView.layoutManager = LinearLayoutManager(this)  // Asigna un layout de lista vertical
         recyclerViewIsInitialized = true  // Marca que el RecyclerView está inicializado
+
     }
 
     // Inicia la actividad para añadir una nueva mascota
@@ -75,9 +82,9 @@ class PetsActivity : AppCompatActivity() {
     }
 
     // Actualiza el RecyclerView con la lista de mascotas
-    private fun updateRecyclerView(petModels: List<PetModel>) {
+    private fun updateRecyclerView() {
         val intent = Intent(this, SearchActivity::class.java)
-        val adapter = MyPetsAdapter(this, petModels,
+        val adapter = MyPetsAdapter(this, emptyList(),
             // Al hacer clic en un item, inicia la actividad de búsqueda con la información de la mascota
             onItemClick = { pet ->
                 val bundle = Bundle()
@@ -109,13 +116,14 @@ class PetsActivity : AppCompatActivity() {
                 popupMenu.show()
             }
         )
-
         paRecyclerView.adapter = adapter  // Asigna el adaptador al RecyclerView
+
+        petViewModel.pets.observe(this, Observer{adapter.setPets(it)})
     }
 
     // Elimina la mascota seleccionada
     private fun eliminarMascota(petModel: PetModel) {
-        PetsManager(this).deletePet(petModel)  // Llama al método para eliminar la mascota en PetsManager
+        PetsRepository(this).deletePet(petModel)  // Llama al método para eliminar la mascota en PetsRepository
     }
 
     // Configura el listener para recibir resultados del fragmento de edición

@@ -1,9 +1,8 @@
-package com.example.feedm.ui.view.managementClasses
+package com.example.feedm.data.model
 
 
 import android.content.Context
 import android.util.Log
-import com.example.feedm.data.model.PetModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -11,12 +10,12 @@ import java.io.File
 import java.io.FileWriter
 
 
-class PetsManager(context: Context){
+class PetsRepository(context: Context){
 
 
     private var petsFile = File(context.filesDir, "pets")
     private val gson = Gson()
-    private var petModelList = ArrayList<PetModel>()
+    private var filled = false
 
 
     init {
@@ -33,7 +32,8 @@ class PetsManager(context: Context){
         try {
             val json = petsFile.readText()
             val listType: java.lang.reflect.Type = object : TypeToken<ArrayList<PetModel>>() {}.type
-            petModelList = gson.fromJson(json,listType)
+            PetProvider.pets = gson.fromJson(json,listType)
+            filled = true
         }
         catch (_: NullPointerException){
 
@@ -42,22 +42,18 @@ class PetsManager(context: Context){
     }
 
     fun addPet(petModel: PetModel){
-       petModelList.add(petModel)
-        val json = gson.toJson(petModelList)
+       PetProvider.pets.add(petModel)
+        val json = gson.toJson(PetProvider.pets)
         FileWriter(petsFile).use { writer ->
             writer.write(json)
         }
 
     }
 
-    fun getPet(petId: Int): PetModel {
-        return petModelList.get(petId)
-    }
-
     fun deletePet(petModel: PetModel){
         FileWriter(petsFile).use { _->}
-        petModelList.remove(petModel)
-        val json = gson.toJson(petModelList)
+        PetProvider.pets.remove(petModel)
+        val json = gson.toJson(PetProvider.pets)
         FileWriter(petsFile).use { writer ->
             writer.write(json)
         }
@@ -68,19 +64,30 @@ class PetsManager(context: Context){
     fun editPet(petModel: PetModel, pos: Int){
         Log.i("step6","gestorPets()")
         FileWriter(petsFile).use { _->}
-        petModelList.remove(petModel)
-        petModelList.add(pos,petModel)
-        val json = gson.toJson(petModelList)
+        PetProvider.pets.remove(petModel)
+        PetProvider.pets.add(pos,petModel)
+        val json = gson.toJson(PetProvider.pets)
         FileWriter(petsFile).use { writer ->
             writer.write(json)
         }
         fillPetList()
     }
 
-    fun getPetList() : ArrayList<PetModel>{
-            return petModelList
+    fun getPet(pos: Int): PetModel{
+        if(filled){
+            return PetProvider.getPet(pos)
         }
+        fillPetList()
+        return PetProvider.getPet(pos)
+    }
 
+    fun getAllPets(): ArrayList<PetModel>{
+        if(filled){
+            return PetProvider.getAllPets()
+        }
+        fillPetList()
+        return PetProvider.getAllPets()
+    }
 
 
 }
