@@ -123,7 +123,7 @@ class PetsActivity : AppCompatActivity() {
 
     // Elimina la mascota seleccionada
     private fun eliminarMascota(petModel: PetModel) {
-        PetsRepository(this).deletePet(petModel)  // Llama al método para eliminar la mascota en PetsRepository
+        petViewModel.deletePet(petModel,this)
     }
 
     // Configura el listener para recibir resultados del fragmento de edición
