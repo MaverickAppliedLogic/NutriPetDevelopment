@@ -23,7 +23,6 @@ import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_STERILIZED
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_WEIGHT
 import com.example.feedm.data.model.PetModel
-import com.example.feedm.data.model.PetsRepository
 import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
 import com.example.feedm.ui.viewmodel.PetViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,6 +35,8 @@ class PetsActivity : AppCompatActivity() {
     lateinit var paRecyclerView: RecyclerView
     // Controla si el RecyclerView ha sido inicializado
     private var recyclerViewIsInitialized = false
+
+    private lateinit var adapter: MyPetsAdapter
 
     private val petViewModel: PetViewModel by  viewModels()
 
@@ -57,11 +58,11 @@ class PetsActivity : AppCompatActivity() {
     // Inicializa y configura las vistas del Activity
     private fun innitViews() {
         // Si hay mascotas registradas, crea y actualiza el RecyclerView
-        if (petViewModel.pets.isInitialized) {
-            createRecyclerView()
-            updateRecyclerView()
-        }
+        createRecyclerView()
+        petViewModel.pets.observe(this, Observer {
 
+            setRecyclerView(it)
+        })
         // Botón flotante para añadir nuevas mascotas
         val btnAddPet: FloatingActionButton = findViewById(R.id.pa_floatbtnAñadirMascota)
         btnAddPet.setOnClickListener { addPet() }  // Al hacer clic, inicia la actividad para añadir una mascota
@@ -81,10 +82,11 @@ class PetsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
     // Actualiza el RecyclerView con la lista de mascotas
-    private fun updateRecyclerView() {
+    private fun setRecyclerView(petList: ArrayList<PetModel>) {
         val intent = Intent(this, SearchActivity::class.java)
-        val adapter = MyPetsAdapter(this, emptyList(),
+        adapter = MyPetsAdapter(this, petList,
             // Al hacer clic en un item, inicia la actividad de búsqueda con la información de la mascota
             onItemClick = { pet ->
                 val bundle = Bundle()
@@ -118,7 +120,6 @@ class PetsActivity : AppCompatActivity() {
         )
         paRecyclerView.adapter = adapter  // Asigna el adaptador al RecyclerView
 
-        petViewModel.pets.observe(this, Observer{adapter.setPets(it)})
     }
 
     // Elimina la mascota seleccionada
