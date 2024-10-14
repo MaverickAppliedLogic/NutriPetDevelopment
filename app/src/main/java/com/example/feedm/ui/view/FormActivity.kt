@@ -44,6 +44,7 @@ class FormActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        petViewModel.onCreate(this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_form)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -64,7 +65,7 @@ class FormActivity : AppCompatActivity() {
             if (recogerDatos()) {
                 // Crear y guardar una nueva mascota
                 val petModel = PetModel(id, animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
-                PetsRepository(this).addPet(petModel)
+                petViewModel.addpet(petModel,this)
                 Toast.makeText(this, R.string.fa_toastGetDataSuccess, Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             } else {

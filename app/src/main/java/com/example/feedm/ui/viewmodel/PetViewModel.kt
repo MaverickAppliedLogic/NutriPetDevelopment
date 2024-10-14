@@ -5,12 +5,13 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.feedm.data.model.PetModel
+import com.example.feedm.domain.AddPet
 import com.example.feedm.domain.DeletePet
 import com.example.feedm.domain.GetPets
 
 class PetViewModel: ViewModel(){
 
-    val pets = MutableLiveData<List<PetModel>>()
+    val pets = MutableLiveData<ArrayList<PetModel>>()
     private lateinit var getPetsUseCase : GetPets
 
     @SuppressLint("NullSafeMutableLiveData")
@@ -28,7 +29,17 @@ class PetViewModel: ViewModel(){
         deletePetUseCase(pet)
         val result = getPetsUseCase()
         if (!result.isNullOrEmpty()) {
-            pets.value = result
+            pets.postValue(result)
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun addpet(pet: PetModel, context: Context){
+        val addPetUseCase = AddPet(context)
+        addPetUseCase(pet)
+        val result = getPetsUseCase()
+        if (!result.isNullOrEmpty()) {
+            pets.postValue(result)
         }
     }
 }
