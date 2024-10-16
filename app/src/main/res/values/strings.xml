@@ -1,6 +1,6 @@
 <resources>
     //FormActivity Strings
-    <string name="app_name">Feed\'m</string>
+    <string name="app_name">TailyCare</string>
     <string name="fa_hintEtPetName">Buddy name</string>
     <string name="ma_txtSpinnerEdad">Edad</string>
     <array name="fa_arraySpinnerEdad">
