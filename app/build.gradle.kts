@@ -3,6 +3,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,6 +57,10 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     //Activity
     implementation(libs.androidx.activity.ktx)
+    //DaggerHilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    //
     implementation(libs.jsoup)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
@@ -70,4 +76,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+kapt {
+    correctErrorTypes = true
 }
