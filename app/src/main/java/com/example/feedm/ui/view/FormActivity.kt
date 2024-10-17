@@ -12,11 +12,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.feedm.R
 import com.example.feedm.data.model.PetModel
-import com.example.feedm.data.model.PetsRepository
 import com.example.feedm.ui.viewmodel.PetViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FormActivity : AppCompatActivity() {
 
+    private val petViewModel: PetViewModel by viewModels()
     // Declaración de vistas y variables de formulario
     private lateinit var faEditTextPetName: EditText
     private lateinit var faTextInputAlergias: EditText
@@ -40,11 +43,10 @@ class FormActivity : AppCompatActivity() {
     private lateinit var alergia: String
     private lateinit var query: String
 
-    private val petViewModel: PetViewModel by  viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        petViewModel.onCreate(this)
+        petViewModel.onCreate()
         enableEdgeToEdge()
         setContentView(R.layout.activity_form)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -65,7 +67,7 @@ class FormActivity : AppCompatActivity() {
             if (recogerDatos()) {
                 // Crear y guardar una nueva mascota
                 val petModel = PetModel(id, animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
-                petViewModel.addpet(petModel,this)
+                petViewModel.addpet(petModel)
                 Toast.makeText(this, R.string.fa_toastGetDataSuccess, Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             } else {

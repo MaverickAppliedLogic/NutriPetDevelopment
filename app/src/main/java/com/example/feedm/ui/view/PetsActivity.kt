@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,20 +16,17 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.feedm.R
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ALLERGIES
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ANIMAL
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ID
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_NAME
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_STERILIZED
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_WEIGHT
 import com.example.feedm.data.model.PetModel
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
 import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
 import com.example.feedm.ui.viewmodel.PetViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PetsActivity : AppCompatActivity() {
 
+    private val petViewModel: PetViewModel by viewModels()
     // Controla si el fragmento de edición ha sido iniciado
     var fragmentWasStarted = false
     // RecyclerView que muestra la lista de mascotas
@@ -38,13 +36,12 @@ class PetsActivity : AppCompatActivity() {
 
     private lateinit var adapter: MyPetsAdapter
 
-    private val petViewModel: PetViewModel by  viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_pets)
-        petViewModel.onCreate(this)
+        petViewModel.onCreate()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.pa_lytConstraint)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -60,7 +57,6 @@ class PetsActivity : AppCompatActivity() {
         // Si hay mascotas registradas, crea y actualiza el RecyclerView
         createRecyclerView()
         petViewModel.pets.observe(this, Observer {
-
             setRecyclerView(it)
         })
         // Botón flotante para añadir nuevas mascotas
@@ -124,7 +120,7 @@ class PetsActivity : AppCompatActivity() {
 
     // Elimina la mascota seleccionada
     private fun eliminarMascota(petModel: PetModel) {
-        petViewModel.deletePet(petModel,this)
+        petViewModel.deletePet(petModel)
     }
 
     // Configura el listener para recibir resultados del fragmento de edición
@@ -141,20 +137,13 @@ class PetsActivity : AppCompatActivity() {
     }
 
     // Muestra el fragmento de edición de mascotas
-    private fun showFragment(petModel: PetModel, pos: Int) {
+    private fun showFragment(pet: PetModel, pos: Int) {
         if (!fragmentWasStarted) {
             Log.i("step2", "showFragment()")
 
             // Crea un bundle con la información de la mascota seleccionada
-            val bundle = bundleOf(
-                BUNDLE_ID to petModel.id,
-                BUNDLE_POS to pos,
-                BUNDLE_ANIMAL to petModel.animal,
-                BUNDLE_NAME to petModel.nombre,
-                BUNDLE_STERILIZED to petModel.esterilizado,
-                BUNDLE_ALLERGIES to petModel.alergia,
-                BUNDLE_WEIGHT to petModel.peso
-            )
+
+            val bundle = bundleOf(BUNDLE_POS to pos )
 
             // Inicia el fragmento de edición de mascotas
             supportFragmentManager.beginTransaction()
