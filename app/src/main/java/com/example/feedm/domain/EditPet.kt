@@ -5,6 +5,6 @@ import com.example.feedm.data.model.PetModel
 import com.example.feedm.data.model.PetsRepository
 import javax.inject.Inject
 
-class GetPets @Inject constructor(private val repository: PetsRepository){
-    operator fun invoke(): ArrayList<PetModel>?= repository.getAllPets()
+class EditPet @Inject constructor(private val repository: PetsRepository) {
+    operator fun invoke(pet: PetModel, pos: Int)= repository.editPet(pet, pos)
 }

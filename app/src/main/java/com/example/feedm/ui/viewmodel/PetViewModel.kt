@@ -1,45 +1,69 @@
 package com.example.feedm.ui.viewmodel
 
 import android.annotation.SuppressLint
-import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.feedm.data.model.PetModel
 import com.example.feedm.domain.AddPet
 import com.example.feedm.domain.DeletePet
+import com.example.feedm.domain.EditPet
+import com.example.feedm.domain.GetPet
 import com.example.feedm.domain.GetPets
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PetViewModel: ViewModel(){
+@HiltViewModel
+class PetViewModel @Inject constructor(
+    private val addPetUseCase: AddPet,
+    private val deletePetUseCase: DeletePet,
+    private val editPetUseCase: EditPet,
+    private val getPetsUseCase: GetPets,
+    private val getPetUseCase: GetPet
+): ViewModel(){
 
-    val pets = MutableLiveData<ArrayList<PetModel>>()
-    private lateinit var getPetsUseCase : GetPets
+    private val _pets = MutableLiveData<ArrayList<PetModel>>()
+    val pets: LiveData<ArrayList<PetModel>> = _pets
+    val pet = MutableLiveData<PetModel>()
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun onCreate(context: Context) {
-        getPetsUseCase = GetPets(context)
+    fun onCreate() {
         val result = getPetsUseCase()
         if (!result.isNullOrEmpty()) {
-            pets.value = result
+            _pets.value = result
         }
     }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun deletePet(pet: PetModel, context: Context){
-        val deletePetUseCase = DeletePet(context)
+    fun deletePet(pet: PetModel){
         deletePetUseCase(pet)
         val result = getPetsUseCase()
         if (!result.isNullOrEmpty()) {
-            pets.postValue(result)
+            _pets.postValue(result)
         }
     }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun addpet(pet: PetModel, context: Context){
-        val addPetUseCase = AddPet(context)
+    fun addpet(pet: PetModel){
         addPetUseCase(pet)
         val result = getPetsUseCase()
         if (!result.isNullOrEmpty()) {
-            pets.postValue(result)
+            _pets.postValue(result)
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getPet(pos: Int){
+        val result = getPetUseCase(pos)
+        pet.postValue(result)
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun editPet(pet: PetModel,pos: Int){
+        editPetUseCase(pet,pos)
+        val result = getPetsUseCase()
+        if (!result.isNullOrEmpty()) {
+            _pets.postValue(result)
         }
     }
 }

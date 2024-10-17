@@ -5,12 +5,14 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import dagger.hilt.android.AndroidEntryPoint
 
 import java.io.File
 import java.io.FileWriter
+import javax.inject.Inject
 
 
-class PetsRepository(context: Context){
+class PetsRepository @Inject constructor(private val context: Context){
 
 
     private var petsFile = File(context.filesDir, "pets")

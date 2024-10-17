@@ -1,6 +1,7 @@
 package com.example.feedm.ui.view
 
 
+import android.content.Intent
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
@@ -18,22 +19,24 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.feedm.R
+import com.example.feedm.data.model.PetModel
 
 import com.example.feedm.data.model.PetsRepository
+import com.example.feedm.ui.viewmodel.PetViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 import kotlin.math.roundToInt
 
 
-
-class FragmentEditPet : Fragment() {
-    private var id : Int = -1
-    private var pos: Int = -1
-    private var animal: String? = null
-    private var name: String? = null
-    private var allergies: String? = null
-    private var sterilized: String? = null
-    private var weight: Double? = null
+@AndroidEntryPoint
+class FragmentEditPet  : Fragment() {
+    private lateinit var pet: PetModel
+    private var pos = -1
     private val bundle = Bundle()
     private lateinit var fragmenteditpetTxtName: TextView
     private lateinit var fragmenteditpetTxtWeight: TextView
@@ -43,19 +46,15 @@ class FragmentEditPet : Fragment() {
     private lateinit var fragmenteditpetRgSterilized: RadioGroup
     private lateinit var fragmenteditpetBtncancel: Button
     private lateinit var fragmenteditpetBtnapply: Button
+    private val petViewModel: PetViewModel by viewModels ()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            id = it.getInt(BUNDLE_ID)
-            pos = it.getInt(BUNDLE_POS)
-            animal = it.getString(BUNDLE_ANIMAL)
-            name = it.getString(BUNDLE_NAME)
-            allergies = it.getString(BUNDLE_ALLERGIES)
-            sterilized = it.getString(BUNDLE_STERILIZED)
-            weight = it.getDouble(BUNDLE_WEIGHT)
-        }
+        pos = arguments?.getInt(BUNDLE_POS)!!
+        petViewModel.onCreate()
+        petViewModel.pets.observe(this, Observer { pet = it[pos] })
+
     }
 
     override fun onCreateView(
@@ -99,8 +98,8 @@ class FragmentEditPet : Fragment() {
         fragmenteditpetRgSterilized = view?.findViewById(R.id.fragmentEditPet_rgEsterilizado)!!
         fragmenteditpetBtncancel = view?.findViewById(R.id.fragmentEditPet_btnCancelar)!!
         fragmenteditpetBtnapply = view?.findViewById(R.id.fragmentEditPet_btnConfirmar)!!
-        fragmenteditpetTxtName.text = name
-        if(animal.equals("dog")){
+        fragmenteditpetTxtName.text = pet.nombre
+        if(pet.animal.equals("dog")){
             fragmenteditpetImgpet.setImageDrawable(ResourcesCompat.getDrawable(resources,
                 R.drawable.img_dog_illustration,null))
         }
@@ -109,15 +108,15 @@ class FragmentEditPet : Fragment() {
                 R.drawable.gato,null))
         }
 
-        fragmenteditpetEtAllergies.setText(allergies)
-        if(sterilized.equals("No")){
+        fragmenteditpetEtAllergies.setText(pet.alergia)
+        if(pet.esterilizado.equals("No")){
             fragmenteditpetRgSterilized.check(R.id.fragmentEditPet_rbSterilized2)
         }
         else {
             fragmenteditpetRgSterilized.check(R.id.fragmentEditPet_rbSterilized1)
         }
-        fragmenteditpetTxtWeight.text = String.format(null,"%.1f Kg", weight)
-        fragmenteditpetSbWeight.progress=weight!!.times(10).roundToInt()
+        fragmenteditpetTxtWeight.text = String.format(null,"%.1f Kg", pet.peso)
+        fragmenteditpetSbWeight.progress=pet.peso!!.times(10).roundToInt()
 
         var numberForTxtWeight : Double
         var weightAdjusted : Int
@@ -158,34 +157,13 @@ class FragmentEditPet : Fragment() {
                 R.id.fragmentEditPet_rbSterilized1 -> pet.esterilizado = "Si"
                 R.id.fragmentEditPet_rbSterilized2 -> pet.esterilizado = "No"
         }
-        PetsRepository(requireContext()).editPet(pet,pos)
+        petViewModel.editPet(pet,pos)
         bundle.putBoolean("finished", true)
         parentFragmentManager.setFragmentResult("result", bundle)
         Log.i("step3223","ENVIADO")
     }
 
-    companion object {
-
-        const val BUNDLE_ID = "bundle_id"
-        const val BUNDLE_POS = "bundle_pos"
-        const val BUNDLE_ANIMAL = "bundle_animal"
-        const val BUNDLE_NAME = "bundle_name"
-        const val BUNDLE_ALLERGIES = "bundle_allergies"
-        const val BUNDLE_WEIGHT = "bundle_weight"
-        const val BUNDLE_STERILIZED = "bundle_sterilized"
-
-
-
-        @JvmStatic
-        fun newInstance(animal: String, name: String, allergies: String, sterilized: String, weight: Int) =
-            FragmentEditPet().apply {
-                arguments = Bundle().apply {
-                    putString(BUNDLE_ANIMAL,animal)
-                    putString(BUNDLE_NAME, name)
-                    putString(BUNDLE_ALLERGIES, allergies)
-                    putString(BUNDLE_STERILIZED, sterilized)
-                    putInt(BUNDLE_WEIGHT, weight)
-                }
-            }
+    companion object{
+        const val BUNDLE_POS = "-1"
     }
 }
