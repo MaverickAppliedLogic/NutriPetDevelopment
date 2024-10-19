@@ -1,7 +1,6 @@
 package com.example.feedm.ui.view
 
 
-import android.content.Intent
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
@@ -19,16 +18,13 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.feedm.R
 import com.example.feedm.data.model.PetModel
 
-import com.example.feedm.data.model.PetsRepository
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 import kotlin.math.roundToInt
 
@@ -150,7 +146,6 @@ class FragmentEditPet  : Fragment() {
 
     private fun commitEditPet(){
         Log.i("step4","commitEditPet()")
-            val pet = PetsRepository(requireContext()).getPet(id)
             pet.alergia = fragmenteditpetEtAllergies.text.toString()
             pet.peso = fragmenteditpetSbWeight.progress.div(10).toDouble()
             when(fragmenteditpetRgSterilized.checkedRadioButtonId){
