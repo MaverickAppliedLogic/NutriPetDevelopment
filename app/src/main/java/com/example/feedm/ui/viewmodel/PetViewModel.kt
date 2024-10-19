@@ -8,7 +8,6 @@ import com.example.feedm.data.model.PetModel
 import com.example.feedm.domain.AddPet
 import com.example.feedm.domain.DeletePet
 import com.example.feedm.domain.EditPet
-import com.example.feedm.domain.GetPet
 import com.example.feedm.domain.GetPets
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,13 +17,11 @@ class PetViewModel @Inject constructor(
     private val addPetUseCase: AddPet,
     private val deletePetUseCase: DeletePet,
     private val editPetUseCase: EditPet,
-    private val getPetsUseCase: GetPets,
-    private val getPetUseCase: GetPet
+    private val getPetsUseCase: GetPets
 ): ViewModel(){
 
     private val _pets = MutableLiveData<ArrayList<PetModel>>()
     val pets: LiveData<ArrayList<PetModel>> = _pets
-    val pet = MutableLiveData<PetModel>()
 
     @SuppressLint("NullSafeMutableLiveData")
     fun onCreate() {
@@ -52,11 +49,6 @@ class PetViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("NullSafeMutableLiveData")
-    fun getPet(pos: Int){
-        val result = getPetUseCase(pos)
-        pet.postValue(result)
-    }
 
     @SuppressLint("NullSafeMutableLiveData")
     fun editPet(pet: PetModel,pos: Int){

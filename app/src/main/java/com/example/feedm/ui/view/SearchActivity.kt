@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.feedm.R
 import com.example.feedm.core.RetrofitServiceGoogleFactory
 import com.example.feedm.data.model.remoteResultModel.GoogleRemoteResult
-import com.example.feedm.data.model.PetsRepository
+import com.example.feedm.data.PetsRepository
 import com.example.feedm.ui.view.managementClasses.resultAdapter.MySearchAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
         createRecyclerView()
         val imgPet : ImageView = findViewById(R.id.sa_imgPet)
         val txtNamePet : TextView = findViewById(R.id.sa_txtNamePet)
-        val pet =  PetsRepository(this).getPet(intent.getIntExtra("petId",-1))
+        /*val pet =  PetsRepository(this).getPet(intent.getIntExtra("petId",-1))
 
         txtNamePet.text = pet.nombre
         if (pet.animal.equals("dog"))imgPet.setImageDrawable(AppCompatResources
@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
         hacerBusqueda(pet.query){resultados ->
             actualizarRecyclerView(resultados)
         }
-
+*/
 
         val saBtnBack: ImageButton = findViewById(R.id.sa_BtnBack)
         saBtnBack.setOnClickListener{goBack()}
