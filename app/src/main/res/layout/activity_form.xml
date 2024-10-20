@@ -53,7 +53,7 @@
         android:layout_height="450dp"
         android:layout_marginStart="1dp"
         android:layout_marginBottom="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/ma_btnCommit"
+        app:layout_constraintBottom_toTopOf="@+id/fa_btnCommit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent">
@@ -219,7 +219,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/ma_btnCommit"
+        android:id="@+id/fa_btnCommit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="155dp"

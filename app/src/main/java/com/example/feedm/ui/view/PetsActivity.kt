@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.feedm.R
 import com.example.feedm.data.model.PetModel
+import com.example.feedm.databinding.ActivityPetsBinding
 import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
 import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
 import com.example.feedm.ui.viewmodel.PetViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,16 +30,18 @@ class PetsActivity : AppCompatActivity() {
     var fragmentWasStarted = false
     // RecyclerView que muestra la lista de mascotas
     lateinit var paRecyclerView: RecyclerView
-    // Controla si el RecyclerView ha sido inicializado
+    private lateinit var adapter: MyPetsAdapter
     private var recyclerViewIsInitialized = false
 
-    private lateinit var adapter: MyPetsAdapter
+    private lateinit var binding: ActivityPetsBinding
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_pets)
+        binding = ActivityPetsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         petViewModel.onCreate()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.pa_lytConstraint)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -59,16 +60,13 @@ class PetsActivity : AppCompatActivity() {
         petViewModel.pets.observe(this, Observer {
             setRecyclerView(it)
         })
-        // Botón flotante para añadir nuevas mascotas
-        val btnAddPet: FloatingActionButton = findViewById(R.id.pa_floatbtnAñadirMascota)
-        btnAddPet.setOnClickListener { addPet() }  // Al hacer clic, inicia la actividad para añadir una mascota
+        binding.paFloatbtnAddPet.setOnClickListener { addPet() }
     }
 
     // Crea el RecyclerView y asigna un layout manager
     private fun createRecyclerView() {
-        paRecyclerView = findViewById(R.id.pa_RecyclerView)
-        paRecyclerView.layoutManager = LinearLayoutManager(this)  // Asigna un layout de lista vertical
-        recyclerViewIsInitialized = true  // Marca que el RecyclerView está inicializado
+        binding.paRecyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerViewIsInitialized = true
 
     }
 
@@ -98,14 +96,12 @@ class PetsActivity : AppCompatActivity() {
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.item1MenuPetRV -> {
-                            showFragment(pet, pos)  // Muestra el fragmento de edición de mascota
+                            showFragment(pos)  // Muestra el fragmento de edición de mascota
                             Log.i("step8", "lifecycleScope")
-                            recreate()  // Recarga la actividad después de editar
                             true
                         }
                         R.id.item2MenuPetRV -> {
                             eliminarMascota(pet)  // Elimina la mascota seleccionada
-                            recreate()  // Recarga la actividad
                             true
                         }
                         else -> false
@@ -114,7 +110,7 @@ class PetsActivity : AppCompatActivity() {
                 popupMenu.show()
             }
         )
-        paRecyclerView.adapter = adapter  // Asigna el adaptador al RecyclerView
+        paRecyclerView.adapter = adapter
 
     }
 
@@ -137,7 +133,7 @@ class PetsActivity : AppCompatActivity() {
     }
 
     // Muestra el fragmento de edición de mascotas
-    private fun showFragment(pet: PetModel, pos: Int) {
+    private fun showFragment(pos: Int) {
         if (!fragmentWasStarted) {
             Log.i("step2", "showFragment()")
 
