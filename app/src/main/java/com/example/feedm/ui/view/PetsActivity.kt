@@ -2,6 +2,7 @@ package com.example.feedm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
@@ -13,7 +14,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.feedm.R
 import com.example.feedm.data.model.PetModel
 import com.example.feedm.databinding.ActivityPetsBinding
@@ -22,6 +22,7 @@ import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class PetsActivity : AppCompatActivity() {
 
@@ -29,7 +30,6 @@ class PetsActivity : AppCompatActivity() {
     // Controla si el fragmento de edición ha sido iniciado
     var fragmentWasStarted = false
     // RecyclerView que muestra la lista de mascotas
-    lateinit var paRecyclerView: RecyclerView
     private lateinit var adapter: MyPetsAdapter
     private var recyclerViewIsInitialized = false
 
@@ -42,6 +42,31 @@ class PetsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityPetsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val metrics = resources.displayMetrics
+        val densityDpi = metrics.densityDpi
+
+
+        when (densityDpi) {
+            DisplayMetrics.DENSITY_LOW -> Log.d("DimensInfo", "Densidad aplicada: ldpi (120dpi)")
+            DisplayMetrics.DENSITY_MEDIUM -> Log.d("DimensInfo", "Densidad aplicada: mdpi (160dpi)")
+            DisplayMetrics.DENSITY_HIGH -> Log.d("DimensInfo", "Densidad aplicada: hdpi (240dpi)")
+            DisplayMetrics.DENSITY_XHIGH -> Log.d("DimensInfo", "Densidad aplicada: xhdpi (320dpi)")
+            DisplayMetrics.DENSITY_XXHIGH -> Log.d(
+                "DimensInfo",
+                "Densidad aplicada: xxhdpi (480dpi)"
+            )
+
+            DisplayMetrics.DENSITY_XXXHIGH -> Log.d(
+                "DimensInfo",
+                "Densidad aplicada: xxxhdpi (640dpi)"
+            )
+
+            else -> Log.d(
+                "DimensInfo",
+                "Densidad personalizada o desconocida: " + densityDpi + "dpi"
+            )
+        }
         petViewModel.onCreate()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.pa_lytConstraint)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -110,7 +135,7 @@ class PetsActivity : AppCompatActivity() {
                 popupMenu.show()
             }
         )
-        paRecyclerView.adapter = adapter
+        binding.paRecyclerView.adapter = adapter
 
     }
 
