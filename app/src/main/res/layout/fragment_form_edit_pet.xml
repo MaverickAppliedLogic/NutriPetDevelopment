@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/fragmentEditPet_CardView"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/editPetFragment_cardview_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="20dp"
@@ -15,8 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,8 +25,8 @@
                 android:id="@+id/fragmentEditPet_scrollView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="1dp"
-                android:layout_marginBottom="35dp"
+                android:layout_marginStart="@dimen/editPetFragment_scrollview_marginStart"
+                android:layout_marginBottom="@dimen/editPetFragment_scrollview_marginBottom"
                 app:layout_constraintBottom_toTopOf="@+id/fragmentEditPet_btnConfirmar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.485"
@@ -35,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:layout_margin="30dp"
+                    android:layout_margin="@dimen/editPetFragment_linear_layout_margin"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:gravity="center_horizontal"
@@ -43,8 +42,8 @@
 
                     <ImageView
                         android:id="@+id/fragmentEditPet_ImageView"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="@dimen/editPetFragment_imageview_width"
+                        android:layout_height="@dimen/editPetFragment_imageview_height"
                         android:layout_marginTop="7dp"
                         android:layout_marginBottom="30dp"
                         app:layout_constraintBottom_toTopOf="@+id/fragmentEditPet_scrollView"
@@ -62,11 +61,10 @@
                         android:text="Name"
                         android:textStyle="bold"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="40dp"
-                        android:textSize="30sp"
+                        android:paddingBottom="@dimen/editPetFragment_text_padding_bottom"
+                        android:textSize="@dimen/editPetFragment_text_size_name"
                         android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        />
+                        android:paddingEnd="20dp" />
 
                     <TextView
                         android:id="@+id/fragmentEditPet_txtTextInputAlergias"
@@ -80,8 +78,8 @@
                         android:id="@+id/fragmentEditPet_lytTextInputAlergias"
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="@dimen/editPetFragment_text_input_margin_top"
+                        android:layout_marginBottom="@dimen/editPetFragment_text_input_margin_bottom"
                         android:hint="@string/fa_hintTextInputAlergias"
                         android:layerType="none"
                         android:layoutMode="clipBounds">
@@ -94,7 +92,6 @@
                             android:ellipsize="none" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-
                     <TextView
                         android:id="@+id/fragmentEditPet_txtSpinnerPeso"
                         android:layout_width="match_parent"
@@ -102,7 +99,6 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
                         android:text="@string/fa_txtSpinnerPeso" />
-
 
                     <TextView
                         android:id="@+id/fragmentEditPet_txtWeight"
@@ -114,19 +110,18 @@
 
                     <SeekBar
                         android:id="@+id/fragmentEditPet_sbWeight"
-                        android:layout_width="250dp"
+                        android:layout_width="@dimen/editPetFragment_seekbar_width"
                         android:layout_height="wrap_content"
                         android:max="1000"
                         android:padding="10dp"
                         android:pointerIcon="none"
                         android:progress="3" />
 
-
                     <TextView
                         android:id="@+id/fragmentEditPet_txtSpinnerEsterilizado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/editPetFragment_spinner_margin_top"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
                         android:text="@string/fa_txtSpinnerEsterilizado" />
@@ -135,10 +130,9 @@
                         android:id="@+id/fragmentEditPet_rgEsterilizado"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginVertical="20dp"
+                        android:layout_marginVertical="@dimen/editPetFragment_radio_group_margin_vertical"
                         android:orientation="horizontal"
-                        android:gravity="center_horizontal"
-                        >
+                        android:gravity="center_horizontal">
 
                         <RadioButton
                             android:id="@+id/fragmentEditPet_rbSterilized1"
@@ -153,7 +147,6 @@
                             android:layout_height="wrap_content"
                             android:text="No" />
                     </RadioGroup>
-
 
                 </LinearLayout>
 
@@ -183,14 +176,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.956" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
     </androidx.cardview.widget.CardView>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

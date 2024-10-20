@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">12dp</dimen>
+
+    <!-- PetsActivity -->
+    <dimen name="petsActivity_recyclerView_marginTop">19dp</dimen>
+    <dimen name="petsActivity_floatButton_marginEnd">30dp</dimen>
+    <dimen name="petsActivity_floatButton_marginBottom">30dp</dimen>
+    <dimen name="petsActivity_fragmentContainer_width">262.5dp</dimen>
+    <dimen name="petsActivity_fragmentContainer_height">375dp</dimen>
+
+    <!-- FormActivity -->
+    <!-- Button Back Dimensions -->
+    <dimen name="formActivity_btnBack_height">36dp</dimen>
+    <dimen name="formActivity_btnBack_marginStart">12dp</dimen>
+    <dimen name="formActivity_btnBack_marginTop">12dp</dimen>
+
+    <!-- Select Animal Image Dimensions -->
+    <dimen name="formActivity_imgSelectAnimal_width">60dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_height">60dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_marginTop">5dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_marginBottom">22dp</dimen>
+
+    <!-- Pet Name EditText Dimensions -->
+    <dimen name="formActivity_etPetName_width">135dp</dimen>
+    <dimen name="formActivity_etPetName_height">36dp</dimen>
+    <dimen name="formActivity_etPetName_marginStart">6dp</dimen>
+    <dimen name="formActivity_etPetName_marginEnd">60dp</dimen>
+    <dimen name="formActivity_etPetName_marginBottom">60dp</dimen>
+
+    <!-- ScrollView Dimensions -->
+    <dimen name="formActivity_scrollView_width">271.5dp</dimen>
+    <dimen name="formActivity_scrollView_height">337.5dp</dimen>
+    <dimen name="formActivity_scrollView_marginStart">0.75dp</dimen>
+    <dimen name="formActivity_scrollView_marginBottom">26.25dp</dimen>
+
+    <!-- TextInputLayout Alergias Dimensions -->
+    <dimen name="formActivity_textInputAlergias_width">150dp</dimen>
+    <dimen name="formActivity_textInputAlergias_marginTop">7.5dp</dimen>
+    <dimen name="formActivity_textInputAlergias_marginBottom">15dp</dimen>
+
+    <!-- Spinner Edad Dimensions -->
+    <dimen name="formActivity_spinnerEdad_width">187.5dp</dimen>
+    <dimen name="formActivity_spinnerEdad_height">37.5dp</dimen>
+    <dimen name="formActivity_spinnerEdad_marginTop">7.5dp</dimen>
+    <dimen name="formActivity_spinnerEdad_marginBottom">15dp</dimen>
+
+    <!-- SeekBar Weight Dimensions -->
+    <dimen name="formActivity_seekBarWeight_width">187.5dp</dimen>
+    <dimen name="formActivity_seekBarWeight_padding">7.5dp</dimen>
+
+    <!-- Spinner Sexo Dimensions -->
+    <dimen name="formActivity_spinnerSexo_width">187.5dp</dimen>
+    <dimen name="formActivity_spinnerSexo_height">37.5dp</dimen>
+    <dimen name="formActivity_spinnerSexo_marginTop">7.5dp</dimen>
+    <dimen name="formActivity_spinnerSexo_marginBottom">15dp</dimen>
+
+    <!-- RadioGroup Esterilizado Dimensions -->
+    <dimen name="formActivity_radioGroup_marginVertical">15dp</dimen>
+    <dimen name="formActivity_radioButton_marginEnd">97.5dp</dimen>
+
+    <!-- Spinner Actividad Dimensions -->
+    <dimen name="formActivity_spinnerActividad_width">187.5dp</dimen>
+    <dimen name="formActivity_spinnerActividad_height">37.5dp</dimen>
+    <dimen name="formActivity_spinnerActividad_marginTop">7.5dp</dimen>
+    <dimen name="formActivity_spinnerActividad_marginBottom">15dp</dimen>
+
+    <!-- Spinner Objetivo Dimensions -->
+    <dimen name="formActivity_spinnerObjetivo_width">187.5dp</dimen>
+    <dimen name="formActivity_spinnerObjetivo_height">37.5dp</dimen>
+    <dimen name="formActivity_spinnerObjetivo_marginTop">7.5dp</dimen>
+    <dimen name="formActivity_spinnerObjetivo_marginBottom">15dp</dimen>
+
+    <!-- Commit Button Dimensions -->
+    <dimen name="formActivity_commitButton_marginStart">116.25dp</dimen>
+    <dimen name="formActivity_commitButton_marginEnd">124.5dp</dimen>
+    <dimen name="formActivity_commitButton_marginBottom">22.5dp</dimen>
+
+    <!-- EditPet Fragment -->
+    <dimen name="editPetFragment_cardview_margin">7.5dp</dimen>
+    <dimen name="editPetFragment_scrollview_marginStart">0.75dp</dimen>
+    <dimen name="editPetFragment_scrollview_marginBottom">26.25dp</dimen>
+    <dimen name="editPetFragment_linear_layout_margin">22.5dp</dimen>
+    <dimen name="editPetFragment_imageview_width">60dp</dimen>
+    <dimen name="editPetFragment_imageview_height">60dp</dimen>
+    <dimen name="editPetFragment_text_size_name">22.5sp</dimen>
+    <dimen name="editPetFragment_text_padding_bottom">30dp</dimen>
+    <dimen name="editPetFragment_text_input_margin_top">7.5dp</dimen>
+    <dimen name="editPetFragment_text_input_margin_bottom">15dp</dimen>
+    <dimen name="editPetFragment_spinner_margin_top">15dp</dimen>
+    <dimen name="editPetFragment_radio_group_margin_vertical">15dp</dimen>
+    <dimen name="editPetFragment_seekbar_width">187.5dp</dimen>
+
+    <!-- PetsActivity RecyclerView Item -->
+    <!-- CardView Margins and Elevation -->
+    <dimen name="petsActivity_cardview_margin_bottom">30dp</dimen>
+    <dimen name="petsActivity_cardview_margin_horizontal">22.5dp</dimen>
+    <dimen name="petsActivity_cardview_elevation">5.25dp</dimen>
+
+    <!-- ImageView Dimensions -->
+    <dimen name="petsActivity_imageview_height">90dp</dimen>
+    <dimen name="petsActivity_imageview_scale">0.525</dimen>
+
+    <!-- TextView Dimensions -->
+    <dimen name="petsActivity_text_size_item">12sp</dimen>
+</resources>
