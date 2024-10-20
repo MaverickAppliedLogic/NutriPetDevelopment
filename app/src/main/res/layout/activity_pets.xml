@@ -15,7 +15,7 @@
             android:id="@+id/pa_RecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/pa_floatbtnAñadirMascota"
+            app:layout_constraintBottom_toTopOf="@id/pa_floatbtn_add_pet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -23,7 +23,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/pa_floatbtnAñadirMascota"
+            android:id="@+id/pa_floatbtn_add_pet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
