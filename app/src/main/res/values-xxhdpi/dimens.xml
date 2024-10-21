@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margin">12dp</dimen>
-
+    <!-- AppDimens -->
+    <dimen name="app_body_txtSize">21sp</dimen>
     <!-- PetsActivity -->
     <dimen name="petsActivity_recyclerView_marginTop">19dp</dimen>
     <dimen name="petsActivity_floatButton_marginEnd">30dp</dimen>
@@ -16,21 +16,22 @@
     <dimen name="formActivity_btnBack_marginTop">12dp</dimen>
 
     <!-- Select Animal Image Dimensions -->
-    <dimen name="formActivity_imgSelectAnimal_width">60dp</dimen>
-    <dimen name="formActivity_imgSelectAnimal_marginTop">5dp</dimen>
-    <dimen name="formActivity_imgSelectAnimal_marginBottom">22dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_width">90dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_height">90dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_marginTop">60dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_marginBottom">22.5dp</dimen>
 
     <!-- Pet Name EditText Dimensions -->
-    <dimen name="formActivity_etPetName_width">135dp</dimen>
-    <dimen name="formActivity_etPetName_height">36dp</dimen>
-    <dimen name="formActivity_etPetName_marginStart">6dp</dimen>
+    <dimen name="formActivity_etPetName_width">160dp</dimen>
+    <dimen name="formActivity_etPetName_height">50dp</dimen>
+    <dimen name="formActivity_etPetName_marginStart">10dp</dimen>
     <dimen name="formActivity_etPetName_marginEnd">60dp</dimen>
     <dimen name="formActivity_etPetName_marginBottom">60dp</dimen>
+    <dimen name="formActivity_etPetName_marginTop">100dp</dimen>
 
     <!-- ScrollView Dimensions -->
-    <dimen name="formActivity_scrollView_width">271.5dp</dimen>
-    <dimen name="formActivity_scrollView_height">337.5dp</dimen>
-    <dimen name="formActivity_scrollView_marginStart">0.75dp</dimen>
+    <dimen name="formActivity_scrollView_marginStart">40dp</dimen>
+    <dimen name="formActivity_scrollView_marginEnd">40dp</dimen>
     <dimen name="formActivity_scrollView_marginBottom">26.25dp</dimen>
 
     <!-- TextInputLayout Alergias Dimensions -->
@@ -74,6 +75,9 @@
     <dimen name="formActivity_commitButton_marginStart">116.25dp</dimen>
     <dimen name="formActivity_commitButton_marginEnd">124.5dp</dimen>
     <dimen name="formActivity_commitButton_marginBottom">22.5dp</dimen>
+    <dimen name="formActivity_commitButton_width">200dp</dimen>
+    <dimen name="formActivity_commitButton_height">75dp</dimen>
+    <dimen name="formActivity_commitButton_txtSize">21sp</dimen>
 
     <!-- EditPet Fragment -->
     <dimen name="editPetFragment_cardview_margin">7.5dp</dimen>
