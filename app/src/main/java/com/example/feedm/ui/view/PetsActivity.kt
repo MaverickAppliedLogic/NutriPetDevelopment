@@ -28,8 +28,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class PetsActivity : AppCompatActivity() {
 
     private val petViewModel: PetViewModel by viewModels()
-    // Controla si el fragmento de edición ha sido iniciado
-    var fragmentWasStarted = false
     // RecyclerView que muestra la lista de mascotas
     private lateinit var adapter: MyPetsAdapter
     private var recyclerViewIsInitialized = false
@@ -155,23 +153,21 @@ class PetsActivity : AppCompatActivity() {
             if (finished) {
                 Log.i("step7", "setFragmentResultListener()")
                 val fragment = supportFragmentManager.findFragmentByTag("fragment")
-                supportFragmentManager.beginTransaction().remove(fragment!!).commit()  // Elimina el fragmento
-                fragmentWasStarted = false
+                supportFragmentManager.beginTransaction().remove(fragment!!).commitNow()  // Elimina el fragmento
             }
         }
     }
 
     // Muestra el fragmento de edición de mascotas
     private fun showFragment(petId: Int) {
-        if (!fragmentWasStarted) {
+        if (!supportFragmentManager.isStateSaved) {
             Log.i("step2", "showFragment()")
             val bundle = bundleOf(BUNDLE_ID to petId )
 
             supportFragmentManager.beginTransaction()
                 .replace<FragmentEditPet>(R.id.fragmentContainer_EditPet, "fragment", args = bundle)
-                .commit()
-
-            fragmentWasStarted = true
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
         }
     }
 }

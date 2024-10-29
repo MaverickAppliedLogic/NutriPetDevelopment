@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.example.feedm.R
 import com.example.feedm.databinding.FragmentFormEditPetBinding
 import com.example.feedm.domain.model.Pet
@@ -51,13 +50,13 @@ class FragmentEditPet : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("Depuring","El pos es $id")
-        petViewModel.pets.observe(viewLifecycleOwner, Observer { petsList ->
+        petViewModel.pets.observe(viewLifecycleOwner){ petsList ->
             if(petsList.isNotEmpty()){
                 petViewModel.getPet(id)
             }
-        })
+        }
 
-        petViewModel.pet.observe(viewLifecycleOwner, Observer {
+        petViewModel.pet.observe(viewLifecycleOwner){
             if (it == null){
                 Toast.makeText(requireContext(),"Null", Toast.LENGTH_SHORT).show()
             }
@@ -65,9 +64,7 @@ class FragmentEditPet : Fragment() {
                 pet = it
                 initViews()
             }
-        })
-
-
+        }
     }
 
     override fun onResume() {
@@ -76,10 +73,18 @@ class FragmentEditPet : Fragment() {
         val blurEffect = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
         } else {
-            TODO("VERSION.SDK_INT < S")
+            TODO("manejar como se ve la activity cuando VERSION.SDK_INT < S")
         }
         Log.i("step3", "onResume()")
         paLytConstraint.setRenderEffect(blurEffect)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val paLytConstraint = requireActivity().findViewById<ConstraintLayout>(R.id.pa_lytRecyclerView)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            paLytConstraint.setRenderEffect(null)
+        }
     }
 
     override fun onDestroyView() {
