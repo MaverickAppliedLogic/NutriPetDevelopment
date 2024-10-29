@@ -2,7 +2,6 @@ package com.example.feedm.core.di
 
 import com.example.feedm.data.cache.PetCacheProvider
 import com.example.feedm.data.local.PetLocalStorageProvider
-import com.example.feedm.data.model.PetModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

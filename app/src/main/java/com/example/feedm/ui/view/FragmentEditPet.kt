@@ -10,13 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.feedm.R
-import com.example.feedm.data.model.PetModel
 import com.example.feedm.databinding.FragmentFormEditPetBinding
+import com.example.feedm.domain.model.Pet
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
@@ -24,8 +25,8 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class FragmentEditPet : Fragment() {
 
-    private lateinit var pet: PetModel
-    private var pos = -1
+    private lateinit var pet: Pet
+    private var id = -1
     private val bundle = Bundle()
     private val petViewModel: PetViewModel by viewModels()
     private var _binding: FragmentFormEditPetBinding? = null
@@ -33,17 +34,40 @@ class FragmentEditPet : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pos = arguments?.getInt(BUNDLE_POS) ?: -1
+        id = arguments?.getInt(BUNDLE_ID) ?: -1
         petViewModel.onCreate()
-        petViewModel.pets.observe(this, Observer { pet = it[pos] })
+        Log.i("Depuring","Petviewmodel created on fragment")
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentFormEditPetBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.i("Depuring","El pos es $id")
+        petViewModel.pets.observe(viewLifecycleOwner, Observer { petsList ->
+            if(petsList.isNotEmpty()){
+                petViewModel.getPet(id)
+            }
+        })
+
+        petViewModel.pet.observe(viewLifecycleOwner, Observer {
+            if (it == null){
+                Toast.makeText(requireContext(),"Null", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                pet = it
+                initViews()
+            }
+        })
+
+
     }
 
     override fun onResume() {
@@ -56,7 +80,6 @@ class FragmentEditPet : Fragment() {
         }
         Log.i("step3", "onResume()")
         paLytConstraint.setRenderEffect(blurEffect)
-        initViews()
     }
 
     override fun onDestroyView() {
@@ -67,10 +90,12 @@ class FragmentEditPet : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             paLytConstraint.setRenderEffect(null)
         }
+
     }
 
     private fun initViews() {
         with(binding) {
+            Log.i("Depuring","Comienza a bindear")
             fragmentEditPetTxtName.text = pet.nombre
             if (pet.animal == "dog") {
                 fragmentEditPetImageView.setImageDrawable(
@@ -89,7 +114,7 @@ class FragmentEditPet : Fragment() {
                 fragmentEditPetRgEsterilizado.check(R.id.fragmentEditPet_rbSterilized1)
             }
             fragmentEditPetTxtWeight.text = String.format(null, "%.1f Kg", pet.peso)
-            fragmentEditPetSbWeight.progress = pet.peso?.times(10)?.roundToInt() ?: 0
+            fragmentEditPetSbWeight.progress = pet.peso.times(10).roundToInt()
 
             fragmentEditPetSbWeight.setOnSeekBarChangeListener(object :
                 SeekBar.OnSeekBarChangeListener {
@@ -125,13 +150,13 @@ class FragmentEditPet : Fragment() {
                 R.id.fragmentEditPet_rbSterilized2 -> pet.esterilizado = "No"
             }
         }
-        petViewModel.editPet(pet, pos)
+        petViewModel.editPet(pet)
         bundle.putBoolean("finished", true)
         parentFragmentManager.setFragmentResult("result", bundle)
         Log.i("step3223", "ENVIADO")
     }
 
     companion object {
-        const val BUNDLE_POS = "-1"
+        const val BUNDLE_ID = "-1"
     }
 }

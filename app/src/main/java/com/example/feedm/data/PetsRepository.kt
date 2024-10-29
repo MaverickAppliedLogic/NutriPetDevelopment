@@ -1,51 +1,50 @@
 package com.example.feedm.data
 
 
-import com.example.feedm.data.cache.PetCacheProvider
+import com.example.feedm.data.database.dao.PetDao
+import com.example.feedm.data.database.entities.PetEntity
 import com.example.feedm.data.local.PetLocalStorageProvider
-import com.example.feedm.data.model.PetModel
+import com.example.feedm.data.local.PetModel
+import com.example.feedm.domain.model.Pet
+import com.example.feedm.domain.model.toDomain
 import javax.inject.Inject
 
 
 class PetsRepository @Inject constructor(
-    private val petsLocalStorage: PetLocalStorageProvider,
-    private val petsCache : PetCacheProvider){
+    private val petsDao: PetDao,
+    private val petsStorage: PetLocalStorageProvider
+) {
 
-    private var isCacheFilled = false
 
-    init {
-        fillPetList()
+//From Local Storage
+    fun getAllPetsFromStorage(): List<Pet> {
+        return petsStorage.getAllPets().map { it.toDomain() }
     }
 
-    private fun fillPetList(){
-        petsCache.fillList(petsLocalStorage.getPetsList())
-        isCacheFilled = petsLocalStorage.getPetsList().isNotEmpty()
-    }
-
-    fun addPet(petModel: PetModel){
-        petsCache.addPet(petModel)
-        petsLocalStorage.updatePetsList(petsCache.getAllPets())
-        isCacheFilled = true
-    }
-
-    fun deletePet(petModel: PetModel){
-        petsCache.deletePet(petModel)
-        petsLocalStorage.updatePetsList(petsCache.getAllPets())
-        isCacheFilled = petsCache.getAllPets().isNotEmpty()
+    fun insertPetsToStorage(pets: List<PetModel>) {
+        petsStorage.insertAll(pets)
     }
 
 
-    fun editPet(petModel: PetModel, pos: Int){
-        petsCache.editPet(petModel,pos)
-        petsLocalStorage.updatePetsList(petsCache.getAllPets())
+//From DataBase
+    suspend fun getAllPetsFromDB(): List<Pet> {
+        return petsDao.getAllPets().map { it.toDomain() }
     }
 
-    fun getAllPets(): ArrayList<PetModel>{
-        if (!isCacheFilled){
-            fillPetList()
-        }
-        return petsCache.getAllPets()
+    suspend fun insertPetsToDB(pets: List<PetEntity>) {
+        petsDao.insertAll(pets)
     }
 
+    suspend fun insertPet(petEntity: PetEntity) {
+        petsDao.insertPet(petEntity)
+    }
 
+    suspend fun deletePet(petEntity: PetEntity, petModel: PetModel) {
+        petsDao.deletePet(petEntity.id)
+        petsStorage.deletePet(petModel)
+    }
+
+    suspend fun updatePet(petEntity: PetEntity) {
+        petsDao.updatePet(petEntity)
+    }
 }

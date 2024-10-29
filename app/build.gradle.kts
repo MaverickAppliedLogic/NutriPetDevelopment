@@ -60,7 +60,9 @@ dependencies {
     //DaggerHilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    //
+    //Room
+    implementation(libs.room.ktx)
+    kapt(libs.androidx.room.compiler)
     implementation(libs.jsoup)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)

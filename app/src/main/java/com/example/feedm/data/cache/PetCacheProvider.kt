@@ -1,8 +1,6 @@
 package com.example.feedm.data.cache
 
-import android.util.Log
-import com.example.feedm.data.model.PetModel
-import java.io.FileWriter
+import com.example.feedm.data.local.PetModel
 
 class PetCacheProvider {
     private var pets = ArrayList<PetModel>()
@@ -29,7 +27,7 @@ class PetCacheProvider {
         return pets[pos]
     }
 
-    fun getAllPets(): ArrayList<PetModel>{
+    fun getAllPets(): List<PetModel>{
         return pets
     }
 
