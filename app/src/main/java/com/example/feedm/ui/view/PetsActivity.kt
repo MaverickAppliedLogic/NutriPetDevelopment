@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +16,9 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.feedm.R
-import com.example.feedm.data.model.PetModel
 import com.example.feedm.databinding.ActivityPetsBinding
-import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_POS
+import com.example.feedm.domain.model.Pet
+import com.example.feedm.ui.view.FragmentEditPet.Companion.BUNDLE_ID
 import com.example.feedm.ui.view.managementClasses.petsAdapter.MyPetsAdapter
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,9 +82,15 @@ class PetsActivity : AppCompatActivity() {
     // Inicializa y configura las vistas del Activity
     private fun innitViews() {
         // Si hay mascotas registradas, crea y actualiza el RecyclerView
-        createRecyclerView()
         petViewModel.pets.observe(this, Observer {
-            setRecyclerView(it)
+            if(it.isNullOrEmpty()){
+                Toast.makeText(this,"Todavia no hay mascotas",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                createRecyclerView()
+                setRecyclerView(it)
+                binding.paRecyclerView.alpha = 1f
+            }
         })
         binding.paFloatbtnAddPet.setOnClickListener { addPet() }
     }
@@ -103,7 +110,7 @@ class PetsActivity : AppCompatActivity() {
 
 
     // Actualiza el RecyclerView con la lista de mascotas
-    private fun setRecyclerView(petList: ArrayList<PetModel>) {
+    private fun setRecyclerView(petList: List<Pet>) {
         val intent = Intent(this, SearchActivity::class.java)
         adapter = MyPetsAdapter(this, petList,
             // Al hacer clic en un item, inicia la actividad de búsqueda con la información de la mascota
@@ -121,12 +128,13 @@ class PetsActivity : AppCompatActivity() {
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.item1MenuPetRV -> {
-                            showFragment(pos)  // Muestra el fragmento de edición de mascota
+                            showFragment(pet.id)
                             Log.i("step8", "lifecycleScope")
                             true
                         }
                         R.id.item2MenuPetRV -> {
-                            eliminarMascota(pet)  // Elimina la mascota seleccionada
+                            petViewModel.deletePet(pet)
+                            binding.paRecyclerView.alpha = 0f
                             true
                         }
                         else -> false
@@ -139,10 +147,6 @@ class PetsActivity : AppCompatActivity() {
 
     }
 
-    // Elimina la mascota seleccionada
-    private fun eliminarMascota(petModel: PetModel) {
-        petViewModel.deletePet(petModel)
-    }
 
     // Configura el listener para recibir resultados del fragmento de edición
     private fun configureFragment() {
@@ -152,27 +156,22 @@ class PetsActivity : AppCompatActivity() {
                 Log.i("step7", "setFragmentResultListener()")
                 val fragment = supportFragmentManager.findFragmentByTag("fragment")
                 supportFragmentManager.beginTransaction().remove(fragment!!).commit()  // Elimina el fragmento
-                recreate()  // Recarga la actividad
+                fragmentWasStarted = false
             }
         }
     }
 
     // Muestra el fragmento de edición de mascotas
-    private fun showFragment(pos: Int) {
+    private fun showFragment(petId: Int) {
         if (!fragmentWasStarted) {
             Log.i("step2", "showFragment()")
+            val bundle = bundleOf(BUNDLE_ID to petId )
 
-            // Crea un bundle con la información de la mascota seleccionada
-
-            val bundle = bundleOf(BUNDLE_POS to pos )
-
-            // Inicia el fragmento de edición de mascotas
             supportFragmentManager.beginTransaction()
                 .replace<FragmentEditPet>(R.id.fragmentContainer_EditPet, "fragment", args = bundle)
-                .addToBackStack(null)
                 .commit()
 
-            fragmentWasStarted = true  // Marca que el fragmento ha sido iniciado
+            fragmentWasStarted = true
         }
     }
 }

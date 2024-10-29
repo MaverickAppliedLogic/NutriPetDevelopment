@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import com.example.feedm.data.model.PetModel
+import com.example.feedm.data.local.PetModel
 import com.example.feedm.R
+import com.example.feedm.domain.model.Pet
 
 class MyPetsAdapter(private val context: Context,
-                    private var items: List<PetModel>, private val onItemClick:(PetModel)->Unit,
-                    private val onItemLongClick:(View, PetModel, Int)->Unit): RecyclerView.Adapter<PetViewHolder>()
+                    private var items: List<Pet>, private val onItemClick:(Pet)->Unit,
+                    private val onItemLongClick:(View, Pet, Int)->Unit): RecyclerView.Adapter<PetViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetViewHolder {
         val view = LayoutInflater.from(parent.context).
@@ -34,11 +35,9 @@ class MyPetsAdapter(private val context: Context,
        return items.size
     }
 
-    fun setPets(pets: List<PetModel>){
-        items = pets
+    fun notifyDataChanged(){
         notifyDataSetChanged()
     }
-
 
 
 

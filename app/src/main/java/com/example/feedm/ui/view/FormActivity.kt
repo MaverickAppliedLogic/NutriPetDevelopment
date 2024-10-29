@@ -11,11 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.feedm.R
-import com.example.feedm.data.model.PetModel
 import com.example.feedm.databinding.ActivityFormBinding
+import com.example.feedm.domain.model.Pet
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FormActivity : AppCompatActivity() {
@@ -23,8 +22,8 @@ class FormActivity : AppCompatActivity() {
     private val petViewModel: PetViewModel by viewModels()
 
     // Variables de datos
+    private var animal= "dog"
     private var id = 0
-    private var animal: String = ""
     private lateinit var edad: String
     private lateinit var nombre: String
     private var peso: Double = 0.0
@@ -60,8 +59,20 @@ class FormActivity : AppCompatActivity() {
         binding.faBtnCommit.setOnClickListener {
             if (recogerDatos()) {
                 // Crear y guardar una nueva mascota
-                val petModel = PetModel(id, animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
-                petViewModel.addpet(petModel)
+                val pet = Pet(
+                    id,
+                    animal,
+                    nombre,
+                    edad,
+                    peso,
+                    sexo,
+                    esterilizado,
+                    actividad,
+                    objetivo,
+                    alergia,
+                    query
+                )
+                petViewModel.addPet(pet)
                 Toast.makeText(this, R.string.fa_toastGetDataSuccess, Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             } else {
@@ -97,9 +108,12 @@ class FormActivity : AppCompatActivity() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 // Restablecer el color al tocar el SeekBar
-                binding.faSbWeight.thumbTintList = ContextCompat.getColorStateList(baseContext, R.color.tintilist_seekbar_standard)
-                binding.faSbWeight.progressBackgroundTintList = ContextCompat.getColorStateList(baseContext, R.color.tintlist_standard)
-                binding.faSbWeight.progressTintList = ContextCompat.getColorStateList(baseContext, R.color.tintilist_seekbar_standard)
+                binding.faSbWeight.thumbTintList =
+                    ContextCompat.getColorStateList(baseContext, R.color.tintilist_seekbar_standard)
+                binding.faSbWeight.progressBackgroundTintList =
+                    ContextCompat.getColorStateList(baseContext, R.color.tintlist_standard)
+                binding.faSbWeight.progressTintList =
+                    ContextCompat.getColorStateList(baseContext, R.color.tintilist_seekbar_standard)
                 binding.faTxtWeight.setTextColor(resources.getColor(R.color.black, null))
             }
 
@@ -108,10 +122,26 @@ class FormActivity : AppCompatActivity() {
 
         // Adaptadores para los spinners
         val faArrayAdapter = arrayListOf(
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fa_arraySpinnerEdad)),
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fa_arraySpinnerSexo)),
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fa_arraySpinnerActividadFisica)),
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fa_arraySpinnerObjetivo))
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                resources.getStringArray(R.array.fa_arraySpinnerEdad)
+            ),
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                resources.getStringArray(R.array.fa_arraySpinnerSexo)
+            ),
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                resources.getStringArray(R.array.fa_arraySpinnerActividadFisica)
+            ),
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                resources.getStringArray(R.array.fa_arraySpinnerObjetivo)
+            )
         )
 
         val faArraySpinners = arrayListOf(
@@ -130,7 +160,8 @@ class FormActivity : AppCompatActivity() {
         binding.faRgEsterilizado.setOnCheckedChangeListener { _, _ ->
             for (i in 0 until binding.faRgEsterilizado.childCount) {
                 val radioButton = binding.faRgEsterilizado.getChildAt(i) as RadioButton
-                radioButton.buttonTintList = ContextCompat.getColorStateList(this, R.color.tintlist_standard)
+                radioButton.buttonTintList =
+                    ContextCompat.getColorStateList(this, R.color.tintlist_standard)
             }
         }
     }
@@ -138,11 +169,22 @@ class FormActivity : AppCompatActivity() {
     // Cambia el formulario entre perro y gato, ajustando la imagen y el peso
     private fun changeForm(animalIs: String): String {
         return if (animalIs == "dog") {
-            binding.faImgSelectAnimal.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.gato))
+            binding.faImgSelectAnimal.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    this,
+                    R.drawable.gato
+                )
+
+            )
             binding.faSbWeight.max = 250
             "cat"
         } else {
-            binding.faImgSelectAnimal.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.img_dog_illustration))
+            binding.faImgSelectAnimal.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    this,
+                    R.drawable.img_dog_illustration
+                )
+            )
             binding.faSbWeight.max = 800
             "dog"
         }
@@ -150,11 +192,16 @@ class FormActivity : AppCompatActivity() {
 
     // Recoge los datos del formulario y valida la información
     private fun recogerDatos(): Boolean {
-        // Asignar ID basado en la cantidad de mascotas ya registradas
-        if (!petViewModel.pets.value.isNullOrEmpty()) {
-            id = petViewModel.pets.value!!.size
+        if (petViewModel.pets.value!!.size > 0) {
+            var foundId = 0
+            for (i in petViewModel.pets.value as List<Pet>) {
+                if (i.id != foundId) id = foundId
+                else {
+                    foundId++
+                    id = foundId
+                }
+            }
         }
-
         // Validar nombre de la mascota
         if (binding.faEtPetName.text.isEmpty()) {
             binding.faEtPetName.error = "This can not be empty"
@@ -168,8 +215,10 @@ class FormActivity : AppCompatActivity() {
 
         // Validar el peso
         if (binding.faSbWeight.progress == 0) {
-            binding.faSbWeight.thumbTintList = ContextCompat.getColorStateList(this, R.color.tintlist_error)
-            binding.faSbWeight.progressBackgroundTintList = ContextCompat.getColorStateList(this, R.color.tintlist_error)
+            binding.faSbWeight.thumbTintList =
+                ContextCompat.getColorStateList(this, R.color.tintlist_error)
+            binding.faSbWeight.progressBackgroundTintList =
+                ContextCompat.getColorStateList(this, R.color.tintlist_error)
             binding.faTxtWeight.setTextColor(resources.getColor(R.color.red, null))
             return false
         }
@@ -188,7 +237,8 @@ class FormActivity : AppCompatActivity() {
         if (esterilizado.isEmpty()) {
             for (i in 0 until binding.faRgEsterilizado.childCount) {
                 val radioButton = binding.faRgEsterilizado.getChildAt(i) as RadioButton
-                radioButton.buttonTintList = ContextCompat.getColorStateList(this, R.color.tintlist_error)
+                radioButton.buttonTintList =
+                    ContextCompat.getColorStateList(this, R.color.tintlist_error)
             }
             return false
         }

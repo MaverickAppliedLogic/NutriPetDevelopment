@@ -1,34 +1,44 @@
 package com.example.feedm.data.local
 
 import android.util.Log
-import com.example.feedm.data.model.PetModel
+import com.example.feedm.domain.model.Pet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
-import javax.inject.Inject
 
-class PetLocalStorageProvider (private val petsFile: File) {
+class PetLocalStorageProvider(private val petsFile: File) {
 
     private val gson = Gson()
 
-    fun getPetsList(): ArrayList<PetModel> {
-        var pets : ArrayList<PetModel> = ArrayList()
+//Full List
+    fun getAllPets(): List<PetModel> {
+        val pets: List<PetModel>
         try {
             val json = petsFile.readText()
-            val listType: java.lang.reflect.Type = object : TypeToken<ArrayList<PetModel>>() {}.type
+            val listType: java.lang.reflect.Type = object : TypeToken<List<PetModel>>() {}.type
             pets = gson.fromJson(json, listType)
-        } catch (_: NullPointerException) { }
-        return pets
+        } catch (_: NullPointerException) {
+            return emptyList()
+        }
+        return pets.sortedBy { it.id }
     }
 
-    fun updatePetsList(petsList: ArrayList<PetModel>) {
+    fun insertAll(petsList: List<PetModel>) {
         val json = gson.toJson(petsList)
         FileWriter(petsFile).use { writer ->
-                writer.write(json)
+            writer.write(json)
         }
+
     }
 
 
+    fun deletePet(pet: PetModel){
+        val pets = getAllPets().toMutableList().apply { remove(pet) }
+        val json = gson.toJson(pets)
+        FileWriter(petsFile).use { writer ->
+            writer.write(json)
+        }
+    }
 
 }

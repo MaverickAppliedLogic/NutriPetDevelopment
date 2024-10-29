@@ -1,8 +1,9 @@
-package com.example.feedm.data.model
+package com.example.feedm.domain.model
 
-import java.io.Serializable
+import com.example.feedm.data.database.entities.PetEntity
+import com.example.feedm.data.local.PetModel
 
-data class PetModel (
+data class Pet(
     var id: Int,
     var animal: String,
     var nombre: String,
@@ -13,13 +14,12 @@ data class PetModel (
     var actividad: String,
     var objetivo: String,
     var alergia: String = "Nada",
-    var query: String
-): Serializable {
+    var query: String) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as PetModel
+        other as Pet
 
         return id == other.id
     }
@@ -27,12 +27,12 @@ data class PetModel (
     override fun hashCode(): Int {
         return id
     }
-
-    override fun toString(): String {
-        return "PetModel(actividad='$actividad', id=$id, animal='$animal', nombre='$nombre', " +
-                "edad='$edad', peso='$peso', sexo='$sexo', esterilizado='$esterilizado', " +
-                "objetivo='$objetivo', alergia='$alergia', query='$query')"
-    }
-
-
 }
+
+
+fun PetModel.toDomain()=
+    Pet(id,animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
+
+fun PetEntity.toDomain()=
+    Pet(id,animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
+
