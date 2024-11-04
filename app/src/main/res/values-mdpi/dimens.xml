@@ -40,7 +40,7 @@
 
     <!-- Spinner Edad Dimensions -->
     <dimen name="formActivity_spinnerEdad_width">187.5dp</dimen>
-    <dimen name="formActivity_spinnerEdad_height">37.5dp</dimen>
+    <dimen name="formActivity_spinnerEdad_height">50dp</dimen>
     <dimen name="formActivity_spinnerEdad_marginTop">7.5dp</dimen>
     <dimen name="formActivity_spinnerEdad_marginBottom">15dp</dimen>
 

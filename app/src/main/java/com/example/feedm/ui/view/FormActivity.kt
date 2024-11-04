@@ -124,22 +124,22 @@ class FormActivity : AppCompatActivity() {
         val faArrayAdapter = arrayListOf(
             ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.fa_item_spinner,
                 resources.getStringArray(R.array.fa_arraySpinnerEdad)
             ),
             ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.fa_item_spinner,
                 resources.getStringArray(R.array.fa_arraySpinnerSexo)
             ),
             ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.fa_item_spinner,
                 resources.getStringArray(R.array.fa_arraySpinnerActividadFisica)
             ),
             ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.fa_item_spinner,
                 resources.getStringArray(R.array.fa_arraySpinnerObjetivo)
             )
         )

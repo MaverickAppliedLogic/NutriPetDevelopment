@@ -4,9 +4,9 @@
     <string name="fa_hintEtPetName">Buddy name</string>
     <string name="ma_txtSpinnerEdad">Edad</string>
     <array name="fa_arraySpinnerEdad">
-        <item>Cachorro menos de 1 año-</item>
-        <item>Adulto 1-7 años-</item>
-        <item>Senior más de 7 años-</item>
+        <item>Cachorro(&lt;1 año)</item>
+        <item>Adulto(1-7 años)</item>
+        <item>Senior(7 años&gt;)</item>
     </array>
     <string name="fa_txtSpinnerPeso">Peso actual</string>
     <string name="fa_txtSpinnerSexo">Sexo</string>

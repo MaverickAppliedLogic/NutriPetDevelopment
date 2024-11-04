@@ -1,7 +1,7 @@
 <resources>
     <dimen name="fab_margin">12dp</dimen>
     <!-- AppDimens -->
-    <dimen name="app_body_txtSize">21sp</dimen>
+    <dimen name="app_body_txtSize">19sp</dimen>
     <!-- PetsActivity -->
     <dimen name="petsActivity_recyclerView_marginTop">19dp</dimen>
     <dimen name="petsActivity_floatButton_marginEnd">30dp</dimen>
@@ -26,12 +26,13 @@
     <dimen name="formActivity_etPetName_height">50dp</dimen>
     <dimen name="formActivity_etPetName_marginStart">10dp</dimen>
     <dimen name="formActivity_etPetName_marginEnd">60dp</dimen>
-    <dimen name="formActivity_etPetName_marginBottom">60dp</dimen>
+    <dimen name="formActivity_etPetName_marginBottom">0dp</dimen>
     <dimen name="formActivity_etPetName_marginTop">100dp</dimen>
 
     <!-- ScrollView Dimensions -->
-    <dimen name="formActivity_scrollView_marginStart">40dp</dimen>
-    <dimen name="formActivity_scrollView_marginEnd">40dp</dimen>
+    <dimen name="formActivity_scrollView_marginStart">0dp</dimen>
+    <dimen name="formActivity_scrollView_marginTop">15dp</dimen>
+    <dimen name="formActivity_scrollView_marginEnd">0dp</dimen>
     <dimen name="formActivity_scrollView_marginBottom">26.25dp</dimen>
 
     <!-- TextInputLayout Alergias Dimensions -->
@@ -39,37 +40,21 @@
     <dimen name="formActivity_textInputAlergias_marginTop">7.5dp</dimen>
     <dimen name="formActivity_textInputAlergias_marginBottom">15dp</dimen>
 
-    <!-- Spinner Edad Dimensions -->
-    <dimen name="formActivity_spinnerEdad_width">187.5dp</dimen>
-    <dimen name="formActivity_spinnerEdad_height">37.5dp</dimen>
-    <dimen name="formActivity_spinnerEdad_marginTop">7.5dp</dimen>
-    <dimen name="formActivity_spinnerEdad_marginBottom">15dp</dimen>
+    <!-- Spinner Dimensions -->
+    <dimen name="formActivity_spinner_width">187.5dp</dimen>
+    <dimen name="formActivity_spinner_height">50dp</dimen>
+    <dimen name="formActivity_spinner_marginTop">7.5dp</dimen>
+    <dimen name="formActivity_spinner_marginBottom">15dp</dimen>
 
     <!-- SeekBar Weight Dimensions -->
     <dimen name="formActivity_seekBarWeight_width">187.5dp</dimen>
     <dimen name="formActivity_seekBarWeight_padding">7.5dp</dimen>
 
-    <!-- Spinner Sexo Dimensions -->
-    <dimen name="formActivity_spinnerSexo_width">187.5dp</dimen>
-    <dimen name="formActivity_spinnerSexo_height">37.5dp</dimen>
-    <dimen name="formActivity_spinnerSexo_marginTop">7.5dp</dimen>
-    <dimen name="formActivity_spinnerSexo_marginBottom">15dp</dimen>
 
     <!-- RadioGroup Esterilizado Dimensions -->
     <dimen name="formActivity_radioGroup_marginVertical">15dp</dimen>
     <dimen name="formActivity_radioButton_marginEnd">97.5dp</dimen>
 
-    <!-- Spinner Actividad Dimensions -->
-    <dimen name="formActivity_spinnerActividad_width">187.5dp</dimen>
-    <dimen name="formActivity_spinnerActividad_height">37.5dp</dimen>
-    <dimen name="formActivity_spinnerActividad_marginTop">7.5dp</dimen>
-    <dimen name="formActivity_spinnerActividad_marginBottom">15dp</dimen>
-
-    <!-- Spinner Objetivo Dimensions -->
-    <dimen name="formActivity_spinnerObjetivo_width">187.5dp</dimen>
-    <dimen name="formActivity_spinnerObjetivo_height">37.5dp</dimen>
-    <dimen name="formActivity_spinnerObjetivo_marginTop">7.5dp</dimen>
-    <dimen name="formActivity_spinnerObjetivo_marginBottom">15dp</dimen>
 
     <!-- Commit Button Dimensions -->
     <dimen name="formActivity_commitButton_marginStart">116.25dp</dimen>
