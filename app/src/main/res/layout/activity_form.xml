@@ -35,23 +35,23 @@
         android:layout_width="@dimen/formActivity_etPetName_width"
         android:layout_height="@dimen/formActivity_etPetName_height"
         android:layout_marginStart="@dimen/formActivity_etPetName_marginStart"
-        android:layout_marginEnd="@dimen/formActivity_etPetName_marginEnd"
-        android:layout_marginBottom="@dimen/formActivity_etPetName_marginBottom"
         android:layout_marginTop="@dimen/formActivity_etPetName_marginTop"
-        android:ems="10"
+        android:layout_marginEnd="@dimen/formActivity_etPetName_marginEnd"
         android:autofillHints="name"
+        android:ems="10"
         android:hint="@string/fa_hintEtPetName"
         android:inputType="text"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toEndOf="@+id/fa_imgSelectAnimal" />
+        app:layout_constraintStart_toEndOf="@+id/fa_imgSelectAnimal"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/formActivity_etPetName_marginBottom"
+        android:layout_marginTop="@dimen/formActivity_scrollView_marginTop"
         android:layout_marginStart="@dimen/formActivity_scrollView_marginStart"
         android:layout_marginEnd="@dimen/formActivity_scrollView_marginEnd"
         android:layout_marginBottom="@dimen/formActivity_scrollView_marginBottom"
@@ -73,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:textSize="@dimen/app_body_txtSize"
                 android:text="@string/fa_txtTextInputAlergias" />
 
@@ -100,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:textSize="@dimen/app_body_txtSize"
                 android:text="@string/ma_txtSpinnerEdad" />
 
@@ -109,7 +111,7 @@
                 android:layout_height="@dimen/formActivity_spinnerEdad_height"
                 android:layout_marginTop="@dimen/formActivity_spinnerEdad_marginTop"
                 android:layout_marginBottom="@dimen/formActivity_spinnerEdad_marginBottom"
-                android:spinnerMode="dropdown" />
+                 />
 
             <TextView
                 android:id="@+id/fa_txtSpinnerPeso"
@@ -117,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:textSize="@dimen/app_body_txtSize"
                 android:text="@string/fa_txtSpinnerPeso" />
 
@@ -144,15 +147,16 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:textSize="@dimen/app_body_txtSize"
                 android:text="@string/fa_txtSpinnerSexo" />
 
             <Spinner
                 android:id="@+id/fa_SpinnerSexo"
-                android:layout_width="@dimen/formActivity_spinnerSexo_width"
-                android:layout_height="@dimen/formActivity_spinnerSexo_height"
-                android:layout_marginTop="@dimen/formActivity_spinnerSexo_marginTop"
-                android:layout_marginBottom="@dimen/formActivity_spinnerSexo_marginBottom" />
+                android:layout_width="@dimen/formActivity_spinner_width"
+                android:layout_height="@dimen/formActivity_spinner_height"
+                android:layout_marginTop="@dimen/formActivity_spinner_marginTop"
+                android:layout_marginBottom="@dimen/formActivity_spinner_marginBottom" />
 
             <TextView
                 android:id="@+id/ma_txtRgSterilized"
@@ -160,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:text="@string/fa_txtRgSterilized"
                 android:textSize="@dimen/app_body_txtSize"/>
 
@@ -193,15 +198,16 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:textSize="@dimen/app_body_txtSize"
                 android:text="@string/fa_txtSpinnerActividadFisica" />
 
             <Spinner
                 android:id="@+id/fa_SpinnerActividad"
-                android:layout_width="@dimen/formActivity_spinnerActividad_width"
-                android:layout_height="@dimen/formActivity_spinnerActividad_height"
-                android:layout_marginTop="@dimen/formActivity_spinnerActividad_marginTop"
-                android:layout_marginBottom="@dimen/formActivity_spinnerActividad_marginBottom" />
+                android:layout_width="@dimen/formActivity_spinner_width"
+                android:layout_height="@dimen/formActivity_spinner_height"
+                android:layout_marginTop="@dimen/formActivity_spinner_marginTop"
+                android:layout_marginBottom="@dimen/formActivity_spinner_marginBottom" />
 
             <TextView
                 android:id="@+id/ma_txtSpinnerObjetivo"
@@ -209,6 +215,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:textStyle="bold"
                 android:textSize="@dimen/app_body_txtSize"
                 android:text="@string/fa_txtSpinnerObjetivo" />
 
