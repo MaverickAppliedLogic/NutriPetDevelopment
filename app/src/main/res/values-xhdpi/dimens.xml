@@ -18,7 +18,7 @@
     <!-- Select Animal Image Dimensions -->
     <dimen name="formActivity_imgSelectAnimal_width">60dp</dimen>
     <dimen name="formActivity_imgSelectAnimal_height">60dp</dimen>
-    <dimen name="formActivity_imgSelectAnimal_marginTop">5dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_marginStart">5dp</dimen>
     <dimen name="formActivity_imgSelectAnimal_marginBottom">22dp</dimen>
 
     <!-- Pet Name EditText Dimensions -->
