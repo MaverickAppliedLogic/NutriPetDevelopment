@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FormActivity"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="center_horizontal"
+    tools:context=".ui.view.FormActivity">
 
     <ImageButton
         android:id="@+id/fa_btnBack"
@@ -18,48 +18,53 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/homeAsUpIndicator" />
 
-    <ImageView
-        android:id="@+id/fa_imgSelectAnimal"
-        android:layout_width="@dimen/formActivity_imgSelectAnimal_width"
-        android:layout_height="@dimen/formActivity_imgSelectAnimal_height"
-        android:layout_marginTop="@dimen/formActivity_imgSelectAnimal_marginTop"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat= "@drawable/img_dog_illustration"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/fa_etPetName"
-        android:layout_width="@dimen/formActivity_etPetName_width"
-        android:layout_height="@dimen/formActivity_etPetName_height"
-        android:layout_marginStart="@dimen/formActivity_etPetName_marginStart"
-        android:layout_marginTop="@dimen/formActivity_etPetName_marginTop"
-        android:layout_marginEnd="@dimen/formActivity_etPetName_marginEnd"
-        android:autofillHints="name"
-        android:ems="10"
-        android:hint="@string/fa_hintEtPetName"
-        android:inputType="text"
+    <LinearLayout
+        android:id="@+id/fa_linearlyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toEndOf="@+id/fa_imgSelectAnimal"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="20dp"
+        app:layout_constraintTop_toBottomOf="@id/fa_btnBack">
+
+
+        <ImageView
+            android:id="@+id/fa_imgSelectAnimal"
+            android:layout_width="@dimen/formActivity_imgSelectAnimal_width"
+            android:layout_height="@dimen/formActivity_imgSelectAnimal_height"
+            android:layout_marginStart="@dimen/formActivity_imgSelectAnimal_marginStart"
+            app:srcCompat="@drawable/img_dog_illustration"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/fa_etPetName"
+            android:layout_width="@dimen/formActivity_etPetName_width"
+            android:layout_height="@dimen/formActivity_etPetName_height"
+            android:layout_marginTop="@dimen/formActivity_etPetName_marginTop"
+            android:layout_marginStart="@dimen/formActivity_etPetName_marginStart"
+            android:autofillHints="name"
+            android:ems="10"
+            android:hint="@string/fa_hintEtPetName"
+            android:inputType="text"
+        />
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/formActivity_scrollView_marginTop"
         android:layout_marginStart="@dimen/formActivity_scrollView_marginStart"
+        android:layout_marginTop="@dimen/formActivity_scrollView_marginTop"
         android:layout_marginEnd="@dimen/formActivity_scrollView_marginEnd"
         android:layout_marginBottom="@dimen/formActivity_scrollView_marginBottom"
         app:layout_constraintBottom_toTopOf="@+id/fa_btnCommit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fa_etPetName">
+        app:layout_constraintTop_toBottomOf="@id/fa_linearlyt">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,9 +78,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@string/fa_txtTextInputAlergias"
                 android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/fa_txtTextInputAlergias" />
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ma_lytTextInputAlergias"
@@ -101,17 +106,16 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@string/ma_txtSpinnerEdad"
                 android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/ma_txtSpinnerEdad" />
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/fa_SpinnerEdad"
-                android:layout_width="@dimen/formActivity_spinnerEdad_width"
-                android:layout_height="@dimen/formActivity_spinnerEdad_height"
-                android:layout_marginTop="@dimen/formActivity_spinnerEdad_marginTop"
-                android:layout_marginBottom="@dimen/formActivity_spinnerEdad_marginBottom"
-                 />
+                android:layout_width="@dimen/formActivity_spinner_width"
+                android:layout_height="@dimen/formActivity_spinner_height"
+                android:layout_marginTop="@dimen/formActivity_spinner_marginTop"
+                android:layout_marginBottom="@dimen/formActivity_spinner_marginBottom" />
 
             <TextView
                 android:id="@+id/fa_txtSpinnerPeso"
@@ -119,9 +123,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@string/fa_txtSpinnerPeso"
                 android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/fa_txtSpinnerPeso" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/fa_txtWeight"
@@ -129,8 +133,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/fa_txtSbWeight" />
+                android:text="@string/fa_txtSbWeight"
+                android:textSize="@dimen/app_body_txtSize" />
 
             <SeekBar
                 android:id="@+id/fa_sbWeight"
@@ -147,9 +151,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@string/fa_txtSpinnerSexo"
                 android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/fa_txtSpinnerSexo" />
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/fa_SpinnerSexo"
@@ -164,9 +168,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
                 android:text="@string/fa_txtRgSterilized"
-                android:textSize="@dimen/app_body_txtSize"/>
+                android:textSize="@dimen/app_body_txtSize"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/fa_rgEsterilizado"
@@ -181,15 +185,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/formActivity_radioButton_marginEnd"
-                    android:textSize="@dimen/app_body_txtSize"
-                    android:text="Si" />
+                    android:text="Si"
+                    android:textSize="@dimen/app_body_txtSize" />
 
                 <RadioButton
                     android:id="@+id/fa_rbEsterilizado2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/app_body_txtSize"
-                    android:text="No" />
+                    android:text="No"
+                    android:textSize="@dimen/app_body_txtSize" />
             </RadioGroup>
 
             <TextView
@@ -198,9 +202,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@string/fa_txtSpinnerActividadFisica"
                 android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/fa_txtSpinnerActividadFisica" />
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/fa_SpinnerActividad"
@@ -215,16 +219,16 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@string/fa_txtSpinnerObjetivo"
                 android:textSize="@dimen/app_body_txtSize"
-                android:text="@string/fa_txtSpinnerObjetivo" />
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/fa_SpinnerObjetivo"
-                android:layout_width="@dimen/formActivity_spinnerObjetivo_width"
-                android:layout_height="@dimen/formActivity_spinnerObjetivo_height"
-                android:layout_marginTop="@dimen/formActivity_spinnerObjetivo_marginTop"
-                android:layout_marginBottom="@dimen/formActivity_spinnerObjetivo_marginBottom" />
+                android:layout_width="@dimen/formActivity_spinner_width"
+                android:layout_height="@dimen/formActivity_spinner_height"
+                android:layout_marginTop="@dimen/formActivity_spinner_marginTop"
+                android:layout_marginBottom="@dimen/formActivity_spinner_marginBottom" />
         </LinearLayout>
     </ScrollView>
 

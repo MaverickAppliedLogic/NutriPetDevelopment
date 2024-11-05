@@ -18,7 +18,7 @@
     <!-- Select Animal Image Dimensions -->
     <dimen name="formActivity_imgSelectAnimal_width">90dp</dimen>
     <dimen name="formActivity_imgSelectAnimal_height">90dp</dimen>
-    <dimen name="formActivity_imgSelectAnimal_marginTop">60dp</dimen>
+    <dimen name="formActivity_imgSelectAnimal_marginStart">60dp</dimen>
     <dimen name="formActivity_imgSelectAnimal_marginBottom">22.5dp</dimen>
 
     <!-- Pet Name EditText Dimensions -->
@@ -27,7 +27,7 @@
     <dimen name="formActivity_etPetName_marginStart">10dp</dimen>
     <dimen name="formActivity_etPetName_marginEnd">60dp</dimen>
     <dimen name="formActivity_etPetName_marginBottom">0dp</dimen>
-    <dimen name="formActivity_etPetName_marginTop">100dp</dimen>
+    <dimen name="formActivity_etPetName_marginTop">20dp</dimen>
 
     <!-- ScrollView Dimensions -->
     <dimen name="formActivity_scrollView_marginStart">0dp</dimen>
