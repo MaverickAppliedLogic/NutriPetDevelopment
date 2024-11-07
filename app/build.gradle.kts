@@ -39,6 +39,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 }
 
@@ -63,6 +64,19 @@ dependencies {
     //Room
     implementation(libs.room.ktx)
     kapt(libs.androidx.room.compiler)
+    //Jetpack compose
+    val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    //Material Design 3
+    implementation(libs.androidx.material3)
+    // Preview support
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+    // UI tests
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    //
     implementation(libs.jsoup)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
