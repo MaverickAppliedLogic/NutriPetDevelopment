@@ -38,8 +38,7 @@
     <string name="fa_hintTextInputAlergias">p.ej. Atun</string>
     <string name="fa_txtRgSterilized">¿Esta esterilizado/a?</string>
     <string name="fa_txtSbWeight">0.0 Kg</string>
-    <string
-        name="fa_toastErrorGetData">Hay apartados sin rellenar. Por favor revise el formulario
+    <string name="fa_toastErrorGetData">Hay apartados sin rellenar. Por favor revise el formulario
     </string>
     <string name="fa_toastGetDataSuccess">Compañero registrado correctamente :D</string>
 
@@ -53,6 +52,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="title_activity_pet_compose">PetActivityCompose</string>
 
 
 </resources>
