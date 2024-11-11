@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,53 +56,95 @@ class PetActivityCompose : ComponentActivity() {
 
 
 @Composable
-fun PetsScreen(petViewModel: PetViewModel){
+fun PetsScreen(petViewModel: PetViewModel, modifier: Modifier = Modifier) {
     val pets: List<Pet> by petViewModel.pets.observeAsState(initial = emptyList())
-    Pets(pets)
+    Box(
+        modifier = modifier.fillMaxSize(1f),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Pets(pets, modifier = modifier.fillMaxSize(1f))
+        AddPetButton()
+    }
+
 }
 
 @Composable
-fun Pets(pets: List<Pet>, modifier: Modifier = Modifier){
+fun Pets(pets: List<Pet>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.fillMaxWidth()) {
-        items(items = pets ){ pet ->  Pet(pet)  }
+        items(items = pets) { pet -> Pet(pet) }
     }
 }
 
 @Composable
-fun Pet(pet: Pet, modifier: Modifier = Modifier){
-    Card(onClick = { /*TODO*/ }, modifier.fillMaxWidth().padding(10.dp)) {
-        Row(modifier.padding(start = 10.dp, end = 0.dp, top = 20.dp, bottom = 20.dp)) {
-            if(pet.animal == "dog"){
-                Image(painter = painterResource(id = R.drawable.img_dog_illustration)
-                    , contentDescription = "dog"
-                ,modifier.weight(0.30f))}
-            else{Image(painter = painterResource(id = R.drawable.gato)
-                , contentDescription = "dog")}
-            Text(text = pet.nombre
-                ,style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
-                ,textAlign = TextAlign.Center
-                ,modifier = modifier
+fun Pet(pet: Pet, modifier: Modifier = Modifier) {
+    Card(
+        onClick = { /*TODO*/ },
+        modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Row(modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 20.dp)) {
+            if (pet.animal == "dog") {
+                Image(
+                    painter = painterResource(id = R.drawable.img_dog_illustration),
+                    contentDescription = "dog",
+                    modifier.weight(0.25f)
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.gato), contentDescription = "dog"
+                )
+            }
+            Text(
+                text = pet.nombre,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                textAlign = TextAlign.Center,
+                modifier = modifier
                     .weight(1f)
-                    .padding(top = 15.dp))
+                    .padding(top = 10.dp)
+            )
         }
     }
 }
 
 @Preview
 @Composable
-fun PetPreview(){
+fun AddPetButton(modifier: Modifier = Modifier) {
+    ElevatedButton(onClick = { /*TODO*/ }, shape = CircleShape, modifier = Modifier.size(75.dp)) {
+        Row {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add Icon",
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PetPreview() {
     val pet =
-        Pet(0,"dog"
-            ,"Example", "3",5.0,"macho"
-            ,"si","alta","bajar peso","nada","")
+        Pet(
+            0, "dog", "Example", "3", 5.0, "macho", "si", "alta", "bajar peso", "nada", ""
+        )
     Pet(pet)
 }
-@Preview(showBackground = true, heightDp = 320)
-@Composable
-fun PetsPreview(){
-    val pets: List<Pet> = List(20){Pet(0,"dog"
-        ,"Example", "3",5.0,"macho"
-        ,"si","alta","bajar peso","nada","")}
 
+
+@Preview(showBackground = true, heightDp = 640, widthDp = 320)
+@Composable
+fun PetScreenPreview(modifier: Modifier = Modifier) {
+    val pets: List<Pet> = List(20) {
+        Pet(
+            0, "dog", "Example", "3", 5.0, "macho", "si", "alta", "bajar peso", "nada", ""
+        )
+    }
     Pets(pets)
+    Box(
+        modifier = modifier.fillMaxSize(1f).padding(15.dp),
+        contentAlignment = Alignment.BottomEnd,
+    ) {
+        AddPetButton()
+    }
 }
