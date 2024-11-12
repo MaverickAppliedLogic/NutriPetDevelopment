@@ -6,11 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFrom
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +34,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,13 +71,32 @@ class PetActivityCompose : ComponentActivity() {
 fun PetsScreen(petViewModel: PetViewModel, modifier: Modifier = Modifier) {
     val pets: List<Pet> by petViewModel.pets.observeAsState(initial = emptyList())
     Box(
-        modifier = modifier.fillMaxSize(1f),
+        modifier = modifier
+            .fillMaxSize(1f)
+            .padding(top = 20.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
         Pets(pets, modifier = modifier.fillMaxSize(1f))
         AddPetButton()
     }
 
+}
+
+@Preview
+@Composable
+fun ActionsBar(modifier: Modifier = Modifier){
+    Box(modifier = modifier
+        .fillMaxWidth()
+        ,contentAlignment = Alignment.BottomCenter) {
+        Box(
+            modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .background(color = colorResource(id = R.color.white))
+            )
+        {      AddPetButton()  }
+        AddPetButton(modifier = Modifier.padding(bottom = 5.dp))
+    }
 }
 
 @Composable
@@ -81,9 +112,11 @@ fun Pet(pet: Pet, modifier: Modifier = Modifier) {
         onClick = { /*TODO*/ },
         modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(7.dp)
+
     ) {
-        Row(modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 20.dp)) {
+        Row(modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 20.dp)
+        ) {
             if (pet.animal == "dog") {
                 Image(
                     painter = painterResource(id = R.drawable.img_dog_illustration),
@@ -107,15 +140,16 @@ fun Pet(pet: Pet, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
 @Composable
 fun AddPetButton(modifier: Modifier = Modifier) {
-    ElevatedButton(onClick = { /*TODO*/ }, shape = CircleShape, modifier = Modifier.size(75.dp)) {
+    ElevatedButton(onClick = { /*TODO*/ }, shape = CircleShape
+        ,modifier = modifier.size(70.dp)
+            ) {
         Row {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Add Icon",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.fillMaxSize(1f)
             )
         }
     }
@@ -140,11 +174,12 @@ fun PetScreenPreview(modifier: Modifier = Modifier) {
             0, "dog", "Example", "3", 5.0, "macho", "si", "alta", "bajar peso", "nada", ""
         )
     }
-    Pets(pets)
+    Pets(pets, modifier = Modifier.padding(5.dp))
     Box(
-        modifier = modifier.fillMaxSize(1f).padding(15.dp),
-        contentAlignment = Alignment.BottomEnd,
+        modifier = modifier
+            .fillMaxWidth(1f)
+        ,contentAlignment =  Alignment.BottomCenter
     ) {
-        AddPetButton()
+        ActionsBar()
     }
 }
