@@ -81,9 +81,8 @@ dependencies {
     implementation(libs.room.ktx)
     kapt(libs.androidx.room.compiler)
     //Jetpack compose
-    val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     //Material Design 3
     implementation(libs.androidx.material3)
     // Preview support
