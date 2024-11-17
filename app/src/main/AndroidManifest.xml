@@ -17,8 +17,13 @@
         android:theme="@style/Theme.Feedm"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.FromActivityCompose"
+            android:exported="true"
+            android:label="@string/title_activity_from_compose"
+            android:theme="@style/Theme.Feedm" />
+        <activity
             android:name=".ui.view.PetActivityCompose"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_pet_compose"
             android:theme="@style/Theme.Feedm" />
         <activity
@@ -35,7 +40,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.view.FormActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
