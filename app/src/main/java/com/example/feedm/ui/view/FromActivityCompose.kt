@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DropdownMenuItem
@@ -30,6 +33,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -43,6 +47,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
@@ -91,18 +97,29 @@ fun FormScreen(modifier: Modifier = Modifier) {
                 .weight(1f)
                 .verticalScroll(scrollState)
         ) {
-            DropDownMenuPers(options = listOf("Option1", "Option2","Option3")
-                , title = "Example")
+            DropDownMenuPers(
+                options = stringArrayResource(id = R.array.fa_arraySpinnerEdad).toList(),
+                title = stringResource(id = R.string.ma_txtSpinnerEdad)
+            )
+            SliderPers()
+            DropDownMenuPers(
+                options = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList(),
+                title = stringResource(id = R.string.fa_txtSpinnerActividadFisica)
+            )
+            DropDownMenuPers(
+                options = stringArrayResource(id = R.array.fa_arraySpinnerObjetivo).toList(),
+                title = stringResource(id = R.string.fa_txtSpinnerObjetivo)
+            )
         }
     }
 }
 
 
-@Preview
+
 @Composable
 fun PetName(modifier: Modifier = Modifier) {
     Row(
-        Modifier
+        modifier
             .fillMaxWidth()
             .height(125.dp)
             .padding(15.dp)
@@ -170,6 +187,8 @@ fun DropDownMenuPers(options: List<String>, title: String) {
                     })
             }
         }
+
+
     }
 }
 
@@ -177,6 +196,20 @@ fun DropDownMenuPers(options: List<String>, title: String) {
 @Composable
 fun DropDownMenuPreview(modifier: Modifier = Modifier) {
     DropDownMenuPers(options = listOf("option1", "option2", "option3"), title = "Example")
+}
+
+@Preview
+@Composable
+fun SliderPers(modifier: Modifier = Modifier){
+    var sliderPosition by remember { mutableStateOf(0f)}
+    Column(modifier = modifier.padding(horizontal = 10.dp)) {
+        Text(stringResource(id = R.string.fa_txtSpinnerPeso))
+        Text(sliderPosition.toString(),modifier = Modifier.align(Alignment.CenterHorizontally))
+        Slider(value = sliderPosition,
+            onValueChange = {sliderPosition = it},
+            valueRange = 0f..0.85f,
+            modifier = Modifier.padding(5.dp))
+    }
 }
 
 
