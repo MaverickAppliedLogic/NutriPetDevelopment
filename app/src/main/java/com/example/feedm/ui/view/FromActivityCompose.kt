@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,12 +44,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
 import com.example.feedm.ui.view.ui.theme.FeedmTheme
+import java.util.Locale
 
 class FromActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +88,8 @@ fun FormScreen(modifier: Modifier = Modifier) {
         PetName()
         val options = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList()
         var selectedOption by remember { mutableStateOf(options[0]) }
-        Text(text = stringResource(id = R.string.fa_txtSpinnerEsterilizado))
+        Text(text = stringResource(id = R.string.fa_txtSpinnerEsterilizado),
+            style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold))
         CustomRadioGroup(selectedOption = selectedOption,
             onOptionSelected = {selectedOption = it},
             options = options, modifier = Modifier.fillMaxWidth())
@@ -197,14 +202,19 @@ fun DropDownMenuPreview(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun CustomSlider(modifier: Modifier = Modifier){
-    var sliderPosition by remember { mutableStateOf(0f)}
+    var sliderPosition by remember { mutableFloatStateOf(0f)}
     Column(modifier = modifier.padding(horizontal = 10.dp)) {
-        Text(stringResource(id = R.string.fa_txtSpinnerPeso))
-        Text(sliderPosition.toString(),modifier = Modifier.align(Alignment.CenterHorizontally))
+        Text(stringResource(id = R.string.fa_txtSpinnerPeso),
+            style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold)
+        )
+        Text(String.format("%.2f Kg",sliderPosition),
+            style = TextStyle(fontSize = 19.sp),
+            modifier = Modifier.align(Alignment.CenterHorizontally))
         Slider(value = sliderPosition,
             onValueChange = {sliderPosition = it},
-            valueRange = 0f..0.85f,
-            modifier = Modifier.padding(5.dp))
+            valueRange = 0f..85f,
+            modifier = Modifier.padding(top = 0.dp,
+                bottom = 10.dp, start = 10.dp, end = 10.dp))
     }
 }
 
