@@ -8,15 +8,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -28,6 +32,7 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -44,22 +49,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
 import com.example.feedm.ui.view.ui.theme.FeedmTheme
-import java.util.Locale
 
 class FromActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FeedmTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    bottomBar = { BottomAppBar {
+                        Row(horizontalArrangement = Arrangement.Center,
+                            modifier= Modifier.fillMaxWidth()){
+                            FloatingActionButton(onClick = { /*TODO*/ },
+                                containerColor = Color.Yellow,
+                                modifier = Modifier.width(200.dp)) {
+                                Text(text = "Agregar")
+                            }
+                        }
+                    }}) { innerPadding ->
                     FormScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -73,7 +85,10 @@ class FromActivityCompose : ComponentActivity() {
 @Composable
 fun FormScreen(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
-    Column(modifier.fillMaxSize(1f)) {
+    Column(
+        modifier
+            .fillMaxSize(1f)
+            .padding(horizontal = 30.dp)) {
         FloatingActionButton(
             onClick = { /*TODO*/ },
             containerColor = Color.White,
@@ -86,23 +101,37 @@ fun FormScreen(modifier: Modifier = Modifier) {
             )
         }
         PetName()
-        val options = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList()
-        var selectedOption by remember { mutableStateOf(options[0]) }
-        Text(text = stringResource(id = R.string.fa_txtSpinnerEsterilizado),
-            style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold))
-        CustomRadioGroup(selectedOption = selectedOption,
-            onOptionSelected = {selectedOption = it},
-            options = options, modifier = Modifier.fillMaxWidth())
         Column(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState)
         ) {
+            val spacerPadding =15.dp
             CustomDropDownMenu(
                 options = stringArrayResource(id = R.array.fa_arraySpinnerEdad).toList(),
                 title = stringResource(id = R.string.ma_txtSpinnerEdad)
             )
+            Spacer(modifier = Modifier.padding(spacerPadding))
+            Text(text = stringResource(id = R.string.fa_txtSpinnerSexo),
+                style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(horizontal = 15.dp))
+            val optionsSex = stringArrayResource(id = R.array.fa_arraySpinnerSexo).toList()
+            var selectedOptionSex by remember { mutableStateOf(optionsSex[0])}
+            CustomRadioGroup(selectedOption = selectedOptionSex,
+                onOptionSelected = {selectedOptionSex = it},
+                options = optionsSex, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.padding(spacerPadding))
             CustomSlider()
+            Spacer(modifier = Modifier.padding(spacerPadding))
+            Text(text = stringResource(id = R.string.fa_txtSpinnerEsterilizado),
+                style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(horizontal = 15.dp))
+            val optionsSterilized = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList()
+            var selectedOptionSterilized by remember { mutableStateOf(optionsSterilized[0]) }
+            CustomRadioGroup(selectedOption = selectedOptionSterilized,
+                onOptionSelected = {selectedOptionSterilized = it},
+                options = optionsSterilized, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.padding(10.dp))
             CustomDropDownMenu(
                 options = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList(),
                 title = stringResource(id = R.string.fa_txtSpinnerActividadFisica)
@@ -203,7 +232,7 @@ fun DropDownMenuPreview(modifier: Modifier = Modifier) {
 @Composable
 fun CustomSlider(modifier: Modifier = Modifier){
     var sliderPosition by remember { mutableFloatStateOf(0f)}
-    Column(modifier = modifier.padding(horizontal = 10.dp)) {
+    Column(modifier = modifier.padding(horizontal = 15.dp)) {
         Text(stringResource(id = R.string.fa_txtSpinnerPeso),
             style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold)
         )
