@@ -41,6 +41,9 @@ class PetViewModel @Inject constructor(
         Log.i("Depuring", "El viewmodelscope terminó")
     }
 
+    fun chargePet(pet: Pet){
+        _pet.value = pet
+    }
 
     fun deletePet(pet: Pet) {
         viewModelScope.launch {
