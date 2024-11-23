@@ -1,8 +1,10 @@
 package com.example.feedm.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -54,41 +56,126 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
+import com.example.feedm.domain.model.Pet
 import com.example.feedm.ui.view.ui.theme.FeedmTheme
+import com.example.feedm.ui.viewmodel.PetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FromActivityCompose : ComponentActivity() {
+
+    val petViewModel: PetViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        petViewModel.onCreate()
         setContent {
             FeedmTheme {
+
+                var id = -1
+                var name by remember { mutableStateOf("") }
+                var age by remember { mutableStateOf("") }
+                var sex by remember { mutableStateOf("") }
+                var weight by remember { mutableFloatStateOf(0f) }
+                var sterilized by remember { mutableStateOf("") }
+                var activityLevel by remember { mutableStateOf("") }
+                var objective by remember { mutableStateOf("") }
+
+                if (petViewModel.pets.value!!.size > 0) {
+                    var foundId = 0
+                    for (i in petViewModel.pets.value as List<Pet>) {
+                        if (i.id != foundId) id = foundId
+                        else {
+                            foundId++
+                            id = foundId
+                        }
+                    }
+                }
+
                 Scaffold(modifier = Modifier.fillMaxSize(),
-                    bottomBar = { BottomAppBar {
-                        Row(horizontalArrangement = Arrangement.Center,
-                            modifier= Modifier.fillMaxWidth()){
-                            FloatingActionButton(onClick = { /*TODO*/ },
-                                containerColor = Color.Yellow,
-                                modifier = Modifier.width(200.dp)) {
-                                Text(text = "Agregar")
+                    bottomBar = {
+                        BottomAppBar {
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                FloatingActionButton(
+                                    onClick = {
+                                        commitAddNewPet(
+                                            Pet(
+                                                id = id,
+                                                animal = "dog",
+                                                nombre = name,
+                                                edad = age,
+                                                sexo = sex,
+                                                peso = weight.toDouble(),
+                                                esterilizado = sterilized,
+                                                actividad = activityLevel,
+                                                objetivo = objective
+                                            )
+                                        )
+                                    },
+                                    containerColor = Color.Yellow,
+                                    modifier = Modifier.width(200.dp)
+                                ) {
+                                    Text(text = "Agregar")
+                                }
                             }
                         }
-                    }}) { innerPadding ->
+                    }) { innerPadding ->
                     FormScreen(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        name = name,
+                        onNameChange = { name = it },
+                        age = age,
+                        onAgeChange = { age = it },
+                        sex = sex,
+                        onSexChange = { sex = it },
+                        weight = weight,
+                        onWeightChange = { weight = it },
+                        sterilized = sterilized,
+                        onSterilizedChange = { sterilized = it },
+                        activityLevel = activityLevel,
+                        onActivityLevelChange = { activityLevel = it },
+                        objective = objective,
+                        onObjectiveChange = { objective = it }
                     )
                 }
             }
         }
     }
+
+    fun commitAddNewPet(pet: Pet) {
+        val intent = Intent(this@FromActivityCompose, PetActivityCompose::class.java)
+        petViewModel.addPet(pet)
+        startActivity(intent)
+    }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
-fun FormScreen(modifier: Modifier = Modifier) {
+fun FormScreen(
+    modifier: Modifier = Modifier,
+    name: String,
+    onNameChange: (String) -> Unit,
+    age: String,
+    onAgeChange: (String) -> Unit,
+    sex: String,
+    onSexChange: (String) -> Unit,
+    weight: Float,
+    onWeightChange: (Float) -> Unit,
+    sterilized: String,
+    onSterilizedChange: (String) -> Unit,
+    activityLevel: String,
+    onActivityLevelChange: (String) -> Unit,
+    objective: String,
+    onObjectiveChange: (String) -> Unit
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier
             .fillMaxSize(1f)
-            .padding(horizontal = 30.dp)) {
+            .padding(horizontal = 30.dp)
+    ) {
         FloatingActionButton(
             onClick = { /*TODO*/ },
             containerColor = Color.White,
@@ -100,61 +187,117 @@ fun FormScreen(modifier: Modifier = Modifier) {
                 contentDescription = "", modifier = Modifier.background(color = Color.White)
             )
         }
-        PetName()
+        PetName(name = name, onTextChange = { onNameChange(it) })
         Column(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState)
         ) {
-            val spacerPadding =15.dp
+            val spacerPadding = 15.dp
             CustomDropDownMenu(
                 options = stringArrayResource(id = R.array.fa_arraySpinnerEdad).toList(),
-                title = stringResource(id = R.string.ma_txtSpinnerEdad)
+                title = stringResource(id = R.string.ma_txtSpinnerEdad),
+                selectedOption = age,
+                onSelectOption = { onAgeChange(it) }
             )
             Spacer(modifier = Modifier.padding(spacerPadding))
-            Text(text = stringResource(id = R.string.fa_txtSpinnerSexo),
+            Text(
+                text = stringResource(id = R.string.fa_txtSpinnerSexo),
                 style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(horizontal = 15.dp))
+                modifier = Modifier.padding(horizontal = 15.dp)
+            )
             val optionsSex = stringArrayResource(id = R.array.fa_arraySpinnerSexo).toList()
-            var selectedOptionSex by remember { mutableStateOf(optionsSex[0])}
-            CustomRadioGroup(selectedOption = selectedOptionSex,
-                onOptionSelected = {selectedOptionSex = it},
-                options = optionsSex, modifier = Modifier.fillMaxWidth())
+            CustomRadioGroup(
+                selectedOption = sex,
+                onOptionSelected = { onSexChange(it) },
+                options = optionsSex, modifier = Modifier.fillMaxWidth()
+            )
             Spacer(modifier = Modifier.padding(spacerPadding))
-            CustomSlider()
+            CustomSlider(weight = weight, onWeightChanged = { onWeightChange(it) })
             Spacer(modifier = Modifier.padding(spacerPadding))
-            Text(text = stringResource(id = R.string.fa_txtSpinnerEsterilizado),
+            Text(
+                text = stringResource(id = R.string.fa_txtSpinnerEsterilizado),
                 style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(horizontal = 15.dp))
-            val optionsSterilized = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList()
-            var selectedOptionSterilized by remember { mutableStateOf(optionsSterilized[0]) }
-            CustomRadioGroup(selectedOption = selectedOptionSterilized,
-                onOptionSelected = {selectedOptionSterilized = it},
-                options = optionsSterilized, modifier = Modifier.fillMaxWidth())
+                modifier = Modifier.padding(horizontal = 15.dp)
+            )
+            val optionsSterilized =
+                stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList()
+            CustomRadioGroup(
+                selectedOption = sterilized,
+                onOptionSelected = { onSterilizedChange(it) },
+                options = optionsSterilized, modifier = Modifier.fillMaxWidth()
+            )
             Spacer(modifier = Modifier.padding(10.dp))
             CustomDropDownMenu(
                 options = stringArrayResource(id = R.array.fa_arraySpinnerActividadFisica).toList(),
-                title = stringResource(id = R.string.fa_txtSpinnerActividadFisica)
+                title = stringResource(id = R.string.fa_txtSpinnerActividadFisica),
+                selectedOption = activityLevel,
+                onSelectOption = { onActivityLevelChange(it) }
             )
             CustomDropDownMenu(
                 options = stringArrayResource(id = R.array.fa_arraySpinnerObjetivo).toList(),
-                title = stringResource(id = R.string.fa_txtSpinnerObjetivo)
+                title = stringResource(id = R.string.fa_txtSpinnerObjetivo),
+                selectedOption = objective,
+                onSelectOption = { onObjectiveChange(it) }
             )
         }
     }
 }
 
-
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun FormScreenPreview() {
+    FeedmTheme {
+        Scaffold(modifier = Modifier.fillMaxSize(),
+            bottomBar = {
+                BottomAppBar {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        FloatingActionButton(
+                            onClick = { /*TODO*/ },
+                            containerColor = Color.Yellow,
+                            modifier = Modifier.width(200.dp)
+                        ) {
+                            Text(text = "Agregar")
+                        }
+                    }
+                }
+            }) { innerPadding ->
+            FormScreen(
+                modifier = Modifier.padding(innerPadding),
+                name = "example",
+                onNameChange = {},
+                age = "example",
+                onAgeChange = {},
+                sex = "example",
+                onSexChange = {},
+                weight = 0.0f,
+                onWeightChange = {},
+                sterilized = "example",
+                onSterilizedChange = {},
+                activityLevel = "example",
+                onActivityLevelChange = {},
+                objective = "example",
+                onObjectiveChange = {}
+            )
+        }
+    }
+}
 
 @Composable
-fun PetName(modifier: Modifier = Modifier) {
+fun PetName(
+    modifier: Modifier = Modifier,
+    name: String,
+    onTextChange: (String) -> Unit
+) {
     Row(
         modifier
             .fillMaxWidth()
             .height(125.dp)
             .padding(15.dp)
     ) {
-        var text by remember { mutableStateOf("") }
         IconButton(
             onClick = { /*TODO*/ },
             Modifier
@@ -168,8 +311,8 @@ fun PetName(modifier: Modifier = Modifier) {
             )
         }
         OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = name,
+            onValueChange = { onTextChange(it) },
             label = { Text("Nombre") },
             modifier = Modifier
                 .weight(0.5f)
@@ -182,9 +325,12 @@ fun PetName(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomDropDownMenu(options: List<String>, title: String) {
+fun CustomDropDownMenu(
+    options: List<String>, title: String,
+    selectedOption: String,
+    onSelectOption: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(options[0]) }
     ExposedDropdownMenuBox(expanded = expanded,
         onExpandedChange = { expanded = it }) {
 
@@ -212,7 +358,7 @@ fun CustomDropDownMenu(options: List<String>, title: String) {
             options.forEach { option ->
                 DropdownMenuItem(text = { Text(text = option) },
                     onClick = {
-                        selectedOption = option
+                        onSelectOption(option)
                         expanded = false
                     })
             }
@@ -222,42 +368,52 @@ fun CustomDropDownMenu(options: List<String>, title: String) {
     }
 }
 
-@Preview
-@Composable
-fun DropDownMenuPreview(modifier: Modifier = Modifier) {
-    CustomDropDownMenu(options = listOf("option1", "option2", "option3"), title = "Example")
-}
 
-@Preview
 @Composable
-fun CustomSlider(modifier: Modifier = Modifier){
-    var sliderPosition by remember { mutableFloatStateOf(0f)}
+fun CustomSlider(
+    weight: Float,
+    modifier: Modifier = Modifier,
+    onWeightChanged: (Float) -> Unit
+) {
     Column(modifier = modifier.padding(horizontal = 15.dp)) {
-        Text(stringResource(id = R.string.fa_txtSpinnerPeso),
+        Text(
+            stringResource(id = R.string.fa_txtSpinnerPeso),
             style = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.Bold)
         )
-        Text(String.format("%.2f Kg",sliderPosition),
+        Text(
+            String.format("%.2f Kg", weight),
             style = TextStyle(fontSize = 19.sp),
-            modifier = Modifier.align(Alignment.CenterHorizontally))
-        Slider(value = sliderPosition,
-            onValueChange = {sliderPosition = it},
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        Slider(
+            value = weight,
+            onValueChange = { onWeightChanged(it) },
             valueRange = 0f..85f,
-            modifier = Modifier.padding(top = 0.dp,
-                bottom = 10.dp, start = 10.dp, end = 10.dp))
+            modifier = Modifier.padding(
+                top = 0.dp,
+                bottom = 10.dp, start = 10.dp, end = 10.dp
+            )
+        )
     }
 }
 
 @Composable
-fun CustomRadioGroup(modifier: Modifier = Modifier,
-                     options: List<String>,
-                     selectedOption: String,
-                     onOptionSelected: (String) -> Unit){
-    Row(modifier = modifier.fillMaxWidth()){
-        options.forEach{ option ->
-            Row(verticalAlignment = Alignment.CenterVertically,
+fun CustomRadioGroup(
+    modifier: Modifier = Modifier,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit
+) {
+    Row(modifier = modifier.fillMaxWidth()) {
+        options.forEach { option ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.weight(0.3f),
-                horizontalArrangement = Arrangement.Center) {
-                RadioButton(selected = selectedOption == option, onClick = { onOptionSelected(option) })
+                horizontalArrangement = Arrangement.Center
+            ) {
+                RadioButton(
+                    selected = selectedOption == option,
+                    onClick = { onOptionSelected(option) })
                 Text(text = option)
             }
 
