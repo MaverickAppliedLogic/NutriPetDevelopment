@@ -16,8 +16,8 @@
     </string-array>
     <string name="fa_txtSpinnerEsterilizado">¿Esta esterilizado?</string>
     <string-array name="fa_arraySpinnerEsterilizado">
-        <item>Esterilizado</item>
-        <item>No esterilizado</item>
+        <item>Si</item>
+        <item>No</item>
     </string-array>
     <string name="fa_txtSpinnerActividadFisica">Nivel de actividad física</string>
     <string-array name="fa_arraySpinnerActividadFisica">
