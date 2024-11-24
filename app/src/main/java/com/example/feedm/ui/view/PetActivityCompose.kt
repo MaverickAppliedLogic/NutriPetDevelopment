@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.domain.model.Pet
-import com.example.feedm.ui.view.ui.theme.FeedmTheme
+import com.example.feedm.ui.view.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,7 +49,7 @@ class PetActivityCompose : ComponentActivity() {
         super.onCreate(savedInstanceState)
         petViewModel.onCreate()
         setContent {
-            FeedmTheme {
+            TailyCareTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     bottomBar = { BottomAppBar {
                         Row(modifier = Modifier.fillMaxWidth(),
@@ -152,7 +152,7 @@ fun PetScreenPreview(modifier: Modifier = Modifier) {
             0, "dog", "Example", "3", 5.0, "macho", "si", "alta", "bajar peso", "nada", ""
         )
     }
-    FeedmTheme {
+    TailyCareTheme {
         Scaffold(modifier = Modifier.fillMaxSize(),
             bottomBar = { BottomAppBar { Row(modifier= Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center) {
