@@ -1,14 +1,14 @@
 <resources>
     //FormActivity Strings
     <string name="app_name">TailyCare</string>
-    <string name="fa_hintEtPetName">Buddy name</string>
-    <string name="ma_txtSpinnerEdad">Edad</string>
+    <string name="fa_hintEtPetName">Name*</string>
+    <string name="ma_txtSpinnerEdad">Edad*</string>
     <array name="fa_arraySpinnerEdad">
         <item>Cachorro(&lt;1 año)</item>
         <item>Adulto(1-7 años)</item>
         <item>Senior(7 años&gt;)</item>
     </array>
-    <string name="fa_txtSpinnerPeso">Peso actual</string>
+    <string name="fa_txtSpinnerPeso">Peso actual*</string>
     <string name="fa_txtSpinnerSexo">Sexo</string>
     <string-array name="fa_arraySpinnerSexo">
         <item>Macho</item>
@@ -25,7 +25,7 @@
         <item>Media</item>
         <item>Baja</item>
     </string-array>
-    <string name="fa_txtSpinnerObjetivo">Objetivo principal de la dieta</string>
+    <string name="fa_txtSpinnerObjetivo">Objetivo principal de la dieta*</string>
     <string-array name="fa_arraySpinnerObjetivo">
         <item>Mantenimiento</item>
         <item>Pérdida de peso</item>

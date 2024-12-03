@@ -13,9 +13,9 @@ data class Pet(
     var sexo: String = "No Sex",
     var esterilizado: String = "No Sterilized",
     var actividad: String = "No Activity",
-    var objetivo: String = "No objective",
+    var objetivo: String = "No Objective",
     var alergia: String = "Nada",
-    var query: String = "No query") {
+    var query: String = "No Query") {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
