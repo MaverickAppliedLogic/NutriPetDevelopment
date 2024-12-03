@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,20 +33,14 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,11 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -70,39 +59,46 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
 import com.example.feedm.domain.model.Pet
 import com.example.feedm.ui.view.ui.theme.Orange
-import com.example.feedm.ui.view.ui.theme.OrangeSemiSoft
-import com.example.feedm.ui.view.ui.theme.OrangeSoft
+import com.example.feedm.ui.view.ui.theme.OrangeSemiTransparent
+import com.example.feedm.ui.view.ui.theme.RedSemiTransparent
 import com.example.feedm.ui.view.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class FromActivityCompose : ComponentActivity() {
 
-    val petViewModel: PetViewModel by viewModels()
+    private val petViewModel: PetViewModel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         petViewModel.onCreate()
         setContent {
             TailyCareTheme {
-
                 var id = -1
+                var animal by remember { mutableStateOf("dog") }
                 var name by remember { mutableStateOf("") }
+                var nameIsEmpty by remember { mutableStateOf(false) }
                 var age by remember { mutableStateOf("") }
+                var ageIsUnselected by remember { mutableStateOf(false) }
                 var sex by remember { mutableStateOf("") }
                 var weight by remember { mutableFloatStateOf(0f) }
+                var weightIsUnselected by remember { mutableStateOf(false) }
                 var sterilized by remember { mutableStateOf("") }
                 var activityLevel by remember { mutableStateOf("") }
                 var objective by remember { mutableStateOf("") }
+                var objectiveIsUnselected by remember { mutableStateOf(false) }
 
-                if (petViewModel.pets.value!!.size > 0) {
+                if (petViewModel.pets.value!!.isNotEmpty()) {
                     var foundId = 0
                     for (i in petViewModel.pets.value as List<Pet>) {
                         if (i.id != foundId) id = foundId
@@ -126,17 +122,29 @@ class FromActivityCompose : ComponentActivity() {
                                 FloatingActionButton(
                                     onClick = {
                                         commitAddNewPet(
-                                            Pet(
-                                                id = id,
-                                                animal = "dog",
-                                                nombre = name,
-                                                edad = age,
-                                                sexo = sex,
-                                                peso = weight.toDouble(),
-                                                esterilizado = sterilized,
-                                                actividad = activityLevel,
-                                                objetivo = objective
-                                            )
+                                            id,
+                                            animal,
+                                            name,
+                                            age,
+                                            sex,
+                                            weight,
+                                            sterilized,
+                                            activityLevel,
+                                            objective,
+                                            onValidationFailed = {
+                                                if (it == "name") {
+                                                    nameIsEmpty = true
+                                                }
+                                                if (it == "age") {
+                                                    ageIsUnselected = true
+                                                }
+                                                if (it == "objective") {
+                                                    objectiveIsUnselected = true
+                                                }
+                                                if (it == "weight") {
+                                                    weightIsUnselected = true
+                                                }
+                                            }
                                         )
                                     },
                                     containerColor = Orange,
@@ -153,20 +161,29 @@ class FromActivityCompose : ComponentActivity() {
                     }) { innerPadding ->
                     FormScreen(
                         modifier = Modifier.padding(innerPadding),
+                        onImageChange = { animal = it },
                         name = name,
-                        onNameChange = { name = it },
+                        nameIsEmpty = nameIsEmpty,
+                        onNameChange = { name = it
+                                       nameIsEmpty = false},
                         age = age,
-                        onAgeChange = { age = it },
+                        ageIsUnselected = ageIsUnselected,
+                        onAgeChange = { age = it
+                                      ageIsUnselected = false},
                         sex = sex,
                         onSexChange = { sex = it },
                         weight = weight,
-                        onWeightChange = { weight = it },
+                        onWeightChange = { weight = it
+                                         weightIsUnselected = false},
+                        weightIsUnselected = weightIsUnselected,
                         sterilized = sterilized,
                         onSterilizedChange = { sterilized = it },
                         activityLevel = activityLevel,
                         onActivityLevelChange = { activityLevel = it },
                         objective = objective,
-                        onObjectiveChange = { objective = it },
+                        objectiveIsUnselected = objectiveIsUnselected,
+                        onObjectiveChange = { objective = it
+                                            objectiveIsUnselected = false},
                         onClickFab = { cancelAddNewPet() }
                     )
                 }
@@ -174,13 +191,46 @@ class FromActivityCompose : ComponentActivity() {
         }
     }
 
-    fun commitAddNewPet(pet: Pet) {
+
+    private fun commitAddNewPet(
+        id: Int,
+        animal: String,
+        name: String,
+        age: String,
+        sex: String,
+        weight: Float,
+        sterilized: String,
+        activityLevel: String,
+        objective: String,
+        onValidationFailed: (String) -> Unit
+    ) {
         val intent = Intent(this@FromActivityCompose, PetActivityCompose::class.java)
-        petViewModel.addPet(pet)
+        if (name == "") {
+            onValidationFailed("name")
+            return
+        }
+        if (age == "") {
+            onValidationFailed("age")
+            return
+        }
+        if (weight == 0.0f) {
+            onValidationFailed("weight")
+            return
+        }
+        if (objective == "") {
+            onValidationFailed("objective")
+            return
+        }
+        petViewModel.addPet(
+            Pet(
+                id, animal, name, age, weight.toDouble(), sex, sterilized, activityLevel,
+                objective
+            )
+        )
         startActivity(intent)
     }
 
-    fun cancelAddNewPet() {
+    private fun cancelAddNewPet() {
         val intent = Intent(this@FromActivityCompose, PetActivityCompose::class.java)
         startActivity(intent)
     }
@@ -190,19 +240,24 @@ class FromActivityCompose : ComponentActivity() {
 @Composable
 fun FormScreen(
     modifier: Modifier = Modifier,
+    onImageChange: (String) -> Unit,
     name: String,
+    nameIsEmpty: Boolean,
     onNameChange: (String) -> Unit,
     age: String,
+    ageIsUnselected: Boolean,
     onAgeChange: (String) -> Unit,
     sex: String,
     onSexChange: (String) -> Unit,
     weight: Float,
     onWeightChange: (Float) -> Unit,
+    weightIsUnselected: Boolean,
     sterilized: String,
     onSterilizedChange: (String) -> Unit,
     activityLevel: String,
     onActivityLevelChange: (String) -> Unit,
     objective: String,
+    objectiveIsUnselected: Boolean,
     onObjectiveChange: (String) -> Unit,
     onClickFab: () -> Unit
 ) {
@@ -233,16 +288,19 @@ fun FormScreen(
                 .padding(top = 10.dp)
         ) {
             val spacerPadding = 15.dp
-            PetName(name = name, onTextChange = { onNameChange(it) })
+            PetName(name = name, nameIsEmpty = nameIsEmpty, onImageChange = { onImageChange(it) },
+                onTextChange = { onNameChange(it) })
             Card(
-                elevation = CardDefaults.cardElevation(5.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
+
                 CustomDropDownMenu(
                     options = stringArrayResource(id = R.array.fa_arraySpinnerEdad).toList(),
                     title = stringResource(id = R.string.ma_txtSpinnerEdad),
                     selectedOption = age,
                     onSelectOption = { onAgeChange(it) },
+                    isUnselected = ageIsUnselected,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -270,9 +328,29 @@ fun FormScreen(
                 elevation = CardDefaults.cardElevation(5.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
-                CustomSlider(weight = weight, onWeightChanged = { onWeightChange(it) })
+                CustomSlider(
+                    weight = weight, onWeightChanged = { onWeightChange(it) },
+                    weightIsUnselected = weightIsUnselected
+                )
             }
 
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            Card(
+                elevation = CardDefaults.cardElevation(5.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+            ) {
+                CustomDropDownMenu(
+                    options = stringArrayResource(id = R.array.fa_arraySpinnerObjetivo).toList(),
+                    title = stringResource(id = R.string.fa_txtSpinnerObjetivo),
+                    selectedOption = objective,
+                    isUnselected = objectiveIsUnselected,
+                    onSelectOption = { onObjectiveChange(it) },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 10.dp)
+                )
+            }
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
@@ -302,28 +380,13 @@ fun FormScreen(
                     title = stringResource(id = R.string.fa_txtSpinnerActividadFisica),
                     selectedOption = activityLevel,
                     onSelectOption = { onActivityLevelChange(it) },
+                    isUnselected = false,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.padding(10.dp))
-
-            Card(
-                elevation = CardDefaults.cardElevation(5.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-            ) {
-                CustomDropDownMenu(
-                    options = stringArrayResource(id = R.array.fa_arraySpinnerObjetivo).toList(),
-                    title = stringResource(id = R.string.fa_txtSpinnerObjetivo),
-                    selectedOption = objective,
-                    onSelectOption = { onObjectiveChange(it) },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(vertical = 10.dp)
-                )
-            }
 
             Spacer(modifier = Modifier.padding(spacerPadding))
         }
@@ -335,6 +398,8 @@ fun FormScreen(
 fun PetName(
     modifier: Modifier = Modifier,
     name: String,
+    nameIsEmpty: Boolean,
+    onImageChange: (String) -> Unit,
     onTextChange: (String) -> Unit
 ) {
     Row(
@@ -344,7 +409,7 @@ fun PetName(
             .padding(15.dp)
     ) {
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = { onImageChange("cat") },
             Modifier
                 .weight(0.3f)
                 .fillMaxHeight()
@@ -357,12 +422,26 @@ fun PetName(
         }
         OutlinedTextField(
             value = name,
+            supportingText = {
+                if (nameIsEmpty) Text(
+                    text = "No tiene nombre :(",
+                    color = Color.Red
+                )
+            },
             onValueChange = { onTextChange(it) },
-            label = { Text("Nombre") },
+            label = { Text(stringResource(id = R.string.fa_hintEtPetName)) },
+            isError = nameIsEmpty,
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color.White,
+                errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
+                errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
+                focusedContainerColor = Color.White, focusedLabelColor = Orange,
+                focusedIndicatorColor = Orange
+            ),
             modifier = Modifier
                 .weight(0.5f)
                 .align(Alignment.CenterVertically)
-                .padding(bottom = 10.dp)
+                .padding(bottom = 10.dp),
         )
     }
 }
@@ -374,6 +453,7 @@ fun CustomDropDownMenu(
     options: List<String>, title: String,
     selectedOption: String,
     modifier: Modifier = Modifier,
+    isUnselected: Boolean,
     onSelectOption: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -383,16 +463,18 @@ fun CustomDropDownMenu(
         TextField(
             value = selectedOption,
             textStyle = TextStyle(fontSize = 16.sp),
+            isError = isUnselected,
             onValueChange = {},
             trailingIcon = {
                 Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "")
             },
             label = {
+                val textColor: Color = if (isUnselected) Color.Red else Color.Black
                 Text(
                     text = title, style = TextStyle(
                         fontSize = 19.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        color = textColor,
                     )
                 )
             },
@@ -403,7 +485,10 @@ fun CustomDropDownMenu(
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent
+                focusedContainerColor = Color.Transparent,
+                errorTrailingIconColor = Color.Red,
+                errorContainerColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
             )
         )
 
@@ -428,12 +513,12 @@ fun CustomDropDownMenu(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomSlider(
     weight: Float,
+    onWeightChanged: (Float) -> Unit,
+    weightIsUnselected: Boolean,
     modifier: Modifier = Modifier,
-    onWeightChanged: (Float) -> Unit
 ) {
     Column(modifier = modifier.padding(start = 15.dp, end = 15.dp, top = 10.dp)) {
         Text(
@@ -445,7 +530,7 @@ fun CustomSlider(
             )
         )
         Text(
-            String.format("%.2f Kg", weight),
+            String.format(Locale.getDefault(), "%.2f Kg", weight),
             style = TextStyle(fontSize = 19.sp, color = Color.Black),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -460,8 +545,8 @@ fun CustomSlider(
                 bottom = 10.dp, start = 10.dp, end = 10.dp
             ), colors = SliderDefaults.colors(
                 thumbColor = Color.Transparent,
-                activeTrackColor = Orange,
-                inactiveTrackColor = OrangeSoft
+                activeTrackColor = if (weightIsUnselected) Color.Red else Orange,
+                inactiveTrackColor = if (weightIsUnselected) RedSemiTransparent else OrangeSemiTransparent
             )
         )
     }
@@ -475,10 +560,12 @@ fun CustomRadioGroup(
     text: String,
     onOptionSelected: (String) -> Unit
 ) {
-    Column(verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 10.dp)) {
+            .padding(vertical = 10.dp)
+    ) {
         Text(
             text = text,
             style = TextStyle(
@@ -490,10 +577,13 @@ fun CustomRadioGroup(
                 .padding(horizontal = 15.dp)
         )
         Spacer(modifier = Modifier.padding(5.dp))
-        Row(horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
             options.forEach { option ->
-                Row(verticalAlignment = Alignment.CenterVertically,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(horizontal = 15.dp)
                 ) {
                     RadioButton(
@@ -502,7 +592,7 @@ fun CustomRadioGroup(
                         colors = RadioButtonColors(
                             selectedColor = Orange,
                             unselectedColor = Color.Black,
-                            disabledSelectedColor = OrangeSoft,
+                            disabledSelectedColor = OrangeSemiTransparent,
                             disabledUnselectedColor = Color.Gray
                         ),
                     )
@@ -548,20 +638,25 @@ fun FormScreenPreview() {
             FormScreen(
                 modifier = Modifier.padding(innerPadding),
                 name = "example",
+                nameIsEmpty = false,
                 onNameChange = {},
                 age = "example",
+                ageIsUnselected = false,
                 onAgeChange = {},
                 sex = "example",
                 onSexChange = {},
                 weight = 0.0f,
+                weightIsUnselected = false,
                 onWeightChange = {},
                 sterilized = "example",
                 onSterilizedChange = {},
                 activityLevel = "example",
                 onActivityLevelChange = {},
                 objective = "example",
+                objectiveIsUnselected = false,
                 onObjectiveChange = {},
-                onClickFab = {}
+                onClickFab = {},
+                onImageChange = {}
             )
         }
     }
