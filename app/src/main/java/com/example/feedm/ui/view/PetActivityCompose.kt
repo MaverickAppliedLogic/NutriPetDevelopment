@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,20 +17,31 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,9 +49,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.domain.model.Pet
+import com.example.feedm.ui.view.ui.theme.Orange
+import com.example.feedm.ui.view.ui.theme.OrangeSemiTransparent
 import com.example.feedm.ui.view.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.jsoup.select.CombiningEvaluator.Or
 
 @AndroidEntryPoint
 class PetActivityCompose : ComponentActivity() {
@@ -51,21 +66,38 @@ class PetActivityCompose : ComponentActivity() {
         setContent {
             TailyCareTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(),
-                    bottomBar = { BottomAppBar {
-                        Row(modifier = Modifier.fillMaxWidth(),
+                    bottomBar = { BottomAppBar(containerColor = Orange,
+                        modifier = Modifier
+                            .clip(
+                                shape = CircleShape.copy(
+                                    topEnd = CornerSize(30.dp),
+                                    topStart = CornerSize(30.dp),
+                                    bottomEnd = CornerSize(0.dp),
+                                    bottomStart = CornerSize(0.dp)
+                                )
+                            )
+                            .shadow(20.dp)) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Orange),
                             horizontalArrangement = Arrangement.Center) {
-                            AddPetButton(onClick = {AddNewPet()})
+                            AddPetButton(onClick = {addNewPet()})
                         }
                     }}) { innerPadding ->
-                    PetsScreen(petViewModel, modifier = Modifier.padding(innerPadding))
+                    PetsScreen(petViewModel, onIconClicked = {deletePett(it)},
+                        modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 
-    fun AddNewPet(){
+    fun addNewPet(){
         val intent = Intent(this@PetActivityCompose,FromActivityCompose::class.java)
         startActivity(intent)
+    }
+
+    fun deletePett(pet: Pet){
+        petViewModel.deletePet(pet)
     }
 
 
@@ -73,7 +105,7 @@ class PetActivityCompose : ComponentActivity() {
 
 
 @Composable
-fun PetsScreen(petViewModel: PetViewModel, modifier: Modifier = Modifier) {
+fun PetsScreen(petViewModel: PetViewModel, onIconClicked: (Pet) -> Unit ,modifier: Modifier = Modifier) {
     val pets: List<Pet> by petViewModel.pets.observeAsState(initial = emptyList())
     Box(
         modifier = modifier
@@ -81,35 +113,39 @@ fun PetsScreen(petViewModel: PetViewModel, modifier: Modifier = Modifier) {
             .padding(top = 20.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
-        PetsList(pets, modifier = modifier.fillMaxSize(1f))
+        PetsList(pets, onIconClicked = {onIconClicked(it)}, modifier = modifier.fillMaxSize(1f))
     }
 
 }
 
 
 @Composable
-fun PetsList(pets: List<Pet>, modifier: Modifier = Modifier) {
+fun PetsList(pets: List<Pet>, onIconClicked: (Pet) -> Unit, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.fillMaxWidth()) {
-        items(items = pets) { pet -> PetItem(pet) }
+        items(items = pets) { pet -> PetItem(pet,onIconClicked) }
     }
 }
 
 @Composable
-fun PetItem(pet: Pet, modifier: Modifier = Modifier) {
+fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifier) {
     Card(
+        colors = CardColors(containerColor = Color.White, contentColor = Orange,
+            disabledContentColor = Color.White,
+            disabledContainerColor = Color.White),
+        elevation = CardDefaults.cardElevation(10.dp),
         onClick = { /*TODO*/ },
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(7.dp)
     ) {
         Row(
-            modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 20.dp)
+            Modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 25.dp)
         ) {
             if (pet.animal == "dog") {
                 Image(
                     painter = painterResource(id = R.drawable.img_dog_illustration),
                     contentDescription = "dog",
-                    modifier.weight(0.25f)
+                    modifier.weight(0.30f)
                 )
             } else {
                 Image(
@@ -124,6 +160,12 @@ fun PetItem(pet: Pet, modifier: Modifier = Modifier) {
                     .weight(1f)
                     .padding(top = 10.dp)
             )
+
+            IconButton(onClick = { onIconClicked(pet) }, modifier = Modifier.align(Alignment.CenterVertically)) {
+                Icon(imageVector = Icons.Default.Delete,
+                    contentDescription = "", tint = Color.Gray,
+                    modifier = Modifier.align(Alignment.CenterVertically))
+            }
         }
     }
 }
@@ -131,12 +173,15 @@ fun PetItem(pet: Pet, modifier: Modifier = Modifier) {
 @Composable
 fun AddPetButton(modifier: Modifier = Modifier, onClick: () -> Unit)  {
     ElevatedButton(
-        onClick = onClick, shape = CircleShape, modifier = modifier.size(70.dp)
+        onClick = onClick, colors = ButtonColors(contentColor = Orange,
+            containerColor = Color.White, disabledContainerColor = Color.White,
+            disabledContentColor = Color.White),shape = CircleShape, modifier = modifier.size(70.dp)
     ) {
         Row {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Add Icon",
+                tint = Orange,
                 modifier = Modifier.fillMaxSize(1f)
             )
         }
@@ -154,18 +199,21 @@ fun PetScreenPreview(modifier: Modifier = Modifier) {
     }
     TailyCareTheme {
         Scaffold(modifier = Modifier.fillMaxSize(),
-            bottomBar = { BottomAppBar { Row(modifier= Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
-                AddPetButton(onClick = {})
-            }
-            }}) { innerpadding ->
+            bottomBar = { BottomAppBar {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White),
+                    horizontalArrangement = Arrangement.Center) {
+                    AddPetButton(onClick = {})
+                }
+            }}){ innerpadding ->
             Box(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(innerpadding),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                PetsList(pets, modifier = modifier.fillMaxSize(1f))
+                PetsList(pets, onIconClicked = {} ,modifier = modifier.fillMaxSize(1f))
             }
         }
     }
