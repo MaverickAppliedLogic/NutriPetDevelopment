@@ -26,13 +26,11 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,11 +48,9 @@ import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.domain.model.Pet
 import com.example.feedm.ui.view.ui.theme.Orange
-import com.example.feedm.ui.view.ui.theme.OrangeSemiTransparent
 import com.example.feedm.ui.view.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import org.jsoup.select.CombiningEvaluator.Or
 
 @AndroidEntryPoint
 class PetActivityCompose : ComponentActivity() {
@@ -84,19 +80,19 @@ class PetActivityCompose : ComponentActivity() {
                             AddPetButton(onClick = {addNewPet()})
                         }
                     }}) { innerPadding ->
-                    PetsScreen(petViewModel, onIconClicked = {deletePett(it)},
+                    PetsScreen(petViewModel, onIconClicked = {deletePet(it)},
                         modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 
-    fun addNewPet(){
+    private fun addNewPet(){
         val intent = Intent(this@PetActivityCompose,FromActivityCompose::class.java)
         startActivity(intent)
     }
 
-    fun deletePett(pet: Pet){
+    private fun deletePet(pet: Pet){
         petViewModel.deletePet(pet)
     }
 
@@ -206,11 +202,11 @@ fun PetScreenPreview(modifier: Modifier = Modifier) {
                     horizontalArrangement = Arrangement.Center) {
                     AddPetButton(onClick = {})
                 }
-            }}){ innerpadding ->
+            }}){ innerPadding ->
             Box(
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(innerpadding),
+                    .padding(innerPadding),
                 contentAlignment = Alignment.BottomEnd
             ) {
                 PetsList(pets, onIconClicked = {} ,modifier = modifier.fillMaxSize(1f))

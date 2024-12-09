@@ -37,13 +37,13 @@ class PetViewModel @Inject constructor(
                 _pets.value = result
                 Log.i("Depuring", "LLena el _pets")
             }
+            else{
+                _pets.value = emptyList()
+            }
         }
         Log.i("Depuring", "El viewmodelscope terminó")
     }
 
-    fun chargePet(pet: Pet){
-        _pet.value = pet
-    }
 
     fun deletePet(pet: Pet) {
         viewModelScope.launch {
@@ -54,7 +54,7 @@ class PetViewModel @Inject constructor(
 
     fun addPet(pet: Pet) {
         viewModelScope.launch {
-            (addPetUseCase(pet))
+            addPetUseCase(pet)
             onCreate()
         }
     }
