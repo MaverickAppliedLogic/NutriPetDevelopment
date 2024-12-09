@@ -34,11 +34,20 @@ class PetLocalStorageProvider(private val petsFile: File) {
 
 
     fun deletePet(pet: PetModel){
-        val pets = getAllPets().toMutableList().apply { remove(pet) }
-        val json = gson.toJson(pets)
-        FileWriter(petsFile).use { writer ->
-            writer.write(json)
+        val pets = getAllPets().toMutableList()
+        if(pets.size == 1){
+            FileWriter(petsFile).use { writer ->
+                writer.write("")
+            }
         }
+        else{
+            pets.remove(pet)
+            val json = gson.toJson(pets)
+            FileWriter(petsFile).use { writer ->
+                writer.write(json)
+            }
+        }
+
     }
 
 }
