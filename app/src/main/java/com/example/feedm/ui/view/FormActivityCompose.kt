@@ -84,7 +84,7 @@ class FromActivityCompose : ComponentActivity() {
         petViewModel.onCreate()
         setContent {
             TailyCareTheme {
-                var id = -1
+                var id = 0
                 var animal by remember { mutableStateOf("dog") }
                 var name by remember { mutableStateOf("") }
                 var nameIsEmpty by remember { mutableStateOf(false) }
