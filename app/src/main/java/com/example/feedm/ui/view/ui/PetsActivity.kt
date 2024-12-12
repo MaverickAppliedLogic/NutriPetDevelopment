@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -128,6 +129,7 @@ fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifi
         colors = CardColors(containerColor = Color.White, contentColor = Color.Black,
             disabledContentColor = Color.White,
             disabledContainerColor = Color.White),
+        shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(2.dp),
         onClick = { /*TODO*/ },
         modifier = modifier
@@ -189,8 +191,7 @@ fun AddPetButton(modifier: Modifier = Modifier, onClick: () -> Unit)  {
 @Composable
 fun PetScreenPreview(modifier: Modifier = Modifier) {
     val pets: List<Pet> = List(20) {
-        Pet(
-            0, "dog", "Example", "3", 5.0, "macho", "si", "alta", "bajar peso", "nada", ""
+        Pet( 0,"dog", "Example", "3", 5.0, "macho", "si", "alta", "bajar peso", "nada", ""
         )
     }
     TailyCareTheme {

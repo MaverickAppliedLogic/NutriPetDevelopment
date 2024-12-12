@@ -88,7 +88,6 @@ class FromActivityCompose : ComponentActivity() {
         }
         setContent {
             TailyCareTheme {
-                var id = 0
                 var animal by remember { mutableStateOf("dog") }
                 var name by remember { mutableStateOf("") }
                 var nameIsEmpty by remember { mutableStateOf(false) }
@@ -102,16 +101,6 @@ class FromActivityCompose : ComponentActivity() {
                 var objective by remember { mutableStateOf("") }
                 var objectiveIsUnselected by remember { mutableStateOf(false) }
 
-                if (petViewModel.pets.value!!.isNotEmpty()) {
-                    var foundId = 0
-                    for (i in petViewModel.pets.value as List<Pet>) {
-                        if (i.id != foundId) id = foundId
-                        else {
-                            foundId++
-                            id = foundId
-                        }
-                    }
-                }
 
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.White,
                     bottomBar = {
@@ -126,7 +115,6 @@ class FromActivityCompose : ComponentActivity() {
                                 FloatingActionButton(
                                     onClick = {
                                         commitAddNewPet(
-                                            id,
                                             animal,
                                             name,
                                             age,
@@ -198,7 +186,6 @@ class FromActivityCompose : ComponentActivity() {
 
 
     private fun commitAddNewPet(
-        id: Int,
         animal: String,
         name: String,
         age: String,
@@ -228,8 +215,8 @@ class FromActivityCompose : ComponentActivity() {
         }
         petViewModel.addPet(
             Pet(
-                id, animal, name, age, weight.toDouble(), sex, sterilized, activityLevel,
-                objective
+                animal=animal, nombre=name, edad=age, peso=weight.toDouble(), sexo=sex,
+                esterilizado=sterilized, actividad=activityLevel, objetivo=objective
             )
         )
         startActivity(intent)
@@ -299,6 +286,7 @@ fun FormScreen(
                 onImageChange = { onImageChange(it) },
                 onTextChange = { onNameChange(it) })
             Card(
+                shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
@@ -318,6 +306,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
+                shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
@@ -333,6 +322,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
+                shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
@@ -345,6 +335,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(10.dp))
 
             Card(
+                shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
@@ -362,6 +353,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
+                shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
@@ -379,6 +371,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(10.dp))
 
             Card(
+                shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier.padding(vertical = 10.dp)

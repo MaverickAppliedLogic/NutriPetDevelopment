@@ -66,14 +66,4 @@ class PetViewModel @Inject constructor(
         }
     }
 
-    fun getPet(id: Int) {
-        viewModelScope.launch {
-            val pets = _pets.value
-            if (pets.isNullOrEmpty()) {
-                return@launch
-            }
-            _pet.value = pets.firstOrNull { it.id == id }
-                ?: run { null }
-        }
-    }
 }

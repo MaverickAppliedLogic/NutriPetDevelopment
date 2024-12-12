@@ -5,7 +5,7 @@ import com.example.feedm.data.local.PetModel
 
 
 data class Pet(
-    var id: Int,
+    var id: Int = 0,
     var animal: String = "No Animal",
     var nombre: String = "No Name",
     var edad: String = "No Age",
@@ -15,26 +15,14 @@ data class Pet(
     var actividad: String = "No Activity",
     var objetivo: String = "No Objective",
     var alergia: String = "Nada",
-    var query: String = "No Query") {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Pet
-
-        return id == other.id
-    }
-
-    override fun hashCode(): Int {
-        return id
-    }
-}
+    var query: String = "No Query")
 
 
 
 
 fun PetModel.toDomain()=
-    Pet(id,animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)
+    Pet(animal=animal, nombre=nombre, edad=edad, peso=peso, sexo=sexo, esterilizado=esterilizado,
+        actividad=actividad, objetivo=objetivo, alergia=alergia, query=query)
 
 fun PetEntity.toDomain()=
     Pet(id,animal, nombre, edad, peso, sexo, esterilizado, actividad, objetivo, alergia, query)

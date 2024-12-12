@@ -19,6 +19,8 @@ class GetPets @Inject constructor(private val repository: PetsRepository){
             Log.i("Depuring","Vallidacion pets is empty")
             pets = repository.getAllPetsFromStorage()
             repository.insertPetsToDB(pets.map { it.toDataBase() })
+            //Se vuelve a recoger de la DB para que se les asignen ID's
+            pets = repository.getAllPetsFromDB()
             pets
         }
 
