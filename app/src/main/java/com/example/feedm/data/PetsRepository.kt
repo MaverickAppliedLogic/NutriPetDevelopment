@@ -25,6 +25,10 @@ class PetsRepository @Inject constructor(
         petsStorage.insertAll(pets)
     }
 
+    fun deleteAllPetsFromStorage(){
+        petsStorage.deleteAllPets()
+    }
+
 
 //From DataBase
     suspend fun getAllPetsFromDB(): List<Pet> {
@@ -39,9 +43,8 @@ class PetsRepository @Inject constructor(
         petsDao.insertPet(petEntity)
     }
 
-    suspend fun deletePet(petEntity: PetEntity, petModel: PetModel) {
+    suspend fun deletePet(petEntity: PetEntity) {
         petsDao.deletePet(petEntity.id)
-        petsStorage.deletePet(petModel)
     }
 
     suspend fun updatePet(petEntity: PetEntity) {

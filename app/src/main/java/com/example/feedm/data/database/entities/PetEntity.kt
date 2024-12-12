@@ -23,6 +23,7 @@ data class PetEntity(
 
 fun Pet.toDataBase() =
     PetEntity(
+        id = id,
         animal =  animal,
         nombre =  nombre,
         edad = edad,

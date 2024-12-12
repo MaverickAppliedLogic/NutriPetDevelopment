@@ -9,6 +9,11 @@ import javax.inject.Inject
 class DeletePet @Inject constructor(
     private val repository: PetsRepository) {
    suspend operator fun invoke(pet: Pet){
-       repository.deletePet(pet.toDataBase(),pet.toStorage())
-    }
+       val pets = repository.getAllPetsFromDB()
+       if(pets.size==1){
+           repository.deleteAllPetsFromStorage()
+       }
+       repository.deletePet(pet.toDataBase())
+
+   }
 }

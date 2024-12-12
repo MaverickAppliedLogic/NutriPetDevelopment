@@ -11,7 +11,7 @@ class PetLocalStorageProvider(private val petsFile: File) {
 
     private val gson = Gson()
 
-//Full List
+    //Full List
     fun getAllPets(): List<PetModel> {
         val pets: List<PetModel>
         try {
@@ -21,7 +21,7 @@ class PetLocalStorageProvider(private val petsFile: File) {
         } catch (_: NullPointerException) {
             return emptyList()
         }
-        return pets.sortedBy { it.id }
+        return pets
     }
 
     fun insertAll(petsList: List<PetModel>) {
@@ -33,19 +33,9 @@ class PetLocalStorageProvider(private val petsFile: File) {
     }
 
 
-    fun deletePet(pet: PetModel){
-        val pets = getAllPets().toMutableList()
-        if(pets.size == 1){
-            FileWriter(petsFile).use { writer ->
-                writer.write("")
-            }
-        }
-        else{
-            pets.remove(pet)
-            val json = gson.toJson(pets)
-            FileWriter(petsFile).use { writer ->
-                writer.write(json)
-            }
+    fun deleteAllPets() {
+        FileWriter(petsFile).use { writer ->
+            writer.write("")
         }
 
     }
