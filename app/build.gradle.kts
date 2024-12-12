@@ -19,6 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -61,6 +62,13 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.runtime.livedata)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
     annotationProcessor(libs.compiler)
     implementation(libs.retrofit)
     //Coroutines
@@ -91,7 +99,16 @@ dependencies {
     // UI tests
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
-    //
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    // Unit Testings
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.truth)
+
+    //Mock
+    testImplementation(libs.mockk)
+
     implementation(libs.jsoup)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
@@ -104,9 +121,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.cronet.embedded)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+
 }
 kapt {
     correctErrorTypes = true

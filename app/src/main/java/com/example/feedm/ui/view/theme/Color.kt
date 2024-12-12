@@ -1,4 +1,4 @@
-package com.example.feedm.ui.view.ui.theme
+package com.example.feedm.ui.view.theme
 
 import androidx.compose.ui.graphics.Color
 

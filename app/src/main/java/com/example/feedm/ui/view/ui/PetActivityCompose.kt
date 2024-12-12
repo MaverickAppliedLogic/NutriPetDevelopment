@@ -1,4 +1,4 @@
-package com.example.feedm.ui.view
+package com.example.feedm.ui.view.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -47,8 +47,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.domain.model.Pet
-import com.example.feedm.ui.view.ui.theme.Orange
-import com.example.feedm.ui.view.ui.theme.TailyCareTheme
+import com.example.feedm.ui.view.theme.Orange
+import com.example.feedm.ui.view.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -81,14 +81,14 @@ class PetActivityCompose : ComponentActivity() {
                         }
                     }}) { innerPadding ->
                     PetsScreen(petViewModel, onIconClicked = {deletePet(it)},
-                        modifier = Modifier.padding(innerPadding))
+                        modifier = Modifier.padding(innerPadding).background(Color.White))
                 }
             }
         }
     }
 
     private fun addNewPet(){
-        val intent = Intent(this@PetActivityCompose,FromActivityCompose::class.java)
+        val intent = Intent(this@PetActivityCompose, FromActivityCompose::class.java)
         startActivity(intent)
     }
 
@@ -125,10 +125,10 @@ fun PetsList(pets: List<Pet>, onIconClicked: (Pet) -> Unit, modifier: Modifier =
 @Composable
 fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifier) {
     Card(
-        colors = CardColors(containerColor = Color.White, contentColor = Orange,
+        colors = CardColors(containerColor = Color.White, contentColor = Color.Black,
             disabledContentColor = Color.White,
             disabledContainerColor = Color.White),
-        elevation = CardDefaults.cardElevation(10.dp),
+        elevation = CardDefaults.cardElevation(2.dp),
         onClick = { /*TODO*/ },
         modifier = modifier
             .fillMaxWidth()
