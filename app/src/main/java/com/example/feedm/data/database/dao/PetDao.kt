@@ -1,6 +1,7 @@
 package com.example.feedm.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -28,6 +29,6 @@ interface PetDao {
     @Update
     suspend fun updatePet(pet: PetEntity)
 
-    @Query("DELETE FROM pet_table WHERE id = :petId")
-    suspend fun deletePet(petId: Int)
+    @Query("DELETE FROM pet_table WHERE id = :id")
+    suspend fun deletePet(id: Int)
 }
