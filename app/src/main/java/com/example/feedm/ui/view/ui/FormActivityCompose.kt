@@ -1,7 +1,8 @@
-package com.example.feedm.ui.view
+package com.example.feedm.ui.view.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -63,10 +64,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
 import com.example.feedm.domain.model.Pet
-import com.example.feedm.ui.view.ui.theme.Orange
-import com.example.feedm.ui.view.ui.theme.OrangeSemiTransparent
-import com.example.feedm.ui.view.ui.theme.RedSemiTransparent
-import com.example.feedm.ui.view.ui.theme.TailyCareTheme
+import com.example.feedm.ui.view.theme.Orange
+import com.example.feedm.ui.view.theme.OrangeSemiTransparent
+import com.example.feedm.ui.view.theme.RedSemiTransparent
+import com.example.feedm.ui.view.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -82,6 +83,9 @@ class FromActivityCompose : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         petViewModel.onCreate()
+        if(petViewModel.pets.value!!.isNotEmpty()) {
+            Toast.makeText(this,"Hay mascotas",Toast.LENGTH_SHORT).show()
+        }
         setContent {
             TailyCareTheme {
                 var id = 0
@@ -164,6 +168,7 @@ class FromActivityCompose : ComponentActivity() {
                         onImageChange = { animal = it },
                         name = name,
                         nameIsEmpty = nameIsEmpty,
+                        animal = animal,
                         onNameChange = { name = it
                                        nameIsEmpty = false},
                         age = age,
@@ -243,6 +248,7 @@ fun FormScreen(
     onImageChange: (String) -> Unit,
     name: String,
     nameIsEmpty: Boolean,
+    animal: String,
     onNameChange: (String) -> Unit,
     age: String,
     ageIsUnselected: Boolean,
@@ -288,10 +294,12 @@ fun FormScreen(
                 .padding(top = 10.dp)
         ) {
             val spacerPadding = 15.dp
-            PetName(name = name, nameIsEmpty = nameIsEmpty, onImageChange = { onImageChange(it) },
+            PetName(name = name, nameIsEmpty = nameIsEmpty,
+                animal = animal,
+                onImageChange = { onImageChange(it) },
                 onTextChange = { onNameChange(it) })
             Card(
-                elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
 
@@ -310,7 +318,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
-                elevation = CardDefaults.cardElevation(5.dp),
+                elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 val optionsSex = stringArrayResource(id = R.array.fa_arraySpinnerSexo).toList()
@@ -325,7 +333,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
-                elevation = CardDefaults.cardElevation(5.dp),
+                elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 CustomSlider(
@@ -337,7 +345,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(10.dp))
 
             Card(
-                elevation = CardDefaults.cardElevation(5.dp),
+                elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 CustomDropDownMenu(
@@ -354,7 +362,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(spacerPadding))
 
             Card(
-                elevation = CardDefaults.cardElevation(5.dp),
+                elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
 
@@ -371,7 +379,7 @@ fun FormScreen(
             Spacer(modifier = Modifier.padding(10.dp))
 
             Card(
-                elevation = CardDefaults.cardElevation(5.dp),
+                elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier.padding(vertical = 10.dp)
             ) {
@@ -399,6 +407,7 @@ fun PetName(
     modifier: Modifier = Modifier,
     name: String,
     nameIsEmpty: Boolean,
+    animal: String,
     onImageChange: (String) -> Unit,
     onTextChange: (String) -> Unit
 ) {
@@ -408,17 +417,20 @@ fun PetName(
             .height(125.dp)
             .padding(15.dp)
     ) {
-        IconButton(
-            onClick = { onImageChange("cat") },
-            Modifier
+        IconButton(onClick = { onImageChange(if(animal == "dog") "cat" else "dog" ) },
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp))
                 .weight(0.3f)
                 .fillMaxHeight()
+
         ) {
+            val animalImg = if(animal == "dog") R.drawable.img_dog_illustration else
+                R.drawable.gato
             Image(
-                painter = painterResource(id = R.drawable.img_dog_illustration),
+                painter = painterResource(id = animalImg),
                 contentDescription = "",
                 modifier = Modifier.padding(10.dp)
             )
+
         }
         OutlinedTextField(
             value = name,
@@ -639,6 +651,7 @@ fun FormScreenPreview() {
                 modifier = Modifier.padding(innerPadding),
                 name = "example",
                 nameIsEmpty = false,
+                animal = "cat",
                 onNameChange = {},
                 age = "example",
                 ageIsUnselected = false,

@@ -7,8 +7,8 @@ import com.example.feedm.domain.model.Pet
 
 @Entity(tableName = "pet_table")
 data class PetEntity(
-    @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "id")val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")val id: Int = 0,
     @ColumnInfo(name = "animal")val animal: String,
     @ColumnInfo(name = "name")val nombre: String,
     @ColumnInfo(name = "age")val edad: String,
@@ -23,7 +23,6 @@ data class PetEntity(
 
 fun Pet.toDataBase() =
     PetEntity(
-        id = id,
         animal =  animal,
         nombre =  nombre,
         edad = edad,

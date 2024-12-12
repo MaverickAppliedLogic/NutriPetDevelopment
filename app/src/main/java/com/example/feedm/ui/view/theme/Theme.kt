@@ -1,4 +1,4 @@
-package com.example.feedm.ui.view.ui.theme
+package com.example.feedm.ui.view.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
