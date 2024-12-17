@@ -9,6 +9,7 @@ val OrangeSoft = Color(0xFFFFCB5E)
 val Orange = Color(0xFFFFAB00)
 val OrangeSemiTransparent = Color(0x6DFF9900)
 val RedSemiTransparent = Color(0x8FFDA0A0)
+val AlmostWhite = Color(0xFFF1F1F1)
 
 
 val Purple40 = Color(0xFF6650a4)

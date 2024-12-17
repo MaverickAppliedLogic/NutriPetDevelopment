@@ -28,9 +28,12 @@ class PetViewModel @Inject constructor(
     private val _pet = MutableLiveData<Pet>()
     val pet: LiveData<Pet> = _pet
 
+    init {
+        getData()
+    }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun onCreate() {
+    fun getData() {
         viewModelScope.launch {
             val result = getPetsUseCase()
             if (result.isNotEmpty()) {
@@ -48,21 +51,21 @@ class PetViewModel @Inject constructor(
     fun deletePet(pet: Pet) {
         viewModelScope.launch {
             deletePetUseCase(pet)
-            onCreate()
+            getData()
         }
     }
 
     fun addPet(pet: Pet) {
         viewModelScope.launch {
             addPetUseCase(pet)
-            onCreate()
+            getData()
         }
     }
 
     fun editPet(pet: Pet) {
         viewModelScope.launch {
             editPetUseCase(pet)
-            onCreate()
+            getData()
         }
     }
 

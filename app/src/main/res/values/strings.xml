@@ -55,6 +55,16 @@
     <string name="title_activity_pet_compose">PetsActivity</string>
     <string name="title_activity_from_compose">FormActivity</string>
     <string name="title_activity_pet">PetActivity</string>
+    <string name="pia_FoodModuleTitle">Registro Comidas</string>
+    <string name="pia_FoodModuleBottomTxt">Recomendado</string>
+    <string name="pia_HealthModuleTitle">Salud</string>
+    <string name="pia_HealthModuleTxt1">Peso actual</string>
+    <string name="pia_HealthModuleTxt2">Objetivo</string>
+    <string name="pia_HealthModuleTxt3">Actividad</string>
+    <string name="pia_RecordModuleTitle">Ficha</string>
+    <string name="pia_RecordModuleTxt1">Esterilizado</string>
+    <string name="pia_RecordModuleTxt2">Sexo</string>
+    <string name="pia_RecordModuleTxt3">Edad</string>
 
 
 </resources>

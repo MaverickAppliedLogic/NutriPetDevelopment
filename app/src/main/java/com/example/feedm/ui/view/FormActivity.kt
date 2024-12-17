@@ -82,10 +82,6 @@ class FormActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-        petViewModel.onCreate()
-        if(petViewModel.pets.value!!.isNotEmpty()) {
-            Toast.makeText(this,"Hay mascotas",Toast.LENGTH_SHORT).show()
-        }
         setContent {
             TailyCareTheme {
                 var animal by remember { mutableStateOf("dog") }
