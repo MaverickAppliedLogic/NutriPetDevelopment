@@ -1,4 +1,4 @@
-package com.example.feedm.ui.view.ui
+package com.example.feedm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -73,7 +73,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class FromActivityCompose : ComponentActivity() {
+class FormActivity : ComponentActivity() {
 
     private val petViewModel: PetViewModel by viewModels()
 
@@ -196,7 +196,7 @@ class FromActivityCompose : ComponentActivity() {
         objective: String,
         onValidationFailed: (String) -> Unit
     ) {
-        val intent = Intent(this@FromActivityCompose, PetActivityCompose::class.java)
+        val intent = Intent(this@FormActivity, PetsActivity::class.java)
         if (name == "") {
             onValidationFailed("name")
             return
@@ -223,7 +223,7 @@ class FromActivityCompose : ComponentActivity() {
     }
 
     private fun cancelAddNewPet() {
-        val intent = Intent(this@FromActivityCompose, PetActivityCompose::class.java)
+        val intent = Intent(this@FormActivity, PetsActivity::class.java)
         startActivity(intent)
     }
 }
@@ -281,7 +281,7 @@ fun FormScreen(
                 .padding(top = 10.dp)
         ) {
             val spacerPadding = 15.dp
-            PetName(name = name, nameIsEmpty = nameIsEmpty,
+            PetImage(name = name, nameIsEmpty = nameIsEmpty,
                 animal = animal,
                 onImageChange = { onImageChange(it) },
                 onTextChange = { onNameChange(it) })
@@ -396,7 +396,7 @@ fun FormScreen(
 
 
 @Composable
-fun PetName(
+fun PetImage(
     modifier: Modifier = Modifier,
     name: String,
     nameIsEmpty: Boolean,

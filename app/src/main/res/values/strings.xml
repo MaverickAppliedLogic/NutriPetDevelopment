@@ -52,8 +52,9 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="title_activity_pet_compose">PetActivityCompose</string>
-    <string name="title_activity_from_compose">FromActivityCompose</string>
+    <string name="title_activity_pet_compose">PetsActivity</string>
+    <string name="title_activity_from_compose">FormActivity</string>
+    <string name="title_activity_pet">PetActivity</string>
 
 
 </resources>

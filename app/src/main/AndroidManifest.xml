@@ -17,12 +17,17 @@
         android:theme="@style/Theme.Feedm"
         tools:targetApi="31">
         <activity
-            android:name=".ui.view.ui.FromActivityCompose"
+            android:name=".ui.view.PetActivity"
+            android:exported="false"
+            android:label="@string/title_activity_pet"
+            android:theme="@style/Theme.Feedm" />
+        <activity
+            android:name=".ui.view.FormActivity"
             android:exported="true"
             android:label="@string/title_activity_from_compose"
             android:theme="@style/Theme.Feedm" />
         <activity
-            android:name=".ui.view.ui.PetActivityCompose"
+            android:name=".ui.view.PetsActivity"
             android:exported="true"
             android:label="@string/title_activity_pet_compose"
             android:theme="@style/Theme.Feedm">
@@ -32,7 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
