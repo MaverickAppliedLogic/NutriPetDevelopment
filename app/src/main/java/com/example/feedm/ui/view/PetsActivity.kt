@@ -60,7 +60,6 @@ class PetsActivity : ComponentActivity() {
     private  val petViewModel: PetViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        petViewModel.onCreate()
         setContent {
             TailyCareTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(),
