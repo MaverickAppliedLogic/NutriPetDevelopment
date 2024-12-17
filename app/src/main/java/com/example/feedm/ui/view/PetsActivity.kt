@@ -1,4 +1,4 @@
-package com.example.feedm.ui.view.ui
+package com.example.feedm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -54,7 +55,7 @@ import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PetActivityCompose : ComponentActivity() {
+class PetsActivity : ComponentActivity() {
 
     private  val petViewModel: PetViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,14 +83,16 @@ class PetActivityCompose : ComponentActivity() {
                         }
                     }}) { innerPadding ->
                     PetsScreen(petViewModel, onIconClicked = {deletePet(it)},
-                        modifier = Modifier.padding(innerPadding).background(Color.White))
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .background(Color.White))
                 }
             }
         }
     }
 
     private fun addNewPet(){
-        val intent = Intent(this@PetActivityCompose, FromActivityCompose::class.java)
+        val intent = Intent(this@PetsActivity, FormActivity::class.java)
         startActivity(intent)
     }
 
@@ -170,21 +173,26 @@ fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifi
 
 @Composable
 fun AddPetButton(modifier: Modifier = Modifier, onClick: () -> Unit)  {
-    ElevatedButton(
+    ElevatedButton(elevation = ButtonDefaults.elevatedButtonElevation(2.dp),
         onClick = onClick, colors = ButtonColors(contentColor = Orange,
-            containerColor = Color.White, disabledContainerColor = Color.White,
-            disabledContentColor = Color.White),shape = CircleShape, modifier = modifier.size(70.dp)
+            containerColor = Orange, disabledContainerColor = Orange,
+            disabledContentColor = Orange),shape = CircleShape,
+        modifier = modifier.size(70.dp)
     ) {
         Row {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Add Icon",
-                tint = Orange,
+                tint = Color.White,
                 modifier = Modifier.fillMaxSize(1f)
             )
         }
+
     }
+
+
 }
+
 
 
 @Preview(showBackground = true, showSystemUi = true, heightDp = 640)
