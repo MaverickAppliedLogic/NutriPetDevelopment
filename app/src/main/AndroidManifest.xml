@@ -17,17 +17,17 @@
         android:theme="@style/Theme.Feedm"
         tools:targetApi="31">
         <activity
-            android:name=".ui.view.PetInfoActivity"
+            android:name=".petsFeature.ui.view.PetInfoActivity"
             android:exported="true"
             android:label="@string/title_activity_pet"
             android:theme="@style/Theme.Feedm" />
         <activity
-            android:name=".ui.view.FormActivity"
+            android:name=".petsFeature.ui.view.FormActivity"
             android:exported="true"
             android:label="@string/title_activity_from_compose"
             android:theme="@style/Theme.Feedm" />
         <activity
-            android:name=".ui.view.PetsActivity"
+            android:name=".petsFeature.ui.view.PetsActivity"
             android:exported="true"
             android:label="@string/title_activity_pet_compose"
             android:theme="@style/Theme.Feedm">

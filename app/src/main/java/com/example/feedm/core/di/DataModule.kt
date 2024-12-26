@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.feedm.data.database.PetDatabase
+import com.example.feedm.core.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +19,9 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideFilesDir (@ApplicationContext context: Context): File{
+    fun provideFilesDir(@ApplicationContext context: Context): File {
         val petsFile = File(context.filesDir, "pets")
-        if(!petsFile.exists()){
+        if (!petsFile.exists()) {
             petsFile.createNewFile()
         }
         return petsFile
@@ -30,42 +30,99 @@ object DataModule {
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, PetDatabase::class.java, "pet_database")
-            .addMigrations(MIGRATION2_3)
+        Room.databaseBuilder(context, AppDatabase::class.java, "app_database")
+            .addMigrations(MIGRATION)
             .build()
 
-    @Singleton
-    @Provides
-    fun providePetDao(db:PetDatabase) = db.getPetDao()
 
-    val MIGRATION2_3 = object: Migration(2,3){
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("""
-            CREATE TABLE pet_table_new (
-                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-                animal TEXT NOT NULL, 
-                name TEXT NOT NULL, 
-                age TEXT NOT NULL, 
-                weight REAL NOT NULL, 
-                genre TEXT NOT NULL, 
-                esterilized TEXT NOT NULL, 
-                activity TEXT NOT NULL, 
-                goal TEXT NOT NULL, 
-                allergies TEXT NOT NULL DEFAULT 'Nada', 
-                query TEXT NOT NULL
+    val MIGRATION = object : Migration(5, 6) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            // Crear la nueva tabla "food_table_new"
+            db.execSQL(
+                """
+            CREATE TABLE food_table_new (
+                food_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                food_name TEXT NOT NULL,
+                brand TEXT NOT NULL,
+                food_weight REAL,
+                calories REAL NOT NULL
             )
-        """.trimIndent())
+            """.trimIndent()
+            )
 
-                db.execSQL("""
-            INSERT INTO pet_table_new (animal, name, age, weight, genre, esterilized, activity, goal, allergies, query)
-            SELECT animal, name, age, weight, genre, esterilized, activity, goal, allergies, query FROM pet_table
-        """.trimIndent())
+            // Crear la nueva tabla "pet_table_new"
+            db.execSQL(
+                """
+            CREATE TABLE pet_table_new (
+                pet_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                food_id INTEGER,
+                animal TEXT NOT NULL,
+                pet_name TEXT NOT NULL,
+                age REAL NOT NULL,
+                pet_weight REAL NOT NULL,
+                genre TEXT,
+                sterilized INTEGER,
+                activity TEXT NOT NULL,
+                goal TEXT NOT NULL,
+                allergies TEXT,
+                FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE NO ACTION
+            )
+            """.trimIndent()
+            )
 
-                db.execSQL("DROP TABLE pet_table")
 
-                db.execSQL("ALTER TABLE pet_table_new RENAME TO pet_table")
 
-            }
+
+
+            // Crear la nueva tabla "meal_table_new"
+            db.execSQL(
+                """
+            CREATE TABLE meal_table_new (
+                meal_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                pet_id INTEGER NOT NULL,
+                food_id INTEGER,
+                meal_time INTEGER NOT NULL,
+                ration REAL NOT NULL,
+                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE NO ACTION,
+                FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE NO ACTION
+            )
+            """.trimIndent()
+            )
+
+            // Migrar datos de las tablas antiguas
+            db.execSQL(
+                """
+            INSERT INTO food_table_new (food_id, food_name, brand, food_weight, calories)
+            SELECT food_id, food_name, brand, food_weight, calories FROM food_table
+            """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+            INSERT INTO pet_table_new (pet_id, food_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
+            SELECT pet_id, food_id, animal, name, age, weight, genre, sterilized, activity, goal, allergies FROM pet_table
+            """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+            INSERT INTO meal_table_new (meal_id, pet_id, food_id, meal_time, ration)
+            SELECT meal_id, pet_id, food_id, meal_time, ration FROM meal_table
+            """.trimIndent()
+            )
+
+            // Eliminar tablas antiguas
+            db.execSQL("DROP TABLE food_table")
+            db.execSQL("DROP TABLE pet_table")
+            db.execSQL("DROP TABLE meal_table")
+
+            // Renombrar las tablas nuevas a los nombres originales
+            db.execSQL("ALTER TABLE food_table_new RENAME TO food_table")
+            db.execSQL("ALTER TABLE pet_table_new RENAME TO pet_table")
+            db.execSQL("ALTER TABLE meal_table_new RENAME TO meal_table")
         }
     }
+
+
+}
 
