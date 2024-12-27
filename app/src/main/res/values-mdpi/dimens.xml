@@ -20,7 +20,7 @@
     <dimen name="formActivity_imgSelectAnimal_marginStart">5dp</dimen>
     <dimen name="formActivity_imgSelectAnimal_marginBottom">22dp</dimen>
 
-    <!-- Pet Name EditText Dimensions -->
+    <!-- PetModel Name EditText Dimensions -->
     <dimen name="formActivity_etPetName_width">135dp</dimen>
     <dimen name="formActivity_etPetName_height">36dp</dimen>
     <dimen name="formActivity_etPetName_marginStart">6dp</dimen>

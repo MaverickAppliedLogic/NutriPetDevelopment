@@ -1,11 +1,10 @@
 package com.example.feedm.petsFeature.data
 
-import com.example.feedm.core.database.dao.PetDao
-import com.example.feedm.core.database.entities.PetEntity
-import com.example.feedm.petsFeature.data.local.PetLocalStorageProvider
-import com.example.feedm.petsFeature.data.local.PetModel
-import com.example.feedm.petsFeature.domain.model.Pet
-import com.example.feedm.petsFeature.domain.model.toDomain
+import com.example.feedm.core.data.database.dao.PetDao
+import com.example.feedm.core.data.database.entities.PetEntity
+import com.example.feedm.core.data.local.PetLocalStorageProvider
+import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.core.domain.model.toDomain
 import javax.inject.Inject
 
 
@@ -16,8 +15,8 @@ class PetsRepository @Inject constructor(
 
 
 //Local Storage
-    fun getAllPetsFromStorage(): List<Pet> {
-        return petsStorage.getAllPets().map { it.toDomain() }
+    fun getAllPetsFromStorage(): List<PetModel> {
+        return petsStorage.getAllPets()
     }
 
     fun insertPetsToStorage(pets: List<PetModel>) {
@@ -30,7 +29,7 @@ class PetsRepository @Inject constructor(
 
 
 //DataBase
-    suspend fun getAllPetsFromDB(): List<Pet> {
+    suspend fun getAllPetsFromDB(): List<PetModel> {
         return petsDao.getAllPets().map { it.toDomain() }
     }
 

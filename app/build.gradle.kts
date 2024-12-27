@@ -70,6 +70,8 @@ dependencies {
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
     annotationProcessor(libs.compiler)
     implementation(libs.retrofit)
     //Coroutines

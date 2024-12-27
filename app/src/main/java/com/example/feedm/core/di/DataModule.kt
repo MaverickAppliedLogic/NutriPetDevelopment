@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.feedm.core.database.AppDatabase
+import com.example.feedm.core.data.database.AppDatabase
+import com.example.feedm.core.data.database.dao.MealDao
+import com.example.feedm.core.data.database.dao.PetDao
+import com.example.feedm.core.data.local.PetLocalStorageProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +28,12 @@ object DataModule {
             petsFile.createNewFile()
         }
         return petsFile
+    }
+
+    @Singleton
+    @Provides
+    fun petLocalStorage(file: File): PetLocalStorageProvider{
+        return PetLocalStorageProvider(file)
     }
 
     @Singleton
@@ -69,10 +78,6 @@ object DataModule {
             )
             """.trimIndent()
             )
-
-
-
-
 
             // Crear la nueva tabla "meal_table_new"
             db.execSQL(
@@ -123,6 +128,14 @@ object DataModule {
         }
     }
 
+    @Provides
+    fun providePetDao(db: AppDatabase): PetDao {
+       return db.getPetDao()
+    }
 
+    @Provides
+    fun provideMealDao(db: AppDatabase): MealDao{
+        return db.getMealDao()
+    }
 }
 

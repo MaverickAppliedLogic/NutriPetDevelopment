@@ -10,7 +10,7 @@ import com.example.feedm.petsFeature.domain.AddPet
 import com.example.feedm.petsFeature.domain.DeletePet
 import com.example.feedm.petsFeature.domain.EditPet
 import com.example.feedm.petsFeature.domain.GetPets
-import com.example.feedm.petsFeature.domain.model.Pet
+import com.example.feedm.core.domain.model.PetModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,10 +23,10 @@ class PetViewModel @Inject constructor(
     private val getPetsUseCase: GetPets
 ) : ViewModel() {
 
-    private val _pets = MutableLiveData<List<Pet>>(emptyList())
-    val pets: LiveData<List<Pet>> = _pets
-    private val _pet = MutableLiveData<Pet>()
-    val pet: LiveData<Pet> = _pet
+    private val _pets = MutableLiveData<List<PetModel>>(emptyList())
+    val pets: LiveData<List<PetModel>> = _pets
+    private val _petModel = MutableLiveData<PetModel>()
+    val petModel: LiveData<PetModel> = _petModel
 
     init {
         getData()
@@ -48,23 +48,23 @@ class PetViewModel @Inject constructor(
     }
 
 
-    fun deletePet(pet: Pet) {
+    fun deletePet(petModel: PetModel) {
         viewModelScope.launch {
-            deletePetUseCase(pet)
+            deletePetUseCase(petModel)
             getData()
         }
     }
 
-    fun addPet(pet: Pet) {
+    fun addPet(petModel: PetModel) {
         viewModelScope.launch {
-            addPetUseCase(pet)
+            addPetUseCase(petModel)
             getData()
         }
     }
 
-    fun editPet(pet: Pet) {
+    fun editPet(petModel: PetModel) {
         viewModelScope.launch {
-            editPetUseCase(pet)
+            editPetUseCase(petModel)
             getData()
         }
     }
