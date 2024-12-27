@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Feedm"
         tools:targetApi="31">
         <activity
-            android:name=".petsFeature.ui.view.PetInfoActivity"
+            android:name=".petMealsFeature.ui.view.PetDetailsActivity"
             android:exported="true"
             android:label="@string/title_activity_pet"
             android:theme="@style/Theme.Feedm" />

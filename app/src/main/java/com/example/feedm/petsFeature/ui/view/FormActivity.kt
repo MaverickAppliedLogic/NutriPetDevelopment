@@ -62,7 +62,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.model.Pet
+import com.example.feedm.core.domain.model.PetModel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.OrangeSemiTransparent
 import com.example.feedm.ui.view.theme.RedSemiTransparent
@@ -217,7 +217,7 @@ class FormActivity : ComponentActivity() {
             return
         }
         petViewModel.addPet(
-            Pet(
+            PetModel(
                 animal = animal,
                 petName = name,
                 age = age,

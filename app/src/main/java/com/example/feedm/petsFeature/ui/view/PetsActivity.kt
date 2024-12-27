@@ -47,8 +47,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.model.Pet
+import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petMealsFeature.ui.view.PetDetailsActivity
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
@@ -81,7 +83,9 @@ class PetsActivity : ComponentActivity() {
                             AddPetButton(onClick = {addNewPet()})
                         }
                     }}) { innerPadding ->
-                    PetsScreen(petViewModel, onIconClicked = {deletePet(it)},
+                    PetsScreen(petViewModel,
+                        onItemClicked = {goToPetDetails(it)},
+                        onIconClicked = {deletePet(it)},
                         modifier = Modifier
                             .padding(innerPadding)
                             .background(Color.White))
@@ -95,8 +99,15 @@ class PetsActivity : ComponentActivity() {
         startActivity(intent)
     }
 
-    private fun deletePet(pet: Pet){
-        petViewModel.deletePet(pet)
+    private fun deletePet(petModel: PetModel){
+        petViewModel.deletePet(petModel)
+    }
+
+    private fun goToPetDetails(petModel: PetModel){
+        val intent = Intent(this@PetsActivity, PetDetailsActivity::class.java)
+        val bundle = Bundle().apply { putInt("petID", petModel.petId) }
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
 
@@ -104,36 +115,48 @@ class PetsActivity : ComponentActivity() {
 
 
 @Composable
-fun PetsScreen(petViewModel: PetViewModel, onIconClicked: (Pet) -> Unit ,modifier: Modifier = Modifier) {
-    val pets: List<Pet> by petViewModel.pets.observeAsState(initial = emptyList())
+fun PetsScreen(petViewModel: PetViewModel,
+               onItemClicked: (PetModel) -> Unit,
+               onIconClicked: (PetModel) -> Unit,
+               modifier: Modifier = Modifier) {
+    val petModels: List<PetModel> by petViewModel.pets.observeAsState(initial = emptyList())
     Box(
         modifier = modifier
             .fillMaxSize()
             .padding(top = 20.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
-        PetsList(pets, onIconClicked = {onIconClicked(it)}, modifier = modifier.fillMaxSize(1f))
+        PetsList(petModels,
+            onIconClicked = {onIconClicked(it)},
+            onItemClicked = {onItemClicked(it)},
+            modifier = modifier.fillMaxSize(1f))
     }
 
 }
 
 
 @Composable
-fun PetsList(pets: List<Pet>, onIconClicked: (Pet) -> Unit, modifier: Modifier = Modifier) {
+fun PetsList(petModels: List<PetModel>,
+             onItemClicked: (PetModel) -> Unit,
+             onIconClicked: (PetModel) -> Unit,
+             modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.fillMaxWidth()) {
-        items(items = pets) { pet -> PetItem(pet,onIconClicked) }
+        items(items = petModels) { pet -> PetItem(pet,onItemClicked, onIconClicked) }
     }
 }
 
 @Composable
-fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifier) {
+fun PetItem(petModel: PetModel,
+            onItemClicked: (PetModel) -> Unit,
+            onIconClicked: (PetModel) -> Unit,
+            modifier: Modifier = Modifier) {
     Card(
         colors = CardColors(containerColor = Color.White, contentColor = Color.Black,
             disabledContentColor = Color.White,
             disabledContainerColor = Color.White),
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(2.dp),
-        onClick = { /*TODO*/ },
+        onClick = { onItemClicked(petModel) },
         modifier = modifier
             .fillMaxWidth()
             .padding(7.dp)
@@ -141,7 +164,7 @@ fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifi
         Row(
             Modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 25.dp)
         ) {
-            if (pet.animal == "dog") {
+            if (petModel.animal == "dog") {
                 Image(
                     painter = painterResource(id = R.drawable.img_dog_illustration),
                     contentDescription = "dog",
@@ -153,7 +176,7 @@ fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifi
                 )
             }
             Text(
-                text = pet.petName,
+                text = petModel.petName,
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center,
                 modifier = modifier
@@ -161,7 +184,7 @@ fun PetItem(pet: Pet, onIconClicked: (Pet) -> Unit , modifier: Modifier = Modifi
                     .padding(top = 10.dp)
             )
 
-            IconButton(onClick = { onIconClicked(pet) }, modifier = Modifier.align(Alignment.CenterVertically)) {
+            IconButton(onClick = { onIconClicked(petModel) }, modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(imageVector = Icons.Default.Delete,
                     contentDescription = "", tint = Color.Gray,
                     modifier = Modifier.align(Alignment.CenterVertically))
@@ -197,8 +220,8 @@ fun AddPetButton(modifier: Modifier = Modifier, onClick: () -> Unit)  {
 @Preview(showBackground = true, showSystemUi = true, heightDp = 640)
 @Composable
 fun PetScreenPreview(modifier: Modifier = Modifier) {
-    val pets: List<Pet> = List(20) {
-        Pet( 0,null,"dog", "Example", 3.0f,0.5f, "macho", true, "alta", "bajar peso", "nada"
+    val petModels: List<PetModel> = List(20) {
+        PetModel( 0,null,"dog", "Example", 3.0f,0.5f, "macho", true, "alta", "bajar peso", "nada"
         )
     }
     TailyCareTheme {
@@ -217,7 +240,8 @@ fun PetScreenPreview(modifier: Modifier = Modifier) {
                     .padding(innerPadding),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                PetsList(pets, onIconClicked = {} ,modifier = modifier.fillMaxSize(1f))
+                PetsList(petModels, onIconClicked = {} ,
+                    onItemClicked = {}, modifier = modifier.fillMaxSize(1f))
             }
         }
     }
