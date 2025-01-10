@@ -47,7 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.PetModel
 import com.example.feedm.petMealsFeature.ui.view.PetDetailsActivity
@@ -105,8 +104,7 @@ class PetsActivity : ComponentActivity() {
 
     private fun goToPetDetails(petModel: PetModel){
         val intent = Intent(this@PetsActivity, PetDetailsActivity::class.java)
-        val bundle = Bundle().apply { putInt("petID", petModel.petId) }
-        intent.putExtras(bundle)
+        intent.putExtra("PetId",petModel.petId)
         startActivity(intent)
     }
 
@@ -164,6 +162,7 @@ fun PetItem(petModel: PetModel,
         Row(
             Modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 25.dp)
         ) {
+            //TODO arreglar dimensiones de la imagen del gato
             if (petModel.animal == "dog") {
                 Image(
                     painter = painterResource(id = R.drawable.img_dog_illustration),

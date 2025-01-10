@@ -1,6 +1,7 @@
 package com.example.feedm.petMealsFeature.ui.view
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,57 +26,75 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.compose.ui.unit.sp
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.MealModel
 import com.example.feedm.core.domain.model.PetModel
-import com.example.feedm.petMealsFeature.domain.GetPetMeals
 import com.example.feedm.petMealsFeature.domain.model.PetMealsModel
 import com.example.feedm.petMealsFeature.ui.viewmodel.PetMealViewModel
+import com.example.feedm.petsFeature.ui.view.EditPetActivity
+import com.example.feedm.petsFeature.ui.view.FormActivity
+import com.example.feedm.petsFeature.ui.view.PetsActivity
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.TailyCareTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
+import okhttp3.internal.format
+
+//TODO Al darle al botón de volver atrás asegurarse de que vuelva a `PetsActivity` y no a
+// `EditPetActivity`
 
 @AndroidEntryPoint
 class PetDetailsActivity : ComponentActivity() {
 
-    private val petId = intent.extras!!.getInt("petID")
     private val petMealViewModel: PetMealViewModel by viewModels()
 
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val petId = intent.extras!!.getInt("PetId")
         setContent {
 
             TailyCareTheme {
@@ -105,14 +124,14 @@ class PetDetailsActivity : ComponentActivity() {
                             ),
                             title = {
                                 Text(
-                                    text = "Toby",
+                                    text = petMeals.pet.petName,
                                     style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             },
                             navigationIcon = {
-                                IconButton(onClick = { /*TODO*/ }) {
+                                IconButton(onClick = { goBack() }) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                                         contentDescription = "ArrowBack",
@@ -122,12 +141,13 @@ class PetDetailsActivity : ComponentActivity() {
                             },
                             actions = {
                                 Row {
-                                    IconButton(onClick = { /*TODO*/ }) {
+                                    IconButton(onClick = { editPet() }) {
                                         Icon(
                                             imageVector = Icons.Default.Create,
                                             contentDescription = "ArrowBack",
                                             tint = Color.Black
                                         )
+
                                     }
                                 }
                             },
@@ -136,27 +156,70 @@ class PetDetailsActivity : ComponentActivity() {
                     }) { innerPadding ->
 
                     ScaffoldContent(
+                        petMeals = petMeals,
                         modifier = Modifier
                             .padding(innerPadding)
                             .fillMaxSize()
                             .verticalScroll(scrollState)
                             .background(Color.White)
                     )
+
                 }
             }
         }
     }
+
+    private fun editPet(){
+        intent.setClass(this@PetDetailsActivity, EditPetActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goBack(){
+        intent.setClass(this@PetDetailsActivity, PetsActivity::class.java)
+        intent.removeExtra("PetId")
+        startActivity(intent)
+    }
+
 }
+
+
+@Composable
+fun PetImage(petAnimal: String) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(125.dp)
+            .background(color = Orange)
+    ) {
+        val imageResourceId = if (petAnimal == "dog") {
+            R.drawable.img_dog_illustration
+        } else {
+            R.drawable.gato
+        }
+        Image(
+            painter = painterResource(id = imageResourceId),
+            contentDescription = "PetModel Image",
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)
+        )
+    }
+}
+
 
 @Composable
 fun ScaffoldContent(
+    petMeals: PetMealsModel,
     modifier: Modifier = Modifier
 ) {
 
     Column(modifier = modifier.fillMaxSize()) {
-        PetImage()
+        PetImage(petMeals.pet.animal)
         Spacer(modifier = Modifier.padding(15.dp))
-        PetActivityModules(modifier = Modifier.padding(horizontal = 15.dp))
+        PetDetailsActivityModules(
+            petMeals = petMeals,
+            modifier = Modifier.padding(horizontal = 15.dp)
+        )
         Spacer(modifier = Modifier.padding(5.dp))
         Row(
             modifier = Modifier
@@ -186,39 +249,24 @@ fun ScaffoldContent(
 }
 
 @Composable
-fun PetActivityModules(modifier: Modifier = Modifier) {
+fun PetDetailsActivityModules(
+    petMeals: PetMealsModel,
+    modifier: Modifier = Modifier
+) {
     val spacerPadding = 20.dp
-    FoodModule(modifier)
+    MealsModule(petMeals.meals, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
-    HealthModule(modifier)
+    HealthModule(petMeals.pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
-    RecordModule(modifier)
+    RecordModule(petMeals.pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
 }
 
-
 @Composable
-fun PetImage() {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(125.dp)
-            .background(color = Orange)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.img_dog_illustration),
-            contentDescription = "PetModel Image",
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)
-        )
-    }
-}
-
-
-@Composable
-fun FoodModule(modifier: Modifier = Modifier) {
-    val list = listOf("example", "example", "example")
+fun MealsModule(
+    meals: List<MealModel>,
+    modifier: Modifier = Modifier
+) {
     val modifierForElements = Modifier
         .fillMaxWidth()
         .background(color = Color.White)
@@ -241,8 +289,8 @@ fun FoodModule(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(top = 5.dp, end = 5.dp),
                 color = Color.Gray
             )
-            for (i in list) {
-                Food(modifierForElements)
+            for (meal in meals) {
+                MealItem(meal, modifierForElements)
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 5.dp, end = 15.dp, start = 5.dp)
                 )
@@ -263,9 +311,11 @@ fun FoodModule(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Composable
-fun Food(modifier: Modifier = Modifier) {
+fun MealItem(
+    meal: MealModel,
+    modifier: Modifier = Modifier
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -286,7 +336,7 @@ fun Food(modifier: Modifier = Modifier) {
 
         ) {
             Text(
-                text = "65",
+                text = meal.ration.toInt().toString(),
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
@@ -339,7 +389,10 @@ fun Food(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun HealthModule(modifier: Modifier = Modifier) {
+fun HealthModule(
+    pet: PetModel,
+    modifier: Modifier = Modifier
+) {
     val modifierForElements = Modifier
         .fillMaxWidth()
         .background(color = Color.White)
@@ -366,6 +419,7 @@ fun HealthModule(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(top = 5.dp, end = 5.dp),
                 color = Color.Gray
             )
+            val weightToString = format("%.2f", pet.petWeight)
             Row(modifier = modifierForElements.padding(top = 5.dp)) {
                 Text(
                     text = stringResource(R.string.pia_HealthModuleTxt1),
@@ -373,7 +427,7 @@ fun HealthModule(modifier: Modifier = Modifier) {
                 )
                 Text(
                     textAlign = TextAlign.End,
-                    text = "25kg",
+                    text = "$weightToString Kg",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -390,7 +444,7 @@ fun HealthModule(modifier: Modifier = Modifier) {
                 )
                 Text(
                     textAlign = TextAlign.End,
-                    text = "Bajar de peso",
+                    text = pet.goal,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -407,7 +461,7 @@ fun HealthModule(modifier: Modifier = Modifier) {
                 )
                 Text(
                     textAlign = TextAlign.End,
-                    text = "Media",
+                    text = pet.activity ?: "--",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -418,9 +472,11 @@ fun HealthModule(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Composable
-fun RecordModule(modifier: Modifier = Modifier) {
+fun RecordModule(
+    pet: PetModel,
+    modifier: Modifier = Modifier
+) {
     val modifierForElements = Modifier
         .fillMaxWidth()
         .background(color = Color.White)
@@ -454,7 +510,7 @@ fun RecordModule(modifier: Modifier = Modifier) {
                 )
                 Text(
                     textAlign = TextAlign.End,
-                    text = "No",
+                    text = if (pet.sterilized) "Si" else "No",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -471,7 +527,7 @@ fun RecordModule(modifier: Modifier = Modifier) {
                 )
                 Text(
                     textAlign = TextAlign.End,
-                    text = "Macho",
+                    text = pet.genre ?: "--",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -482,13 +538,14 @@ fun RecordModule(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, end = 15.dp, start = 5.dp)
             )
             Row(modifier = modifierForElements.padding(bottom = 5.dp)) {
+                val ageToString = if (pet.age < 1) "Menos de 1" else pet.age.toInt().toString()
                 Text(
                     text = stringResource(R.string.pia_RecordModuleTxt3),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
                 Text(
                     textAlign = TextAlign.End,
-                    text = "6 años",
+                    text = "$ageToString años",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -559,7 +616,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                 )
             }) { innerPadding ->
             ScaffoldContent(
-
+                petMeals = PetMealsModel(),
                 modifier = Modifier
                     .padding(innerPadding)
                     .verticalScroll(scrollState)

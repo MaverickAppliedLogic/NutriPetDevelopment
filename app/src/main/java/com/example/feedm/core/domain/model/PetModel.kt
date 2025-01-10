@@ -11,8 +11,8 @@ data class PetModel(
     var age: Float,
     var petWeight: Float,
     var genre: String?,
-    var sterilized: Boolean?,
-    var activity: String,
+    var sterilized: Boolean,
+    var activity: String?,
     var goal: String,
     var allergies: String?)
 
