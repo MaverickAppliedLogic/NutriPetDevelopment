@@ -33,6 +33,10 @@ class PetsRepository @Inject constructor(
         return petsDao.getAllPets().map { it.toDomain() }
     }
 
+    suspend fun getPetById(petId: Int): PetModel{
+        return petsDao.getPetById(petId).toDomain()
+    }
+
     suspend fun insertPetsToDB(pets: List<PetEntity>) {
         petsDao.insertAll(pets)
     }

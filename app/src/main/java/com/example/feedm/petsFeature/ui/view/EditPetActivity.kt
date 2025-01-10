@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,10 +48,10 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petMealsFeature.ui.view.PetDetailsActivity
 import com.example.feedm.petsFeature.ui.view.ui.components.CustomDropDownMenu
 import com.example.feedm.petsFeature.ui.view.ui.components.CustomRadioGroup
 import com.example.feedm.petsFeature.ui.view.ui.components.CustomSlider
@@ -61,35 +62,36 @@ import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FormActivity : ComponentActivity() {
-
+class EditPetActivity : ComponentActivity() {
     private val petViewModel: PetViewModel by viewModels()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val petId = intent.extras!!.getInt("PetId")
+        petViewModel.getPetById(petId)
 
 
 
         setContent {
             TailyCareTheme {
-                var invalidName by remember { mutableStateOf(false) }
-                var invalidWeight by remember { mutableStateOf(false) }
-                var invalidAge by remember { mutableStateOf(false) }
-                var invalidGoal by remember { mutableStateOf(false) }
-                var pet by remember {
-                    mutableStateOf(PetModel(
-                        foodId=null,
-                        animal = "dog",
-                        petName = "",
-                        age = 0.0f,
-                        petWeight = 0.0f,
-                        genre = null,
-                        sterilized = false,
-                        activity = null,
-                        goal ="",
-                        allergies =null
-                    ))
-                }
+
+                var errorCommitting by remember { mutableStateOf(false) }
+                val pet by petViewModel.petModel.observeAsState(PetModel(
+                    -1,
+                    null,
+                    "dog",
+                    "",
+                    0.0f,
+                    0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ))
+
 
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.White,
                     bottomBar = {
@@ -101,51 +103,59 @@ class FormActivity : ComponentActivity() {
                                 horizontalArrangement = Arrangement.Center,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                FloatingActionButton(
-                                    onClick = {
-                                        commitAddNewPet(
-                                           pet= pet,
-                                            onValidationFailed = {
-                                            when(it){
-                                                "name" -> invalidName = true
-                                                "age" -> invalidAge = true
-                                                "weight" -> invalidWeight = true
-                                                "goal" -> invalidGoal = true
-                                            }}
+                                    FloatingActionButton(
+                                        onClick = { finish() },
+                                        containerColor = Orange,
+                                        modifier = Modifier.width(150.dp)
+                                    ) {
+                                        Text(
+                                            text = "Cancelar",
+                                            style = TextStyle(fontWeight = FontWeight.Bold),
+                                            color = Color.White
                                         )
-                                    },
-                                    containerColor = Orange,
-                                    modifier = Modifier.width(200.dp)
-                                ) {
-                                    Text(
-                                        text = "Agregar",
-                                        style = TextStyle(fontWeight = FontWeight.Bold),
-                                        color = Color.White
-                                    )
-                                }
-
+                                    }
+                                    Spacer(modifier = Modifier.padding(20.dp))
+                                    FloatingActionButton(
+                                        onClick = {
+                                            commitEditPet(
+                                                pet= pet,
+                                                onValidationFailed = {errorCommitting = true}
+                                            )
+                                        },
+                                        containerColor = Orange,
+                                        modifier = Modifier.width(150.dp)
+                                    ) {
+                                        Text(
+                                            text = "Confirmar cambios",
+                                            style = TextStyle(fontWeight = FontWeight.Bold),
+                                            color = Color.White
+                                        )
+                                    }
                             }
                         }
                     }) { innerPadding ->
-                    FormScreen(
+                    EditScreen(
                         modifier = Modifier.padding(innerPadding),
                         pet = pet,
-                        invalidName = invalidName,
-                        invalidAge = invalidAge,
-                        invalidWeight = invalidWeight,
-                        invalidGoal = invalidGoal,
-                        onImageChange = { pet = pet.copy(animal = it) },
-                        onNameChange = { pet = pet.copy(petName = it)
-                                       invalidName = false},
-                        onAgeChange = { pet= pet.copy(age = it)
-                                      invalidAge = false},
-                        onGenreChange = { pet= pet.copy(genre = it) },
-                        onWeightChange = { pet= pet.copy(petWeight = it)
-                                         invalidWeight = false},
-                        onSterilizedChange = { pet= pet.copy(sterilized = it) },
-                        onActivityLevelChange = { pet= pet.copy(activity = it) },
-                        onGoalChange = { pet= pet.copy(goal = it)
-                                       invalidGoal = false},
+                        errorCommitting = errorCommitting,
+                        onAgeChange = {
+                            petViewModel.editPetNotCommitting(pet.copy(age = it))
+                        },
+                        onGenreChange = {
+                            petViewModel.editPetNotCommitting(pet.copy(genre = it))
+                        },
+                        onWeightChange = {
+                            petViewModel.editPetNotCommitting(pet.copy(petWeight = it))
+                                         },
+                        onSterilizedChange = {
+                            petViewModel.editPetNotCommitting(pet.copy(sterilized = it))
+                                             },
+                        onActivityLevelChange = {
+                            petViewModel.editPetNotCommitting(pet.copy(activity = it))
+                                                },
+                        onObjectiveChange = {
+                            petViewModel.editPetNotCommitting(pet.copy(goal = it))
+                        },
                         onClickFab = { cancelAddNewPet() }
                     )
                 }
@@ -154,11 +164,10 @@ class FormActivity : ComponentActivity() {
     }
 
 
-    private fun commitAddNewPet(
-       pet: PetModel,
+    private fun commitEditPet(
+        pet: PetModel,
         onValidationFailed: (String) -> Unit
     ) {
-        val intent = Intent(this@FormActivity, PetsActivity::class.java)
         if (pet.petName == "") {
             onValidationFailed("name")
             return
@@ -172,16 +181,17 @@ class FormActivity : ComponentActivity() {
             return
         }
         if (pet.goal == "") {
-            onValidationFailed("goal")
+            onValidationFailed("objective")
             return
         }
         petViewModel.addPet(pet)
+
+        intent.setClass(this@EditPetActivity,PetDetailsActivity::class.java)
         startActivity(intent)
     }
 
     private fun cancelAddNewPet() {
-        val intent = Intent(this@FormActivity, PetsActivity::class.java)
-        startActivity(intent)
+      finish()
     }
 }
 
@@ -193,28 +203,19 @@ class FormActivity : ComponentActivity() {
  * ```
  *  {onChange_(it)}
  * ```
- * Los parametros [invalidName], [invalidAge], [invalidWeight], [invalidGoal], deciden la apariencia
- * de los componentes de campos obligatorios en el formulario:
- * en caso de que alguno de estos
- * parametros sea `invalid_ = true`, el o los respectivos componentes mostraran su apariencia
- * en modo [Error], para indicar al usuario los campos obligatorios que debe revisar.
  */
+
 @Composable
-fun FormScreen(
+fun EditScreen(
     modifier: Modifier = Modifier,
     pet: PetModel,
-    invalidName: Boolean,
-    invalidAge: Boolean,
-    invalidWeight: Boolean,
-    invalidGoal: Boolean,
-    onImageChange: (String) -> Unit,
-    onNameChange: (String) -> Unit,
+    errorCommitting: Boolean,
     onAgeChange: (Float) -> Unit,
     onGenreChange: (String) -> Unit,
     onWeightChange: (Float) -> Unit,
     onSterilizedChange: (Boolean) -> Unit,
     onActivityLevelChange: (String) -> Unit,
-    onGoalChange: (String) -> Unit,
+    onObjectiveChange: (String) -> Unit,
     onClickFab: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -244,12 +245,9 @@ fun FormScreen(
                 .padding(top = 10.dp)
         ) {
             val spacerPadding = 15.dp
-            PetImageAndName(
-                errorCommitting = invalidName,
-                name = pet.petName,
-                animal = pet.animal,
-                onImageChange = { onImageChange(it) },
-                onTextChange = { onNameChange(it) })
+            PetImageAndNameNotEditable(
+                petName = pet.petName,
+                animal = pet.animal)
             Card(
                 shape = RoundedCornerShape(5.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
@@ -287,7 +285,7 @@ fun FormScreen(
                             else -> onAgeChange(it[0].code.div(10).toFloat())
                         }
                     },
-                    errorCommitting = invalidAge,
+                    errorCommitting = false,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -301,15 +299,14 @@ fun FormScreen(
                 elevation = CardDefaults.cardElevation(1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
-                val texts = stringArrayResource(id = R.array.fa_arraySpinnerSexo)
 
+                val texts = stringArrayResource(id = R.array.fa_arraySpinnerSexo)
                 CustomRadioGroup(
                     text = stringResource(id = R.string.fa_txtSpinnerSexo),
                     selectedOption = when (pet.genre) {
                         texts[0] -> {
                             true
                         }
-
                         texts[1] -> {
                             false
                         }
@@ -323,7 +320,7 @@ fun FormScreen(
                         else onGenreChange(texts[1])
                     },
                     options = listOf(true, false), modifier = Modifier.fillMaxWidth(),
-                    enabled = true,
+                    enabled = false,
                     texts = texts
                 )
             }
@@ -337,7 +334,7 @@ fun FormScreen(
             ) {
                 CustomSlider(
                     weight = pet.petWeight, onWeightChanged = { onWeightChange(it) },
-                    errorCommitting= invalidWeight,
+                    errorCommitting= errorCommitting,
                     valueRange =
                     if (pet.animal == "dog") 0.0f..85.0f
                     else 0.0f..25.0f
@@ -355,8 +352,8 @@ fun FormScreen(
                     options = stringArrayResource(id = R.array.fa_arraySpinnerObjetivo).toList(),
                     title = stringResource(id = R.string.fa_txtSpinnerObjetivo),
                     selectedOption = pet.goal,
-                    errorCommitting = invalidGoal,
-                    onSelectOption = { onGoalChange(it) },
+                    errorCommitting = false,
+                    onSelectOption = { onObjectiveChange(it) },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -376,7 +373,7 @@ fun FormScreen(
                     selectedOption = pet.sterilized,
                     onOptionSelected = { onSterilizedChange(it) },
                     options = listOf(true, false), modifier = Modifier.fillMaxWidth(),
-                    enabled = true,
+                    enabled = !pet.sterilized,
                     texts = texts
                 )
             }
@@ -408,14 +405,15 @@ fun FormScreen(
 }
 
 
+/**
+ * Muestra los atributos [petName] y [animal] del [PetModel] recibido en el [Intent]
+ * pero no permite edición de estos
+ */
 @Composable
-fun PetImageAndName(
+fun PetImageAndNameNotEditable(
     modifier: Modifier = Modifier,
-    errorCommitting: Boolean,
-    name: String,
+    petName: String,
     animal: String,
-    onImageChange: (String) -> Unit,
-    onTextChange: (String) -> Unit
 ) {
     Row(
         modifier
@@ -424,7 +422,7 @@ fun PetImageAndName(
             .padding(15.dp)
     ) {
         IconButton(
-            onClick = { onImageChange(if (animal == "dog") "cat" else "dog") },
+            onClick = {},
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(10.dp))
                 .weight(0.3f)
@@ -441,16 +439,10 @@ fun PetImageAndName(
 
         }
         OutlinedTextField(
-            value = name,
-            supportingText = {
-                if (errorCommitting) Text(
-                    text = "No tiene nombre :(",
-                    color = Color.Red
-                )
-            },
-            onValueChange = { onTextChange(it) },
+            value = petName,
+            onValueChange = { },
             label = { Text(stringResource(id = R.string.fa_hintEtPetName)) },
-            isError = errorCommitting,
+            enabled = false,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
                 errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
@@ -466,69 +458,3 @@ fun PetImageAndName(
     }
 }
 
-
-
-
-
-
-
-
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun FormScreenPreview() {
-    TailyCareTheme {
-        Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.White,
-            bottomBar = {
-                BottomAppBar {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        FloatingActionButton(
-                            onClick = { /*TODO*/ },
-                            containerColor = Orange,
-                            modifier = Modifier.width(200.dp)
-                        ) {
-                            Text(
-                                text = "Agregar",
-                                style = TextStyle(fontWeight = FontWeight.Bold),
-                                color = Orange
-                            )
-                        }
-                    }
-                }
-            }) { innerPadding ->
-            FormScreen(
-                modifier = Modifier.padding(innerPadding),
-                pet = PetModel(
-                    -1,
-                    null,
-                    "dog",
-                    "",
-                    0.0f,
-                    0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                ),
-                invalidName = false,
-                invalidAge = false,
-                invalidWeight = false,
-                invalidGoal = false,
-                onImageChange = { },
-                onNameChange = {  },
-                onAgeChange = { },
-                onGenreChange = { },
-                onWeightChange = { },
-                onSterilizedChange = {  },
-                onActivityLevelChange = {  },
-                onGoalChange = {  },
-                onClickFab = { }
-            )
-        }
-    }
-}

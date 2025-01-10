@@ -11,6 +11,7 @@ import com.example.feedm.petsFeature.domain.DeletePet
 import com.example.feedm.petsFeature.domain.EditPet
 import com.example.feedm.petsFeature.domain.GetPets
 import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.GetPetById
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +21,8 @@ class PetViewModel @Inject constructor(
     private val addPetUseCase: AddPet,
     private val deletePetUseCase: DeletePet,
     private val editPetUseCase: EditPet,
-    private val getPetsUseCase: GetPets
+    private val getPetsUseCase: GetPets,
+    private val getPetByIdUseCase: GetPetById
 ) : ViewModel() {
 
     private val _pets = MutableLiveData<List<PetModel>>(emptyList())
@@ -59,6 +61,19 @@ class PetViewModel @Inject constructor(
         viewModelScope.launch {
             addPetUseCase(petModel)
             getData()
+        }
+    }
+
+    fun getPetById(petId: Int){
+        viewModelScope.launch {
+           val result = getPetByIdUseCase(petId)
+            _petModel.value = result
+        }
+    }
+
+    fun editPetNotCommitting(petModel: PetModel){
+        viewModelScope.launch {
+            _petModel.value = petModel
         }
     }
 

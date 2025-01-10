@@ -44,11 +44,12 @@ object DataModule {
             .build()
 
 
-    val MIGRATION = object : Migration(5, 6) {
+    val MIGRATION = object : Migration(6, 7) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            // Crear la nueva tabla "food_table_new"
-            db.execSQL(
-                """
+            // Crear las nuevas tablas con los índices adecuados
+
+            // Crear la tabla "food_table_new"
+            db.execSQL("""
             CREATE TABLE food_table_new (
                 food_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 food_name TEXT NOT NULL,
@@ -56,12 +57,10 @@ object DataModule {
                 food_weight REAL,
                 calories REAL NOT NULL
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Crear la nueva tabla "pet_table_new"
-            db.execSQL(
-                """
+            // Crear la tabla "pet_table_new" con claves foráneas
+            db.execSQL("""
             CREATE TABLE pet_table_new (
                 pet_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 food_id INTEGER,
@@ -70,53 +69,44 @@ object DataModule {
                 age REAL NOT NULL,
                 pet_weight REAL NOT NULL,
                 genre TEXT,
-                sterilized INTEGER,
-                activity TEXT NOT NULL,
+                sterilized INTEGER NOT NULL,
+                activity TEXT,
                 goal TEXT NOT NULL,
                 allergies TEXT,
                 FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE NO ACTION
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Crear la nueva tabla "meal_table_new"
-            db.execSQL(
-                """
+            // Crear la tabla "meal_table_new" con claves foráneas
+            db.execSQL("""
             CREATE TABLE meal_table_new (
                 meal_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 pet_id INTEGER NOT NULL,
-                food_id INTEGER,
                 meal_time INTEGER NOT NULL,
                 ration REAL NOT NULL,
-                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE NO ACTION,
-                FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE NO ACTION
+                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE NO ACTION
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Migrar datos de las tablas antiguas
-            db.execSQL(
-                """
+            // Migración de datos para food_table
+            db.execSQL("""
             INSERT INTO food_table_new (food_id, food_name, brand, food_weight, calories)
             SELECT food_id, food_name, brand, food_weight, calories FROM food_table
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            db.execSQL(
-                """
+            // Migración de datos para pet_table
+            db.execSQL("""
             INSERT INTO pet_table_new (pet_id, food_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
-            SELECT pet_id, food_id, animal, name, age, weight, genre, sterilized, activity, goal, allergies FROM pet_table
-            """.trimIndent()
-            )
+            SELECT pet_id, food_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies FROM pet_table
+        """.trimIndent())
 
-            db.execSQL(
-                """
-            INSERT INTO meal_table_new (meal_id, pet_id, food_id, meal_time, ration)
-            SELECT meal_id, pet_id, food_id, meal_time, ration FROM meal_table
-            """.trimIndent()
-            )
+            // Migración de datos para meal_table
+            db.execSQL("""
+            INSERT INTO meal_table_new (meal_id, pet_id, meal_time, ration)
+            SELECT meal_id, pet_id, meal_time, ration FROM meal_table
+        """.trimIndent())
 
-            // Eliminar tablas antiguas
+            // Eliminar las tablas antiguas
             db.execSQL("DROP TABLE food_table")
             db.execSQL("DROP TABLE pet_table")
             db.execSQL("DROP TABLE meal_table")
@@ -127,6 +117,7 @@ object DataModule {
             db.execSQL("ALTER TABLE meal_table_new RENAME TO meal_table")
         }
     }
+
 
     @Provides
     fun providePetDao(db: AppDatabase): PetDao {
