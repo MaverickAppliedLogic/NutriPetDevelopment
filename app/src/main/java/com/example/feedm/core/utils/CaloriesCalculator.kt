@@ -1,6 +1,5 @@
 package com.example.feedm.core.utils
 
-import android.util.Log
 import com.example.feedm.core.domain.model.PetModel
 import kotlin.math.pow
 
@@ -22,9 +21,9 @@ class CaloriesCalculatorDog : CaloriesCalculator {
 
     override fun calculateBaseRequirements(weight: Float, age: Float): Double {
         val weightDouble = weight.toDouble()
-        val ageFactor = if(age < 1.0f){ 2.5 }
+        val ageFactor = if(age < 1.0f){ 2.2 }
         else if (age > 7.0f){ 1.3 }
-        else{ 1.6 }
+        else{ 1.5 }
         return 70 * weightDouble.pow(0.75) * ageFactor
     }
 
@@ -33,18 +32,18 @@ class CaloriesCalculatorDog : CaloriesCalculator {
         var variants = 1.0
 
         variants += when(activity){
-            "Alta" -> 0.22
-            "Media" -> 0.16
-            "Baja"  -> 0.13
-            else -> 0.13
+            "Alta" -> 0.2
+            "Media" -> 0.1
+            "Baja"  -> 0.00
+            else -> 0.00
         }
         when(goal){
-            "Perdida de peso" -> variants -= 0.15
+            "Perdida de peso" -> variants -= 0.1
             "Mantenimiento" -> variants += 0.0
-            "Aumento de peso" -> variants += 0.15
+            "Aumento de peso" -> variants += 0.1
         }
         if(sterilized){
-            variants -= 0.1
+            variants -= 0.15
         }
 
         return variants
