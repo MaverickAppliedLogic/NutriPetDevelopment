@@ -46,7 +46,7 @@ class PetMealsRepositoryTest(){
                 "bajar peso",
                 "")
 
-            val meals = listOf(MealModel(1,1,1,0,0.0f))
+            val meals = listOf(MealModel(1,1,1,0.0f))
             coEvery { petDao.getPetById(1) } returns pet
             coEvery { mealDao.getMealsByPetId(1) } returns emptyList()
 
@@ -75,7 +75,7 @@ class PetMealsRepositoryTest(){
                 "bajar peso",
                 "")
 
-            val meals = listOf(MealEntity(1,1,1,0,0.0f))
+            val meals = listOf(MealEntity(1,1,1,0.0f))
             coEvery { petDao.getPetById(1) } returns pet
             coEvery { mealDao.getMealsByPetId(1) } returns meals
 
