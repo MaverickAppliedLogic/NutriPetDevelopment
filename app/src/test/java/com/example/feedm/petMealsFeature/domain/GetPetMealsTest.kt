@@ -36,7 +36,7 @@ class GetPetMealsTest {
                 "bajar peso",
                 "")
 
-            val meals = listOf(MealModel(1,1,1,0,0.0f))
+            val meals = listOf(MealModel(1,1,1,0.0f))
 
             coEvery { repository.getPetById(1) } returns pet
             coEvery { repository.getAllPetMeals(1) } returns meals
