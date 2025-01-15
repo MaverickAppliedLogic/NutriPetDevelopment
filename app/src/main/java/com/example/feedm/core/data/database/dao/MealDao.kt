@@ -17,7 +17,7 @@ interface MealDao {
 //Individual elements
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMealForAPet(meals: List<MealEntity>)
+    suspend fun addMealForAPet(meal: MealEntity)
 
     @Query("DELETE FROM meal_table WHERE meal_id = :mealId")
     suspend fun deleteMealForAPet(mealId: Int)
