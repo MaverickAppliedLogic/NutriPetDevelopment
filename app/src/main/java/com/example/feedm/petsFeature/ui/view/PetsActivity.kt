@@ -51,7 +51,7 @@ import com.example.feedm.R
 import com.example.feedm.core.domain.model.PetModel
 import com.example.feedm.petMealsFeature.ui.view.PetDetailsActivity
 import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.TailyCareTheme
+import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

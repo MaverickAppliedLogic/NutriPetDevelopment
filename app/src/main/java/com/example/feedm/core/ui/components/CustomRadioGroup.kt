@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.ui.components
+package com.example.feedm.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

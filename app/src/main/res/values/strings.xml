@@ -66,6 +66,7 @@
     <string name="pia_RecordModuleTxt2">Sexo</string>
     <string name="pia_RecordModuleTxt3">Edad</string>
     <string name="title_activity_edit_pet">EditPetActivity</string>
+    <string name="title_activity_add_meal">AddMealActivity</string>
 
 
 </resources>

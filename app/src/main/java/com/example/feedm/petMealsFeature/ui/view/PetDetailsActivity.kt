@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,7 +63,8 @@ import com.example.feedm.petsFeature.ui.view.EditPetActivity
 import com.example.feedm.petsFeature.ui.view.PetsActivity
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.TailyCareTheme
+import com.example.feedm.core.ui.theme.TailyCareTheme
+import com.example.feedm.mealsFeature.ui.AddMealActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.format
 
@@ -121,6 +123,14 @@ class PetDetailsActivity : ComponentActivity() {
                             },
                             actions = {
                                 Row {
+                                    IconButton(onClick = { addMeal()  }) {
+                                        Icon(
+                                            painter = painterResource(id = R.mipmap.icon_add_food),
+                                            contentDescription = "ArrowBack",
+                                            tint = Color.Black
+                                        )
+
+                                    }
                                     IconButton(onClick = { editPet() }) {
                                         Icon(
                                             imageVector = Icons.Default.Create,
@@ -147,6 +157,11 @@ class PetDetailsActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun addMeal(){
+        intent.setClass(this@PetDetailsActivity, AddMealActivity::class.java)
+        startActivity(intent)
     }
 
     private fun editPet(){
@@ -269,6 +284,20 @@ fun MealsModule(
                 modifier = Modifier.padding(top = 5.dp, end = 5.dp),
                 color = Color.Gray
             )
+            if(meals.isEmpty()){
+                Row(modifier = modifierForElements.padding(bottom = 5.dp, top = 5.dp)) {
+                    Text(
+                        text = "No hay comidas registradas",
+                        style = MaterialTheme.typography.titleMedium.
+                        copy(fontWeight = FontWeight.Bold,color = Color.LightGray,
+                            fontStyle = FontStyle.Italic),
+                    )
+                }
+                HorizontalDivider(
+                    modifier = Modifier.padding(top = 5.dp, end = 5.dp),
+                    color = Color.Gray
+                )
+            }
             for (meal in meals) {
                 MealItem(meal, modifierForElements)
                 HorizontalDivider(
