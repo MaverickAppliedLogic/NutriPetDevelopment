@@ -3,9 +3,13 @@ package com.example.feedm.mealsFeature.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateValueAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -25,31 +29,82 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
+import com.example.feedm.core.domain.model.FoodModel
+import com.example.feedm.core.domain.model.MealModel
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class AddMealActivity : ComponentActivity() {
+
+    private val mealsViewmodel: MealsViewmodel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        val food = FoodModel(
+            foodId = -1,
+            foodName = "test",
+            foodWeight = 1f,
+            calories = 0f,
+            brand = "test"
+        )
         setContent {
             TailyCareTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                var isNewMeal by remember { mutableStateOf(true) }
+
+                Scaffold(modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.White),
+                    bottomBar = {
+                        BottomAppBar(containerColor = Color.White) {
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color = Color.White)
+                            ) {
+                                FloatingActionButton(
+                                    onClick = {
+                                    },
+                                    elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
+                                    containerColor = Orange,
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier.width(200.dp)
+                                ) {
+                                    Text(
+                                        text = "Agregar",
+                                        style = TextStyle(fontWeight = FontWeight.Bold),
+                                        color = Color.White
+                                    )
+                                }
+                            }
+                        }
+                    }) { innerPadding ->
                     Screen(
                         name = "Android",
+                        isNewMeal = isNewMeal,
+                        onMealSeLected = {if(it != "Nueva comida") isNewMeal = true
+                        else isNewMeal = false},
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -59,46 +114,62 @@ class AddMealActivity : ComponentActivity() {
 }
 
 @Composable
-fun Screen(name: String, modifier: Modifier = Modifier) {
+fun Screen(
+    name: String,
+    isNewMeal: Boolean,
+    onMealSeLected : (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val namePadding by animateDpAsState(
+        targetValue = if (isNewMeal) 105.dp else 25.dp,
+        label = ""
+    )
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White)
     ) {
-        Card(
-            shape = RoundedCornerShape(5.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            modifier = Modifier
-                .padding(top = 30.dp)
-                .height(60.dp)
-                .width(300.dp)
-        ) {
-            CustomDropDownMenu(
-                options = listOf("Nueva comida", "option2"),
-                title = "Comida",
-                selectedOption = "Nueva comida",
-                errorCommitting = false,
-                onSelectOption = { }
+
+        Box(modifier = Modifier) {
+            Card(
+                shape = RoundedCornerShape(5.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                modifier = Modifier
+                    .padding(top = 30.dp)
+                    .height(60.dp)
+                    .width(300.dp)
+            ) {
+                CustomDropDownMenu(
+                    options = listOf("Nueva comida", "option2"),
+                    title = "Comida",
+                    selectedOption = "Nueva comida",
+                    errorCommitting = false,
+                    onSelectOption = { onMealSeLected(it) }
+                )
+            }
+            OutlinedTextField(
+                value = name,
+                supportingText = {},
+                onValueChange = { },
+                label = { },
+                enabled = isNewMeal,
+                isError = false,
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.White,
+                    errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
+                    errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
+                    focusedContainerColor = Color.White, focusedLabelColor = Orange,
+                    focusedIndicatorColor = Orange
+                ),
+                modifier = Modifier
+                    .padding(top = namePadding)
+                    .width(300.dp)
             )
         }
-        Spacer(modifier = Modifier.padding(10.dp))
 
-        OutlinedTextField(
-            value = name,
-            supportingText = {},
-            onValueChange = { },
-            label = { },
-            isError = false,
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
-                errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
-                focusedContainerColor = Color.White, focusedLabelColor = Orange,
-                focusedIndicatorColor = Orange
-            ),
-            modifier = Modifier
-                .width(300.dp)
-        )
+
         Spacer(modifier = Modifier.padding(10.dp))
         Image(
             painter = painterResource(id = R.mipmap.test_image), contentDescription = "",
@@ -147,25 +218,12 @@ fun Screen(name: String, modifier: Modifier = Modifier) {
                     .padding(top = 30.dp)
                     .height(60.dp)
                     .width(125.dp)
-            ){
-                CustomDropDownMenu(options = listOf("59 min","58 min"), title = "Min",
-                    selectedOption = "59 min", errorCommitting = false, onSelectOption = { })}
+            ) {
+                CustomDropDownMenu(options = listOf("59 min", "58 min"), title = "Min",
+                    selectedOption = "59 min", errorCommitting = false, onSelectOption = { })
+            }
         }
         Spacer(modifier = Modifier.padding(30.dp))
-        FloatingActionButton(
-            onClick = {
-            },
-            elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
-            containerColor = Orange,
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.width(200.dp)
-        ) {
-            Text(
-                text = "Agregar",
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                color = Color.White
-            )
-        }
 
     }
 }
@@ -175,9 +233,41 @@ fun Screen(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun ScreenPreview() {
     TailyCareTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        var isNewMeal by remember { mutableStateOf(true) }
+
+        Scaffold(modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+            bottomBar = {
+                BottomAppBar(containerColor = Color.White) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = Color.White)
+                    ) {
+                        FloatingActionButton(
+                            onClick = {
+                            },
+                            elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
+                            containerColor = Orange,
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.width(200.dp)
+                        ) {
+                            Text(
+                                text = "Agregar",
+                                style = TextStyle(fontWeight = FontWeight.Bold),
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            }) { innerPadding ->
             Screen(
                 name = "Android",
+                isNewMeal = isNewMeal,
+                onMealSeLected = {if(it != "Nueva comida") isNewMeal = true
+                else isNewMeal = false},
                 modifier = Modifier.padding(innerPadding)
             )
         }
