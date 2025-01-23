@@ -22,7 +22,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -123,6 +125,10 @@ class AddMealActivity : ComponentActivity() {
                             name = "Android",
                             isNewMeal = isNewMeal,
                             food = food,
+                            meal = meal,
+                            onMealChange = {
+                                meal = it
+                            },
                             onFoodSelected = {
                                 isNewMeal = it == "Nueva comida"
                             },
@@ -139,6 +145,8 @@ class AddMealActivity : ComponentActivity() {
         name: String,
         isNewMeal: Boolean,
         food: FoodModel,
+        meal: MealModel,
+        onMealChange: (MealModel) -> Unit,
         onFoodSelected: (String) -> Unit,
         modifier: Modifier = Modifier
     ) {
@@ -154,13 +162,14 @@ class AddMealActivity : ComponentActivity() {
         }
 
 
-
+        val scrollState = rememberScrollState()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxSize()
                 .background(color = Color.White)
+                .verticalScroll(scrollState)
         ) {
 
             Box(modifier = Modifier) {
@@ -202,9 +211,6 @@ class AddMealActivity : ComponentActivity() {
                     )
                 }
             }
-
-
-            Spacer(modifier = Modifier.padding(10.dp))
             Image(
                 painter = painterResource(id = R.mipmap.test_image), contentDescription = "",
                 modifier = Modifier.size(250.dp)
@@ -215,7 +221,7 @@ class AddMealActivity : ComponentActivity() {
             )
             Spacer(modifier = Modifier.padding(10.dp))
             OutlinedTextField(
-                value = name,
+                value = food.calories.toString(),
                 supportingText = {},
                 onValueChange = { },
                 label = { },
@@ -236,7 +242,7 @@ class AddMealActivity : ComponentActivity() {
                     elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     modifier = Modifier
-                        .padding(top = 30.dp)
+                        .padding(top = 10.dp)
                         .height(60.dp)
                         .width(125.dp)
                 ) {
@@ -249,7 +255,7 @@ class AddMealActivity : ComponentActivity() {
                     elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     modifier = Modifier
-                        .padding(top = 30.dp)
+                        .padding(top = 10.dp)
                         .height(60.dp)
                         .width(125.dp)
                 ) {
@@ -257,7 +263,27 @@ class AddMealActivity : ComponentActivity() {
                         selectedOption = "59 min", errorCommitting = false, onSelectOption = { })
                 }
             }
-            Spacer(modifier = Modifier.padding(30.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
+            Text(
+                text = "Comida",
+                modifier = Modifier.padding(horizontal = 70.dp)
+            )
+            OutlinedTextField(
+                value = meal.ration.toString(),
+                supportingText = {},
+                onValueChange = { },
+                label = { },
+                isError = false,
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.White,
+                    errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
+                    errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
+                    focusedContainerColor = Color.White, focusedLabelColor = Orange,
+                    focusedIndicatorColor = Orange
+                ),
+                modifier = Modifier
+                    .width(300.dp)
+            )
 
         }
     }
@@ -316,8 +342,12 @@ class AddMealActivity : ComponentActivity() {
                     name = "Android",
                     isNewMeal = isNewMeal,
                     food = food,
+                    meal = meal,
+                    onMealChange = {
+                        meal = it
+                    },
                     onFoodSelected = {
-                        isNewMeal = it != "Nueva comida"
+                        isNewMeal = it == "Nueva comida"
                     },
                     modifier = Modifier.padding(innerPadding)
                 )
