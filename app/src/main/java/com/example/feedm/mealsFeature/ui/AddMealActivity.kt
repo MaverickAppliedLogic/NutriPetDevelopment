@@ -7,9 +7,10 @@ import androidx.activity.viewModels
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,8 +36,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,7 +48,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.FoodModel
 import com.example.feedm.core.domain.model.MealModel
@@ -56,11 +59,6 @@ import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -123,11 +121,14 @@ class AddMealActivity : ComponentActivity() {
                         }) { innerPadding ->
                         Screen(
                             name = "Android",
-                            isNewMeal = isNewMeal,
+                            isNewFood = isNewMeal,
                             food = food,
                             meal = meal,
                             onMealChange = {
                                 meal = it
+                            },
+                            onFoodChange = {
+                                food = it
                             },
                             onFoodSelected = {
                                 isNewMeal = it == "Nueva comida"
@@ -143,23 +144,34 @@ class AddMealActivity : ComponentActivity() {
     @Composable
     fun Screen(
         name: String,
-        isNewMeal: Boolean,
+        isNewFood: Boolean,
         food: FoodModel,
         meal: MealModel,
         onMealChange: (MealModel) -> Unit,
+        onFoodChange: (FoodModel) -> Unit,
         onFoodSelected: (String) -> Unit,
         modifier: Modifier = Modifier
     ) {
 
-        val transitionState = remember { MutableTransitionState(isNewMeal) }
-        val transition = rememberTransition(transitionState, label = "mealTransition")
-
-        val namePadding by transition.animateDp(
-            transitionSpec = { spring(dampingRatio = 0.7f, stiffness = 150f) },
+        val namePadding by animateDpAsState(
+            targetValue = if (isNewFood) 105.dp else 25.dp,
+            animationSpec = spring(dampingRatio = 0.7f, stiffness = 150f),
             label = "PaddingAnimation"
-        ) { state ->
-            if (state) 105.dp else 25.dp
-        }
+        )
+
+        val imageScaleAnim by animateDpAsState(
+            targetValue = if (isNewFood) 250.dp else 0.dp,
+            animationSpec = spring(),
+            label = "FoodAnimation"
+        )
+
+        val fontSizeAnim by animateFloatAsState(
+            targetValue = if (isNewFood) 17f else 0f,
+            animationSpec = spring(),
+            label = "FoodAnimation"
+        )
+
+        val textSize = fontSizeAnim
 
 
         val scrollState = rememberScrollState()
@@ -176,9 +188,9 @@ class AddMealActivity : ComponentActivity() {
                 OutlinedTextField(
                     value = name,
                     supportingText = {},
-                    onValueChange = { },
+                    onValueChange = { onFoodChange(food.copy(foodName = it))},
                     label = { },
-                    enabled = isNewMeal,
+                    enabled = isNewFood,
                     isError = false,
                     colors = TextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -207,23 +219,49 @@ class AddMealActivity : ComponentActivity() {
                         selectedOption = food.foodName,
                         errorCommitting = false,
                         onSelectOption = { onFoodSelected(it)
-                        transitionState.targetState = it == "Nueva comida"}
+                        }
                     )
                 }
             }
             Image(
                 painter = painterResource(id = R.mipmap.test_image), contentDescription = "",
-                modifier = Modifier.size(250.dp)
+                modifier = Modifier.size(imageScaleAnim)
             )
-            Text(
-                text = "You can find that information on a side or on the back of the bag",
-                modifier = Modifier.padding(horizontal = 70.dp)
-            )
+            if (isNewFood) {
+                Text(
+                    text = "You can find that information on a side or on the back of the bag",
+                    fontSize = textSize.sp,
+                    modifier = Modifier.padding(horizontal = 70.dp)
+                )
+            }
+
             Spacer(modifier = Modifier.padding(10.dp))
             OutlinedTextField(
                 value = food.calories.toString(),
+                enabled = isNewFood,
                 supportingText = {},
-                onValueChange = { },
+                onValueChange = { onFoodChange(food.copy(calories = it.toFloat())) },
+                label = { },
+                isError = false,
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.White,
+                    errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
+                    errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
+                    focusedContainerColor = Color.White, focusedLabelColor = Orange,
+                    focusedIndicatorColor = Orange
+                ),
+                modifier = Modifier
+                    .width(300.dp)
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
+            Text(
+                text = "Comida",
+                modifier = Modifier.padding(horizontal = 70.dp)
+            )
+            OutlinedTextField(
+                value = meal.ration.toString(),
+                supportingText = {},
+                onValueChange = { onMealChange(meal.copy(ration = it.toFloat()))},
                 label = { },
                 isError = false,
                 colors = TextFieldDefaults.colors(
@@ -263,27 +301,6 @@ class AddMealActivity : ComponentActivity() {
                         selectedOption = "59 min", errorCommitting = false, onSelectOption = { })
                 }
             }
-            Spacer(modifier = Modifier.padding(10.dp))
-            Text(
-                text = "Comida",
-                modifier = Modifier.padding(horizontal = 70.dp)
-            )
-            OutlinedTextField(
-                value = meal.ration.toString(),
-                supportingText = {},
-                onValueChange = { },
-                label = { },
-                isError = false,
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.White,
-                    errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
-                    errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
-                    focusedContainerColor = Color.White, focusedLabelColor = Orange,
-                    focusedIndicatorColor = Orange
-                ),
-                modifier = Modifier
-                    .width(300.dp)
-            )
 
         }
     }
@@ -340,11 +357,14 @@ class AddMealActivity : ComponentActivity() {
                 }) { innerPadding ->
                 Screen(
                     name = "Android",
-                    isNewMeal = isNewMeal,
+                    isNewFood = isNewMeal,
                     food = food,
                     meal = meal,
                     onMealChange = {
                         meal = it
+                    },
+                    onFoodChange = {
+                        food = it
                     },
                     onFoodSelected = {
                         isNewMeal = it == "Nueva comida"
