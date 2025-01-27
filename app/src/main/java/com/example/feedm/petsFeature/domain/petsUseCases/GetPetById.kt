@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.domain
+package com.example.feedm.petsFeature.domain.petsUseCases
 
 import com.example.feedm.core.domain.model.PetModel
 import com.example.feedm.petsFeature.data.PetsRepository

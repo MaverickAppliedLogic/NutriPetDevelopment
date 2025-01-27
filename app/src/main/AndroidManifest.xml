@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Feedm"
         tools:targetApi="31">
         <activity
-            android:name=".mealsFeature.ui.AddMealActivity"
+            android:name=".petsFeature.ui.view.AddMealActivity"
             android:exported="false"
             android:label="@string/title_activity_add_meal"
             android:theme="@style/Theme.Feedm" />
@@ -27,7 +27,7 @@
             android:label="@string/title_activity_edit_pet"
             android:theme="@style/Theme.Feedm" />
         <activity
-            android:name=".petMealsFeature.ui.view.PetDetailsActivity"
+            android:name=".petsFeature.ui.view.PetDetailsActivity"
             android:exported="true"
             android:label="@string/title_activity_pet"
             android:theme="@style/Theme.Feedm" />

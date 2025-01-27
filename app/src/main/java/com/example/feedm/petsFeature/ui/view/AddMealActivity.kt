@@ -1,15 +1,11 @@
-package com.example.feedm.mealsFeature.ui
+package com.example.feedm.petsFeature.ui.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,7 +34,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,7 +45,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
@@ -58,10 +52,10 @@ import com.example.feedm.core.domain.model.FoodModel
 import com.example.feedm.core.domain.model.MealModel
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.core.ui.components.CustomDropDownMenu
+import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -116,6 +110,7 @@ class AddMealActivity : ComponentActivity() {
                             ) {
                                 FloatingActionButton(
                                     onClick = {
+                                        addMeal(meal, food)
                                     },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
@@ -152,7 +147,13 @@ class AddMealActivity : ComponentActivity() {
             }
         }
     }
+
+   private fun addMeal(meal: MealModel, food: FoodModel){
+        mealsViewmodel.addMeal(meal)
+    }
 }
+
+
 
 @Composable
 fun Screen(

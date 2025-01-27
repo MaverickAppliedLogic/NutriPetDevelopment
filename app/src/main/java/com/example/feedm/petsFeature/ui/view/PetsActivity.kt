@@ -49,7 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.PetModel
-import com.example.feedm.petMealsFeature.ui.view.PetDetailsActivity
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel

@@ -3,18 +3,14 @@ package com.example.feedm.mealsFeature.data
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.data.database.entities.MealEntity
 import com.example.feedm.core.domain.model.MealModel
+import com.example.feedm.petsFeature.data.MealsRepository
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.slot
-import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.params.provider.Arguments
 
 class MealsRepositoryTest{
 
