@@ -9,7 +9,7 @@
     <dimen name="petsActivity_fragmentContainer_width">262.5dp</dimen>
     <dimen name="petsActivity_fragmentContainer_height">375dp</dimen>
 
-    <!-- FormActivity -->
+    <!-- AddPetActivity -->
     <!-- Button Back Dimensions -->
     <dimen name="formActivity_btnBack_height">36dp</dimen>
     <dimen name="formActivity_btnBack_marginStart">12dp</dimen>
