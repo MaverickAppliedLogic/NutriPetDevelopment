@@ -78,7 +78,6 @@ class PetDetailsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val petId = intent.extras!!.getInt("PetId")
         setContent {
-
             TailyCareTheme {
                 val pet: PetModel by petViewModel.petModel.observeAsState(PetModel(
                     -1,

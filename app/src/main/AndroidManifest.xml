@@ -28,12 +28,12 @@
             android:theme="@style/Theme.Feedm" />
         <activity
             android:name=".petsFeature.ui.view.PetDetailsActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_pet"
             android:theme="@style/Theme.Feedm" />
         <activity
-            android:name=".petsFeature.ui.view.FormActivity"
-            android:exported="true"
+            android:name=".petsFeature.ui.view.AddPetActivity"
+            android:exported="false"
             android:label="@string/title_activity_from_compose"
             android:theme="@style/Theme.Feedm" />
         <activity

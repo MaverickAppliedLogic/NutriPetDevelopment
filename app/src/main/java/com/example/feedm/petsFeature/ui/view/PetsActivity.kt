@@ -93,7 +93,7 @@ class PetsActivity : ComponentActivity() {
     }
 
     private fun addNewPet(){
-        val intent = Intent(this@PetsActivity, FormActivity::class.java)
+        val intent = Intent(this@PetsActivity, AddPetActivity::class.java)
         startActivity(intent)
     }
 

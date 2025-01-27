@@ -61,7 +61,7 @@ import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FormActivity : ComponentActivity() {
+class AddPetActivity : ComponentActivity() {
 
     private val petViewModel: PetViewModel by viewModels()
 
@@ -158,7 +158,7 @@ class FormActivity : ComponentActivity() {
        pet: PetModel,
         onValidationFailed: (String) -> Unit
     ) {
-        val intent = Intent(this@FormActivity, PetsActivity::class.java)
+        val intent = Intent(this@AddPetActivity, PetsActivity::class.java)
         if (pet.petName == "") {
             onValidationFailed("name")
             return
@@ -180,7 +180,7 @@ class FormActivity : ComponentActivity() {
     }
 
     private fun cancelAddNewPet() {
-        val intent = Intent(this@FormActivity, PetsActivity::class.java)
+        val intent = Intent(this@AddPetActivity, PetsActivity::class.java)
         startActivity(intent)
     }
 }
