@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feedm.petsFeature.domain.AddPet
-import com.example.feedm.petsFeature.domain.DeletePet
-import com.example.feedm.petsFeature.domain.EditPet
-import com.example.feedm.petsFeature.domain.GetPets
+import com.example.feedm.petsFeature.domain.petsUseCases.AddPet
+import com.example.feedm.petsFeature.domain.petsUseCases.DeletePet
+import com.example.feedm.petsFeature.domain.petsUseCases.EditPet
+import com.example.feedm.petsFeature.domain.petsUseCases.GetPets
 import com.example.feedm.core.domain.model.PetModel
-import com.example.feedm.petsFeature.domain.GetPetById
+import com.example.feedm.petsFeature.domain.petsUseCases.GetPetById
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

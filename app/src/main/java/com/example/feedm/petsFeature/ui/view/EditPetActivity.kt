@@ -51,7 +51,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.PetModel
-import com.example.feedm.petMealsFeature.ui.view.PetDetailsActivity
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
@@ -186,7 +185,7 @@ class EditPetActivity : ComponentActivity() {
         }
         petViewModel.addPet(pet)
 
-        intent.setClass(this@EditPetActivity,PetDetailsActivity::class.java)
+        intent.setClass(this@EditPetActivity, PetDetailsActivity::class.java)
         startActivity(intent)
     }
 

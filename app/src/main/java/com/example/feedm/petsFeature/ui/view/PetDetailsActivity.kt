@@ -1,4 +1,4 @@
-package com.example.feedm.petMealsFeature.ui.view
+package com.example.feedm.petsFeature.ui.view
 
 
 import android.os.Bundle
@@ -57,21 +57,21 @@ import androidx.compose.ui.unit.dp
 import com.example.feedm.R
 import com.example.feedm.core.domain.model.MealModel
 import com.example.feedm.core.domain.model.PetModel
-import com.example.feedm.petMealsFeature.domain.model.PetMealsModel
-import com.example.feedm.petMealsFeature.ui.viewmodel.PetMealViewModel
-import com.example.feedm.petsFeature.ui.view.EditPetActivity
-import com.example.feedm.petsFeature.ui.view.PetsActivity
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
-import com.example.feedm.mealsFeature.ui.AddMealActivity
+import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
+import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.format
 
 @AndroidEntryPoint
 class PetDetailsActivity : ComponentActivity() {
 
-    private val petMealViewModel: PetMealViewModel by viewModels()
+    private val petViewModel: PetViewModel by viewModels()
+    private val mealsViewmodel: MealsViewmodel by viewModels()
+
+
 
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +80,25 @@ class PetDetailsActivity : ComponentActivity() {
         setContent {
 
             TailyCareTheme {
-                val petMeals: PetMealsModel by
-                petMealViewModel.petMeals.observeAsState(initial = PetMealsModel())
-                petMealViewModel.getPetMeals(petId)
+                val pet: PetModel by petViewModel.petModel.observeAsState(PetModel(
+                    -1,
+                    null,
+                    "dog",
+                    "",
+                    0.0f,
+                    0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ))
+                val meals: List<MealModel> by mealsViewmodel.meals.observeAsState(emptyList())
+
+                petViewModel.getPetById(petId)
+                mealsViewmodel.getMeals(petId)
+
+
                 val scrollState = rememberScrollState()
 
                 val topAppBarColor by animateColorAsState(
@@ -106,7 +122,7 @@ class PetDetailsActivity : ComponentActivity() {
                             ),
                             title = {
                                 Text(
-                                    text = petMeals.pet.petName,
+                                    text = pet.petName,
                                     style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.fillMaxWidth()
@@ -146,7 +162,8 @@ class PetDetailsActivity : ComponentActivity() {
                     }) { innerPadding ->
 
                     ScaffoldContent(
-                        petMeals = petMeals,
+                        pet = pet,
+                        meals = meals,
                         modifier = Modifier
                             .padding(innerPadding)
                             .fillMaxSize()
@@ -204,15 +221,17 @@ fun PetImage(petAnimal: String) {
 
 @Composable
 fun ScaffoldContent(
-    petMeals: PetMealsModel,
+    pet: PetModel,
+    meals: List<MealModel>,
     modifier: Modifier = Modifier
 ) {
 
     Column(modifier = modifier.fillMaxSize()) {
-        PetImage(petMeals.pet.animal)
+        PetImage(pet.animal)
         Spacer(modifier = Modifier.padding(15.dp))
         PetDetailsActivityModules(
-            petMeals = petMeals,
+            pet = pet,
+            meals = meals,
             modifier = Modifier.padding(horizontal = 15.dp)
         )
         Spacer(modifier = Modifier.padding(5.dp))
@@ -245,15 +264,16 @@ fun ScaffoldContent(
 
 @Composable
 fun PetDetailsActivityModules(
-    petMeals: PetMealsModel,
+    pet: PetModel,
+    meals: List<MealModel>,
     modifier: Modifier = Modifier
 ) {
     val spacerPadding = 20.dp
-    MealsModule(petMeals.meals, modifier)
+    MealsModule(meals, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
-    HealthModule(petMeals.pet, modifier)
+    HealthModule(pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
-    RecordModule(petMeals.pet, modifier)
+    RecordModule(pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
 }
 
@@ -572,15 +592,17 @@ fun RecordModule(
 fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
     TailyCareTheme {
 
+
+
         val scrollState = rememberScrollState()
 
         val topAppBarColor by animateColorAsState(
-            targetValue = if (scrollState.value > 425) Color.White else Orange, label = ""
+            targetValue = if (scrollState.value > 470) Color.White else Orange, label = ""
         )
 
 
         val topAppBarElevation by animateDpAsState(
-            targetValue = if (scrollState.value > 425) 0.dp else 2.dp, label = ""
+            targetValue = if (scrollState.value > 470) 0.dp else 2.dp, label = ""
         )
 
         Scaffold(modifier = Modifier.fillMaxSize(),
@@ -595,14 +617,14 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                     ),
                     title = {
                         Text(
-                            text = "Toby",
+                            text = "",
                             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {  }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                                 contentDescription = "ArrowBack",
@@ -612,24 +634,50 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                     },
                     actions = {
                         Row {
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = { }) {
+                                Icon(
+                                    painter = painterResource(id = R.mipmap.icon_add_food),
+                                    contentDescription = "ArrowBack",
+                                    tint = Color.Black
+                                )
+
+                            }
+                            IconButton(onClick = {  }) {
                                 Icon(
                                     imageVector = Icons.Default.Create,
                                     contentDescription = "ArrowBack",
                                     tint = Color.Black
                                 )
+
                             }
                         }
                     },
                     modifier = Modifier.shadow(topAppBarElevation)
                 )
             }) { innerPadding ->
+
             ScaffoldContent(
-                petMeals = PetMealsModel(),
+                pet = PetModel(
+                    -1,
+                    null,
+                    "dog",
+                    "",
+                    0.0f,
+                    0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ),
+                meals = emptyList(),
                 modifier = Modifier
                     .padding(innerPadding)
+                    .fillMaxSize()
                     .verticalScroll(scrollState)
+                    .background(Color.White)
             )
+
         }
     }
 }

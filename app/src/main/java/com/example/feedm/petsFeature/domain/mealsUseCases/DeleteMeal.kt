@@ -1,6 +1,6 @@
-package com.example.feedm.mealsFeature.domain
+package com.example.feedm.petsFeature.domain.mealsUseCases
 
-import com.example.feedm.mealsFeature.data.MealsRepository
+import com.example.feedm.petsFeature.data.MealsRepository
 import javax.inject.Inject
 
 class DeleteMeal @Inject constructor(private val mealsRepository: MealsRepository){
