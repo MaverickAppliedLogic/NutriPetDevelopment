@@ -2,8 +2,9 @@
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.android").version("2.0.21")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
 
@@ -46,7 +47,7 @@ android {
         compose = true
     }
     composeOptions{
-        kotlinCompilerExtensionVersion = "1.5.2"
+        kotlinCompilerExtensionVersion = "2.0.21"
     }
     packaging {
         resources {
@@ -56,6 +57,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.glide)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -87,10 +89,10 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     //DaggerHilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
     //Room
     implementation(libs.room.ktx)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     //Jetpack compose
     implementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -125,7 +127,4 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.cronet.embedded)
 
-}
-kapt {
-    correctErrorTypes = true
 }
