@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.feedm.core.data.database.AppDatabase
+import com.example.feedm.core.data.database.dao.FoodDao
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.data.database.dao.PetDao
 import com.example.feedm.core.data.local.PetLocalStorageProvider
@@ -128,5 +129,11 @@ object DataModule {
     fun provideMealDao(db: AppDatabase): MealDao{
         return db.getMealDao()
     }
+
+    @Provides
+    fun provideFoodDao(db: AppDatabase): FoodDao {
+        return db.getFoodDao()
+    }
+
 }
 

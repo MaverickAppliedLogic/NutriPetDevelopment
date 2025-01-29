@@ -3,6 +3,7 @@ package com.example.feedm.core.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.feedm.core.domain.model.FoodModel
 
 @Entity(tableName = "food_table")
 data class FoodEntity(
@@ -13,3 +14,5 @@ data class FoodEntity(
     @ColumnInfo(name = "food_weight") val foodWeight: Float?,
     @ColumnInfo(name = "calories") val calories: Float
 )
+
+fun FoodModel.toDatabase() = FoodEntity(foodId = foodId, foodName = foodName, brand = brand, foodWeight = foodWeight, calories = calories)
