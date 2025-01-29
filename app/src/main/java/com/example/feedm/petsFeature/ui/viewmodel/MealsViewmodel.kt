@@ -5,18 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedm.core.domain.model.MealModel
-import com.example.feedm.petsFeature.domain.mealsUseCases.AddMeal
-import com.example.feedm.petsFeature.domain.mealsUseCases.DeleteMeal
-import com.example.feedm.petsFeature.domain.mealsUseCases.GetMeals
+import com.example.feedm.petsFeature.domain.mealsUseCases.AddMealUseCase
+import com.example.feedm.petsFeature.domain.mealsUseCases.DeleteMealUseCase
+import com.example.feedm.petsFeature.domain.mealsUseCases.GetMealsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MealsViewmodel @Inject constructor(
-    private val getMealsUseCase: GetMeals,
-    private val addMealUseCase: AddMeal,
-    private val deleteMealUseCase: DeleteMeal
+    private val getMealsUseCase: GetMealsUseCase,
+    private val addMealUseCase: AddMealUseCase,
+    private val deleteMealUseCase: DeleteMealUseCase
 ): ViewModel() {
 
     private val _meals = MutableLiveData<List<MealModel>>()

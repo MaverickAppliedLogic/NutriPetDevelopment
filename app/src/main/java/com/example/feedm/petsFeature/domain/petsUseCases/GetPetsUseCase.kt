@@ -5,7 +5,7 @@ import com.example.feedm.petsFeature.data.PetsRepository
 import com.example.feedm.core.domain.model.PetModel
 import javax.inject.Inject
 
-class GetPets @Inject constructor(private val repository: PetsRepository){
+class GetPetsUseCase @Inject constructor(private val repository: PetsRepository){
     suspend operator fun invoke(): List<PetModel>{
         var pets = repository.getAllPetsFromDB()
         return if (pets.isNotEmpty()){

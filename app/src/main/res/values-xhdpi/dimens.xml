@@ -76,7 +76,7 @@
     <dimen name="formActivity_commitButton_marginEnd">124.5dp</dimen>
     <dimen name="formActivity_commitButton_marginBottom">22.5dp</dimen>
 
-    <!-- EditPet Fragment -->
+    <!-- EditPetUseCase Fragment -->
     <dimen name="editPetFragment_cardview_margin">7.5dp</dimen>
     <dimen name="editPetFragment_scrollview_marginStart">0.75dp</dimen>
     <dimen name="editPetFragment_scrollview_marginBottom">26.25dp</dimen>
