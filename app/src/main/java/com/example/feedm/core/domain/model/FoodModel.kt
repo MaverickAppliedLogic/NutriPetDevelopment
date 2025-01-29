@@ -1,5 +1,7 @@
 package com.example.feedm.core.domain.model
 
+import com.example.feedm.core.data.database.entities.FoodEntity
+
 data class FoodModel(
     val foodId: Int = 0,
     val foodName: String,
@@ -7,3 +9,5 @@ data class FoodModel(
     val foodWeight: Float?,
     val calories: Float
 )
+
+fun FoodEntity.toDomain() = FoodModel(foodId, foodName, brand, foodWeight, calories)
