@@ -6,23 +6,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feedm.petsFeature.domain.petsUseCases.AddPet
-import com.example.feedm.petsFeature.domain.petsUseCases.DeletePet
-import com.example.feedm.petsFeature.domain.petsUseCases.EditPet
-import com.example.feedm.petsFeature.domain.petsUseCases.GetPets
+import com.example.feedm.petsFeature.domain.petsUseCases.AddPetUseCase
+import com.example.feedm.petsFeature.domain.petsUseCases.DeletePetUseCase
+import com.example.feedm.petsFeature.domain.petsUseCases.EditPetUseCase
+import com.example.feedm.petsFeature.domain.petsUseCases.GetPetsUseCase
 import com.example.feedm.core.domain.model.PetModel
-import com.example.feedm.petsFeature.domain.petsUseCases.GetPetById
+import com.example.feedm.petsFeature.domain.petsUseCases.GetPetByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PetViewModel @Inject constructor(
-    private val addPetUseCase: AddPet,
-    private val deletePetUseCase: DeletePet,
-    private val editPetUseCase: EditPet,
-    private val getPetsUseCase: GetPets,
-    private val getPetByIdUseCase: GetPetById
+    private val addPetUseCase: AddPetUseCase,
+    private val deletePetUseCase: DeletePetUseCase,
+    private val editPetUseCase: EditPetUseCase,
+    private val getPetsUseCase: GetPetsUseCase,
+    private val getPetByIdUseCase: GetPetByIdUseCase
 ) : ViewModel() {
 
     private val _pets = MutableLiveData<List<PetModel>>(emptyList())

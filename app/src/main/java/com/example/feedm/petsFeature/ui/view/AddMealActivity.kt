@@ -52,6 +52,7 @@ import com.example.feedm.core.domain.model.FoodModel
 import com.example.feedm.core.domain.model.MealModel
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.core.ui.components.CustomDropDownMenu
+import com.example.feedm.petsFeature.ui.viewmodel.FoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
@@ -62,18 +63,18 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddMealActivity : ComponentActivity() {
 
     private val mealsViewmodel: MealsViewmodel by viewModels()
+    private val foodViewModel: FoodViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val petId = intent.extras!!.getInt("PetId")
         setContent {
             TailyCareTheme {
                 var isNewMeal by remember { mutableStateOf(true) }
                 var meal by remember {
                     mutableStateOf(
                         MealModel(
-                            mealId = -1,
-                            petId = -1,
+                            petId = petId,
                             mealTime = 0,
                             ration = 0f
                         )
@@ -82,7 +83,6 @@ class AddMealActivity : ComponentActivity() {
                 var food by remember {
                     mutableStateOf(
                         FoodModel(
-                            foodId = -1,
                             foodName = "test",
                             foodWeight = 1f,
                             calories = 0f,
@@ -90,8 +90,6 @@ class AddMealActivity : ComponentActivity() {
                         )
                     )
                 }
-                var calories by remember { mutableStateOf("") }
-                var ration by remember { mutableStateOf("") }
 
 
                 Scaffold(modifier = Modifier
@@ -107,7 +105,8 @@ class AddMealActivity : ComponentActivity() {
                             ) {
                                 FloatingActionButton(
                                     onClick = {
-                                        addMeal(meal, food)
+                                        addMeal(meal)
+                                        if (isNewMeal) addFood(food)
                                     },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
@@ -128,10 +127,8 @@ class AddMealActivity : ComponentActivity() {
                         isNewFood = isNewMeal,
                         food = food,
                         meal = meal,
-                        calories = calories,
-                        ration = ration,
-                        onCaloriesChange = { calories = it },
-                        onRationChange = { ration = it },
+                        onCaloriesChange = { food = food.copy(calories = it.toFloat()) },
+                        onRationChange = { meal = meal.copy(ration = it.toFloat()) },
                         onNameChange = { food = food.copy(foodName = it) },
                         onHourChange = { meal = meal.copy(mealTime = 0) },
                         onMinChange = { meal = meal.copy(mealTime = 1) },
@@ -145,9 +142,14 @@ class AddMealActivity : ComponentActivity() {
         }
     }
 
-   private fun addMeal(meal: MealModel, food: FoodModel){
+   private fun addMeal(meal: MealModel){
         mealsViewmodel.addMeal(meal)
+   }
+
+    private fun addFood(food: FoodModel){
+        foodViewModel.addFood(food)
     }
+
 }
 
 
@@ -157,8 +159,6 @@ fun Screen(
     name: String,
     isNewFood: Boolean,
     food: FoodModel,
-    calories: String,
-    ration: String,
     meal: MealModel,
     onNameChange: (String) -> Unit,
     onCaloriesChange: (String) -> Unit,
@@ -258,7 +258,7 @@ fun Screen(
             modifier = Modifier.padding(horizontal = 70.dp)
         )
         OutlinedTextField(
-            value = if (isNewFood) calories else food.calories.toString(),
+            value = if (isNewFood) food.calories.toString() else food.calories.toString(),
             enabled = isNewFood,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             supportingText = {},
@@ -281,7 +281,7 @@ fun Screen(
             modifier = Modifier.padding(horizontal = 70.dp)
         )
         OutlinedTextField(
-            value = ration,
+            value = meal.ration.toString(),
             supportingText = {},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = { onRationChange(it) },
@@ -395,8 +395,6 @@ fun ScreenPreview() {
                 isNewFood = isNewMeal,
                 food = food,
                 meal = meal,
-                calories = calories,
-                ration = ration,
                 onCaloriesChange = { calories = it },
                 onRationChange = { ration = it },
                 onNameChange = { food = food.copy(foodName = it) },

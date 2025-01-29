@@ -5,7 +5,7 @@ import com.example.feedm.core.data.database.entities.toDataBase
 import com.example.feedm.core.domain.model.PetModel
 import javax.inject.Inject
 
-class EditPet @Inject constructor(private val repository: PetsRepository) {
+class EditPetUseCase @Inject constructor(private val repository: PetsRepository) {
     suspend operator fun invoke(petModel: PetModel) {
         repository.updatePet(petModel.toDataBase())
     }
