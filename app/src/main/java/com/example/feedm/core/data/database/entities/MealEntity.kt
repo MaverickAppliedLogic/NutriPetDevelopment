@@ -3,6 +3,7 @@ package com.example.feedm.core.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.feedm.core.domain.model.MealModel
 
@@ -14,7 +15,8 @@ import com.example.feedm.core.domain.model.MealModel
             parentColumns = ["pet_id"],
             childColumns = ["pet_id"],
             onDelete = ForeignKey.NO_ACTION
-        )]
+        )],
+    indices = [Index("pet_id")]
 )
 data class MealEntity(
     @PrimaryKey(autoGenerate = true)

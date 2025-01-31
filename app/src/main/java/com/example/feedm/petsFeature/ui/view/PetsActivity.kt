@@ -219,7 +219,7 @@ fun AddPetButton(modifier: Modifier = Modifier, onClick: () -> Unit)  {
 @Composable
 fun PetScreenPreview(modifier: Modifier = Modifier) {
     val petModels: List<PetModel> = List(20) {
-        PetModel( 0,null,"dog", "Example", 3.0f,0.5f, "macho", true, "alta", "bajar peso", "nada"
+        PetModel( 0,"dog", "Example", 3.0f,0.5f, "macho", true, "alta", "bajar peso", "nada"
         )
     }
     TailyCareTheme {

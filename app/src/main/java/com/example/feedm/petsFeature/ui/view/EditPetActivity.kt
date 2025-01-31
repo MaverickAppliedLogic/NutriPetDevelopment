@@ -79,7 +79,6 @@ class EditPetActivity : ComponentActivity() {
                 var errorCommitting by remember { mutableStateOf(false) }
                 val pet by petViewModel.petModel.observeAsState(PetModel(
                     -1,
-                    null,
                     "dog",
                     "",
                     0.0f,

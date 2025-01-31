@@ -8,6 +8,7 @@ import com.example.feedm.core.data.database.AppDatabase
 import com.example.feedm.core.data.database.dao.FoodDao
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.data.database.dao.PetDao
+import com.example.feedm.core.data.database.dao.PetFoodDao
 import com.example.feedm.core.data.local.PetLocalStorageProvider
 import dagger.Module
 import dagger.Provides
@@ -45,7 +46,7 @@ object DataModule {
             .build()
 
 
-    val MIGRATION = object : Migration(6, 7) {
+    val MIGRATION = object : Migration(7, 8) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
@@ -64,7 +65,6 @@ object DataModule {
             db.execSQL("""
             CREATE TABLE pet_table_new (
                 pet_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                food_id INTEGER,
                 animal TEXT NOT NULL,
                 pet_name TEXT NOT NULL,
                 age REAL NOT NULL,
@@ -73,8 +73,7 @@ object DataModule {
                 sterilized INTEGER NOT NULL,
                 activity TEXT,
                 goal TEXT NOT NULL,
-                allergies TEXT,
-                FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE NO ACTION
+                allergies TEXT
             )
         """.trimIndent())
 
@@ -89,6 +88,17 @@ object DataModule {
             )
         """.trimIndent())
 
+            // Crear la tabla "pet_food_table" para la relación N:M
+            db.execSQL("""
+            CREATE TABLE pet_food_table (
+                pet_id INTEGER NOT NULL,
+                food_id INTEGER NOT NULL,
+                PRIMARY KEY (pet_id, food_id),
+                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,
+                FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE CASCADE
+            )
+        """.trimIndent())
+
             // Migración de datos para food_table
             db.execSQL("""
             INSERT INTO food_table_new (food_id, food_name, brand, food_weight, calories)
@@ -97,8 +107,8 @@ object DataModule {
 
             // Migración de datos para pet_table
             db.execSQL("""
-            INSERT INTO pet_table_new (pet_id, food_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
-            SELECT pet_id, food_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies FROM pet_table
+            INSERT INTO pet_table_new (pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
+            SELECT pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies FROM pet_table
         """.trimIndent())
 
             // Migración de datos para meal_table
@@ -106,6 +116,8 @@ object DataModule {
             INSERT INTO meal_table_new (meal_id, pet_id, meal_time, ration)
             SELECT meal_id, pet_id, meal_time, ration FROM meal_table
         """.trimIndent())
+
+            // Aquí no hay datos iniciales para migrar en pet_food, ya que es una nueva tabla de relación
 
             // Eliminar las tablas antiguas
             db.execSQL("DROP TABLE food_table")
@@ -118,7 +130,6 @@ object DataModule {
             db.execSQL("ALTER TABLE meal_table_new RENAME TO meal_table")
         }
     }
-
 
     @Provides
     fun providePetDao(db: AppDatabase): PetDao {
@@ -133,6 +144,11 @@ object DataModule {
     @Provides
     fun provideFoodDao(db: AppDatabase): FoodDao {
         return db.getFoodDao()
+    }
+
+    @Provides
+    fun providePetFoodDao(db: AppDatabase): PetFoodDao {
+        return db.getPetFoodDao()
     }
 
 }

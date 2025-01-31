@@ -78,7 +78,6 @@ class AddPetActivity : ComponentActivity() {
                 var invalidGoal by remember { mutableStateOf(false) }
                 var pet by remember {
                     mutableStateOf(PetModel(
-                        foodId=null,
                         animal = "dog",
                         petName = "",
                         age = 0.0f,
@@ -504,7 +503,6 @@ fun FormScreenPreview() {
                 modifier = Modifier.padding(innerPadding),
                 pet = PetModel(
                     -1,
-                    null,
                     "dog",
                     "",
                     0.0f,

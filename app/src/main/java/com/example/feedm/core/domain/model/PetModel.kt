@@ -5,7 +5,6 @@ import com.example.feedm.core.data.database.entities.PetEntity
 
 data class PetModel(
     var petId: Int = 0,
-    var foodId: Int?,
     var animal: String,
     var petName: String,
     var age: Float,
@@ -20,5 +19,5 @@ data class PetModel(
 
 
 fun PetEntity.toDomain()=
-    PetModel(petId,foodId,animal, petName, age, petWeight, genre, sterilized, activity, goal, allergies)
+    PetModel(petId,animal, petName, age, petWeight, genre, sterilized, activity, goal, allergies)
 
