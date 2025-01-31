@@ -81,7 +81,6 @@ class PetDetailsActivity : ComponentActivity() {
             TailyCareTheme {
                 val pet: PetModel by petViewModel.petModel.observeAsState(PetModel(
                     -1,
-                    null,
                     "dog",
                     "",
                     0.0f,
@@ -658,7 +657,6 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
             ScaffoldContent(
                 pet = PetModel(
                     -1,
-                    null,
                     "dog",
                     "",
                     0.0f,

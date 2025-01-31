@@ -7,19 +7,10 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.feedm.core.domain.model.PetModel
 
-@Entity(tableName = "pet_table",
-    foreignKeys = [
-        ForeignKey(
-            entity = FoodEntity::class,
-            parentColumns = ["food_id"],
-            childColumns = ["food_id"],
-            onDelete = ForeignKey.NO_ACTION
-        )
-    ])
+@Entity(tableName = "pet_table")
 data class PetEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "pet_id")val petId: Int = 0,
-    @ColumnInfo(name = "food_id")val foodId: Int?,
     @ColumnInfo(name = "animal")val animal: String,
     @ColumnInfo(name = "pet_name")val petName: String,
     @ColumnInfo(name = "age")val age: Float,
@@ -34,7 +25,6 @@ data class PetEntity(
 fun PetModel.toDataBase() =
     PetEntity(
         petId = petId,
-        foodId = foodId,
         animal =  animal,
         petName =  petName,
         age = age,

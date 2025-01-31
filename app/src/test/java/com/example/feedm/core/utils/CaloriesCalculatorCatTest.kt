@@ -26,7 +26,6 @@ class CaloriesCalculatorCatTest{
         //Given
         val pet = PetModel(
             -1,
-            null,
             "cat",
             "",
             4.0f,
@@ -61,7 +60,6 @@ class CaloriesCalculatorCatTest{
         //Given
         val pet = PetModel(
             -1,
-            null,
             "cat",
             "",
             8.0f,
@@ -96,7 +94,6 @@ class CaloriesCalculatorCatTest{
         //Given
         val pet = PetModel(
             -1,
-            null,
             "cat",
             "",
             3.0f,
@@ -130,7 +127,6 @@ class CaloriesCalculatorCatTest{
         //Given
         val pet = PetModel(
             -1,
-            null,
             "cat",
             "",
             3.0f,
@@ -165,7 +161,6 @@ class CaloriesCalculatorCatTest{
         //Given
         val pet = PetModel(
             -1,
-            null,
             "cat",
             "",
             0.9f,
@@ -199,7 +194,6 @@ class CaloriesCalculatorCatTest{
         //Given
         val pet = PetModel(
             -1,
-            null,
             "cat",
             "",
             9.0f,
