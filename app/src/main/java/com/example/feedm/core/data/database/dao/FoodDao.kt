@@ -20,7 +20,7 @@ interface FoodDao {
     suspend fun getFoodById(foodId: Int): FoodEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addFood(foodEntity: FoodEntity)
+    suspend fun addFood(foodEntity: FoodEntity) : Long
 
     @Query("DELETE FROM food_table WHERE food_id = :foodId")
     suspend fun deleteFood(foodId: Int)

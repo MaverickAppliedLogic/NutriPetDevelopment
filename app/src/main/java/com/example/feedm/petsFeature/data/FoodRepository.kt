@@ -18,8 +18,8 @@ class FoodRepository @Inject constructor(
         return foodDao.getFoodById(foodId).toDomain()
     }
 
-    suspend fun addFood(food: FoodModel) {
-        foodDao.addFood(food.toDatabase())
+    suspend fun addFood(food: FoodModel): Long {
+        return foodDao.addFood(food.toDatabase())
     }
 
 

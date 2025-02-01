@@ -15,4 +15,5 @@ data class FoodEntity(
     @ColumnInfo(name = "calories") val calories: Float
 )
 
-fun FoodModel.toDatabase() = FoodEntity(foodId = foodId, foodName = foodName, brand = brand, foodWeight = foodWeight, calories = calories)
+fun FoodModel.toDatabase() = FoodEntity(foodId = foodId, foodName = foodName, brand = brand,
+    foodWeight = foodWeight, calories = calories)
