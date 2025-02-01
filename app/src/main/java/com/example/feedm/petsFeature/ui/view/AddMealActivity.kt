@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -70,6 +71,8 @@ class AddMealActivity : ComponentActivity() {
         val petId = intent.extras!!.getInt("PetId")
         setContent {
             TailyCareTheme {
+                foodViewModel.getFoodsByPetId(petId)
+                val foodsList = foodViewModel.foods.observeAsState(initial = emptyList())
                 var isNewMeal by remember { mutableStateOf(true) }
                 var meal by remember {
                     mutableStateOf(
@@ -90,6 +93,11 @@ class AddMealActivity : ComponentActivity() {
                         )
                     )
                 }
+                val foodsNames = listOf("Nueva comida")
+                foodsList.value.forEach{
+                    foodsNames.toMutableList().add(it.foodName)
+                }
+
 
 
                 Scaffold(modifier = Modifier
@@ -125,6 +133,7 @@ class AddMealActivity : ComponentActivity() {
                     Screen(
                         name = food.foodName,
                         isNewFood = isNewMeal,
+                        foodsNames = foodsNames,
                         food = food,
                         meal = meal,
                         onCaloriesChange = { food = food.copy(calories = it.toFloat()) },
@@ -134,6 +143,13 @@ class AddMealActivity : ComponentActivity() {
                         onMinChange = { meal = meal.copy(mealTime = 1) },
                         onFoodSelected = {
                             isNewMeal = it == "Nueva comida"
+                            if (it != "Nueva comida") {
+                                foodsList.value.forEach { foodModel ->
+                                    if (it == foodModel.foodName) {
+                                        food = foodModel
+                                    }
+                                }
+                            }
                         },
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -158,6 +174,7 @@ class AddMealActivity : ComponentActivity() {
 fun Screen(
     name: String,
     isNewFood: Boolean,
+    foodsNames: List<String>,
     food: FoodModel,
     meal: MealModel,
     onNameChange: (String) -> Unit,
@@ -230,7 +247,7 @@ fun Screen(
                     .width(300.dp)
             ) {
                 CustomDropDownMenu(
-                    options = listOf("Nueva comida", "option2"),
+                    options = foodsNames,
                     title = "Comida",
                     selectedOption = food.foodName,
                     errorCommitting = false,
@@ -393,6 +410,7 @@ fun ScreenPreview() {
             Screen(
                 name = food.foodName,
                 isNewFood = isNewMeal,
+                foodsNames = emptyList(),
                 food = food,
                 meal = meal,
                 onCaloriesChange = { calories = it },

@@ -15,9 +15,7 @@ import com.example.feedm.core.domain.model.MealModel
             parentColumns = ["pet_id"],
             childColumns = ["pet_id"],
             onDelete = ForeignKey.NO_ACTION
-        )],
-    indices = [Index("pet_id")]
-)
+        )])
 data class MealEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "meal_id") val mealId: Int = 0,
