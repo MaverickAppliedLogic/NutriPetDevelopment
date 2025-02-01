@@ -8,6 +8,7 @@ import com.example.feedm.core.domain.model.FoodModel
 import com.example.feedm.petsFeature.domain.foodsUseCases.AddFoodUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.DeleteFoodUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.GetFoodUseCase
+import com.example.feedm.petsFeature.domain.foodsUseCases.GetFoodsByPetIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,11 +17,14 @@ import javax.inject.Inject
 class FoodViewModel @Inject constructor(
     private val getFoodUseCase: GetFoodUseCase,
     private val addFoodUseCase: AddFoodUseCase,
-    private val deleteFoodUseCase: DeleteFoodUseCase
+    private val deleteFoodUseCase: DeleteFoodUseCase,
+    private val getFoodsByPetIdUseCase: GetFoodsByPetIdUseCase
 ) : ViewModel() {
 
     private val _food = MutableLiveData<FoodModel>()
     val food: LiveData<FoodModel> = _food
+    private val _foods = MutableLiveData<List<FoodModel>>()
+    val foods: LiveData<List<FoodModel>> = _foods
 
 
     fun getFood(foodId: Int) {
@@ -33,6 +37,13 @@ class FoodViewModel @Inject constructor(
                 // You can also set an empty list to _food.value if you want to show an empty state
                 println("Error getting food: ${e.message}")
             }
+        }
+    }
+
+    fun getFoodsByPetId(petId: Int) {
+        viewModelScope.launch {
+            val foodsList = getFoodsByPetIdUseCase(petId)
+            _foods.value = foodsList
         }
     }
 
