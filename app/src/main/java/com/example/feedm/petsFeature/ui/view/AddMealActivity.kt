@@ -73,7 +73,7 @@ class AddMealActivity : ComponentActivity() {
             TailyCareTheme {
                 foodViewModel.getFoodsByPetId(petId)
                 val foodsList = foodViewModel.foods.observeAsState(initial = emptyList())
-                var isNewMeal by remember { mutableStateOf(true) }
+                var isNewFood by remember { mutableStateOf(true) }
                 var meal by remember {
                     mutableStateOf(
                         MealModel(
@@ -83,16 +83,18 @@ class AddMealActivity : ComponentActivity() {
                         )
                     )
                 }
-                var food by remember {
+                var food by remember{
                     mutableStateOf(
                         FoodModel(
                             foodName = "test",
-                            foodWeight = 1f,
+                            foodWeight = 0f,
                             calories = 0f,
                             brand = "test"
                         )
                     )
                 }
+                var calories by remember { mutableStateOf("") }
+                var ration by remember { mutableStateOf("") }
                 val foodsNames = listOf("Nueva comida")
                 foodsList.value.forEach{
                     foodsNames.toMutableList().add(it.foodName)
@@ -113,8 +115,9 @@ class AddMealActivity : ComponentActivity() {
                             ) {
                                 FloatingActionButton(
                                     onClick = {
-                                        addMeal(meal)
-                                        if (isNewMeal) addFood(food)
+                                        food = food.copy(calories = calories.toFloat())
+                                        meal = meal.copy(ration = ration.toFloat())
+                                        commit(meal, food, isNewFood, petId)
                                     },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
@@ -131,18 +134,19 @@ class AddMealActivity : ComponentActivity() {
                         }
                     }) { innerPadding ->
                     Screen(
-                        name = food.foodName,
-                        isNewFood = isNewMeal,
+                        isNewFood = isNewFood,
                         foodsNames = foodsNames,
+                        calories = calories,
+                        ration = ration,
                         food = food,
                         meal = meal,
-                        onCaloriesChange = { food = food.copy(calories = it.toFloat()) },
-                        onRationChange = { meal = meal.copy(ration = it.toFloat()) },
+                        onCaloriesChange = { calories = it },
+                        onRationChange = { ration = it},
                         onNameChange = { food = food.copy(foodName = it) },
                         onHourChange = { meal = meal.copy(mealTime = 0) },
                         onMinChange = { meal = meal.copy(mealTime = 1) },
                         onFoodSelected = {
-                            isNewMeal = it == "Nueva comida"
+                            isNewFood = it == "Nueva comida"
                             if (it != "Nueva comida") {
                                 foodsList.value.forEach { foodModel ->
                                     if (it == foodModel.foodName) {
@@ -158,13 +162,15 @@ class AddMealActivity : ComponentActivity() {
         }
     }
 
-   private fun addMeal(meal: MealModel){
-        mealsViewmodel.addMeal(meal)
-   }
+   private fun commit(meal: MealModel, food: FoodModel, isNewFood: Boolean, petId: Int){
+       mealsViewmodel.addMeal(meal)
+       if(isNewFood){
+           foodViewModel.addFood(food)
+           foodViewModel.addFoodToPet(petId)
+       }
 
-    private fun addFood(food: FoodModel){
-        foodViewModel.addFood(food)
-    }
+       finish()
+   }
 
 }
 
@@ -172,11 +178,12 @@ class AddMealActivity : ComponentActivity() {
 
 @Composable
 fun Screen(
-    name: String,
     isNewFood: Boolean,
     foodsNames: List<String>,
     food: FoodModel,
     meal: MealModel,
+    calories: String,
+    ration: String,
     onNameChange: (String) -> Unit,
     onCaloriesChange: (String) -> Unit,
     onRationChange: (String) -> Unit,
@@ -219,7 +226,7 @@ fun Screen(
 
         Box(modifier = Modifier) {
             OutlinedTextField(
-                value = name,
+                value = if(isNewFood) "" else food.foodName,
                 supportingText = {},
                 onValueChange = { onNameChange(it) },
                 label = { },
@@ -275,7 +282,7 @@ fun Screen(
             modifier = Modifier.padding(horizontal = 70.dp)
         )
         OutlinedTextField(
-            value = if (isNewFood) food.calories.toString() else food.calories.toString(),
+            value = if (isNewFood) calories else food.calories.toString(),
             enabled = isNewFood,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             supportingText = {},
@@ -298,7 +305,7 @@ fun Screen(
             modifier = Modifier.padding(horizontal = 70.dp)
         )
         OutlinedTextField(
-            value = meal.ration.toString(),
+            value = if (isNewFood) ration else meal.ration.toString(),
             supportingText = {},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = { onRationChange(it) },
@@ -408,9 +415,10 @@ fun ScreenPreview() {
                 }
             }) { innerPadding ->
             Screen(
-                name = food.foodName,
                 isNewFood = isNewMeal,
                 foodsNames = emptyList(),
+                calories = calories,
+                ration = ration,
                 food = food,
                 meal = meal,
                 onCaloriesChange = { calories = it },

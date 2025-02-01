@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedm.core.domain.model.FoodModel
+import com.example.feedm.petsFeature.domain.foodsUseCases.AddFoodToPetUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.AddFoodUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.DeleteFoodUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.GetFoodUseCase
@@ -18,9 +19,12 @@ class FoodViewModel @Inject constructor(
     private val getFoodUseCase: GetFoodUseCase,
     private val addFoodUseCase: AddFoodUseCase,
     private val deleteFoodUseCase: DeleteFoodUseCase,
-    private val getFoodsByPetIdUseCase: GetFoodsByPetIdUseCase
+    private val getFoodsByPetIdUseCase: GetFoodsByPetIdUseCase,
+    private val addFoodToPetUseCase: AddFoodToPetUseCase
 ) : ViewModel() {
 
+    private val _foodAddedId = MutableLiveData<Int>()
+    val foodAddedId: LiveData<Int> = _foodAddedId
     private val _food = MutableLiveData<FoodModel>()
     val food: LiveData<FoodModel> = _food
     private val _foods = MutableLiveData<List<FoodModel>>()
@@ -47,10 +51,18 @@ class FoodViewModel @Inject constructor(
         }
     }
 
+    fun addFoodToPet(petId: Int) {
+        viewModelScope.launch {
+            addFoodToPetUseCase(petId, _foodAddedId.value!!)
+        }
+    }
+
+
     fun addFood(food: FoodModel) {
         viewModelScope.launch {
             try {
-                addFoodUseCase(food)
+                val foodId = addFoodUseCase(food)
+                _foodAddedId.value = foodId
             } catch (e: Exception) {
                 // Handle the error here
                 println("Error adding food: ${e.message}")
