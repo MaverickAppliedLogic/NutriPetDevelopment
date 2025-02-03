@@ -323,7 +323,7 @@ fun Screen(
                     .height(60.dp)
                     .width(125.dp)
             ) {
-                CustomDropDownMenu(options = listOf("24 h", "23 h"), title = "Hora",
+                CustomDropDownMenu(options = (0..24).map { "$it h" }, title = "Hora",
                     selectedOption = "24 h", errorCommitting = false,
                     onSelectOption = { onHourChange(it) })
             }
@@ -337,7 +337,8 @@ fun Screen(
                     .height(60.dp)
                     .width(125.dp)
             ) {
-                CustomDropDownMenu(options = listOf("59 min", "58 min"), title = "Min",
+
+                CustomDropDownMenu(options = (0..59).map { "$it min" }, title = "Min",
                     selectedOption = "59 min", errorCommitting = false,
                     onSelectOption = { onMinChange(it) })
             }
