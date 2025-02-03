@@ -14,7 +14,7 @@ import com.example.feedm.core.domain.model.MealModel
             entity = PetEntity::class,
             parentColumns = ["pet_id"],
             childColumns = ["pet_id"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         )])
 data class MealEntity(
     @PrimaryKey(autoGenerate = true)

@@ -34,7 +34,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun petLocalStorage(file: File): PetLocalStorageProvider{
+    fun petLocalStorage(file: File): PetLocalStorageProvider {
         return PetLocalStorageProvider(file)
     }
 
@@ -46,12 +46,13 @@ object DataModule {
             .build()
 
 
-    val MIGRATION = object : Migration(7, 8) {
+    val MIGRATION = object : Migration(8, 9) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
             // Crear la tabla "food_table_new"
-            db.execSQL("""
+            db.execSQL(
+                """
             CREATE TABLE food_table_new (
                 food_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 food_name TEXT NOT NULL,
@@ -59,10 +60,12 @@ object DataModule {
                 food_weight REAL,
                 calories REAL NOT NULL
             )
-        """.trimIndent())
+        """.trimIndent()
+            )
 
             // Crear la tabla "pet_table_new" con claves foráneas
-            db.execSQL("""
+            db.execSQL(
+                """
             CREATE TABLE pet_table_new (
                 pet_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 animal TEXT NOT NULL,
@@ -75,47 +78,65 @@ object DataModule {
                 goal TEXT NOT NULL,
                 allergies TEXT
             )
-        """.trimIndent())
+        """.trimIndent()
+            )
 
             // Crear la tabla "meal_table_new" con claves foráneas
-            db.execSQL("""
+            db.execSQL(
+                """
             CREATE TABLE meal_table_new (
                 meal_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 pet_id INTEGER NOT NULL,
                 meal_time INTEGER NOT NULL,
                 ration REAL NOT NULL,
-                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE NO ACTION
+                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE
             )
-        """.trimIndent())
+        """.trimIndent()
+            )
 
             // Crear la tabla "pet_food_table" para la relación N:M
-            db.execSQL("""
-            CREATE TABLE pet_food_table (
+            db.execSQL(
+                """
+            CREATE TABLE pet_food_table_new (
                 pet_id INTEGER NOT NULL,
                 food_id INTEGER NOT NULL,
                 PRIMARY KEY (pet_id, food_id),
                 FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,
                 FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE CASCADE
             )
-        """.trimIndent())
+        """.trimIndent()
+            )
 
             // Migración de datos para food_table
-            db.execSQL("""
+            db.execSQL(
+                """
             INSERT INTO food_table_new (food_id, food_name, brand, food_weight, calories)
             SELECT food_id, food_name, brand, food_weight, calories FROM food_table
-        """.trimIndent())
+        """.trimIndent()
+            )
 
             // Migración de datos para pet_table
-            db.execSQL("""
+            db.execSQL(
+                """
             INSERT INTO pet_table_new (pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
             SELECT pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies FROM pet_table
-        """.trimIndent())
+        """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+            INSERT INTO pet_food_table_new (pet_id, food_id)
+            SELECT pet_id, food_id FROM pet_food_table
+            """.trimIndent()
+            )
 
             // Migración de datos para meal_table
-            db.execSQL("""
+            db.execSQL(
+                """
             INSERT INTO meal_table_new (meal_id, pet_id, meal_time, ration)
             SELECT meal_id, pet_id, meal_time, ration FROM meal_table
-        """.trimIndent())
+        """.trimIndent()
+            )
 
             // Aquí no hay datos iniciales para migrar en pet_food, ya que es una nueva tabla de relación
 
@@ -133,11 +154,11 @@ object DataModule {
 
     @Provides
     fun providePetDao(db: AppDatabase): PetDao {
-       return db.getPetDao()
+        return db.getPetDao()
     }
 
     @Provides
-    fun provideMealDao(db: AppDatabase): MealDao{
+    fun provideMealDao(db: AppDatabase): MealDao {
         return db.getMealDao()
     }
 

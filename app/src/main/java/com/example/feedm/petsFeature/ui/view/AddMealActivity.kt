@@ -33,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -69,36 +70,29 @@ class AddMealActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val petId = intent.extras!!.getInt("PetId")
+        val emptyFood = FoodModel(
+            foodName = "",
+            foodWeight = 0f,
+            calories = 0f,
+            brand = "test"
+        )
+        val emptyMeal =  MealModel(
+            petId = petId,
+            mealTime = 0,
+            ration = 0f
+        )
         setContent {
             TailyCareTheme {
-                foodViewModel.getFoodsByPetId(petId)
-                val foodsList = foodViewModel.foods.observeAsState(initial = emptyList())
+                val foodsList : List<FoodModel> by foodViewModel.foods
+                    .observeAsState(initial = emptyList())
+
                 var isNewFood by remember { mutableStateOf(true) }
-                var meal by remember {
-                    mutableStateOf(
-                        MealModel(
-                            petId = petId,
-                            mealTime = 0,
-                            ration = 0f
-                        )
-                    )
-                }
-                var food by remember{
-                    mutableStateOf(
-                        FoodModel(
-                            foodName = "test",
-                            foodWeight = 0f,
-                            calories = 0f,
-                            brand = "test"
-                        )
-                    )
-                }
+                var meal by remember { mutableStateOf(emptyMeal) }
+                var food by remember{ mutableStateOf(emptyFood) }
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
-                val foodsNames = listOf("Nueva comida")
-                foodsList.value.forEach{
-                    foodsNames.toMutableList().add(it.foodName)
-                }
+                LaunchedEffect(Unit) {foodViewModel.getFoodsByPetId(petId)}
+
 
 
 
@@ -135,7 +129,7 @@ class AddMealActivity : ComponentActivity() {
                     }) { innerPadding ->
                     Screen(
                         isNewFood = isNewFood,
-                        foodsNames = foodsNames,
+                        foodsList = foodsList,
                         calories = calories,
                         ration = ration,
                         food = food,
@@ -148,12 +142,13 @@ class AddMealActivity : ComponentActivity() {
                         onFoodSelected = {
                             isNewFood = it == "Nueva comida"
                             if (it != "Nueva comida") {
-                                foodsList.value.forEach { foodModel ->
+                                foodsList.forEach { foodModel ->
                                     if (it == foodModel.foodName) {
                                         food = foodModel
                                     }
                                 }
                             }
+                            else food = emptyFood
                         },
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -165,10 +160,8 @@ class AddMealActivity : ComponentActivity() {
    private fun commit(meal: MealModel, food: FoodModel, isNewFood: Boolean, petId: Int){
        mealsViewmodel.addMeal(meal)
        if(isNewFood){
-           foodViewModel.addFood(food)
-           foodViewModel.addFoodToPet(petId)
+           foodViewModel.addFood(food,petId)
        }
-
        finish()
    }
 
@@ -179,7 +172,7 @@ class AddMealActivity : ComponentActivity() {
 @Composable
 fun Screen(
     isNewFood: Boolean,
-    foodsNames: List<String>,
+    foodsList: List<FoodModel>,
     food: FoodModel,
     meal: MealModel,
     calories: String,
@@ -192,7 +185,6 @@ fun Screen(
     onFoodSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val namePadding by animateDpAsState(
         targetValue = if (isNewFood) 105.dp else 25.dp,
         animationSpec = spring(dampingRatio = 0.7f, stiffness = 150f),
@@ -226,7 +218,7 @@ fun Screen(
 
         Box(modifier = Modifier) {
             OutlinedTextField(
-                value = if(isNewFood) "" else food.foodName,
+                value = food.foodName,
                 supportingText = {},
                 onValueChange = { onNameChange(it) },
                 label = { },
@@ -254,7 +246,7 @@ fun Screen(
                     .width(300.dp)
             ) {
                 CustomDropDownMenu(
-                    options = foodsNames,
+                    options = foodsList.map { it.foodName }.plus("Nueva comida"),
                     title = "Comida",
                     selectedOption = food.foodName,
                     errorCommitting = false,
@@ -416,7 +408,7 @@ fun ScreenPreview() {
             }) { innerPadding ->
             Screen(
                 isNewFood = isNewMeal,
-                foodsNames = emptyList(),
+                foodsList = emptyList(),
                 calories = calories,
                 ration = ration,
                 food = food,
