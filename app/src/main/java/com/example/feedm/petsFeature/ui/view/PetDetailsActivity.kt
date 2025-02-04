@@ -42,6 +42,9 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,16 +63,19 @@ import com.example.feedm.core.domain.model.PetModel
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
+import com.example.feedm.petsFeature.ui.viewmodel.CalculatorViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.format
+import java.util.Locale
 
 @AndroidEntryPoint
 class PetDetailsActivity : ComponentActivity() {
 
     private val petViewModel: PetViewModel by viewModels()
     private val mealsViewmodel: MealsViewmodel by viewModels()
+    private val caloriesViewModel: CalculatorViewModel by viewModels()
 
 
 
@@ -95,6 +101,9 @@ class PetDetailsActivity : ComponentActivity() {
 
                 petViewModel.getPetById(petId)
                 mealsViewmodel.getMeals(petId)
+                val calories by remember(pet) {
+                    mutableDoubleStateOf(caloriesViewModel.calculateCalories(pet))
+                }
 
 
                 val scrollState = rememberScrollState()
@@ -162,6 +171,7 @@ class PetDetailsActivity : ComponentActivity() {
                     ScaffoldContent(
                         pet = pet,
                         meals = meals,
+                        calories = calories,
                         modifier = Modifier
                             .padding(innerPadding)
                             .fillMaxSize()
@@ -221,6 +231,7 @@ fun PetImage(petAnimal: String) {
 fun ScaffoldContent(
     pet: PetModel,
     meals: List<MealModel>,
+    calories: Double,
     modifier: Modifier = Modifier
 ) {
 
@@ -230,6 +241,7 @@ fun ScaffoldContent(
         PetDetailsActivityModules(
             pet = pet,
             meals = meals,
+            calories = calories,
             modifier = Modifier.padding(horizontal = 15.dp)
         )
         Spacer(modifier = Modifier.padding(5.dp))
@@ -264,10 +276,11 @@ fun ScaffoldContent(
 fun PetDetailsActivityModules(
     pet: PetModel,
     meals: List<MealModel>,
+    calories: Double,
     modifier: Modifier = Modifier
 ) {
     val spacerPadding = 20.dp
-    MealsModule(meals, modifier)
+    MealsModule(meals, calories, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
     HealthModule(pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
@@ -278,6 +291,7 @@ fun PetDetailsActivityModules(
 @Composable
 fun MealsModule(
     meals: List<MealModel>,
+    calories: Double,
     modifier: Modifier = Modifier
 ) {
     val modifierForElements = Modifier
@@ -330,7 +344,7 @@ fun MealsModule(
                 )
                 Spacer(modifier = Modifier.width(65.dp))
                 Text(
-                    text = "195/200 gr",
+                    text = String.format(Locale.getDefault(),"%.2f", calories) + " kcal",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -668,6 +682,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                     null
                 ),
                 meals = emptyList(),
+                calories = 0.0,
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
