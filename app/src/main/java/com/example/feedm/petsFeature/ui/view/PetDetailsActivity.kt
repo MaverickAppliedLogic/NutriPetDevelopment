@@ -64,6 +64,7 @@ import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.ui.viewmodel.CalculatorViewModel
+import com.example.feedm.petsFeature.ui.viewmodel.FoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,13 +99,11 @@ class PetDetailsActivity : ComponentActivity() {
                     null
                 ))
                 val meals: List<MealModel> by mealsViewmodel.meals.observeAsState(emptyList())
-
-                petViewModel.getPetById(petId)
-                mealsViewmodel.getMeals(petId)
                 val calories by remember(pet) {
                     mutableDoubleStateOf(caloriesViewModel.calculateCalories(pet))
                 }
-
+                petViewModel.getPetById(petId)
+                mealsViewmodel.getMeals(petId)
 
                 val scrollState = rememberScrollState()
 
@@ -305,6 +304,7 @@ fun MealsModule(
             .fillMaxWidth()
             .background(color = Color.White)
     ) {
+        var consumedCalories = 0
         Column(modifier = modifierForElements) {
             Row(modifier = modifierForElements) {
                 Text(
@@ -335,16 +335,19 @@ fun MealsModule(
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 5.dp, end = 15.dp, start = 5.dp)
                 )
-
+                consumedCalories += meal.mealCalories.toInt()
             }
             Row(modifier = modifierForElements.padding(bottom = 5.dp)) {
+                val recommendedCalories = String
+                    .format(Locale.getDefault(),"%d", calories.toInt())
+
                 Text(
                     text = stringResource(R.string.pia_FoodModuleBottomTxt),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
                 Spacer(modifier = Modifier.width(65.dp))
                 Text(
-                    text = String.format(Locale.getDefault(),"%.2f", calories) + " kcal",
+                    text = "$consumedCalories / $recommendedCalories kcal",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }

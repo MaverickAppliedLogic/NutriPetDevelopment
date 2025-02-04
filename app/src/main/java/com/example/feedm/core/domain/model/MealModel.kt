@@ -6,8 +6,13 @@ data class MealModel(
     var mealId : Int = 0,
     var petId: Int,
     var mealTime: Long,
-    var ration: Float
+    var ration: Float,
+    var mealCalories: Double = 0.0
 )
 
 fun MealEntity.toDomain() =
-    MealModel(mealId = mealId, petId = petId, mealTime = mealTime, ration = ration)
+    MealModel(mealId = mealId,
+        petId = petId,
+        mealTime = mealTime,
+        ration = ration,
+        mealCalories = mealCalories)
