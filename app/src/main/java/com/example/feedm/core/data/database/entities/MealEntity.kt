@@ -21,8 +21,13 @@ data class MealEntity(
     @ColumnInfo(name = "meal_id") val mealId: Int = 0,
     @ColumnInfo(name = "pet_id") val petId: Int,
     @ColumnInfo(name = "meal_time") val mealTime: Long,
-    @ColumnInfo(name = "ration") val ration: Float
+    @ColumnInfo(name = "ration") val ration: Float,
+    @ColumnInfo(name = "calories") val mealCalories: Double
 )
 
 fun MealModel.toDatabase() =
-    MealEntity(mealId = mealId, petId = petId, mealTime = mealTime, ration = ration)
+    MealEntity(mealId = mealId,
+        petId = petId,
+        mealTime = mealTime,
+        ration = ration,
+        mealCalories = mealCalories)

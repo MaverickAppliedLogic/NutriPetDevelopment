@@ -79,7 +79,8 @@ class AddMealActivity : ComponentActivity() {
         val emptyMeal =  MealModel(
             petId = petId,
             mealTime = 0,
-            ration = 0f
+            ration = 0f,
+            mealCalories = 0.0
         )
         setContent {
             TailyCareTheme {
@@ -158,7 +159,7 @@ class AddMealActivity : ComponentActivity() {
     }
 
    private fun commit(meal: MealModel, food: FoodModel, isNewFood: Boolean, petId: Int){
-       mealsViewmodel.addMeal(meal)
+       mealsViewmodel.addMeal(meal.copy(mealCalories = (food.calories/100 * meal.ration).toDouble()))
        if(isNewFood){
            foodViewModel.addFood(food,petId)
        }
@@ -297,7 +298,7 @@ fun Screen(
             modifier = Modifier.padding(horizontal = 70.dp)
         )
         OutlinedTextField(
-            value = if (isNewFood) ration else meal.ration.toString(),
+            value = ration,
             supportingText = {},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = { onRationChange(it) },

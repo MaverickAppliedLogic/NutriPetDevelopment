@@ -46,7 +46,7 @@ object DataModule {
             .build()
 
 
-    val MIGRATION = object : Migration(8, 9) {
+    val MIGRATION = object : Migration(9,10) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
@@ -89,6 +89,7 @@ object DataModule {
                 pet_id INTEGER NOT NULL,
                 meal_time INTEGER NOT NULL,
                 ration REAL NOT NULL,
+                meal_calories REAL NOT NULL,
                 FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE
             )
         """.trimIndent()
@@ -97,7 +98,7 @@ object DataModule {
             // Crear la tabla "pet_food_table" para la relación N:M
             db.execSQL(
                 """
-            CREATE TABLE pet_food_table_new (
+            CREATE TABLE pet_food_table_new_new (
                 pet_id INTEGER NOT NULL,
                 food_id INTEGER NOT NULL,
                 PRIMARY KEY (pet_id, food_id),
@@ -125,8 +126,8 @@ object DataModule {
 
             db.execSQL(
                 """
-            INSERT INTO pet_food_table_new (pet_id, food_id)
-            SELECT pet_id, food_id FROM pet_food_table
+            INSERT INTO pet_food_table (pet_id, food_id)
+            SELECT pet_id, food_id FROM pet_food_table_new
             """.trimIndent()
             )
 
@@ -144,11 +145,14 @@ object DataModule {
             db.execSQL("DROP TABLE food_table")
             db.execSQL("DROP TABLE pet_table")
             db.execSQL("DROP TABLE meal_table")
+            db.execSQL("DROP TABLE pet_food_table_new")
+            db.execSQL("DROP TABLE pet_food_table")
 
             // Renombrar las tablas nuevas a los nombres originales
             db.execSQL("ALTER TABLE food_table_new RENAME TO food_table")
             db.execSQL("ALTER TABLE pet_table_new RENAME TO pet_table")
             db.execSQL("ALTER TABLE meal_table_new RENAME TO meal_table")
+            db.execSQL("ALTER TABLE pet_food_table_new_new RENAME TO pet_food_table")
         }
     }
 
