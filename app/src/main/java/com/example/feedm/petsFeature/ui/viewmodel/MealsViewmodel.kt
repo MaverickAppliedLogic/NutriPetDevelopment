@@ -16,7 +16,8 @@ import javax.inject.Inject
 class MealsViewmodel @Inject constructor(
     private val getMealsUseCase: GetMealsUseCase,
     private val addMealUseCase: AddMealUseCase,
-    private val deleteMealUseCase: DeleteMealUseCase
+    private val deleteMealUseCase: DeleteMealUseCase,
+
 ): ViewModel() {
 
     private val _meals = MutableLiveData<List<MealModel>>()
