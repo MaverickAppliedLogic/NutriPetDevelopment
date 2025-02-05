@@ -50,7 +50,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
@@ -77,7 +77,8 @@ class EditPetActivity : ComponentActivity() {
             TailyCareTheme {
 
                 var errorCommitting by remember { mutableStateOf(false) }
-                val pet by petViewModel.petModel.observeAsState(PetModel(
+                val pet by petViewModel.petModel.observeAsState(
+                    PetModel(
                     -1,
                     "dog",
                     "",
@@ -88,7 +89,8 @@ class EditPetActivity : ComponentActivity() {
                     null,
                     "",
                     null
-                ))
+                )
+                )
 
 
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.White,

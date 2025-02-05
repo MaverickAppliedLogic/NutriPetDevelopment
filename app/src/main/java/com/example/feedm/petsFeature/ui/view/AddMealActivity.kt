@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,6 +29,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -46,12 +48,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
-import com.example.feedm.core.domain.model.FoodModel
-import com.example.feedm.core.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.model.FoodModel
+import com.example.feedm.petsFeature.domain.model.MealModel
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.petsFeature.ui.viewmodel.FoodViewModel
@@ -76,20 +79,15 @@ class AddMealActivity : ComponentActivity() {
             calories = 0f,
             brand = "test"
         )
-        val emptyMeal =  MealModel(
-            petId = petId,
-            mealTime = 0,
-            ration = 0f,
-            mealCalories = 0.0
-        )
         setContent {
             TailyCareTheme {
                 val foodsList : List<FoodModel> by foodViewModel.foods
                     .observeAsState(initial = emptyList())
 
                 var isNewFood by remember { mutableStateOf(true) }
-                var meal by remember { mutableStateOf(emptyMeal) }
                 var food by remember{ mutableStateOf(emptyFood) }
+                var hour by remember { mutableStateOf("") }
+                var min by remember { mutableStateOf("") }
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
                 LaunchedEffect(Unit) {foodViewModel.getFoodsByPetId(petId)}
@@ -111,8 +109,14 @@ class AddMealActivity : ComponentActivity() {
                                 FloatingActionButton(
                                     onClick = {
                                         food = food.copy(calories = calories.toFloat())
-                                        meal = meal.copy(ration = ration.toFloat())
-                                        commit(meal, food, isNewFood, petId)
+                                        commit(
+                                            ration,
+                                            min.replace(" min", ""),
+                                            hour.replace(" h", ""),
+                                            calories,
+                                             food,
+                                            isNewFood,
+                                            petId)
                                     },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
@@ -131,35 +135,49 @@ class AddMealActivity : ComponentActivity() {
                     Screen(
                         isNewFood = isNewFood,
                         foodsList = foodsList,
+                        food = food,
                         calories = calories,
                         ration = ration,
-                        food = food,
-                        meal = meal,
+                        onNameChange = { food = food.copy(foodName = it) },
                         onCaloriesChange = { calories = it },
                         onRationChange = { ration = it},
-                        onNameChange = { food = food.copy(foodName = it) },
-                        onHourChange = { meal = meal.copy(mealTime = 0) },
-                        onMinChange = { meal = meal.copy(mealTime = 1) },
+                        onHourChange = { hour = it },
+                        onMinChange = { min = it },
                         onFoodSelected = {
                             isNewFood = it == "Nueva comida"
                             if (it != "Nueva comida") {
                                 foodsList.forEach { foodModel ->
                                     if (it == foodModel.foodName) {
                                         food = foodModel
+                                        calories = food.calories.toString()
                                     }
                                 }
                             }
                             else food = emptyFood
                         },
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        hour = hour,
+                        min = min
                     )
                 }
             }
         }
     }
 
-   private fun commit(meal: MealModel, food: FoodModel, isNewFood: Boolean, petId: Int){
-       mealsViewmodel.addMeal(meal.copy(mealCalories = (food.calories/100 * meal.ration).toDouble()))
+   private fun commit(ration: String,
+                      hour: String,
+                      min: String,
+                      calories: String,
+                      food: FoodModel,
+                      isNewFood: Boolean,
+                      petId: Int){
+       mealsViewmodel.addMeal(
+           ration = ration.toFloat(),
+           hour = hour.toInt(),
+           min = min.toInt(),
+           mealCalories = calories.toDouble(),
+           petId = petId,
+           mealModel = null)
        if(isNewFood){
            foodViewModel.addFood(food,petId)
        }
@@ -175,7 +193,6 @@ fun Screen(
     isNewFood: Boolean,
     foodsList: List<FoodModel>,
     food: FoodModel,
-    meal: MealModel,
     calories: String,
     ration: String,
     onNameChange: (String) -> Unit,
@@ -184,7 +201,9 @@ fun Screen(
     onHourChange: (String) -> Unit,
     onMinChange: (String) -> Unit,
     onFoodSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    hour: String,
+    min: String,
 ) {
     val namePadding by animateDpAsState(
         targetValue = if (isNewFood) 105.dp else 25.dp,
@@ -222,7 +241,7 @@ fun Screen(
                 value = food.foodName,
                 supportingText = {},
                 onValueChange = { onNameChange(it) },
-                label = { },
+                label = { Text(text = "Nombre") },
                 enabled = isNewFood,
                 isError = false,
                 colors = TextFieldDefaults.colors(
@@ -249,7 +268,7 @@ fun Screen(
                 CustomDropDownMenu(
                     options = foodsList.map { it.foodName }.plus("Nueva comida"),
                     title = "Comida",
-                    selectedOption = food.foodName,
+                    selectedOption = if(isNewFood) "Nueva comida" else food.foodName,
                     errorCommitting = false,
                     onSelectOption = {
                         onFoodSelected(it)
@@ -270,17 +289,19 @@ fun Screen(
         }
 
         Spacer(modifier = Modifier.padding(10.dp))
-        Text(
-            text = "Kcal/100gr",
-            modifier = Modifier.padding(horizontal = 70.dp)
-        )
+        Text(text = "Aporte calorico",
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth())
         OutlinedTextField(
             value = if (isNewFood) calories else food.calories.toString(),
             enabled = isNewFood,
+            singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             supportingText = {},
             onValueChange = { onCaloriesChange(it) },
-            label = { },
+            trailingIcon = {Text(text = "Kcal/100gr", modifier = Modifier.padding(end = 10.dp))},
+            label = {  },
             isError = false,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
@@ -293,15 +314,17 @@ fun Screen(
                 .width(300.dp)
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        Text(
-            text = "Ración",
-            modifier = Modifier.padding(horizontal = 70.dp)
-        )
+        Text(text = "Racion",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.fillMaxWidth())
         OutlinedTextField(
             value = ration,
             supportingText = {},
+            singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = { onRationChange(it) },
+            trailingIcon = {Text(text = "gr", modifier = Modifier.padding(end = 10.dp)) },
             label = { },
             isError = false,
             colors = TextFieldDefaults.colors(
@@ -325,7 +348,7 @@ fun Screen(
                     .width(125.dp)
             ) {
                 CustomDropDownMenu(options = (0..24).map { "$it h" }, title = "Hora",
-                    selectedOption = "24 h", errorCommitting = false,
+                    selectedOption = hour, errorCommitting = false,
                     onSelectOption = { onHourChange(it) })
             }
             Spacer(modifier = Modifier.padding(20.dp))
@@ -340,7 +363,7 @@ fun Screen(
             ) {
 
                 CustomDropDownMenu(options = (0..59).map { "$it min" }, title = "Min",
-                    selectedOption = "59 min", errorCommitting = false,
+                    selectedOption = min , errorCommitting = false,
                     onSelectOption = { onMinChange(it) })
             }
         }
@@ -411,18 +434,19 @@ fun ScreenPreview() {
             Screen(
                 isNewFood = isNewMeal,
                 foodsList = emptyList(),
+                food = food,
                 calories = calories,
                 ration = ration,
-                food = food,
-                meal = meal,
+                onNameChange = { food = food.copy(foodName = it) },
                 onCaloriesChange = { calories = it },
                 onRationChange = { ration = it },
-                onNameChange = { food = food.copy(foodName = it) },
                 onHourChange = { meal = meal.copy(mealTime = 0) },
                 onMinChange = { meal = meal.copy(mealTime = 1) },
                 onFoodSelected = {
                     isNewMeal = it == "Nueva comida"
                 },
+                hour = "",
+                min = "",
                 modifier = Modifier.padding(innerPadding)
             )
         }

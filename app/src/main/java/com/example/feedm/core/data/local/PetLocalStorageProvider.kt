@@ -1,7 +1,7 @@
 package com.example.feedm.core.data.local
 
 
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File

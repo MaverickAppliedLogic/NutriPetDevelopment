@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.feedm.core.data.database.entities.PetEntity
-import com.example.feedm.core.domain.model.PetModel
 
 @Dao
 interface PetDao {

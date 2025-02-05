@@ -2,7 +2,7 @@ package com.example.feedm.petsFeature.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.example.feedm.petsFeature.domain.CalculateCaloriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

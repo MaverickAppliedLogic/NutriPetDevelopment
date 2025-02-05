@@ -50,7 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
@@ -77,7 +77,8 @@ class AddPetActivity : ComponentActivity() {
                 var invalidAge by remember { mutableStateOf(false) }
                 var invalidGoal by remember { mutableStateOf(false) }
                 var pet by remember {
-                    mutableStateOf(PetModel(
+                    mutableStateOf(
+                        PetModel(
                         animal = "dog",
                         petName = "",
                         age = 0.0f,
@@ -87,7 +88,8 @@ class AddPetActivity : ComponentActivity() {
                         activity = null,
                         goal ="",
                         allergies =null
-                    ))
+                    )
+                    )
                 }
 
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.White,
@@ -154,7 +156,7 @@ class AddPetActivity : ComponentActivity() {
 
 
     private fun commitAddNewPet(
-       pet: PetModel,
+        pet: PetModel,
         onValidationFailed: (String) -> Unit
     ) {
         val intent = Intent(this@AddPetActivity, PetsActivity::class.java)

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feedm.core.domain.model.FoodModel
+import com.example.feedm.petsFeature.domain.model.FoodModel
 import com.example.feedm.petsFeature.domain.foodsUseCases.AddFoodUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.DeleteFoodUseCase
 import com.example.feedm.petsFeature.domain.foodsUseCases.GetFoodUseCase

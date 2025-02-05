@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feedm.core.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.model.MealModel
 import com.example.feedm.petsFeature.domain.mealsUseCases.AddMealUseCase
 import com.example.feedm.petsFeature.domain.mealsUseCases.DeleteMealUseCase
 import com.example.feedm.petsFeature.domain.mealsUseCases.GetMealsUseCase
@@ -31,9 +31,16 @@ class MealsViewmodel @Inject constructor(
 
     }
 
-    fun addMeal(mealModel: MealModel){
+
+    fun addMeal(mealModel: MealModel?,
+                ration: Float?,
+                hour: Int?,
+                min: Int?,
+                mealCalories: Double?,
+                petId: Int?){
         viewModelScope.launch {
-        addMealUseCase(mealModel)
+        addMealUseCase(mealModel = mealModel,
+            ration = ration, hour = hour, min = min, mealCalories =  mealCalories, petId =  petId)
         }
     }
 
