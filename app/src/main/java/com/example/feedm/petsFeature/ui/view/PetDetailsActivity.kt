@@ -43,7 +43,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,13 +57,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.core.domain.model.MealModel
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.ui.viewmodel.CalculatorViewModel
-import com.example.feedm.petsFeature.ui.viewmodel.FoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,7 +84,8 @@ class PetDetailsActivity : ComponentActivity() {
         val petId = intent.extras!!.getInt("PetId")
         setContent {
             TailyCareTheme {
-                val pet: PetModel by petViewModel.petModel.observeAsState(PetModel(
+                val pet: PetModel by petViewModel.petModel.observeAsState(
+                    PetModel(
                     -1,
                     "dog",
                     "",
@@ -97,7 +96,8 @@ class PetDetailsActivity : ComponentActivity() {
                     null,
                     "",
                     null
-                ))
+                )
+                )
                 val meals: List<MealModel> by mealsViewmodel.meals.observeAsState(emptyList())
                 val calories by remember(pet) {
                     mutableDoubleStateOf(caloriesViewModel.calculateCalories(pet))

@@ -1,6 +1,6 @@
 package com.example.feedm.petsFeature.domain.foodsUseCases
 
-import com.example.feedm.core.domain.model.PetFoodModel
+import com.example.feedm.petsFeature.domain.model.PetFoodModel
 import com.example.feedm.petsFeature.data.PetFoodRepository
 import jakarta.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.example.feedm.petsFeature.domain
 
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.example.feedm.core.utils.CaloriesCalculatorCat
 import com.example.feedm.core.utils.CaloriesCalculatorDog
 import javax.inject.Inject

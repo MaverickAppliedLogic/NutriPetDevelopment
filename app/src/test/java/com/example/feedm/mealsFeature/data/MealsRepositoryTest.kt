@@ -2,7 +2,7 @@ package com.example.feedm.mealsFeature.data
 
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.data.database.entities.MealEntity
-import com.example.feedm.core.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.model.MealModel
 import com.example.feedm.petsFeature.data.MealsRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify

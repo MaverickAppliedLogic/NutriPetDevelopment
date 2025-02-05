@@ -10,7 +10,7 @@ import com.example.feedm.petsFeature.domain.petsUseCases.AddPetUseCase
 import com.example.feedm.petsFeature.domain.petsUseCases.DeletePetUseCase
 import com.example.feedm.petsFeature.domain.petsUseCases.EditPetUseCase
 import com.example.feedm.petsFeature.domain.petsUseCases.GetPetsUseCase
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import com.example.feedm.petsFeature.domain.petsUseCases.GetPetByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

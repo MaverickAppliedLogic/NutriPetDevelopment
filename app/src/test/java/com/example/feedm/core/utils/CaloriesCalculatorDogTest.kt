@@ -1,6 +1,6 @@
 package com.example.feedm.core.utils
 
-import com.example.feedm.core.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.model.PetModel
 import org.junit.Before
 import org.junit.Test
 

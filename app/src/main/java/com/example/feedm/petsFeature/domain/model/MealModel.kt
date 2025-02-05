@@ -1,4 +1,4 @@
-package com.example.feedm.core.domain.model
+package com.example.feedm.petsFeature.domain.model
 
 import com.example.feedm.core.data.database.entities.MealEntity
 

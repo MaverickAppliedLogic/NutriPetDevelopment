@@ -1,11 +1,20 @@
 package com.example.feedm.petsFeature.domain.mealsUseCases
 
-import com.example.feedm.core.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.model.MealModel
 import com.example.feedm.petsFeature.data.MealsRepository
+import com.example.feedm.petsFeature.utils.MealModelBuilder
 import javax.inject.Inject
 
-class AddMealUseCase @Inject constructor(private val mealsRepository: MealsRepository) {
-    suspend operator fun invoke(mealModel: MealModel){
-        mealsRepository.addMealForAPet(mealModel)
+class AddMealUseCase @Inject constructor(
+    private val mealsRepository: MealsRepository,
+    private val mealModelBuilder: MealModelBuilder) {
+    suspend operator fun invoke(mealModel: MealModel?,
+                                petId: Int?,
+                                ration: Float?,
+                                hour: Int?,
+                                min: Int?,
+                                mealCalories: Double?){
+        val mealModelBuilded = mealModel ?: mealModelBuilder(petId!!, ration!!, hour!!, min!!, mealCalories!!)
+        mealsRepository.addMealForAPet(mealModelBuilded)
     }
 }
