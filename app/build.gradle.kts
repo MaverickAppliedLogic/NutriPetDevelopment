@@ -1,5 +1,3 @@
-
-
 plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.android").version("2.0.21")
@@ -46,7 +44,7 @@ android {
         viewBinding = true
         compose = true
     }
-    composeOptions{
+    composeOptions {
         kotlinCompilerExtensionVersion = "2.0.21"
     }
     packaging {
@@ -57,63 +55,13 @@ android {
 }
 
 dependencies {
-
+    // Implementation dependencies
     implementation(libs.glide)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.runtime.livedata)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
-    annotationProcessor(libs.compiler)
-    implementation(libs.retrofit)
-    //Coroutines
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.coroutines.core)
-    //ViewModel
-    implementation(libs.lifecycle.viewmodel.ktx)
-    //LiveData
-    implementation(libs.androidx.lifecycle.livedata)
-    //Fragment
-    implementation(libs.androidx.fragment.ktx)
-    //Activity
-    implementation(libs.androidx.activity.ktx)
-    //DaggerHilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-    //Room
-    implementation(libs.room.ktx)
-    ksp(libs.androidx.room.compiler)
-    //Jetpack compose
-    implementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    //Material Design 3
-    implementation(libs.androidx.material3)
-    // Preview support
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
-    // UI tests
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    // Unit Testings
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    testImplementation(libs.truth)
-
-    //Mock
-    testImplementation(libs.mockk)
-
     implementation(libs.jsoup)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
@@ -126,5 +74,43 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.cronet.embedded)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.hilt.android)
+    implementation(libs.room.ktx)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Annotation processors
+    annotationProcessor(libs.compiler)
+
+    // KSP (Kotlin Symbol Processing) dependencies
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.room.compiler)
+
+    // UI tests
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.mockk.android)
+
+    // Unit tests
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockk)
 }

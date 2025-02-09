@@ -254,20 +254,11 @@ fun EditScreen(
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 //TODO establecer variable del año de la mascota en el resource
-                val texts = stringArrayResource(id = R.array.fa_arraySpinnerEdad)
-                //TODO crear stringResource de la lista
+                val texts = stringArrayResource(id = R.array.fa_arrayAgeSelected)
+                val ageOptions = stringArrayResource(R.array.ap_arraySelectAge).toList()
+
                 CustomDropDownMenu(
-                    options = listOf(
-                        "Menos de 1 año",
-                        "1 año",
-                        "2 años",
-                        "3 años",
-                        "4 años",
-                        "5 años",
-                        "6 años",
-                        "7 años",
-                        "Más de 7 años"
-                    ),
+                    options = ageOptions,
                     title = stringResource(id = R.string.ma_txtSpinnerEdad),
                     selectedOption = if (pet.age < 0.5) {
                         ""

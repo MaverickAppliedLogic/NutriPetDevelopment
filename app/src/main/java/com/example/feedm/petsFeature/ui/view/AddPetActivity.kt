@@ -60,6 +60,7 @@ import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class AddPetActivity : ComponentActivity() {
 
@@ -79,16 +80,16 @@ class AddPetActivity : ComponentActivity() {
                 var pet by remember {
                     mutableStateOf(
                         PetModel(
-                        animal = "dog",
-                        petName = "",
-                        age = 0.0f,
-                        petWeight = 0.0f,
-                        genre = null,
-                        sterilized = false,
-                        activity = null,
-                        goal ="",
-                        allergies =null
-                    )
+                            animal = "dog",
+                            petName = "",
+                            age = 0.0f,
+                            petWeight = 0.0f,
+                            genre = null,
+                            sterilized = false,
+                            activity = null,
+                            goal = "",
+                            allergies = null
+                        )
                     )
                 }
 
@@ -105,14 +106,15 @@ class AddPetActivity : ComponentActivity() {
                                 FloatingActionButton(
                                     onClick = {
                                         commitAddNewPet(
-                                           pet= pet,
+                                            pet = pet,
                                             onValidationFailed = {
-                                            when(it){
-                                                "name" -> invalidName = true
-                                                "age" -> invalidAge = true
-                                                "weight" -> invalidWeight = true
-                                                "goal" -> invalidGoal = true
-                                            }}
+                                                when (it) {
+                                                    "name" -> invalidName = true
+                                                    "age" -> invalidAge = true
+                                                    "weight" -> invalidWeight = true
+                                                    "goal" -> invalidGoal = true
+                                                }
+                                            }
                                         )
                                     },
                                     containerColor = Orange,
@@ -136,17 +138,25 @@ class AddPetActivity : ComponentActivity() {
                         invalidWeight = invalidWeight,
                         invalidGoal = invalidGoal,
                         onImageChange = { pet = pet.copy(animal = it) },
-                        onNameChange = { pet = pet.copy(petName = it)
-                                       invalidName = false},
-                        onAgeChange = { pet= pet.copy(age = it)
-                                      invalidAge = false},
-                        onGenreChange = { pet= pet.copy(genre = it) },
-                        onWeightChange = { pet= pet.copy(petWeight = it)
-                                         invalidWeight = false},
-                        onSterilizedChange = { pet= pet.copy(sterilized = it) },
-                        onActivityLevelChange = { pet= pet.copy(activity = it) },
-                        onGoalChange = { pet= pet.copy(goal = it)
-                                       invalidGoal = false},
+                        onNameChange = {
+                            pet = pet.copy(petName = it)
+                            invalidName = false
+                        },
+                        onAgeChange = {
+                            pet = pet.copy(age = it)
+                            invalidAge = false
+                        },
+                        onGenreChange = { pet = pet.copy(genre = it) },
+                        onWeightChange = {
+                            pet = pet.copy(petWeight = it)
+                            invalidWeight = false
+                        },
+                        onSterilizedChange = { pet = pet.copy(sterilized = it) },
+                        onActivityLevelChange = { pet = pet.copy(activity = it) },
+                        onGoalChange = {
+                            pet = pet.copy(goal = it)
+                            invalidGoal = false
+                        },
                         onClickFab = { cancelAddNewPet() }
                     )
                 }
@@ -257,20 +267,10 @@ fun FormScreen(
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 //TODO establecer variable del año de la mascota en el resource
-                val texts = stringArrayResource(id = R.array.fa_arraySpinnerEdad)
-                //TODO crear stringResource de la lista
+                val texts = stringArrayResource(id = R.array.fa_arrayAgeSelected)
+                val ageOptions = stringArrayResource(R.array.ap_arraySelectAge).toList()
                 CustomDropDownMenu(
-                    options = listOf(
-                        "Menos de 1 año",
-                        "1 año",
-                        "2 años",
-                        "3 años",
-                        "4 años",
-                        "5 años",
-                        "6 años",
-                        "7 años",
-                        "Más de 7 años"
-                    ),
+                    options = ageOptions,
                     title = stringResource(id = R.string.ma_txtSpinnerEdad),
                     selectedOption = if (pet.age < 0.5) {
                         ""
@@ -283,8 +283,8 @@ fun FormScreen(
                     },
                     onSelectOption = {
                         when (it) {
-                            "Menos de 1 año" -> onAgeChange(0.5f)
-                            "Más de 7 años" -> onAgeChange(8.0f)
+                            ageOptions.first() -> onAgeChange(0.5f)
+                            ageOptions.last() -> onAgeChange(8.0f)
                             else -> onAgeChange(it[0].code.div(10).toFloat())
                         }
                     },
@@ -338,7 +338,7 @@ fun FormScreen(
             ) {
                 CustomSlider(
                     weight = pet.petWeight, onWeightChanged = { onWeightChange(it) },
-                    errorCommitting= invalidWeight,
+                    errorCommitting = invalidWeight,
                     valueRange =
                     if (pet.animal == "dog") 0.0f..85.0f
                     else 0.0f..25.0f
@@ -468,14 +468,6 @@ fun PetImageAndName(
 }
 
 
-
-
-
-
-
-
-
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun FormScreenPreview() {
@@ -488,7 +480,7 @@ fun FormScreenPreview() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         FloatingActionButton(
-                            onClick = { /*TODO*/ },
+                            onClick = { },
                             containerColor = Orange,
                             modifier = Modifier.width(200.dp)
                         ) {
@@ -520,13 +512,13 @@ fun FormScreenPreview() {
                 invalidWeight = false,
                 invalidGoal = false,
                 onImageChange = { },
-                onNameChange = {  },
+                onNameChange = { },
                 onAgeChange = { },
                 onGenreChange = { },
                 onWeightChange = { },
-                onSterilizedChange = {  },
-                onActivityLevelChange = {  },
-                onGoalChange = {  },
+                onSterilizedChange = { },
+                onActivityLevelChange = { },
+                onGoalChange = { },
                 onClickFab = { }
             )
         }

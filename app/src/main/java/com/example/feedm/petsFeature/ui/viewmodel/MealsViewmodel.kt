@@ -28,7 +28,6 @@ class MealsViewmodel @Inject constructor(
             val result = getMealsUseCase(petId)
             _meals.value = result
         }
-
     }
 
 
@@ -44,7 +43,7 @@ class MealsViewmodel @Inject constructor(
         }
     }
 
-    suspend fun deleteMeal(mealId: Int){
+    suspend fun deleteMeal(mealId: List<Int>){
         deleteMealUseCase(mealId)
     }
 }

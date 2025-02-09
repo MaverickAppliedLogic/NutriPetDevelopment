@@ -67,6 +67,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddMealActivity : ComponentActivity() {
 
+    //TODO cambiar imagen flor
     private val mealsViewmodel: MealsViewmodel by viewModels()
     private val foodViewModel: FoodViewModel by viewModels()
 
@@ -107,6 +108,20 @@ class AddMealActivity : ComponentActivity() {
                                     .background(color = Color.White)
                             ) {
                                 FloatingActionButton(
+                                    onClick = { finish() },
+                                    elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
+                                    containerColor = Orange,
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier.width(150.dp)
+                                ) {
+                                    Text(
+                                        text = "Cancelar",
+                                        style = TextStyle(fontWeight = FontWeight.Bold),
+                                        color = Color.White
+                                    )
+                                }
+                                Spacer(modifier = Modifier.padding(15.dp))
+                                FloatingActionButton(
                                     onClick = {
                                         food = food.copy(calories = calories.toFloat())
                                         commit(
@@ -121,7 +136,7 @@ class AddMealActivity : ComponentActivity() {
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
                                     shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier.width(200.dp)
+                                    modifier = Modifier.width(150.dp)
                                 ) {
                                     Text(
                                         text = "Agregar",

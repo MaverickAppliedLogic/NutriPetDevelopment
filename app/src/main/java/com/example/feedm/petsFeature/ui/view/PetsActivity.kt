@@ -56,7 +56,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PetsActivity : ComponentActivity() {
-
+ //TODO crear mini menu para elegir si ver detalle o eliminar
     private  val petViewModel: PetViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,7 +161,7 @@ fun PetItem(petModel: PetModel,
         Row(
             Modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 25.dp)
         ) {
-            //TODO arreglar dimensiones de la imagen del gato
+            //TODO cambiar imagen del gato
             if (petModel.animal == "dog") {
                 Image(
                     painter = painterResource(id = R.drawable.img_dog_illustration),
@@ -170,7 +170,9 @@ fun PetItem(petModel: PetModel,
                 )
             } else {
                 Image(
-                    painter = painterResource(id = R.drawable.gato), contentDescription = "dog"
+                    painter = painterResource(id = R.drawable.gato),
+                    contentDescription = "dog",
+                    modifier.weight(0.30f)
                 )
             }
             Text(

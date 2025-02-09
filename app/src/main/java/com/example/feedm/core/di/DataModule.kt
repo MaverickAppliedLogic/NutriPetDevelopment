@@ -1,6 +1,11 @@
 package com.example.feedm.core.di
 
 import android.content.Context
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.dataStoreFile
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -21,6 +26,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
+
+    private const val USER_PREFERENCES_NAME = "user_preferences"
+    @Singleton
+    @Provides
+    fun provideDataStore(@ApplicationContext context: Context) = PreferenceDataStoreFactory.create{
+        context.preferencesDataStoreFile(USER_PREFERENCES_NAME)
+    }
+
 
     @Singleton
     @Provides
