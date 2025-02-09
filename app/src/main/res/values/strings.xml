@@ -1,13 +1,24 @@
 <resources>
-    //FormActivity Strings
+    //AddPetActivity Strings
     <string name="app_name">TailyCare</string>
     <string name="fa_hintEtPetName">Name*</string>
     <string name="ma_txtSpinnerEdad">Edad*</string>
-    <array name="fa_arraySpinnerEdad">
+    <array name="fa_arrayAgeSelected">
         <item>Cachorro(&lt;1 año)</item>
         <item>Adulto(1-7 años)</item>
         <item>Senior(7 años&gt;)</item>
     </array>
+    <string-array name="ap_arraySelectAge">
+        <item>Menos de 1 año</item>
+        <item>1 año</item>
+        <item>2 años</item>
+        <item>3 años</item>
+        <item>4 años</item>
+        <item>5 años</item>
+        <item>6 años</item>
+        <item>7 años</item>
+        <item>Más de 7 años</item>
+    </string-array>
     <string name="fa_txtSpinnerPeso">Peso actual*</string>
     <string name="fa_txtSpinnerSexo">Sexo</string>
     <string-array name="fa_arraySpinnerSexo">

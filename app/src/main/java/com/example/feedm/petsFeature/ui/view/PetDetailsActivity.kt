@@ -77,7 +77,9 @@ class PetDetailsActivity : ComponentActivity() {
     private val caloriesViewModel: CalculatorViewModel by viewModels()
 
 
-
+    //TODO poder eliminar meals
+    //TODO arrreglar recomposicion, solo refresca una vez se scrollea
+    //TODO eliminar comidas al final del dia
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,6 +173,7 @@ class PetDetailsActivity : ComponentActivity() {
                         pet = pet,
                         meals = meals,
                         calories = calories,
+                        onBackPressed = { goBack() },
                         modifier = Modifier
                             .padding(innerPadding)
                             .fillMaxSize()
@@ -231,6 +234,7 @@ fun ScaffoldContent(
     pet: PetModel,
     meals: List<MealModel>,
     calories: Double,
+    onBackPressed : () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -251,7 +255,7 @@ fun ScaffoldContent(
             horizontalArrangement = Arrangement.Center
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { onBackPressed() },
                 colors = ButtonColors(
                     contentColor = Color.White,
                     containerColor = Orange,
@@ -685,6 +689,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                     null
                 ),
                 meals = emptyList(),
+                onBackPressed = {},
                 calories = 0.0,
                 modifier = Modifier
                     .padding(innerPadding)
