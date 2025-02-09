@@ -14,7 +14,7 @@ class AddMealUseCase @Inject constructor(
                                 hour: Int?,
                                 min: Int?,
                                 mealCalories: Double?){
-        val mealModelBuilded = mealModel ?: mealModelBuilder(petId!!, ration!!, hour!!, min!!, mealCalories!!)
-        mealsRepository.addMealForAPet(mealModelBuilded)
+        val mealModelBuilt = mealModel ?: mealModelBuilder(petId!!, ration!!, hour!!, min!!, mealCalories!!)
+        mealsRepository.addMealForAPet(mealModelBuilt)
     }
 }

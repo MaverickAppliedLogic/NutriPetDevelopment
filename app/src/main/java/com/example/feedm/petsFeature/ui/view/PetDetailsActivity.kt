@@ -56,6 +56,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.example.feedm.R
 import com.example.feedm.petsFeature.domain.model.MealModel
 import com.example.feedm.petsFeature.domain.model.PetModel
@@ -66,6 +67,9 @@ import com.example.feedm.petsFeature.ui.viewmodel.CalculatorViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.viewmodel.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.internal.format
 import java.util.Locale
 
@@ -101,11 +105,13 @@ class PetDetailsActivity : ComponentActivity() {
                 )
                 )
                 val meals: List<MealModel> by mealsViewmodel.meals.observeAsState(emptyList())
+                petViewModel.getPetById(petId)
+                mealsViewmodel.getMeals(petId)
+
                 val calories by remember(pet) {
                     mutableDoubleStateOf(caloriesViewModel.calculateCalories(pet))
                 }
-                petViewModel.getPetById(petId)
-                mealsViewmodel.getMeals(petId)
+
 
                 val scrollState = rememberScrollState()
 

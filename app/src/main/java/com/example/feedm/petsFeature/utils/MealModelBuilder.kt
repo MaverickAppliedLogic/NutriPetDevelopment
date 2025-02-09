@@ -14,7 +14,7 @@ class MealModelBuilder @Inject constructor(){
             petId = petId,
             mealTime = timeToLong(hour, min),
             ration = ration,
-            mealCalories =  mealCalories)
+            mealCalories =  mealCalories * ration / 100)
     }
 
     private fun timeToLong(hour: Int,min: Int): Long{
