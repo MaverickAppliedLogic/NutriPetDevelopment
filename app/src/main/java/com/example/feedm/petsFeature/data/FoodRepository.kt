@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 class FoodRepository @Inject constructor(
     private val foodDao: FoodDao,
-    private val petFoodDao: PetFoodDao
 ) {
 
     // DataBase

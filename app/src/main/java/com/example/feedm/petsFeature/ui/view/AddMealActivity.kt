@@ -1,6 +1,7 @@
 package com.example.feedm.petsFeature.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -62,6 +63,8 @@ import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.system.measureTimeMillis
+import kotlin.time.measureTime
 
 
 @AndroidEntryPoint
@@ -91,7 +94,10 @@ class AddMealActivity : ComponentActivity() {
                 var min by remember { mutableStateOf("") }
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
-                LaunchedEffect(Unit) {foodViewModel.getFoodsByPetId(petId)}
+                LaunchedEffect(Unit) {
+                    val measureTime = measureTime{ foodViewModel.getFoodsByPetId(petId)}
+                    Log.i("Time to fetch foods: $measureTime","Time to fetch foods: $measureTime")
+                }
 
 
 
@@ -108,7 +114,9 @@ class AddMealActivity : ComponentActivity() {
                                     .background(color = Color.White)
                             ) {
                                 FloatingActionButton(
-                                    onClick = { finish() },
+                                    onClick = { intent.setClass(this@AddMealActivity,
+                                        PetDetailsActivity::class.java)
+                                        startActivity(intent) },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
                                     shape = RoundedCornerShape(10.dp),
@@ -179,13 +187,8 @@ class AddMealActivity : ComponentActivity() {
         }
     }
 
-   private fun commit(ration: String,
-                      hour: String,
-                      min: String,
-                      calories: String,
-                      food: FoodModel,
-                      isNewFood: Boolean,
-                      petId: Int){
+   private fun commit(ration: String, hour: String, min: String, calories: String, food: FoodModel,
+                      isNewFood: Boolean, petId: Int){
        mealsViewmodel.addMeal(
            ration = ration.toFloat(),
            hour = hour.toInt(),
@@ -196,7 +199,8 @@ class AddMealActivity : ComponentActivity() {
        if(isNewFood){
            foodViewModel.addFood(food,petId)
        }
-       finish()
+       intent.setClass(this@AddMealActivity, PetDetailsActivity::class.java)
+       startActivity(intent)
    }
 
 }
