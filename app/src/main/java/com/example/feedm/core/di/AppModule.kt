@@ -1,9 +1,8 @@
 package com.example.feedm.core.di
 
 import android.content.Context
-import android.os.Build
-import com.example.feedm.core.utils.CaloriesCalculatorCat
-import com.example.feedm.core.utils.CaloriesCalculatorDog
+import com.example.feedm.petsFeature.utils.CaloriesCalculatorCat
+import com.example.feedm.petsFeature.utils.CaloriesCalculatorDog
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

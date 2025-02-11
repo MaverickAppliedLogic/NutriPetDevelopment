@@ -1,10 +1,9 @@
 package com.example.feedm.petsFeature.data
 
 import com.example.feedm.core.data.database.dao.FoodDao
-import com.example.feedm.core.data.database.dao.PetFoodDao
 import com.example.feedm.core.data.database.entities.toDatabase
-import com.example.feedm.petsFeature.domain.model.FoodModel
-import com.example.feedm.petsFeature.domain.model.toDomain
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.toDomain
 import javax.inject.Inject
 
 class FoodRepository @Inject constructor(

@@ -3,7 +3,7 @@ package com.example.feedm.core.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.feedm.petsFeature.domain.model.FoodModel
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 
 @Entity(tableName = "food_table")
 data class FoodEntity(

@@ -1,6 +1,7 @@
 package com.example.feedm.core.utils
 
-import com.example.feedm.petsFeature.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
+import com.example.feedm.petsFeature.utils.CaloriesCalculatorCat
 import org.junit.Before
 import org.junit.Test
 

@@ -50,21 +50,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import com.example.feedm.core.ui.theme.TailyCareTheme
-import com.example.feedm.ui.viewmodel.PetViewModel
+import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
+import com.example.feedm.ui.viewmodel.PetsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class AddPetActivity : ComponentActivity() {
 
-    private val petViewModel: PetViewModel by viewModels()
+    private val addPetViewModel: AddPetViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,7 +187,7 @@ class AddPetActivity : ComponentActivity() {
             onValidationFailed("goal")
             return
         }
-        petViewModel.addPet(pet)
+        addPetViewModel.addPet(pet)
         startActivity(intent)
     }
 

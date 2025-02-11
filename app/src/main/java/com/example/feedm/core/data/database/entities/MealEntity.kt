@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.feedm.petsFeature.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 
 @Entity(
     tableName = "meal_table",

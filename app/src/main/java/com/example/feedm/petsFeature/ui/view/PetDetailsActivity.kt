@@ -56,29 +56,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.model.MealModel
-import com.example.feedm.petsFeature.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
-import com.example.feedm.petsFeature.ui.viewmodel.CalculatorViewModel
-import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
-import com.example.feedm.ui.viewmodel.PetViewModel
+import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.ui.viewmodel.PetsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import okhttp3.internal.format
 import java.util.Locale
 
 @AndroidEntryPoint
 class PetDetailsActivity : ComponentActivity() {
 
-    private val petViewModel: PetViewModel by viewModels()
-    private val mealsViewmodel: MealsViewmodel by viewModels()
-    private val caloriesViewModel: CalculatorViewModel by viewModels()
+     private val petDetailsViewModel: PetDetailsViewmodel by viewModels()
 
 
     //TODO poder eliminar meals
@@ -90,7 +84,7 @@ class PetDetailsActivity : ComponentActivity() {
         val petId = intent.extras!!.getInt("PetId")
         setContent {
             TailyCareTheme {
-                val pet: PetModel by petViewModel.petModel.observeAsState(
+                val pet: PetModel by petDetailsViewModel.petModel.observeAsState(
                     PetModel(
                     -1,
                     "dog",
@@ -104,13 +98,10 @@ class PetDetailsActivity : ComponentActivity() {
                     null
                 )
                 )
-                val meals: List<MealModel> by mealsViewmodel.meals.observeAsState(emptyList())
-                petViewModel.getPetById(petId)
-                mealsViewmodel.getMeals(petId)
+                val meals: List<MealModel> by petDetailsViewModel.meals.observeAsState(emptyList())
+                val calories by petDetailsViewModel.calories.observeAsState(0.0)
 
-                val calories by remember(pet) {
-                    mutableDoubleStateOf(caloriesViewModel.calculateCalories(pet))
-                }
+                petDetailsViewModel.getPetDetails(petId)
 
 
                 val scrollState = rememberScrollState()

@@ -54,16 +54,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.model.FoodModel
-import com.example.feedm.petsFeature.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.core.ui.components.CustomDropDownMenu
-import com.example.feedm.petsFeature.ui.viewmodel.FoodViewModel
-import com.example.feedm.petsFeature.ui.viewmodel.MealsViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.system.measureTimeMillis
 import kotlin.time.measureTime
 
 
@@ -71,8 +69,7 @@ import kotlin.time.measureTime
 class AddMealActivity : ComponentActivity() {
 
     //TODO cambiar imagen flor
-    private val mealsViewmodel: MealsViewmodel by viewModels()
-    private val foodViewModel: FoodViewModel by viewModels()
+    private val addMealViewmodel: AddMealViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +82,7 @@ class AddMealActivity : ComponentActivity() {
         )
         setContent {
             TailyCareTheme {
-                val foodsList : List<FoodModel> by foodViewModel.foods
+                val foodsList : List<FoodModel> by addMealViewmodel.foods
                     .observeAsState(initial = emptyList())
 
                 var isNewFood by remember { mutableStateOf(true) }
@@ -95,7 +92,7 @@ class AddMealActivity : ComponentActivity() {
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
                 LaunchedEffect(Unit) {
-                    val measureTime = measureTime{ foodViewModel.getFoodsByPetId(petId)}
+                    val measureTime = measureTime{ addMealViewmodel.getFoodsByPetId(petId)}
                     Log.i("Time to fetch foods: $measureTime","Time to fetch foods: $measureTime")
                 }
 
@@ -189,7 +186,7 @@ class AddMealActivity : ComponentActivity() {
 
    private fun commit(ration: String, hour: String, min: String, calories: String, food: FoodModel,
                       isNewFood: Boolean, petId: Int){
-       mealsViewmodel.addMeal(
+       addMealViewmodel.addMeal(
            ration = ration.toFloat(),
            hour = hour.toInt(),
            min = min.toInt(),
@@ -197,7 +194,7 @@ class AddMealActivity : ComponentActivity() {
            petId = petId,
            mealModel = null)
        if(isNewFood){
-           foodViewModel.addFood(food,petId)
+           addMealViewmodel.addFood(food,petId)
        }
        intent.setClass(this@AddMealActivity, PetDetailsActivity::class.java)
        startActivity(intent)

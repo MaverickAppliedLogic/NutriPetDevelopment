@@ -2,8 +2,8 @@ package com.example.feedm.petsFeature.data
 
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.data.database.entities.toDatabase
-import com.example.feedm.petsFeature.domain.model.MealModel
-import com.example.feedm.petsFeature.domain.model.toDomain
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.toDomain
 import javax.inject.Inject
 
 class MealsRepository @Inject constructor(private val mealsDao: MealDao) {

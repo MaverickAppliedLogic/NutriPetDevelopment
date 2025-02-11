@@ -3,8 +3,9 @@ package com.example.feedm.petsFeature.data
 import com.example.feedm.core.data.database.dao.PetDao
 import com.example.feedm.core.data.database.entities.PetEntity
 import com.example.feedm.core.data.local.PetLocalStorageProvider
-import com.example.feedm.petsFeature.domain.model.PetModel
-import com.example.feedm.petsFeature.domain.model.toDomain
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.toDomain
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.toDomain
 import javax.inject.Inject
 
 

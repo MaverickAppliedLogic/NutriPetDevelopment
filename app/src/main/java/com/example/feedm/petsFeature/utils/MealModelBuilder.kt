@@ -1,7 +1,7 @@
 package com.example.feedm.petsFeature.utils
 
 import android.icu.util.Calendar
-import com.example.feedm.petsFeature.domain.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import javax.inject.Inject
 
 
