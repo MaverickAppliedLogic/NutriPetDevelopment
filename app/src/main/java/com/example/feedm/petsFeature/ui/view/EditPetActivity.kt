@@ -50,34 +50,33 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.model.PetModel
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import com.example.feedm.core.ui.theme.TailyCareTheme
-import com.example.feedm.ui.viewmodel.PetViewModel
+import com.example.feedm.petsFeature.ui.viewmodel.EditPetViewmodel
+import com.example.feedm.ui.viewmodel.PetsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EditPetActivity : ComponentActivity() {
-    private val petViewModel: PetViewModel by viewModels()
 
+    private val editPetViewmodel : EditPetViewmodel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val petId = intent.extras!!.getInt("PetId")
-        petViewModel.getPetById(petId)
-
-
+        editPetViewmodel.getPetById(petId)
 
         setContent {
             TailyCareTheme {
 
                 var errorCommitting by remember { mutableStateOf(false) }
-                val pet by petViewModel.petModel.observeAsState(
+                val pet by editPetViewmodel.petModel.observeAsState(
                     PetModel(
                     -1,
                     "dog",
@@ -139,22 +138,22 @@ class EditPetActivity : ComponentActivity() {
                         pet = pet,
                         errorCommitting = errorCommitting,
                         onAgeChange = {
-                            petViewModel.editPetNotCommitting(pet.copy(age = it))
+                            editPetViewmodel.editPetNotCommitting(pet.copy(age = it))
                         },
                         onGenreChange = {
-                            petViewModel.editPetNotCommitting(pet.copy(genre = it))
+                            editPetViewmodel.editPetNotCommitting(pet.copy(genre = it))
                         },
                         onWeightChange = {
-                            petViewModel.editPetNotCommitting(pet.copy(petWeight = it))
+                            editPetViewmodel.editPetNotCommitting(pet.copy(petWeight = it))
                                          },
                         onSterilizedChange = {
-                            petViewModel.editPetNotCommitting(pet.copy(sterilized = it))
+                            editPetViewmodel.editPetNotCommitting(pet.copy(sterilized = it))
                                              },
                         onActivityLevelChange = {
-                            petViewModel.editPetNotCommitting(pet.copy(activity = it))
+                            editPetViewmodel.editPetNotCommitting(pet.copy(activity = it))
                                                 },
                         onObjectiveChange = {
-                            petViewModel.editPetNotCommitting(pet.copy(goal = it))
+                            editPetViewmodel.editPetNotCommitting(pet.copy(goal = it))
                         },
                         onClickFab = { cancelAddNewPet() }
                     )
@@ -184,7 +183,7 @@ class EditPetActivity : ComponentActivity() {
             onValidationFailed("objective")
             return
         }
-        petViewModel.addPet(pet)
+        editPetViewmodel.addPet(pet)
 
         intent.setClass(this@EditPetActivity, PetDetailsActivity::class.java)
         startActivity(intent)

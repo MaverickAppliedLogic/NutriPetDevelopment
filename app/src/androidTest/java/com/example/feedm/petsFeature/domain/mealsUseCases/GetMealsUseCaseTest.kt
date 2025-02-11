@@ -7,6 +7,8 @@ import com.example.feedm.core.data.database.AppDatabase
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.domain.useCase.CheckDayChangedUseCase
 import com.example.feedm.petsFeature.data.MealsRepository
+import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.GetMealsUseCase
+import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.UpdateMealsDayChangedUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
