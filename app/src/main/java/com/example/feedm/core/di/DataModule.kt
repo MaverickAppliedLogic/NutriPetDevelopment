@@ -59,7 +59,7 @@ object DataModule {
             .build()
 
 
-    val MIGRATION = object : Migration(9,10) {
+    val MIGRATION = object : Migration(10, 11) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
@@ -73,7 +73,7 @@ object DataModule {
                 food_weight REAL,
                 calories REAL NOT NULL
             )
-        """.trimIndent()
+            """.trimIndent()
             )
 
             // Crear la tabla "pet_table_new" con claves foráneas
@@ -91,24 +91,26 @@ object DataModule {
                 goal TEXT NOT NULL,
                 allergies TEXT
             )
-        """.trimIndent()
+            """.trimIndent()
             )
 
-            // Crear la tabla "meal_table_new" con claves foráneas
+            // Crear la tabla "meal_table_new" con claves foráneas, incluyendo food_id
             db.execSQL(
                 """
             CREATE TABLE meal_table_new (
                 meal_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 pet_id INTEGER NOT NULL,
+                food_id INTEGER NOT NULL,
                 meal_time INTEGER NOT NULL,
                 ration REAL NOT NULL,
                 meal_calories REAL NOT NULL,
-                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE
+                FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,
+                FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE SET DEFAULT
             )
-        """.trimIndent()
+            """.trimIndent()
             )
 
-            // Crear la tabla "pet_food_table" para la relación N:M
+            // Crear la tabla "pet_food_table_new_new" para la relación N:M
             db.execSQL(
                 """
             CREATE TABLE pet_food_table_new_new (
@@ -118,7 +120,7 @@ object DataModule {
                 FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,
                 FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE CASCADE
             )
-        """.trimIndent()
+            """.trimIndent()
             )
 
             // Migración de datos para food_table
@@ -126,7 +128,7 @@ object DataModule {
                 """
             INSERT INTO food_table_new (food_id, food_name, brand, food_weight, calories)
             SELECT food_id, food_name, brand, food_weight, calories FROM food_table
-        """.trimIndent()
+            """.trimIndent()
             )
 
             // Migración de datos para pet_table
@@ -134,31 +136,29 @@ object DataModule {
                 """
             INSERT INTO pet_table_new (pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
             SELECT pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies FROM pet_table
-        """.trimIndent()
+            """.trimIndent()
             )
 
+            // Migración de datos para pet_food_table
             db.execSQL(
                 """
-            INSERT INTO pet_food_table (pet_id, food_id)
-            SELECT pet_id, food_id FROM pet_food_table_new
+            INSERT INTO pet_food_table_new_new (pet_id, food_id)
+            SELECT pet_id, food_id FROM pet_food_table
             """.trimIndent()
             )
 
             // Migración de datos para meal_table
             db.execSQL(
                 """
-            INSERT INTO meal_table_new (meal_id, pet_id, meal_time, ration)
-            SELECT meal_id, pet_id, meal_time, ration FROM meal_table
-        """.trimIndent()
+            INSERT INTO meal_table_new (meal_id, pet_id, meal_time, ration, meal_calories)
+            SELECT meal_id, pet_id, meal_time, ration, calories FROM meal_table
+            """.trimIndent()
             )
-
-            // Aquí no hay datos iniciales para migrar en pet_food, ya que es una nueva tabla de relación
 
             // Eliminar las tablas antiguas
             db.execSQL("DROP TABLE food_table")
             db.execSQL("DROP TABLE pet_table")
             db.execSQL("DROP TABLE meal_table")
-            db.execSQL("DROP TABLE pet_food_table_new")
             db.execSQL("DROP TABLE pet_food_table")
 
             // Renombrar las tablas nuevas a los nombres originales

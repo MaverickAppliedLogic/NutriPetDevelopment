@@ -14,19 +14,27 @@ import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
             parentColumns = ["pet_id"],
             childColumns = ["pet_id"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = FoodEntity::class,
+            parentColumns = ["food_id"],
+            childColumns = ["food_id"],
+            onDelete = ForeignKey.SET_DEFAULT
         )])
 data class MealEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "meal_id") val mealId: Int = 0,
     @ColumnInfo(name = "pet_id") val petId: Int,
+    @ColumnInfo(name = "food_id") val foodId: Int = 0,
     @ColumnInfo(name = "meal_time") val mealTime: Long,
     @ColumnInfo(name = "ration") val ration: Float,
-    @ColumnInfo(name = "calories") val mealCalories: Double
+    @ColumnInfo(name = "meal_calories") val mealCalories: Double
 )
 
 fun MealModel.toDatabase() =
     MealEntity(mealId = mealId,
         petId = petId,
+        foodId = foodId,
         mealTime = mealTime,
         ration = ration,
         mealCalories = mealCalories)

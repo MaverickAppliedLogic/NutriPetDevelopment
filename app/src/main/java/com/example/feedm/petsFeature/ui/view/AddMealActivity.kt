@@ -82,18 +82,18 @@ class AddMealActivity : ComponentActivity() {
         )
         setContent {
             TailyCareTheme {
-                val foodsList : List<FoodModel> by addMealViewmodel.foods
+                val foodsList: List<FoodModel> by addMealViewmodel.foods
                     .observeAsState(initial = emptyList())
 
                 var isNewFood by remember { mutableStateOf(true) }
-                var food by remember{ mutableStateOf(emptyFood) }
+                var food by remember { mutableStateOf(emptyFood) }
                 var hour by remember { mutableStateOf("") }
                 var min by remember { mutableStateOf("") }
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
                 LaunchedEffect(Unit) {
-                    val measureTime = measureTime{ addMealViewmodel.getFoodsByPetId(petId)}
-                    Log.i("Time to fetch foods: $measureTime","Time to fetch foods: $measureTime")
+                    val measureTime = measureTime { addMealViewmodel.getFoodsByPetId(petId) }
+                    Log.i("Time to fetch foods: $measureTime", "Time to fetch foods: $measureTime")
                 }
 
 
@@ -111,9 +111,13 @@ class AddMealActivity : ComponentActivity() {
                                     .background(color = Color.White)
                             ) {
                                 FloatingActionButton(
-                                    onClick = { intent.setClass(this@AddMealActivity,
-                                        PetDetailsActivity::class.java)
-                                        startActivity(intent) },
+                                    onClick = {
+                                        intent.setClass(
+                                            this@AddMealActivity,
+                                            PetDetailsActivity::class.java
+                                        )
+                                        startActivity(intent)
+                                    },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
                                     shape = RoundedCornerShape(10.dp),
@@ -134,9 +138,9 @@ class AddMealActivity : ComponentActivity() {
                                             min.replace(" min", ""),
                                             hour.replace(" h", ""),
                                             calories,
-                                             food,
-                                            isNewFood,
-                                            petId)
+                                            food,
+                                            petId
+                                        )
                                     },
                                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                                     containerColor = Orange,
@@ -160,7 +164,7 @@ class AddMealActivity : ComponentActivity() {
                         ration = ration,
                         onNameChange = { food = food.copy(foodName = it) },
                         onCaloriesChange = { calories = it },
-                        onRationChange = { ration = it},
+                        onRationChange = { ration = it },
                         onHourChange = { hour = it },
                         onMinChange = { min = it },
                         onFoodSelected = {
@@ -172,8 +176,7 @@ class AddMealActivity : ComponentActivity() {
                                         calories = food.calories.toString()
                                     }
                                 }
-                            }
-                            else food = emptyFood
+                            } else food = emptyFood
                         },
                         modifier = Modifier.padding(innerPadding),
                         hour = hour,
@@ -184,24 +187,24 @@ class AddMealActivity : ComponentActivity() {
         }
     }
 
-   private fun commit(ration: String, hour: String, min: String, calories: String, food: FoodModel,
-                      isNewFood: Boolean, petId: Int){
-       addMealViewmodel.addMeal(
-           ration = ration.toFloat(),
-           hour = hour.toInt(),
-           min = min.toInt(),
-           mealCalories = calories.toDouble(),
-           petId = petId,
-           mealModel = null)
-       if(isNewFood){
-           addMealViewmodel.addFood(food,petId)
-       }
-       intent.setClass(this@AddMealActivity, PetDetailsActivity::class.java)
-       startActivity(intent)
-   }
+    private fun commit(
+        ration: String, hour: String, min: String, calories: String, food: FoodModel,
+        petId: Int
+    ) {
+        addMealViewmodel.addMeal(
+            ration = ration.toFloat(),
+            hour = hour.toInt(),
+            min = min.toInt(),
+            mealCalories = calories.toDouble(),
+            petId = petId,
+            food = food,
+            mealModel = null
+        )
+        intent.setClass(this@AddMealActivity, PetDetailsActivity::class.java)
+        startActivity(intent)
+    }
 
 }
-
 
 
 @Composable
@@ -284,7 +287,7 @@ fun Screen(
                 CustomDropDownMenu(
                     options = foodsList.map { it.foodName }.plus("Nueva comida"),
                     title = "Comida",
-                    selectedOption = if(isNewFood) "Nueva comida" else food.foodName,
+                    selectedOption = if (isNewFood) "Nueva comida" else food.foodName,
                     errorCommitting = false,
                     onSelectOption = {
                         onFoodSelected(it)
@@ -305,10 +308,12 @@ fun Screen(
         }
 
         Spacer(modifier = Modifier.padding(10.dp))
-        Text(text = "Aporte calorico",
+        Text(
+            text = "Aporte calorico",
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth()
+        )
         OutlinedTextField(
             value = if (isNewFood) calories else food.calories.toString(),
             enabled = isNewFood,
@@ -316,8 +321,8 @@ fun Screen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             supportingText = {},
             onValueChange = { onCaloriesChange(it) },
-            trailingIcon = {Text(text = "Kcal/100gr", modifier = Modifier.padding(end = 10.dp))},
-            label = {  },
+            trailingIcon = { Text(text = "Kcal/100gr", modifier = Modifier.padding(end = 10.dp)) },
+            label = { },
             isError = false,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
@@ -330,17 +335,19 @@ fun Screen(
                 .width(300.dp)
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        Text(text = "Racion",
+        Text(
+            text = "Racion",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth()
+        )
         OutlinedTextField(
             value = ration,
             supportingText = {},
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = { onRationChange(it) },
-            trailingIcon = {Text(text = "gr", modifier = Modifier.padding(end = 10.dp)) },
+            trailingIcon = { Text(text = "gr", modifier = Modifier.padding(end = 10.dp)) },
             label = { },
             isError = false,
             colors = TextFieldDefaults.colors(
@@ -379,7 +386,7 @@ fun Screen(
             ) {
 
                 CustomDropDownMenu(options = (0..59).map { "$it min" }, title = "Min",
-                    selectedOption = min , errorCommitting = false,
+                    selectedOption = min, errorCommitting = false,
                     onSelectOption = { onMinChange(it) })
             }
         }

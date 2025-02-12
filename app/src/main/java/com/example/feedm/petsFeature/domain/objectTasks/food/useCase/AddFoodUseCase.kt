@@ -9,10 +9,11 @@ class AddFoodUseCase @Inject constructor(
     private val repository: FoodRepository,
     private val addFoodToPetUseCase: AddFoodToPetUseCase
 ) {
-    suspend operator fun invoke(food: FoodModel, petId: Int?) {
-        val foodId = repository.addFood(food).toInt()
+    suspend operator fun invoke(food: FoodModel, petId: Int?): Long {
+        val foodId = repository.addFood(food)
         if (petId != null) {
-            addFoodToPetUseCase(petId, foodId)
+            addFoodToPetUseCase(petId, foodId.toInt())
         }
+        return foodId
     }
 }
