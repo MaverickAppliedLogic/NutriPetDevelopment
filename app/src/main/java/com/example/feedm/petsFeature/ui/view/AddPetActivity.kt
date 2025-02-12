@@ -70,6 +70,8 @@ class AddPetActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //TODO ajustar el seekBar dependiendo mascota
+        //TODO ajustar el dropDownMenu dependiendo mascota
 
 
         setContent {

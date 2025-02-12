@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
@@ -62,6 +64,7 @@ import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import com.example.feedm.ui.viewmodel.PetsListViewModel
@@ -76,8 +79,8 @@ class PetDetailsActivity : ComponentActivity() {
 
 
     //TODO poder eliminar meals
-    //TODO arrreglar recomposicion, solo refresca una vez se scrollea
-    //TODO eliminar comidas al final del dia
+    //TODO se borran los meals al editar la mascota
+    //TODO poder poner el nombre de la comida seleccionada en cada meal
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +102,7 @@ class PetDetailsActivity : ComponentActivity() {
                 )
                 )
                 val meals: List<MealModel> by petDetailsViewModel.meals.observeAsState(emptyList())
+                val foods: List<FoodModel> by petDetailsViewModel.foods.observeAsState(emptyList())
                 val calories by petDetailsViewModel.calories.observeAsState(0.0)
 
                 petDetailsViewModel.getPetDetails(petId)
@@ -169,6 +173,7 @@ class PetDetailsActivity : ComponentActivity() {
                     ScaffoldContent(
                         pet = pet,
                         meals = meals,
+                        foods = foods,
                         calories = calories,
                         onBackPressed = { goBack() },
                         modifier = Modifier
@@ -230,6 +235,7 @@ fun PetImage(petAnimal: String) {
 fun ScaffoldContent(
     pet: PetModel,
     meals: List<MealModel>,
+    foods: List<FoodModel>,
     calories: Double,
     onBackPressed : () -> Unit,
     modifier: Modifier = Modifier
@@ -241,6 +247,7 @@ fun ScaffoldContent(
         PetDetailsActivityModules(
             pet = pet,
             meals = meals,
+            foods = foods,
             calories = calories,
             modifier = Modifier.padding(horizontal = 15.dp)
         )
@@ -276,11 +283,12 @@ fun ScaffoldContent(
 fun PetDetailsActivityModules(
     pet: PetModel,
     meals: List<MealModel>,
+    foods: List<FoodModel>,
     calories: Double,
     modifier: Modifier = Modifier
 ) {
     val spacerPadding = 20.dp
-    MealsModule(meals, calories, modifier)
+    MealsModule(meals, foods, calories,modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
     HealthModule(pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
@@ -291,6 +299,7 @@ fun PetDetailsActivityModules(
 @Composable
 fun MealsModule(
     meals: List<MealModel>,
+    foods: List<FoodModel>,
     calories: Double,
     modifier: Modifier = Modifier
 ) {
@@ -332,7 +341,8 @@ fun MealsModule(
                 )
             }
             for (meal in meals) {
-                MealItem(meal, modifierForElements)
+               val mealFoodName = foods.find{ it.foodId == meal.foodId }?.foodName?:"Name not found"
+                MealItem(meal,mealFoodName,modifierForElements)
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 5.dp, end = 15.dp, start = 5.dp)
                 )
@@ -359,17 +369,21 @@ fun MealsModule(
 @Composable
 fun MealItem(
     meal: MealModel,
+    foodName: String,
     modifier: Modifier = Modifier
 ) {
+    val dynamicSpacerPadding by remember { mutableStateOf(110.dp) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
         Text(
-            text = "Pienso",
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+            text = foodName ,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.width(155.dp)
         )
-        Spacer(modifier = Modifier.width(110.dp))
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -583,7 +597,7 @@ fun RecordModule(
                 modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, end = 15.dp, start = 5.dp)
             )
             Row(modifier = modifierForElements.padding(bottom = 5.dp)) {
-                val ageToString = if (pet.age < 1) "Menos de 1" else pet.age.toInt().toString()
+                val ageToString = if (pet.age < 1) "Menos de 1" else pet.age.toString()
                 Text(
                     text = stringResource(R.string.pia_RecordModuleTxt3),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
@@ -686,6 +700,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                     null
                 ),
                 meals = emptyList(),
+                foods = emptyList(),
                 onBackPressed = {},
                 calories = 0.0,
                 modifier = Modifier

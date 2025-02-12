@@ -7,11 +7,12 @@ import javax.inject.Inject
 
 class MealModelBuilder @Inject constructor(){
 
-    operator fun invoke(petId: Int, ration: Float, hour: Int, min: Int, mealCalories: Double):
-            MealModel {
-
+    operator fun invoke(
+        petId: Int, foodId: Int, ration: Float, hour: Int, min: Int, mealCalories: Double
+    ): MealModel {
         return MealModel(
             petId = petId,
+            foodId = foodId,
             mealTime = timeToLong(hour, min),
             ration = ration,
             mealCalories =  mealCalories * ration / 100)

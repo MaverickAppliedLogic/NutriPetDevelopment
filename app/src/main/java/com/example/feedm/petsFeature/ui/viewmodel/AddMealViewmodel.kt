@@ -19,7 +19,6 @@ import javax.inject.Inject
 class AddMealViewmodel @Inject constructor(
     private val addMealUseCase: AddMealUseCase,
     private val getFoodsByPetIdUseCase: GetFoodsByPetIdUseCase,
-    private val addFoodUseCase: AddFoodUseCase,
     ): ViewModel() {
 
     private val _foods = MutableLiveData<List<FoodModel>>()
@@ -34,26 +33,19 @@ class AddMealViewmodel @Inject constructor(
         }
     }
 
-    fun addFood(food: FoodModel, petId: Int?) {
-        viewModelScope.launch {
-            try {
-                addFoodUseCase(food,petId)
-            } catch (e: Exception) {
-                // Handle the error here
-                println("Error adding food: ${e.message}")
-            }
-        }
-    }
 
     fun addMeal(mealModel: MealModel?,
                 ration: Float?,
                 hour: Int?,
                 min: Int?,
                 mealCalories: Double?,
+                food: FoodModel,
                 petId: Int?){
         viewModelScope.launch {
-        addMealUseCase(mealModel = mealModel,
-            ration = ration, hour = hour, min = min, mealCalories =  mealCalories, petId =  petId)
+        addMealUseCase(
+            mealModel = mealModel,
+            ration = ration, hour = hour, min = min,
+            mealCalories =  mealCalories, food = food, petId =  petId)
         }
     }
 
