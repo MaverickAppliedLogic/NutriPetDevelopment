@@ -6,17 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.DeleteMealUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.domain.otherTasks.useCase.GetPetsDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class PetDetailsViewmodel @Inject constructor(
-    private val getPetsDetailsUseCase: GetPetsDetailsUseCase
+    private val getPetsDetailsUseCase: GetPetsDetailsUseCase,
+    private val deleteMealUseCase: DeleteMealUseCase
 ): ViewModel() {
     private val _petModel = MutableLiveData<PetModel>()
     private val _meals = MutableLiveData<List<MealModel>>()
@@ -28,6 +28,8 @@ class PetDetailsViewmodel @Inject constructor(
     val calories: LiveData<Double> = _calories
 
 
+
+
     fun getPetDetails(petId: Int) {
         viewModelScope.launch {
             val result = getPetsDetailsUseCase(petId)
@@ -35,6 +37,14 @@ class PetDetailsViewmodel @Inject constructor(
             _meals.value = result[1] as List<MealModel>
             _foods.value = result[2] as List<FoodModel>
             _calories.value = result[3] as Double
+        }
+    }
+
+    fun deleteMeal(mealModel: MealModel){
+        viewModelScope.launch {
+            val mealId = listOf(mealModel.mealId)
+            deleteMealUseCase(mealId)
+            getPetDetails(_petModel.value!!.petId)
         }
     }
 

@@ -183,7 +183,7 @@ class EditPetActivity : ComponentActivity() {
             onValidationFailed("objective")
             return
         }
-        editPetViewmodel.addPet(pet)
+        editPetViewmodel.editPet(pet)
 
         intent.setClass(this@EditPetActivity, PetDetailsActivity::class.java)
         startActivity(intent)
@@ -272,7 +272,7 @@ fun EditScreen(
                         when (it) {
                             "Menos de 1 año" -> onAgeChange(0.5f)
                             "Más de 7 años" -> onAgeChange(8.0f)
-                            else -> onAgeChange(it[0].code.div(10).toFloat())
+                            else -> onAgeChange(it.replace(" años", "").toFloat())
                         }
                     },
                     errorCommitting = false,

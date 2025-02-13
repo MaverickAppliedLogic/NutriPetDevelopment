@@ -5,8 +5,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,13 +24,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -42,9 +50,9 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,9 +73,7 @@ import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
-import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
-import com.example.feedm.ui.viewmodel.PetsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.format
 import java.util.Locale
@@ -75,12 +81,10 @@ import java.util.Locale
 @AndroidEntryPoint
 class PetDetailsActivity : ComponentActivity() {
 
-     private val petDetailsViewModel: PetDetailsViewmodel by viewModels()
+    private val petDetailsViewModel: PetDetailsViewmodel by viewModels()
 
 
     //TODO poder eliminar meals
-    //TODO se borran los meals al editar la mascota
-    //TODO poder poner el nombre de la comida seleccionada en cada meal
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,17 +93,17 @@ class PetDetailsActivity : ComponentActivity() {
             TailyCareTheme {
                 val pet: PetModel by petDetailsViewModel.petModel.observeAsState(
                     PetModel(
-                    -1,
-                    "dog",
-                    "",
-                    0.0f,
-                    0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                )
+                        -1,
+                        "dog",
+                        "",
+                        0.0f,
+                        0f,
+                        null,
+                        false,
+                        null,
+                        "",
+                        null
+                    )
                 )
                 val meals: List<MealModel> by petDetailsViewModel.meals.observeAsState(emptyList())
                 val foods: List<FoodModel> by petDetailsViewModel.foods.observeAsState(emptyList())
@@ -148,7 +152,7 @@ class PetDetailsActivity : ComponentActivity() {
                             },
                             actions = {
                                 Row {
-                                    IconButton(onClick = { addMeal()  }) {
+                                    IconButton(onClick = { addMeal() }) {
                                         Icon(
                                             painter = painterResource(id = R.mipmap.icon_add_food),
                                             contentDescription = "ArrowBack",
@@ -173,6 +177,7 @@ class PetDetailsActivity : ComponentActivity() {
                     ScaffoldContent(
                         pet = pet,
                         meals = meals,
+                        onDeleteMeal = { petDetailsViewModel.deleteMeal(it) },
                         foods = foods,
                         calories = calories,
                         onBackPressed = { goBack() },
@@ -188,17 +193,17 @@ class PetDetailsActivity : ComponentActivity() {
         }
     }
 
-    private fun addMeal(){
+    private fun addMeal() {
         intent.setClass(this@PetDetailsActivity, AddMealActivity::class.java)
         startActivity(intent)
     }
 
-    private fun editPet(){
+    private fun editPet() {
         intent.setClass(this@PetDetailsActivity, EditPetActivity::class.java)
         startActivity(intent)
     }
 
-    private fun goBack(){
+    private fun goBack() {
         intent.setClass(this@PetDetailsActivity, PetsActivity::class.java)
         intent.removeExtra("PetId")
         startActivity(intent)
@@ -235,9 +240,10 @@ fun PetImage(petAnimal: String) {
 fun ScaffoldContent(
     pet: PetModel,
     meals: List<MealModel>,
+    onDeleteMeal: (MealModel) -> Unit,
     foods: List<FoodModel>,
     calories: Double,
-    onBackPressed : () -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -248,6 +254,7 @@ fun ScaffoldContent(
             pet = pet,
             meals = meals,
             foods = foods,
+            onDeleteMeal = onDeleteMeal,
             calories = calories,
             modifier = Modifier.padding(horizontal = 15.dp)
         )
@@ -283,12 +290,13 @@ fun ScaffoldContent(
 fun PetDetailsActivityModules(
     pet: PetModel,
     meals: List<MealModel>,
+    onDeleteMeal: (MealModel) -> Unit,
     foods: List<FoodModel>,
     calories: Double,
     modifier: Modifier = Modifier
 ) {
     val spacerPadding = 20.dp
-    MealsModule(meals, foods, calories,modifier)
+    MealsModule(meals, foods, onDeleteMeal, calories, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
     HealthModule(pet, modifier)
     Spacer(modifier = Modifier.padding(spacerPadding))
@@ -300,6 +308,7 @@ fun PetDetailsActivityModules(
 fun MealsModule(
     meals: List<MealModel>,
     foods: List<FoodModel>,
+    onDeleteMeal: (MealModel) -> Unit,
     calories: Double,
     modifier: Modifier = Modifier
 ) {
@@ -314,25 +323,49 @@ fun MealsModule(
             .fillMaxWidth()
             .background(color = Color.White)
     ) {
+
         var consumedCalories = 0
+        var isEditable by remember { mutableStateOf(false) }
         Column(modifier = modifierForElements) {
-            Row(modifier = modifierForElements) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = modifierForElements
+            ) {
                 Text(
                     text = stringResource(R.string.pia_FoodModuleTitle),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.weight(0.85f)
                 )
+                if (meals.isNotEmpty()) {
+                    IconButton(
+                        onClick = { isEditable = !isEditable },
+                        modifier = Modifier
+                            .weight(0.15f)
+                            .size(20.dp)
+                            .padding(bottom = 2.dp)
+                    ) {
+                        if (!isEditable) {
+                            Icon(imageVector = Icons.Default.Create, contentDescription = "Edit")
+                        } else {
+                            Icon(imageVector = Icons.Default.Close, contentDescription = "Edit")
+                        }
+                    }
+                }
             }
             HorizontalDivider(
                 modifier = Modifier.padding(top = 5.dp, end = 5.dp),
                 color = Color.Gray
             )
-            if(meals.isEmpty()){
+            if (meals.isEmpty()) {
                 Row(modifier = modifierForElements.padding(bottom = 5.dp, top = 5.dp)) {
                     Text(
                         text = "No hay comidas registradas",
-                        style = MaterialTheme.typography.titleMedium.
-                        copy(fontWeight = FontWeight.Bold,color = Color.LightGray,
-                            fontStyle = FontStyle.Italic),
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold, color = Color.LightGray,
+                            fontStyle = FontStyle.Italic
+                        ),
                     )
                 }
                 HorizontalDivider(
@@ -341,8 +374,10 @@ fun MealsModule(
                 )
             }
             for (meal in meals) {
-               val mealFoodName = foods.find{ it.foodId == meal.foodId }?.foodName?:"Name not found"
-                MealItem(meal,mealFoodName,modifierForElements)
+                val mealFoodName =
+                    foods.find { it.foodId == meal.foodId }?.foodName ?: "Name not found"
+                MealItem(meal, mealFoodName, onDeleteMeal, isEditable, modifierForElements)
+
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 5.dp, end = 15.dp, start = 5.dp)
                 )
@@ -350,7 +385,7 @@ fun MealsModule(
             }
             Row(modifier = modifierForElements.padding(bottom = 5.dp)) {
                 val recommendedCalories = String
-                    .format(Locale.getDefault(),"%d", calories.toInt())
+                    .format(Locale.getDefault(), "%d", calories.toInt())
 
                 Text(
                     text = stringResource(R.string.pia_FoodModuleBottomTxt),
@@ -370,81 +405,117 @@ fun MealsModule(
 fun MealItem(
     meal: MealModel,
     foodName: String,
+    onDeleteMeal: (MealModel) -> Unit,
+    isEditable: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val dynamicSpacerPadding by remember { mutableStateOf(110.dp) }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-    ) {
-        Text(
-            text = foodName ,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.width(155.dp)
-        )
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .padding(5.dp)
-                .height(25.dp)
-                .width(35.dp)
-                .background(color = AlmostWhite)
-                .border(width = 1.dp, color = Color.LightGray)
+    val iconWeight by animateFloatAsState(
+        targetValue = if (isEditable) 0.15f else 0.01f,
+        animationSpec = tween(durationMillis = 500),
+        label = "")
+    val rowMealWeight by animateFloatAsState(
+        targetValue = if (isEditable) 0.85f else 0.99f,
+        animationSpec = tween(durationMillis = 500),
+        label = ""
+    )
 
+
+    Row {
+        Row(
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier
+                .weight(rowMealWeight)
+                .padding(end = 15.dp)
         ) {
             Text(
-                text = meal.ration.toInt().toString(),
+                text = foodName,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Start,
+                maxLines = 1,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(0.5f)
+            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .height(25.dp)
+                    .width(35.dp)
+                    .background(color = Color.White)
+                    .border(width = 1.dp, color = Color.LightGray)
+
+            ) {
+                Text(
+                    text = meal.ration.toInt().toString(),
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+            Text(
+                text = "gr",
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .height(25.dp)
+                    .width(35.dp)
+                    .clip(RoundedCornerShape(7.dp))
+                    .background(color = Color.White)
+                    .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp))
+
+            ) {
+                Text(
+                    text = "10",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+            Text(
+                text = ":",
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .height(25.dp)
+                    .width(35.dp)
+                    .clip(RoundedCornerShape(7.dp))
+                    .background(color = AlmostWhite)
+                    .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp))
+
+            ) {
+                Text(
+                    text = "30",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+            Text(
+                text = "h",
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
-        Text(
-            text = "gr",
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-        )
-        Spacer(modifier = Modifier.width(5.dp))
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .padding(5.dp)
-                .height(25.dp)
-                .width(35.dp)
-                .clip(RoundedCornerShape(7.dp))
-                .background(color = AlmostWhite)
-                .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp))
-
+        AnimatedVisibility(
+            visible = isEditable,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Text(
-                text = "10",
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-            )
+            IconButton(
+                onClick = { onDeleteMeal(meal) },
+                modifier = Modifier.weight(iconWeight).size(35.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
         }
-        Text(
-            text = ":",
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-        )
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .padding(5.dp)
-                .height(25.dp)
-                .width(35.dp)
-                .clip(RoundedCornerShape(7.dp))
-                .background(color = AlmostWhite)
-                .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp))
 
-        ) {
-            Text(
-                text = "30",
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-        Text(
-            text = "h",
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-        )
     }
+
 }
 
 @Composable
@@ -623,7 +694,6 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
     TailyCareTheme {
 
 
-
         val scrollState = rememberScrollState()
 
         val topAppBarColor by animateColorAsState(
@@ -654,7 +724,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = { }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                                 contentDescription = "ArrowBack",
@@ -672,7 +742,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                                 )
 
                             }
-                            IconButton(onClick = {  }) {
+                            IconButton(onClick = { }) {
                                 Icon(
                                     imageVector = Icons.Default.Create,
                                     contentDescription = "ArrowBack",
@@ -702,6 +772,7 @@ fun PetActivityScreenPreview(modifier: Modifier = Modifier) {
                 meals = emptyList(),
                 foods = emptyList(),
                 onBackPressed = {},
+                onDeleteMeal = {},
                 calories = 0.0,
                 modifier = Modifier
                     .padding(innerPadding)
