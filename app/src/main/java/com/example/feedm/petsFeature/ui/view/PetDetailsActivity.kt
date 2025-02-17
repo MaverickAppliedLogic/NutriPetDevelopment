@@ -83,8 +83,7 @@ class PetDetailsActivity : ComponentActivity() {
 
     private val petDetailsViewModel: PetDetailsViewmodel by viewModels()
 
-
-    //TODO poder eliminar meals
+    //TODO mejorar animación cambiar entre editar o no
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -349,7 +348,8 @@ fun MealsModule(
                         if (!isEditable) {
                             Icon(imageVector = Icons.Default.Create, contentDescription = "Edit")
                         } else {
-                            Icon(imageVector = Icons.Default.Close, contentDescription = "Edit")
+                            Icon(imageVector = Icons.Default.Close,
+                                contentDescription = "Stop Editing")
                         }
                     }
                 }
@@ -409,6 +409,7 @@ fun MealItem(
     isEditable: Boolean,
     modifier: Modifier = Modifier
 ) {
+    //TODO mejorar animación
     val iconWeight by animateFloatAsState(
         targetValue = if (isEditable) 0.15f else 0.01f,
         animationSpec = tween(durationMillis = 500),
@@ -425,7 +426,7 @@ fun MealItem(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
-                .weight(rowMealWeight)
+                .weight(0.85f)
                 .padding(end = 15.dp)
         ) {
             Text(
@@ -500,11 +501,11 @@ fun MealItem(
         AnimatedVisibility(
             visible = isEditable,
             enter = fadeIn(),
-            exit = fadeOut()
+            exit = fadeOut(animationSpec = tween(durationMillis = 250))
         ) {
             IconButton(
                 onClick = { onDeleteMeal(meal) },
-                modifier = Modifier.weight(iconWeight).size(35.dp)
+                modifier = Modifier.weight(0.15f).size(35.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
