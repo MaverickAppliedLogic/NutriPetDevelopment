@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,13 +22,17 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +42,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +55,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import com.example.feedm.R
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.ui.view.theme.Orange
@@ -56,7 +65,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PetsActivity : ComponentActivity() {
- //TODO crear mini menu para elegir si ver detalle o eliminar
     private  val petsListViewModel: PetsListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +91,8 @@ class PetsActivity : ComponentActivity() {
                     }}) { innerPadding ->
                     PetsScreen(petsListViewModel,
                         onItemClicked = {goToPetDetails(it)},
-                        onIconClicked = {deletePet(it)},
+                        onEditIconClicked = {goToEditPet(it)},
+                        onDeleteIconClicked = {deletePet(it)},
                         modifier = Modifier
                             .padding(innerPadding)
                             .background(Color.White))
@@ -96,16 +105,20 @@ class PetsActivity : ComponentActivity() {
         val intent = Intent(this@PetsActivity, AddPetActivity::class.java)
         startActivity(intent)
     }
-
-    private fun deletePet(petModel: PetModel){
-        petsListViewModel.deletePet(petModel)
-    }
-
     private fun goToPetDetails(petModel: PetModel){
         val intent = Intent(this@PetsActivity, PetDetailsActivity::class.java)
         intent.putExtra("PetId",petModel.petId)
         startActivity(intent)
     }
+    private fun goToEditPet(petModel: PetModel){
+        val intent = Intent(this@PetsActivity, EditPetActivity::class.java)
+        intent.putExtra("PetId",petModel.petId)
+        startActivity(intent)
+    }
+    private fun deletePet(petModel: PetModel){
+        petsListViewModel.deletePet(petModel)
+    }
+
 
 
 }
@@ -114,7 +127,8 @@ class PetsActivity : ComponentActivity() {
 @Composable
 fun PetsScreen(petsListViewModel: PetsListViewModel,
                onItemClicked: (PetModel) -> Unit,
-               onIconClicked: (PetModel) -> Unit,
+               onEditIconClicked: (PetModel) -> Unit,
+               onDeleteIconClicked: (PetModel) -> Unit,
                modifier: Modifier = Modifier) {
     val petModels: List<PetModel> by petsListViewModel.pets.observeAsState(initial = emptyList())
     Box(
@@ -124,7 +138,8 @@ fun PetsScreen(petsListViewModel: PetsListViewModel,
         contentAlignment = Alignment.BottomEnd
     ) {
         PetsList(petModels,
-            onIconClicked = {onIconClicked(it)},
+            onEditIconClicked = {onEditIconClicked(it)},
+            onDeleteIconClicked = {onDeleteIconClicked(it)},
             onItemClicked = {onItemClicked(it)},
             modifier = modifier.fillMaxSize(1f))
     }
@@ -135,17 +150,19 @@ fun PetsScreen(petsListViewModel: PetsListViewModel,
 @Composable
 fun PetsList(petModels: List<PetModel>,
              onItemClicked: (PetModel) -> Unit,
-             onIconClicked: (PetModel) -> Unit,
+             onEditIconClicked: (PetModel) -> Unit,
+             onDeleteIconClicked: (PetModel) -> Unit,
              modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.fillMaxWidth()) {
-        items(items = petModels) { pet -> PetItem(pet,onItemClicked, onIconClicked) }
+        items(items = petModels) { pet -> PetItem(pet,onItemClicked, onEditIconClicked, onDeleteIconClicked) }
     }
 }
 
 @Composable
 fun PetItem(petModel: PetModel,
             onItemClicked: (PetModel) -> Unit,
-            onIconClicked: (PetModel) -> Unit,
+            onEditIconClicked: (PetModel) -> Unit,
+            onDeleteIconClicked: (PetModel) -> Unit,
             modifier: Modifier = Modifier) {
     Card(
         colors = CardColors(containerColor = Color.White, contentColor = Color.Black,
@@ -162,6 +179,7 @@ fun PetItem(petModel: PetModel,
             Modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 25.dp)
         ) {
             //TODO cambiar imagen del gato
+            var expanded by remember { mutableStateOf(false) }
             if (petModel.animal == "dog") {
                 Image(
                     painter = painterResource(id = R.drawable.img_dog_illustration),
@@ -183,12 +201,28 @@ fun PetItem(petModel: PetModel,
                     .weight(1f)
                     .padding(top = 10.dp)
             )
+            Box(
+                modifier = modifier.background(color = Color.White)
+                    .align(Alignment.CenterVertically)){
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(imageVector = Icons.Default.MoreVert,
+                        contentDescription = "", tint = Color.Gray,)
+                }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false },
+                    containerColor = Color.White
+                ) {
+                    DropdownMenuItem(text = { Text(text = "Editar")},
+                        onClick = { onEditIconClicked(petModel) },
+                        leadingIcon = {Icon(imageVector = Icons.Default.Create,
+                            contentDescription = "", tint = Color.Gray)})
+                    DropdownMenuItem(text = { Text(text = "Eliminar")},
+                        onClick = { onDeleteIconClicked(petModel) },
+                        leadingIcon = {Icon(imageVector = Icons.Default.Delete,
+                            contentDescription = "", tint = Color.Gray)})
+                }
 
-            IconButton(onClick = { onIconClicked(petModel) }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                Icon(imageVector = Icons.Default.Delete,
-                    contentDescription = "", tint = Color.Gray,
-                    modifier = Modifier.align(Alignment.CenterVertically))
             }
+
         }
     }
 }
@@ -240,8 +274,9 @@ fun PetScreenPreview(modifier: Modifier = Modifier) {
                     .padding(innerPadding),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                PetsList(petModels, onIconClicked = {} ,
-                    onItemClicked = {}, modifier = modifier.fillMaxSize(1f))
+                PetsList(petModels, onDeleteIconClicked = {} ,
+                    onItemClicked = {},
+                    onEditIconClicked = {},modifier = modifier.fillMaxSize(1f))
             }
         }
     }
