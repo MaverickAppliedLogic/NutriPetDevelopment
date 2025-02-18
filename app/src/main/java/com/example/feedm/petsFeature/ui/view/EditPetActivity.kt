@@ -252,27 +252,29 @@ fun EditScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
-                //TODO establecer variable del año de la mascota en el resource
-                val texts = stringArrayResource(id = R.array.fa_arrayAgeSelected)
                 val ageOptions = stringArrayResource(R.array.ap_arraySelectAge).toList()
 
                 CustomDropDownMenu(
                     options = ageOptions,
                     title = stringResource(id = R.string.ma_txtSpinnerEdad),
-                    selectedOption = if (pet.age < 0.5) {
-                        ""
-                    } else if (pet.age < 1) {
-                        texts[0]
-                    } else if (pet.age < 8) {
-                        texts[1]
-                    } else {
-                        texts[2]
+                    selectedOption =
+                    when (pet.age) {
+                        0.0f -> {
+                            ageOptions.first()
+                        }
+                        11.0f -> {
+                            ageOptions.last()
+                        }
+                        else -> {
+                            stringResource( id = R.string.apa_selectedOptionDropDownMenu,
+                                pet.age.toInt())
+                        }
                     },
                     onSelectOption = {
                         when (it) {
-                            "Menos de 1 año" -> onAgeChange(0.5f)
-                            "Más de 7 años" -> onAgeChange(8.0f)
-                            else -> onAgeChange(it.replace(" años", "").toFloat())
+                            ageOptions.first() -> onAgeChange(0.5f)
+                            ageOptions.last() -> onAgeChange(11.0f)
+                            else -> onAgeChange(it[0].code.div(10).toFloat())
                         }
                     },
                     errorCommitting = false,

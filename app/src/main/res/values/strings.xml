@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
     //AddPetActivity Strings
     <string name="app_name">TailyCare</string>
     <string name="fa_hintEtPetName">Name*</string>
@@ -17,7 +18,10 @@
         <item>5 años</item>
         <item>6 años</item>
         <item>7 años</item>
-        <item>Más de 7 años</item>
+        <item>8 años</item>
+        <item>9 años</item>
+        <item>10 años</item>
+        <item>Más de 10 años</item>
     </string-array>
     <string name="fa_txtSpinnerPeso">Peso actual*</string>
     <string name="fa_txtSpinnerSexo">Sexo</string>
@@ -30,7 +34,7 @@
         <item>Si</item>
         <item>No</item>
     </string-array>
-    <string name="fa_txtSpinnerActividadFisica">Nivel de actividad física</string>
+    <string name="fa_txtSpinnerActividadFisica" >Nivel de actividad física</string>
     <string-array name="fa_arraySpinnerActividadFisica">
         <item>Alta</item>
         <item>Media</item>
@@ -41,7 +45,6 @@
         <item>Mantenimiento</item>
         <item>Pérdida de peso</item>
         <item>Aumento de peso</item>
-        <item>Mejora de la salud general</item>
     </string-array>
     <string name="fa_txtButtonEnviarFormulario">Confirmar</string>
     <string name="fa_txtButtonCancelarEdicion">Cancelar</string>
@@ -78,6 +81,7 @@
     <string name="pia_RecordModuleTxt3">Edad</string>
     <string name="title_activity_edit_pet">EditPetActivity</string>
     <string name="title_activity_add_meal">AddMealActivity</string>
+    <string name="apa_selectedOptionDropDownMenu">%1$s años</string>
 
 
 </resources>

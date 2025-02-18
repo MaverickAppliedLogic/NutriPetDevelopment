@@ -65,6 +65,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PetsActivity : ComponentActivity() {
+    //TODO implementar dialog elliminar mascota
     private  val petsListViewModel: PetsListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
