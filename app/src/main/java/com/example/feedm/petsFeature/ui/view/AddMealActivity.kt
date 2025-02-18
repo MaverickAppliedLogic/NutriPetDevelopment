@@ -69,6 +69,8 @@ import kotlin.time.measureTime
 class AddMealActivity : ComponentActivity() {
 
     //TODO cambiar imagen flor
+    //TODO implementar TimeSetter
+    //TODO implementar borrar comida
     private val addMealViewmodel: AddMealViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

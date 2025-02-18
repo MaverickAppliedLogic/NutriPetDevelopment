@@ -43,7 +43,7 @@ fun CustomSlider(
     valueRange: ClosedFloatingPointRange<Float>
 ) {
     Column(modifier = modifier.padding(start = 15.dp, end = 15.dp, top = 10.dp)) {
-        val steps = ((valueRange.endInclusive - valueRange.start) / 0.5).toInt() - 1
+        val steps = ((valueRange.endInclusive - valueRange.start) / 0.25).toInt() - 1
         Text(
             stringResource(id = R.string.fa_txtSpinnerPeso),
             style = TextStyle(
@@ -52,8 +52,13 @@ fun CustomSlider(
                 color = Color.Black
             )
         )
-        Text(
-            String.format(Locale.getDefault(), "%.2f Kg", weight),
+        val text = if (valueRange.endInclusive != weight){
+            String.format(Locale.getDefault(), "%.2f Kg", weight)
+        }
+        else {
+            String.format((Locale.getDefault()), "+%.2f Kg", weight)
+        }
+        Text(text = text,
             style = TextStyle(fontSize = 19.sp, color = Color.Black),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

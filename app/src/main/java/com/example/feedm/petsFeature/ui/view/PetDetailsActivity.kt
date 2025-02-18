@@ -150,22 +150,24 @@ class PetDetailsActivity : ComponentActivity() {
                                 }
                             },
                             actions = {
-                                Row {
-                                    IconButton(onClick = { addMeal() }) {
-                                        Icon(
-                                            painter = painterResource(id = R.mipmap.icon_add_food),
-                                            contentDescription = "ArrowBack",
-                                            tint = Color.Black
-                                        )
+                                Box {
+                                    Row {
+                                        IconButton(onClick = { addMeal() }) {
+                                            Icon(
+                                                painter = painterResource(id = R.mipmap.icon_add_food),
+                                                contentDescription = "ArrowBack",
+                                                tint = Color.Black
+                                            )
 
-                                    }
-                                    IconButton(onClick = { editPet() }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Create,
-                                            contentDescription = "ArrowBack",
-                                            tint = Color.Black
-                                        )
+                                        }
+                                        IconButton(onClick = { editPet() }) {
+                                            Icon(
+                                                imageVector = Icons.Default.Create,
+                                                contentDescription = "ArrowBack",
+                                                tint = Color.Black
+                                            )
 
+                                        }
                                     }
                                 }
                             },
@@ -348,8 +350,10 @@ fun MealsModule(
                         if (!isEditable) {
                             Icon(imageVector = Icons.Default.Create, contentDescription = "Edit")
                         } else {
-                            Icon(imageVector = Icons.Default.Close,
-                                contentDescription = "Stop Editing")
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Stop Editing"
+                            )
                         }
                     }
                 }
@@ -413,7 +417,8 @@ fun MealItem(
     val iconWeight by animateFloatAsState(
         targetValue = if (isEditable) 0.15f else 0.01f,
         animationSpec = tween(durationMillis = 500),
-        label = "")
+        label = ""
+    )
     val rowMealWeight by animateFloatAsState(
         targetValue = if (isEditable) 0.85f else 0.99f,
         animationSpec = tween(durationMillis = 500),
@@ -505,7 +510,9 @@ fun MealItem(
         ) {
             IconButton(
                 onClick = { onDeleteMeal(meal) },
-                modifier = Modifier.weight(0.15f).size(35.dp)
+                modifier = Modifier
+                    .weight(0.15f)
+                    .size(35.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,

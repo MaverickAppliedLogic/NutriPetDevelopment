@@ -70,9 +70,6 @@ class AddPetActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO ajustar el seekBar dependiendo mascota
-        //TODO ajustar el dropDownMenu dependiendo mascota
-
 
         setContent {
             TailyCareTheme {
@@ -269,25 +266,27 @@ fun FormScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
-                //TODO establecer variable del año de la mascota en el resource
-                val texts = stringArrayResource(id = R.array.fa_arrayAgeSelected)
                 val ageOptions = stringArrayResource(R.array.ap_arraySelectAge).toList()
                 CustomDropDownMenu(
                     options = ageOptions,
                     title = stringResource(id = R.string.ma_txtSpinnerEdad),
-                    selectedOption = if (pet.age < 0.5) {
-                        ""
-                    } else if (pet.age < 1) {
-                        texts[0]
-                    } else if (pet.age < 8) {
-                        texts[1]
-                    } else {
-                        texts[2]
+                    selectedOption =
+                    when (pet.age) {
+                        0.0f -> {
+                            ageOptions.first()
+                        }
+                        11.0f -> {
+                            ageOptions.last()
+                        }
+                        else -> {
+                            stringResource( id = R.string.apa_selectedOptionDropDownMenu,
+                                pet.age.toInt())
+                        }
                     },
                     onSelectOption = {
                         when (it) {
                             ageOptions.first() -> onAgeChange(0.5f)
-                            ageOptions.last() -> onAgeChange(8.0f)
+                            ageOptions.last() -> onAgeChange(11.0f)
                             else -> onAgeChange(it[0].code.div(10).toFloat())
                         }
                     },
@@ -343,8 +342,8 @@ fun FormScreen(
                     weight = pet.petWeight, onWeightChanged = { onWeightChange(it) },
                     errorCommitting = invalidWeight,
                     valueRange =
-                    if (pet.animal == "dog") 0.0f..85.0f
-                    else 0.0f..25.0f
+                    if (pet.animal == "dog") 0.0f..100.0f
+                    else 0.0f..11.0f
                 )
             }
 
