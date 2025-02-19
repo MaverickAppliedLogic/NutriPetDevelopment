@@ -414,17 +414,6 @@ fun MealItem(
     modifier: Modifier = Modifier
 ) {
     //TODO mejorar animación
-    val iconWeight by animateFloatAsState(
-        targetValue = if (isEditable) 0.15f else 0.01f,
-        animationSpec = tween(durationMillis = 500),
-        label = ""
-    )
-    val rowMealWeight by animateFloatAsState(
-        targetValue = if (isEditable) 0.85f else 0.99f,
-        animationSpec = tween(durationMillis = 500),
-        label = ""
-    )
-
 
     Row {
         Row(
