@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Define un tema personalizado para el TimePickerDialog -->
+    <style name="CustomTimePickerStyle" parent="Theme.Material3.Light">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorOnPrimary">@color/almost_white</item>
+        <item name="colorOnSurface">@color/black</item>
+    </style>
+</resources>
