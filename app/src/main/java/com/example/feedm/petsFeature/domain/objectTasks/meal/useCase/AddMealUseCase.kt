@@ -20,7 +20,7 @@ class AddMealUseCase @Inject constructor(
                                 mealCalories: Double?){
 
             val foodId = if(food.foodId == 0) addFoodUseCase(food, petId).toInt() else food.foodId
-
+        
             val mealModelBuilt = mealModel ?:
             mealModelBuilder(petId!!, foodId, ration!!, hour!!, min!!, mealCalories!!)
 

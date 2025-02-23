@@ -7,7 +7,7 @@ val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
 val OrangeSoft = Color(0xFFFFCB5E)
 val Orange = Color(0xFFFFAB00)
-val OrangeSemiTransparent = Color(0x6DFF9900)
+val OrangeSemiTransparent = Color(0xFFFFDAAD)
 val RedSemiTransparent = Color(0x8FFDA0A0)
 val AlmostWhite = Color(0xFFF1F1F1)
 

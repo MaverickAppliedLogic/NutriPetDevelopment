@@ -4,9 +4,9 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryDark">@color/darker_orange</item>
+        <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/orange</item>
-        <item name="colorOnBackground">@color/soft_white</item>
+        <item name="colorOnBackground">@color/almost_white</item>
     </style>
 
     <style name="ErrorView" parent="Widget.Material3.CompoundButton.RadioButton">

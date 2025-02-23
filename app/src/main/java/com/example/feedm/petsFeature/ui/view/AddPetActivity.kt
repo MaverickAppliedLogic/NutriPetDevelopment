@@ -58,7 +58,6 @@ import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
-import com.example.feedm.ui.viewmodel.PetsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
