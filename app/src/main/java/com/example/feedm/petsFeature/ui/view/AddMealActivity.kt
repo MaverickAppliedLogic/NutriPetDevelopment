@@ -1,7 +1,6 @@
 package com.example.feedm.petsFeature.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,7 +33,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -65,14 +63,12 @@ import com.example.feedm.ui.view.theme.OrangeSemiTransparent
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
-import kotlin.time.measureTime
 
 
 @AndroidEntryPoint
 class AddMealActivity : ComponentActivity() {
 
     //TODO cambiar imagen flor
-    //TODO implementar TimeSetter
     //TODO implementar borrar comida
     private val addMealViewmodel: AddMealViewmodel by viewModels()
 
@@ -90,6 +86,8 @@ class AddMealActivity : ComponentActivity() {
             TailyCareTheme {
                 val foodsList: List<FoodModel> by addMealViewmodel.foods
                     .observeAsState(initial = emptyList())
+                addMealViewmodel.getFoodsByPetId(petId)
+
 
                 var isNewFood by remember { mutableStateOf(true) }
                 var food by remember { mutableStateOf(emptyFood) }
@@ -97,10 +95,7 @@ class AddMealActivity : ComponentActivity() {
                 var min by remember { mutableIntStateOf(0) }
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
-                LaunchedEffect(Unit) {
-                    val measureTime = measureTime { addMealViewmodel.getFoodsByPetId(petId) }
-                    Log.i("Time to fetch foods: $measureTime", "Time to fetch foods: $measureTime")
-                }
+                var isError by remember { mutableStateOf(false) }
                 var timePickerIsVisible by remember { mutableStateOf(false) }
                 val timePickerBackground by animateDpAsState(
                     targetValue = if (timePickerIsVisible) 20.dp
@@ -119,16 +114,15 @@ class AddMealActivity : ComponentActivity() {
                         .background(color = Color.White)
                 ) { innerPadding ->
                     Screen(
+                        isError = isError,
                         isNewFood = isNewFood,
                         foodsList = foodsList,
                         food = food,
                         calories = calories,
                         ration = ration,
-                        hour = hour,
-                        min = min,
-                        onNameChange = { food = food.copy(foodName = it) },
-                        onCaloriesChange = { calories = it },
-                        onRationChange = { ration = it },
+                        onNameChange = { food = food.copy(foodName = it) ; isError = false},
+                        onCaloriesChange = { calories = it ; isError = false},
+                        onRationChange = { ration = it ; isError = false},
                         onCancelClicked = {
                             if (!timePickerIsVisible) {
                                 intent.setClass(
@@ -139,16 +133,20 @@ class AddMealActivity : ComponentActivity() {
                             }
                         },
                         onCommitClicked = {
+
                             if (!timePickerIsVisible) {
-                                food = food.copy(calories = calories.toFloat())
-                                commit(
-                                    ration,
-                                    min,
-                                    hour,
-                                    calories,
-                                    food,
-                                    petId
-                                )
+                                if (validateMeal(food.foodName, calories, ration)){
+                                    food = food.copy(calories = calories.toFloat())
+                                    commit(
+                                        ration,
+                                        min,
+                                        hour,
+                                        calories,
+                                        food,
+                                        petId
+                                    )
+                                }
+                                else { isError = true }
                             }
                         },
                         onFoodSelected = {
@@ -162,7 +160,6 @@ class AddMealActivity : ComponentActivity() {
                                 }
                             } else food = emptyFood
                         },
-                        timePickerIsVisible = timePickerIsVisible,
                         namePadding = namePadding,
                         modifier = Modifier
                             .padding(innerPadding)
@@ -220,7 +217,10 @@ class AddMealActivity : ComponentActivity() {
 
                         if (timePickerIsVisible) {
                             CustomTimePicker(
-                                onConfirm = { timePickerIsVisible = false },
+                                hour = hour,
+                                minute = min,
+                                onConfirm = { hourSet, minSet -> hour= hourSet; min = minSet
+                                            timePickerIsVisible = false},
                                 onDismiss = { timePickerIsVisible = false },
                                 modifier = Modifier
                                     .align(Alignment.CenterHorizontally)
@@ -250,6 +250,14 @@ class AddMealActivity : ComponentActivity() {
         }
     }
 
+    private fun validateMeal(name: String, calories: String, ration: String): Boolean {
+        if (name == "") return false
+        if (calories == "") return false
+        if (ration == "") return false
+        return true
+    }
+
+
     private fun commit(
         ration: String, hour: Int, min: Int, calories: String, food: FoodModel,
         petId: Int
@@ -272,20 +280,18 @@ class AddMealActivity : ComponentActivity() {
 
 @Composable
 fun Screen(
+    isError: Boolean,
     isNewFood: Boolean,
     foodsList: List<FoodModel>,
     food: FoodModel,
     calories: String,
     ration: String,
-    hour: Int,
-    min: Int,
     onNameChange: (String) -> Unit,
     onCaloriesChange: (String) -> Unit,
     onRationChange: (String) -> Unit,
     onCancelClicked: () -> Unit,
     onCommitClicked: () -> Unit,
     onFoodSelected: (String) -> Unit,
-    timePickerIsVisible: Boolean,
     namePadding: Dp,
     modifier: Modifier = Modifier
 ) {
@@ -324,15 +330,15 @@ fun Screen(
                     onValueChange = { onNameChange(it) },
                     label = { Text(text = "Nombre") },
                     enabled = isNewFood,
-                    isError = false,
+                    isError = isError,
                     colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White, cursorColor = Color.Black,
                         errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
                         errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
                         focusedContainerColor = Color.White, focusedLabelColor = Orange,
                         focusedIndicatorColor = Orange, disabledContainerColor = Color.White,
                         disabledTextColor = Color.White, disabledLabelColor = Color.White,
-                        focusedTrailingIconColor = Orange,
+                        focusedTrailingIconColor = Orange
                     ),
                     modifier = Modifier
                         .padding(top = namePadding)
@@ -385,9 +391,9 @@ fun Screen(
                     )
                 },
                 label = { },
-                isError = false,
+                isError = isError,
                 colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White, cursorColor = Orange,
                     errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
                     errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
                     focusedContainerColor = Color.White, focusedLabelColor = Orange,
@@ -419,9 +425,9 @@ fun Screen(
                 onValueChange = { onRationChange(it) },
                 trailingIcon = { Text(text = "gr", modifier = Modifier.padding(end = 10.dp)) },
                 label = { },
-                isError = false,
+                isError = isError,
                 colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White, cursorColor = Orange,
                     errorIndicatorColor = Color.Red, errorLabelColor = Color.Red,
                     errorTextColor = Color.Red, errorContainerColor = RedSemiTransparent,
                     focusedContainerColor = Color.White, focusedLabelColor = Orange,
@@ -548,17 +554,13 @@ fun ScreenPreview() {
                 food = food,
                 calories = calories,
                 ration = ration,
-                hour = 0,
-                min = 0,
                 onNameChange = { food = food.copy(foodName = it) },
                 onCaloriesChange = { calories = it },
                 onRationChange = { ration = it },
                 onCancelClicked = { meal = meal.copy(mealTime = 0) },
                 onCommitClicked = { meal = meal.copy(mealTime = 1) },
-                onFoodSelected = {
-                    isNewMeal = it == "Nueva comida"
-                },
-                timePickerIsVisible = false,
+                onFoodSelected = { isNewMeal = it == "Nueva comida" },
+                isError = false,
                 namePadding = 10.dp,
                 modifier = Modifier.padding(innerPadding)
             )
