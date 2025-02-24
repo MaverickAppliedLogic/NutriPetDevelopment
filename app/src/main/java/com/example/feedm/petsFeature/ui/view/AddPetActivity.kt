@@ -50,14 +50,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
+import com.example.feedm.core.ui.theme.TailyCareTheme
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
+import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
-import com.example.feedm.core.ui.theme.TailyCareTheme
-import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -68,7 +68,7 @@ class AddPetActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //TODO mejorar seleccion de mascota
 
         setContent {
             TailyCareTheme {

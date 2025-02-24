@@ -28,15 +28,25 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTimePicker(
-    onConfirm: () -> Unit,
+    onConfirm: (Int,Int) -> Unit,
     onDismiss: () -> Unit,
+    hour: Int,
+    minute: Int,
     mode: Int = 1,
     modifier: Modifier = Modifier
 ) {
-    val currentTime = Calendar.getInstance()
+    val calendar = Calendar.getInstance()
+    var initialHour = calendar.get(Calendar.HOUR_OF_DAY)
+    var initialMinute = calendar.get(Calendar.MINUTE)
+
+    if (hour != calendar.get(Calendar.HOUR_OF_DAY) ||
+        minute != calendar.get(Calendar.MINUTE)){
+        initialHour = hour
+        initialMinute = minute
+    }
     val timePickerState = rememberTimePickerState(
-        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
-        initialMinute = currentTime.get(Calendar.MINUTE),
+        initialHour = initialHour,
+        initialMinute = initialMinute,
         is24Hour = false
     )
     Column(
@@ -81,7 +91,7 @@ fun CustomTimePicker(
                 Text("Cancel")
             }
             Spacer(Modifier.padding(10.dp))
-            Button(onClick = onConfirm,
+            Button(onClick = {onConfirm(timePickerState.hour,timePickerState.minute)},
                 colors = ButtonDefaults.buttonColors(containerColor = Orange)) {
                 Text("Confirm")
             }
@@ -92,13 +102,13 @@ fun CustomTimePicker(
 @Preview(showBackground = true)
 @Composable
 fun CustomTimePickerModel1Preview() {
-    CustomTimePicker(onConfirm = {},
-        onDismiss={})
+    CustomTimePicker(onConfirm = { _, _ ->},
+        onDismiss={}, minute = 0, hour = 0)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun CustomTimePickerModel2Preview() {
-    CustomTimePicker(onConfirm = {},
-        onDismiss={}, mode = 2)
+    CustomTimePicker(onConfirm = {_, _ ->},
+        onDismiss={}, mode = 2, minute = 0, hour = 0)
 }
