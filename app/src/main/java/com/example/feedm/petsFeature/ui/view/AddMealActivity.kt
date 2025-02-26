@@ -68,8 +68,8 @@ import java.util.Locale
 @AndroidEntryPoint
 class AddMealActivity : ComponentActivity() {
 
+
     //TODO cambiar imagen flor
-    //TODO implementar borrar comida
     private val addMealViewmodel: AddMealViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +87,8 @@ class AddMealActivity : ComponentActivity() {
                 val foodsList: List<FoodModel> by addMealViewmodel.foods
                     .observeAsState(initial = emptyList())
                 addMealViewmodel.getFoodsByPetId(petId)
-
+                val foodToBeDelete: FoodModel by addMealViewmodel.foodToBeDeleted
+                    .observeAsState(initial = emptyFood)
 
                 var isNewFood by remember { mutableStateOf(true) }
                 var food by remember { mutableStateOf(emptyFood) }
@@ -96,6 +97,7 @@ class AddMealActivity : ComponentActivity() {
                 var calories by remember { mutableStateOf("") }
                 var ration by remember { mutableStateOf("") }
                 var isError by remember { mutableStateOf(false) }
+                var showDeleteDialog by remember { mutableStateOf(false) }
                 var timePickerIsVisible by remember { mutableStateOf(false) }
                 val timePickerBackground by animateDpAsState(
                     targetValue = if (timePickerIsVisible) 20.dp
@@ -120,9 +122,9 @@ class AddMealActivity : ComponentActivity() {
                         food = food,
                         calories = calories,
                         ration = ration,
-                        onNameChange = { food = food.copy(foodName = it) ; isError = false},
-                        onCaloriesChange = { calories = it ; isError = false},
-                        onRationChange = { ration = it ; isError = false},
+                        onNameChange = { food = food.copy(foodName = it); isError = false },
+                        onCaloriesChange = { calories = it; isError = false },
+                        onRationChange = { ration = it; isError = false },
                         onCancelClicked = {
                             if (!timePickerIsVisible) {
                                 intent.setClass(
@@ -135,7 +137,7 @@ class AddMealActivity : ComponentActivity() {
                         onCommitClicked = {
 
                             if (!timePickerIsVisible) {
-                                if (validateMeal(food.foodName, calories, ration)){
+                                if (validateMeal(food.foodName, calories, ration)) {
                                     food = food.copy(calories = calories.toFloat())
                                     commit(
                                         ration,
@@ -145,8 +147,9 @@ class AddMealActivity : ComponentActivity() {
                                         food,
                                         petId
                                     )
+                                } else {
+                                    isError = true
                                 }
-                                else { isError = true }
                             }
                         },
                         onFoodSelected = {
@@ -161,6 +164,9 @@ class AddMealActivity : ComponentActivity() {
                             } else food = emptyFood
                         },
                         namePadding = namePadding,
+                        onDeleteIconClicked = {addMealViewmodel.getFoodToBeDeleted(it)
+                            showDeleteDialog = true
+                        },
                         modifier = Modifier
                             .padding(innerPadding)
                             .blur(timePickerBackground),
@@ -189,9 +195,11 @@ class AddMealActivity : ComponentActivity() {
                         if (timePickerIsVisible) 30.dp else 125.dp,
                     )
                     if (timePickerIsVisible) {
-                        Box(modifier = Modifier
-                            .fillMaxSize()
-                            .alpha(0f)) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .alpha(0f)
+                        ) {
                             Card(
                                 onClick = { timePickerIsVisible = false },
                                 modifier = Modifier
@@ -219,8 +227,10 @@ class AddMealActivity : ComponentActivity() {
                             CustomTimePicker(
                                 hour = hour,
                                 minute = min,
-                                onConfirm = { hourSet, minSet -> hour= hourSet; min = minSet
-                                            timePickerIsVisible = false},
+                                onConfirm = { hourSet, minSet ->
+                                    hour = hourSet; min = minSet
+                                    timePickerIsVisible = false
+                                },
                                 onDismiss = { timePickerIsVisible = false },
                                 modifier = Modifier
                                     .align(Alignment.CenterHorizontally)
@@ -244,7 +254,13 @@ class AddMealActivity : ComponentActivity() {
                         }
 
                     }
-
+                    DeleteDialog(
+                        title = "Eliminar mascota",
+                        text = "¿Seguro que desea eliminar a ${foodToBeDelete.foodName}\n" +
+                                "Esta acción no se puede deshacer.",
+                        confirmButton = { deleteFood(foodToBeDelete); showDeleteDialog = false },
+                        cancelButton = { showDeleteDialog = false }, visible = showDeleteDialog
+                    )
                 }
             }
         }
@@ -255,6 +271,10 @@ class AddMealActivity : ComponentActivity() {
         if (calories == "") return false
         if (ration == "") return false
         return true
+    }
+
+    private fun deleteFood(foodModel: FoodModel) {
+        addMealViewmodel.deleteFood(foodModel)
     }
 
 
@@ -292,6 +312,7 @@ fun Screen(
     onCancelClicked: () -> Unit,
     onCommitClicked: () -> Unit,
     onFoodSelected: (String) -> Unit,
+    onDeleteIconClicked: (String) -> Unit,
     namePadding: Dp,
     modifier: Modifier = Modifier
 ) {
@@ -330,6 +351,7 @@ fun Screen(
                     onValueChange = { onNameChange(it) },
                     label = { Text(text = "Nombre") },
                     enabled = isNewFood,
+                    singleLine = true,
                     isError = isError,
                     colors = TextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White, cursorColor = Color.Black,
@@ -361,6 +383,8 @@ fun Screen(
                         onSelectOption = {
                             onFoodSelected(it)
                         },
+                        onDeleteIconClicked = { onDeleteIconClicked(it) },
+                        deletableOption = true
                     )
                 }
             }
@@ -456,7 +480,7 @@ fun Screen(
 
             ) {
                 FloatingActionButton(
-                    onClick =  onCancelClicked ,
+                    onClick = onCancelClicked,
                     elevation = FloatingActionButtonDefaults.elevation(1.25.dp),
                     containerColor = Orange,
                     shape = RoundedCornerShape(10.dp),
@@ -562,6 +586,7 @@ fun ScreenPreview() {
                 onFoodSelected = { isNewMeal = it == "Nueva comida" },
                 isError = false,
                 namePadding = 10.dp,
+                onDeleteIconClicked = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
