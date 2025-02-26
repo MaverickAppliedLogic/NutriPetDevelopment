@@ -50,14 +50,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.core.ui.components.CustomDropDownMenu
 import com.example.feedm.core.ui.components.CustomRadioGroup
 import com.example.feedm.core.ui.components.CustomSlider
+import com.example.feedm.core.ui.theme.TailyCareTheme
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
+import com.example.feedm.petsFeature.ui.viewmodel.EditPetViewmodel
 import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.ui.view.theme.RedSemiTransparent
-import com.example.feedm.core.ui.theme.TailyCareTheme
-import com.example.feedm.petsFeature.ui.viewmodel.EditPetViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -277,6 +277,7 @@ fun EditScreen(
                         }
                     },
                     errorCommitting = false,
+                    onDeleteIconClicked = {},
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -345,6 +346,7 @@ fun EditScreen(
                     selectedOption = pet.goal,
                     errorCommitting = false,
                     onSelectOption = { onObjectiveChange(it) },
+                    onDeleteIconClicked = {},
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -383,6 +385,7 @@ fun EditScreen(
                     selectedOption = pet.activity,
                     onSelectOption = { onActivityLevelChange(it) },
                     errorCommitting = false,
+                    onDeleteIconClicked = {},
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)

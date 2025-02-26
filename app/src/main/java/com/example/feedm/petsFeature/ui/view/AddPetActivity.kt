@@ -290,6 +290,7 @@ fun FormScreen(
                         }
                     },
                     errorCommitting = invalidAge,
+                    onDeleteIconClicked = {},
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -359,6 +360,7 @@ fun FormScreen(
                     selectedOption = pet.goal,
                     errorCommitting = invalidGoal,
                     onSelectOption = { onGoalChange(it) },
+                    onDeleteIconClicked = {},
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
@@ -397,6 +399,7 @@ fun FormScreen(
                     selectedOption = pet.activity,
                     onSelectOption = { onActivityLevelChange(it) },
                     errorCommitting = false,
+                    onDeleteIconClicked = {},
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 10.dp)
