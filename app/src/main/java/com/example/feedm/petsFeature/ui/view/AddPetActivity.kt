@@ -5,13 +5,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,13 +24,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,6 +44,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
@@ -274,12 +279,16 @@ fun FormScreen(
                         0.0f -> {
                             ageOptions.first()
                         }
+
                         11.0f -> {
                             ageOptions.last()
                         }
+
                         else -> {
-                            stringResource( id = R.string.apa_selectedOptionDropDownMenu,
-                                pet.age.toInt())
+                            stringResource(
+                                id = R.string.apa_selectedOptionDropDownMenu,
+                                pet.age.toInt()
+                            )
                         }
                     },
                     onSelectOption = {
@@ -422,29 +431,72 @@ fun PetImageAndName(
     onImageChange: (String) -> Unit,
     onTextChange: (String) -> Unit
 ) {
+    var animalChanged by remember { mutableStateOf(false) }
+
+
+    val rotationIconAnim by animateFloatAsState(
+       targetValue =  if (animalChanged) 360f else 0f ,
+       label = "",
+       animationSpec = if(animalChanged){
+           tween(500)
+       }
+       else{
+           snap(0)
+       },
+      finishedListener = { animalChanged = false})
+
+
     Row(
         modifier
             .fillMaxWidth()
             .height(125.dp)
-            .padding(15.dp)
+            .padding(vertical = 15.dp)
     ) {
-        IconButton(
-            onClick = { onImageChange(if (animal == "dog") "cat" else "dog") },
-            modifier = Modifier
-                .clip(shape = RoundedCornerShape(10.dp))
+        Column(
+            modifier = modifier
                 .weight(0.3f)
-                .fillMaxHeight()
-
+                .padding(end = 20.dp, bottom = 10.dp)
         ) {
-            val animalImg = if (animal == "dog") R.drawable.img_dog_illustration else
-                R.drawable.gato
-            Image(
-                painter = painterResource(id = animalImg),
-                contentDescription = "",
-                modifier = Modifier.padding(10.dp)
-            )
+            Card(elevation = CardDefaults.elevatedCardElevation(3.dp),
+                enabled = !animalChanged,
+                colors =
+                CardColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Transparent,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.Transparent
+                ),
+                onClick = { onImageChange(if (animal == "dog") "cat" else "dog")
+                    animalChanged = true
+                }
 
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "change animal",
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .scale(0.8f)
+                        .align(Alignment.CenterHorizontally)
+                        .rotate(rotationIconAnim)
+
+                )
+
+                val animalImg = if (animal == "dog") R.drawable.img_dog_illustration else
+                    R.drawable.gato
+                Image(
+                    painter = painterResource(id = animalImg),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .fillMaxSize()
+                        .padding(bottom = 5.dp)
+                )
+
+
+            }
         }
+
         OutlinedTextField(
             value = name,
             supportingText = {
