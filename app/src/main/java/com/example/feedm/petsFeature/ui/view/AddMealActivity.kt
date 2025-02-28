@@ -140,8 +140,8 @@ class AddMealActivity : ComponentActivity() {
                                     food = food.copy(calories = calories.toFloat())
                                     commit(
                                         ration,
-                                        min,
                                         hour,
+                                        min,
                                         calories,
                                         food,
                                         petId
