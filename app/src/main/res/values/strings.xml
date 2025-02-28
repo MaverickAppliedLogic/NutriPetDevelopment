@@ -82,6 +82,8 @@
     <string name="title_activity_edit_pet">EditPetActivity</string>
     <string name="title_activity_add_meal">AddMealActivity</string>
     <string name="apa_selectedOptionDropDownMenu">%1$s años</string>
+    <string name="epa_notSelectedAgeOption">Seleccionar edad</string>
+    <string name="apa_notSelectedAgeOption">Seleccionar edad</string>
 
 
 </resources>
