@@ -73,7 +73,6 @@ class AddPetActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO mejorar seleccion de mascota
 
         setContent {
             TailyCareTheme {
@@ -483,7 +482,7 @@ fun PetImageAndName(
                 )
 
                 val animalImg = if (animal == "dog") R.drawable.img_dog_illustration else
-                    R.drawable.gato
+                    R.drawable.icono_gato_sinfondo
                 Image(
                     painter = painterResource(id = animalImg),
                     contentDescription = "",

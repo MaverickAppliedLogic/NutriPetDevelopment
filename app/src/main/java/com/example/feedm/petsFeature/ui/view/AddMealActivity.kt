@@ -100,8 +100,7 @@ class AddMealActivity : ComponentActivity() {
                 var showDeleteDialog by remember { mutableStateOf(false) }
                 var timePickerIsVisible by remember { mutableStateOf(false) }
                 val timePickerBackground by animateDpAsState(
-                    targetValue = if (timePickerIsVisible) 20.dp
-                    else 0.dp
+                    targetValue = if (timePickerIsVisible) 20.dp else 0.dp
                 )
 
                 val namePadding by animateDpAsState(
@@ -255,8 +254,8 @@ class AddMealActivity : ComponentActivity() {
 
                     }
                     DeleteDialog(
-                        title = "Eliminar mascota",
-                        text = "¿Seguro que desea eliminar a ${foodToBeDelete.foodName}\n" +
+                        title = "Eliminar comida",
+                        text = "¿Seguro que desea eliminar ${foodToBeDelete.foodName}?\n" +
                                 "Esta acción no se puede deshacer.",
                         confirmButton = { deleteFood(foodToBeDelete); showDeleteDialog = false },
                         cancelButton = { showDeleteDialog = false }, visible = showDeleteDialog

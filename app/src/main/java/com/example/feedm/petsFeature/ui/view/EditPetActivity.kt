@@ -424,7 +424,7 @@ fun PetImageAndNameNotEditable(
 
         ) {
             val animalImg = if (animal == "dog") R.drawable.img_dog_illustration else
-                R.drawable.gato
+                R.drawable.icono_gato_sinfondo
             Image(
                 painter = painterResource(id = animalImg),
                 contentDescription = "",
