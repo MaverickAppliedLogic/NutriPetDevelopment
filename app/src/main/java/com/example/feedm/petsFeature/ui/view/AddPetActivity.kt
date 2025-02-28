@@ -276,6 +276,9 @@ fun FormScreen(
                     selectedOption =
                     when (pet.age) {
                         0.0f -> {
+                            stringResource(R.string.apa_notSelectedAgeOption)
+                        }
+                        0.5f -> {
                             ageOptions.first()
                         }
 
@@ -294,7 +297,7 @@ fun FormScreen(
                         when (it) {
                             ageOptions.first() -> onAgeChange(0.5f)
                             ageOptions.last() -> onAgeChange(11.0f)
-                            else -> onAgeChange(it[0].code.div(10).toFloat())
+                            else -> onAgeChange(it[0].digitToInt().toFloat())
                         }
                     },
                     errorCommitting = invalidAge,
