@@ -61,9 +61,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
+import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.ui.viewmodel.PetsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -275,7 +275,6 @@ fun PetItem(
         Row(
             Modifier.padding(start = 20.dp, end = 0.dp, top = 25.dp, bottom = 25.dp)
         ) {
-            //TODO cambiar imagen del gato
             var expanded by remember { mutableStateOf(false) }
             if (petModel.animal == "dog") {
                 Image(
@@ -285,7 +284,7 @@ fun PetItem(
                 )
             } else {
                 Image(
-                    painter = painterResource(id = R.drawable.gato),
+                    painter = painterResource(id = R.drawable.icono_gato_sinfondo),
                     contentDescription = "dog",
                     modifier.weight(0.30f)
                 )

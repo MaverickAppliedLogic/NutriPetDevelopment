@@ -66,13 +66,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
-import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
-import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.example.feedm.ui.view.theme.AlmostWhite
-import com.example.feedm.ui.view.theme.Orange
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.ui.view.theme.AlmostWhite
+import com.example.feedm.ui.view.theme.Orange
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.format
 import java.util.Locale
@@ -225,7 +225,7 @@ fun PetImage(petAnimal: String) {
         val imageResourceId = if (petAnimal == "dog") {
             R.drawable.img_dog_illustration
         } else {
-            R.drawable.gato
+            R.drawable.icono_gato_sinfondo
         }
         Image(
             painter = painterResource(id = imageResourceId),

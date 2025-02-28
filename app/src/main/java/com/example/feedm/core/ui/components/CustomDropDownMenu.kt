@@ -115,7 +115,7 @@ fun CustomDropDownMenu(
                     },
                     onClick = { onSelectOption(option); expanded = false },
                     trailingIcon = {
-                        if (deletableOption != null && deletableOption){
+                        if (deletableOption != null && deletableOption && option != "Nueva comida"){
                         IconButton(onClick = {onDeleteIconClicked(option)}) {
                             Icon(imageVector = Icons.Default.Clear, contentDescription = "",
                                 modifier = Modifier.scale(0.8f))
