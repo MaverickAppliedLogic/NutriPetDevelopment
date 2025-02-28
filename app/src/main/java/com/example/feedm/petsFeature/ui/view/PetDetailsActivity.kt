@@ -71,6 +71,7 @@ import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.utils.TimeFormatter
 import com.example.feedm.ui.view.theme.AlmostWhite
 import com.example.feedm.ui.view.theme.Orange
 import dagger.hilt.android.AndroidEntryPoint
@@ -415,6 +416,8 @@ fun MealItem(
     //TODO mejorar animación
 
     Row {
+        val colorValuesItem = if(isEditable) Color.White else AlmostWhite
+        val mealTime = TimeFormatter().formatMillsToString(meal.mealTime)
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
@@ -436,7 +439,7 @@ fun MealItem(
                     .padding(5.dp)
                     .height(25.dp)
                     .width(35.dp)
-                    .background(color = Color.White)
+                    .background(color = colorValuesItem)
                     .border(width = 1.dp, color = Color.LightGray)
 
             ) {
@@ -457,12 +460,12 @@ fun MealItem(
                     .height(25.dp)
                     .width(35.dp)
                     .clip(RoundedCornerShape(7.dp))
-                    .background(color = Color.White)
+                    .background(color = colorValuesItem)
                     .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp))
 
             ) {
                 Text(
-                    text = "10",
+                    text = mealTime.first,
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -477,12 +480,12 @@ fun MealItem(
                     .height(25.dp)
                     .width(35.dp)
                     .clip(RoundedCornerShape(7.dp))
-                    .background(color = AlmostWhite)
+                    .background(color = colorValuesItem)
                     .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp))
 
             ) {
                 Text(
-                    text = "30",
+                    text = mealTime.second,
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                 )
             }
