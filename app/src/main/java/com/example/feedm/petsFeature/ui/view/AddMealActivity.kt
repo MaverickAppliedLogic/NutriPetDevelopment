@@ -44,6 +44,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -59,7 +61,6 @@ import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.OrangeSemiTransparent
 import com.example.feedm.ui.view.theme.RedSemiTransparent
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -68,7 +69,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class AddMealActivity : ComponentActivity() {
 
-
+    //TODO agregar tooltip
     //TODO cambiar imagen flor
     private val addMealViewmodel: AddMealViewmodel by viewModels()
 
@@ -108,6 +109,9 @@ class AddMealActivity : ComponentActivity() {
                     animationSpec = spring(dampingRatio = 0.7f, stiffness = 150f),
                     label = "PaddingAnimation"
                 )
+
+                val focusManager = LocalFocusManager.current
+                val keyboardController = LocalSoftwareKeyboardController
 
                 Scaffold(
                     modifier = Modifier
@@ -210,8 +214,9 @@ class AddMealActivity : ComponentActivity() {
                     }
                     Card(
                         onClick = { timePickerIsVisible = true },
-                        elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
-                        colors = CardDefaults.cardColors(containerColor = OrangeSemiTransparent),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White ,
+                            contentColor = Color.Black),
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
@@ -220,9 +225,12 @@ class AddMealActivity : ComponentActivity() {
                                 start = timePickerHorizontalPaddingAnim,
                                 end = timePickerHorizontalPaddingAnim
                             )
-                    ) {
 
+
+                    ) {
                         if (timePickerIsVisible) {
+                            focusManager.clearFocus()
+                            keyboardController.current?.hide()
                             CustomTimePicker(
                                 hour = hour,
                                 minute = min,
@@ -367,7 +375,7 @@ fun Screen(
                 )
                 Card(
                     shape = RoundedCornerShape(5.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     modifier = Modifier
                         .padding(top = 30.dp)

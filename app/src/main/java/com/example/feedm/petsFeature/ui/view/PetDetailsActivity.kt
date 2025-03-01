@@ -5,12 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -81,9 +78,9 @@ import java.util.Locale
 @AndroidEntryPoint
 class PetDetailsActivity : ComponentActivity() {
 
+    //TODO agregar edicion de hora y racion de mealItem
     private val petDetailsViewModel: PetDetailsViewmodel by viewModels()
 
-    //TODO mejorar animación cambiar entre editar o no
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -318,7 +315,7 @@ fun MealsModule(
         .background(color = Color.White)
         .padding(start = 7.dp, top = 5.dp)
     Card(
-        elevation = CardDefaults.cardElevation(2.dp),
+        elevation = CardDefaults.cardElevation(5.dp),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier
             .fillMaxWidth()
@@ -413,16 +410,20 @@ fun MealItem(
     isEditable: Boolean,
     modifier: Modifier = Modifier
 ) {
-    //TODO mejorar animación
 
     Row {
         val colorValuesItem = if(isEditable) Color.White else AlmostWhite
         val mealTime = TimeFormatter().formatMillsToString(meal.mealTime)
+        val deleteIconAnim by animateFloatAsState(
+            targetValue = if (isEditable) 0.15f else 0.01f,
+            label = "Icon entering on screen",
+        )
+
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
-                .weight(0.85f)
+                .weight(1f)
                 .padding(end = 15.dp)
         ) {
             Text(
@@ -494,24 +495,20 @@ fun MealItem(
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
-        AnimatedVisibility(
-            visible = isEditable,
-            enter = fadeIn(),
-            exit = fadeOut(animationSpec = tween(durationMillis = 250))
-        ) {
+
             IconButton(
                 onClick = { onDeleteMeal(meal) },
                 modifier = Modifier
-                    .weight(0.15f)
+                    .weight(deleteIconAnim)
                     .size(35.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete",
-                    modifier = Modifier.padding(top = 10.dp)
+                    modifier = Modifier.padding(top = 10.dp, end = 10.dp)
                 )
             }
-        }
+
 
     }
 
@@ -527,7 +524,7 @@ fun HealthModule(
         .background(color = Color.White)
         .padding(start = 7.dp, top = 10.dp, bottom = 10.dp)
     Card(
-        elevation = CardDefaults.cardElevation(2.dp),
+        elevation = CardDefaults.cardElevation(5.dp),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier
             .fillMaxWidth()
@@ -611,7 +608,7 @@ fun RecordModule(
         .background(color = Color.White)
         .padding(start = 7.dp, top = 10.dp, bottom = 10.dp)
     Card(
-        elevation = CardDefaults.cardElevation(2.dp),
+        elevation = CardDefaults.cardElevation(5.dp),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier
             .fillMaxWidth()

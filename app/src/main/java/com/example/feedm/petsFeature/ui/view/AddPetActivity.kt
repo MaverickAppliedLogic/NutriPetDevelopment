@@ -266,7 +266,7 @@ fun FormScreen(
                 onTextChange = { onNameChange(it) })
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 val ageOptions = stringArrayResource(R.array.ap_arraySelectAge).toList()
@@ -312,7 +312,7 @@ fun FormScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 val texts = stringArrayResource(id = R.array.fa_arraySpinnerSexo)
@@ -346,7 +346,7 @@ fun FormScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 CustomSlider(
@@ -362,7 +362,7 @@ fun FormScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 CustomDropDownMenu(
@@ -381,7 +381,7 @@ fun FormScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 val texts = stringArrayResource(id = R.array.fa_arraySpinnerEsterilizado)
@@ -400,7 +400,7 @@ fun FormScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier.padding(vertical = 10.dp)
             ) {
