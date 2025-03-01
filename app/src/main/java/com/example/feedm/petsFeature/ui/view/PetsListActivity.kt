@@ -266,7 +266,7 @@ fun PetItem(
             disabledContainerColor = Color.White
         ),
         shape = RoundedCornerShape(5.dp),
-        elevation = CardDefaults.cardElevation(2.dp),
+        elevation = CardDefaults.cardElevation(5.dp),
         onClick = { onItemClicked(petModel) },
         modifier = modifier
             .fillMaxWidth()

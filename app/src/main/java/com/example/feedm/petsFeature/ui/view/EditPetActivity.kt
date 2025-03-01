@@ -248,7 +248,7 @@ fun EditScreen(
                 animal = pet.animal)
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.25.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 val ageOptions = stringArrayResource(R.array.ap_arraySelectAge).toList()
@@ -291,7 +291,7 @@ fun EditScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
 
@@ -324,7 +324,7 @@ fun EditScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 CustomSlider(
@@ -340,7 +340,7 @@ fun EditScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 CustomDropDownMenu(
@@ -359,7 +359,7 @@ fun EditScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                elevation = CardDefaults.cardElevation(1.25.dp),
+                elevation = CardDefaults.cardElevation(3.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 val texts = stringArrayResource(id = R.array.fa_arraySpinnerEsterilizado)
