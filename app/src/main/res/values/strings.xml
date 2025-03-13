@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     //AddPetActivity Strings
     <string name="app_name">TailyCare</string>
     <string name="fa_hintEtPetName">Name*</string>
@@ -34,7 +33,7 @@
         <item>Si</item>
         <item>No</item>
     </string-array>
-    <string name="fa_txtSpinnerActividadFisica" >Nivel de actividad física</string>
+    <string name="fa_txtSpinnerActividadFisica">Nivel de actividad física</string>
     <string-array name="fa_arraySpinnerActividadFisica">
         <item>Alta</item>
         <item>Media</item>
@@ -84,6 +83,7 @@
     <string name="apa_selectedOptionDropDownMenu">%1$s años</string>
     <string name="epa_notSelectedAgeOption">Seleccionar edad</string>
     <string name="apa_notSelectedAgeOption">Seleccionar edad</string>
+    <string name="title_activity_main_pet">MainPetActivity</string>
 
 
 </resources>

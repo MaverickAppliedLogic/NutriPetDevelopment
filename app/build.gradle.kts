@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("org.jetbrains.kotlin.android").version("2.0.21")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -90,6 +90,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     // Annotation processors
     annotationProcessor(libs.compiler)
