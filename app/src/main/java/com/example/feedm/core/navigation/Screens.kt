@@ -12,10 +12,10 @@ object AddPetScreen
 object AddMealScreen
 
 @Serializable
-object AddFoodScreen
+data class AddFoodScreen(val origin: String? = null)
 
 @Serializable
-object FoodListScreen
+data class FoodListScreen(val origin: String)
 
 @Serializable
 object EditPetScreen
