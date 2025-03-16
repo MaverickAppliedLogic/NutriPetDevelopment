@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FoodListScreen(navToAddFood: () -> Unit,
-                   navToBackStack: (String) -> Unit) {
+                   navToBackStack: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -26,7 +26,7 @@ fun FoodListScreen(navToAddFood: () -> Unit,
         )
         Spacer(modifier = Modifier.weight(1f, true))
         Button(
-            onClick = {navToBackStack("FromAddFood")},
+            onClick = {navToBackStack()},
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = "Go Back")

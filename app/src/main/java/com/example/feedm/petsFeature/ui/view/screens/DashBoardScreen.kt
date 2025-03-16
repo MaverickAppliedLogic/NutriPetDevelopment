@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DashBoardScreen(navTo: (String) -> Unit) {
+fun DashBoardScreen(navTo: (String,Int?) -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -25,24 +25,31 @@ fun DashBoardScreen(navTo: (String) -> Unit) {
         )
         Spacer(modifier = Modifier.weight(1f, true))
         Button(
-            onClick = { navTo("AddMealScreen") },
+            onClick = { navTo("AddMealScreen",0) },
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = "Add Meal")
         }
         Spacer(modifier = Modifier.weight(1f, true))
         Button(
-            onClick = { navTo("AddFoodScreen") },
+            onClick = { navTo("AddFoodScreen",null) },
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = "Add food")
         }
         Spacer(modifier = Modifier.weight(1f, true))
         Button(
-            onClick = { navTo("AddPetScreen") },
+            onClick = { navTo("AddPetScreen",null) },
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = "Add Pet")
+        }
+        Spacer(modifier = Modifier.weight(1f, true))
+        Button(
+            onClick = { navTo("AddPetScreen",null) },
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = "Edit Pet")
         }
     }
 }

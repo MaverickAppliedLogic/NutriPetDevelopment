@@ -9,13 +9,13 @@ object DashBoardScreen
 object AddPetScreen
 
 @Serializable
-object AddMealScreen
+data class AddMealScreen(val petId: Int)
 
 @Serializable
 data class AddFoodScreen(val origin: String? = null)
 
 @Serializable
-data class FoodListScreen(val origin: String)
+data class FoodListScreen(val origin: String, val petId: Int? = null)
 
 @Serializable
-object EditPetScreen
+data class EditPetScreen(val petId: Int)

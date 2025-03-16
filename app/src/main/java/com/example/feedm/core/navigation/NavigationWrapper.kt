@@ -12,17 +12,17 @@ import com.example.feedm.petsFeature.ui.view.screens.AddPetScreen
 import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
 
-//TODO implementar los valores a compartir entre pantallas para la extraccion de datos
 @Composable
 fun NavigationWrapper() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = DashBoardScreen) {
         composable<DashBoardScreen> {
-            DashBoardScreen {
-                when (it) {
+            DashBoardScreen { destination, petId ->
+                when (destination) {
                     "AddPetScreen" -> navController.navigate(AddPetScreen)
-                    "AddMealScreen" -> navController.navigate(AddMealScreen)
+                    "AddMealScreen" -> navController.navigate(AddMealScreen(petId!!))
                     "AddFoodScreen" -> navController.navigate(AddFoodScreen())
+                    "EditPetScreen" -> navController.navigate(EditPetScreen(petId!!))
                 }
             }
         }
@@ -30,8 +30,9 @@ fun NavigationWrapper() {
             AddPetScreen { navController.popBackStack() }
         }
         composable<AddMealScreen> {
+            val petId = it.toRoute<AddMealScreen>().petId
             AddMealScreen(
-                navToFoodList = { navController.navigate(FoodListScreen("FromAddMeal")) },
+                navToFoodList = { navController.navigate(FoodListScreen("FromAddMeal", petId)) },
                 navToBackStack = { navController.popBackStack() })
         }
         composable<AddFoodScreen> {
@@ -62,12 +63,13 @@ fun NavigationWrapper() {
         }
         composable<FoodListScreen> {
             val foodListOrigin = it.toRoute<FoodListScreen>().origin
+            val petId = it.toRoute<FoodListScreen>().petId
             val getBackDestination = {
                 when (foodListOrigin) {
                     "FromAddFood" -> navController.navigate(DashBoardScreen) {
                         popUpTo<DashBoardScreen> { inclusive = true }
                     }
-                    "FromAddMeal" -> navController.navigate(AddMealScreen) {
+                    "FromAddMeal" -> navController.navigate(AddMealScreen(petId!!)) {
                         popUpTo<AddMealScreen> { inclusive = true }
                     }
                     else -> {}
