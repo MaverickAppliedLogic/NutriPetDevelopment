@@ -95,6 +95,7 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Annotation processors
     annotationProcessor(libs.compiler)

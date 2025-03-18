@@ -21,9 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
-import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.OrangeSemiTransparent
-import com.example.feedm.ui.view.theme.RedSemiTransparent
+import com.example.feedm.core.ui.theme.PrimaryDark
+import com.example.feedm.core.ui.theme.PrimaryLight
+import com.example.feedm.core.ui.theme.PrimaryLightest
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,15 +63,15 @@ fun CustomSlider(
             valueRange = valueRange,
             thumb = { Icon(painter = painterResource(R.drawable.img_dog_illustration),
                 contentDescription = "",
-                tint = Orange,
+                tint = PrimaryLightest,
                 modifier = Modifier.size(ButtonDefaults.IconSize))},
             steps = steps,
             colors = SliderDefaults.colors(
-                thumbColor = Orange,
+                thumbColor = PrimaryLightest,
                 inactiveTickColor = Color.Transparent,
                 activeTickColor = Color.Transparent,
-                activeTrackColor = if (errorCommitting) Color.Red else Orange,
-                inactiveTrackColor = if (errorCommitting) RedSemiTransparent else OrangeSemiTransparent
+                activeTrackColor = if (errorCommitting) Color.Red else PrimaryLightest,
+                inactiveTrackColor = if (errorCommitting) PrimaryDark else PrimaryLight
             ),
             modifier = Modifier.padding(
                 top = 0.dp,

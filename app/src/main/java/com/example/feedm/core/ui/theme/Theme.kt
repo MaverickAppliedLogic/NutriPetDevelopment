@@ -8,29 +8,22 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.example.feedm.ui.view.theme.AlmostWhite
-import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.OrangeSoft
-import com.example.feedm.ui.view.theme.Pink80
-import com.example.feedm.ui.view.theme.Purple80
-import com.example.feedm.ui.view.theme.PurpleGrey80
 import com.example.feedm.ui.view.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Neutral,
+    secondary = NeutralLight,
+    tertiary = NeutralDark
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Orange,
-    onPrimary = Color.White,
-    background = AlmostWhite,
-    onBackground = Color.Black,
-    tertiary = OrangeSoft,
-
+    primary = Primary,
+    onPrimary = SecondaryDarkest,
+    background = Neutral,
+    onBackground = NeutralLight,
+    secondary = Secondary,
+    onSecondary = SecondaryDarkest
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
