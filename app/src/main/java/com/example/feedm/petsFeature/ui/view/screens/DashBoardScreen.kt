@@ -56,6 +56,25 @@ fun DashBoardScreen(
     val scrollState = rememberScrollState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {
+
+        }) { paddingValues ->
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(NeutralLight, Neutral),
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY,
+                    tileMode = TileMode.Clamp
+                )
+            ))
+        MainContent(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+        )
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
@@ -63,7 +82,7 @@ fun DashBoardScreen(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(Color.Transparent, Primary),
-                            startY = 0f,
+                            startY = 30f,
                             endY = Float.POSITIVE_INFINITY,
                             tileMode = TileMode.Clamp
                         )
@@ -73,51 +92,57 @@ fun DashBoardScreen(
                     onClick = {},
                     shape = CircleShape, containerColor = Primary,
                     contentColor = SecondaryDarkest,
-                    modifier = Modifier.padding(bottom = 20.dp).size(65.dp)
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                        .size(65.dp)
                 ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "")
                 }
             }
-        }) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .background(color = Neutral)
-        )
-        MainContent(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-        )
+        }
     }
 }
 
 @Composable
 fun MainContent(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.padding(horizontal = 15.dp),
+        modifier = modifier.background(Neutral) ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Row(Modifier
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(NeutralLight, Neutral),
-                    startY = 0f,
-                    endY = Float.POSITIVE_INFINITY,
-                    tileMode = TileMode.Clamp
-                ))
-            .height(300.dp)) {
-
+            .height(250.dp)
+            .fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(NeutralLight)
+            )
         }
-        Column(Modifier.fillMaxSize()) {
-        MealsModule()
-        Spacer(Modifier.height(50.dp))
-        HealthModule()
-        Spacer(Modifier.height(50.dp))
-        DataModule()
+        Row(Modifier
+            .height(100.dp)
+            .fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(NeutralLight, Neutral),
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY ,
+                            tileMode = TileMode.Clamp
+                        )
+                    )
+            )
+        }
+        Column(Modifier
+            .fillMaxSize()
+            .padding(horizontal = 15.dp)) {
+            MealsModule()
+            Spacer(Modifier.height(50.dp))
+            HealthModule()
+            Spacer(Modifier.height(50.dp))
+            DataModule()
         }
 
     }
