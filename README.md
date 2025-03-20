@@ -1,7 +1,8 @@
-||PROJECT ON GOING||
-# TailyCare
 
-TailyCare is a mobile application designed to assist pet owners in taking care of their pets' health and well-being. The app provides a comprehensive set of tools and features tailored to monitor, track, and manage various aspects of pet care.
+# TailyCare
+> !! ***```(WIP) PROJECT ON GOING```***
+
+TailyCare is a mobile application designed to assist pet owners in taking care of their pets' health and well-being. The app provides a comprehensive set of tools and features tailored to manage the nutritional care of their pets.
 
 ## Features
 
