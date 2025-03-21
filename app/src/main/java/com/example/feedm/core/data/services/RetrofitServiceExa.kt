@@ -10,9 +10,8 @@ import retrofit2.http.POST
 
 
 interface RetrofitServiceExa {
-
-    @Headers("x-api-key: 615b4061-8d65-4fe9-a5e6-23e6fa36f0f7",
-             "content-type: application/json")
+/*Currently not working because of redesign*/
+    @Headers("")
     @POST("search")
     suspend fun listProperFoods(@Body request : SearchRequest): ExaRemoteResult
 }
