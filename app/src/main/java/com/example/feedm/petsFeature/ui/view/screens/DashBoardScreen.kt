@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,28 +27,33 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.feedm.R
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.Secondary
 import com.example.feedm.core.ui.theme.SecondaryDarkest
+import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.view.components.ModuleCard
+import com.example.feedm.petsFeature.ui.view.components.ModuleItem
 import com.example.feedm.petsFeature.ui.view.components.ModuleItemMeal
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler
 
 @Composable
 fun DashBoardScreen(
@@ -58,46 +65,53 @@ fun DashBoardScreen(
         bottomBar = {
 
         }) { paddingValues ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(NeutralLight, Neutral),
-                    startY = 0f,
-                    endY = Float.POSITIVE_INFINITY,
-                    tileMode = TileMode.Clamp
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(NeutralLight, Neutral),
+                        startY = 0f,
+                        endY = Float.POSITIVE_INFINITY,
+                        tileMode = TileMode.Clamp
+                    )
                 )
-            ))
+        )
         MainContent(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Primary),
-                            startY = 30f,
-                            endY = Float.POSITIVE_INFINITY,
-                            tileMode = TileMode.Clamp
-                        )
+        CustomBottomBar()
+    }
+}
+
+@Composable
+fun CustomBottomBar() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.Transparent, Primary),
+                        startY = 30f,
+                        endY = Float.POSITIVE_INFINITY,
+                        tileMode = TileMode.Clamp
                     )
+                )
+        ) {
+            FloatingActionButton(
+                onClick = {},
+                shape = CircleShape, containerColor = Primary,
+                contentColor = SecondaryDarkest,
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .size(65.dp)
             ) {
-                FloatingActionButton(
-                    onClick = {},
-                    shape = CircleShape, containerColor = Primary,
-                    contentColor = SecondaryDarkest,
-                    modifier = Modifier
-                        .padding(bottom = 20.dp)
-                        .size(65.dp)
-                ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "")
-                }
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }
     }
@@ -106,22 +120,71 @@ fun DashBoardScreen(
 @Composable
 fun MainContent(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.background(Neutral) ,
+        modifier = modifier.background(Neutral),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Row(Modifier
-            .height(250.dp)
-            .fillMaxWidth()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(NeutralLight)
-            )
-        }
-        Row(Modifier
-            .height(100.dp)
-            .fillMaxWidth()) {
+        PetList(
+            listOf(
+                PetModel(
+                    petId = 1,
+                    animal = "Dog",
+                    petName = "Buddy",
+                    age = 3.5f,
+                    petWeight = 30.5f,
+                    genre = "Male",
+                    sterilized = true,
+                    activity = "High",
+                    goal = "Maintain weight",
+                    allergies = "None"
+                ), PetModel(
+                    petId = 2,
+                    animal = "cat",
+                    petName = "Whiskers",
+                    age = 5.0f,
+                    petWeight = 4.2f,
+                    genre = "Female",
+                    sterilized = true,
+                    activity = "Low",
+                    goal = "Lose weight",
+                    allergies = "Fish"
+                ),
+                PetModel(
+                    petId = 3,
+                    animal = "dog",
+                    petName = "Kiwi",
+                    age = 1.0f,
+                    petWeight = 0.5f,
+                    genre = null,
+                    sterilized = false,
+                    activity = "Medium",
+                    goal = "Gain weight",
+                    allergies = "Nuts"
+                ),
+                PetModel(
+                    petId = 4,
+                    animal = "dog",
+                    petName = "Max",
+                    age = 7.0f,
+                    petWeight = 38.0f,
+                    genre = "Male",
+                    sterilized = true,
+                    activity = "Low",
+                    goal = "Maintain weight",
+                    allergies = null
+                )
+            ),
+            modifier =
+            Modifier
+                .background(NeutralLight)
+                .height(250.dp)
+                .fillMaxWidth()
+        )
+        Row(
+            Modifier
+                .height(50.dp)
+                .fillMaxWidth()
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -129,33 +192,64 @@ fun MainContent(modifier: Modifier = Modifier) {
                         brush = Brush.verticalGradient(
                             colors = listOf(NeutralLight, Neutral),
                             startY = 0f,
-                            endY = Float.POSITIVE_INFINITY ,
+                            endY = Float.POSITIVE_INFINITY,
                             tileMode = TileMode.Clamp
                         )
                     )
             )
         }
-        Column(Modifier
-            .fillMaxSize()
-            .padding(horizontal = 15.dp)) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 15.dp)
+        ) {
             MealsModule()
             Spacer(Modifier.height(50.dp))
             HealthModule()
             Spacer(Modifier.height(50.dp))
             DataModule()
+            Spacer(Modifier.height(100.dp))
         }
 
     }
 }
 
 @Composable
+fun PetList(petList: List<PetModel>,
+            modifier: Modifier = Modifier,
+           ) {
+    var mutablePetList by remember { mutableStateOf(petList) }
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(listState) {
+       val loopListHandler = LoopListHandler<PetModel>()
+        loopListHandler.loopListHandler(petList.toMutableList(), 1){
+            mutablePetList = it
+        }
+    }
+    LazyRow(modifier, state = listState,
+        contentPadding = PaddingValues(vertical = 15.dp)
+    ) {
+        items(petList.size) { petIndex ->
+            petList[petIndex].let {
+                if(it.animal.equals("dog")){
+                    Icon(painter = painterResource(R.drawable.img_dog_illustration),
+                        contentDescription = "", modifier = Modifier.size(100.dp))
+                }
+                else{
+                    Icon(painter = painterResource(R.drawable.icono_gato_sinfondo),
+                        contentDescription = "", modifier = Modifier.size(100.dp))
+            }
+            }
+    }
+    }
+}
+
+
+@Composable
 fun MealsModule() {
     var editable by remember { mutableStateOf(false) }
     ModuleCard(
-        modifier = Modifier
-            .shadow(5.dp)
-            .clip(RoundedCornerShape(5.dp))
-            .background(NeutralLight),
         headerTitle = "Comidas Diarias",
         headerIcon = {
             Icon(
@@ -185,19 +279,57 @@ fun MealsModule() {
 
 @Composable
 fun HealthModule() {
-    ModuleCard(
-        modifier = Modifier.height(300.dp),
-        headerTitle = "Salud",
-    ) {}
+    ModuleCard(headerTitle = "Salud") {
+        ModuleItem(
+            Modifier
+                .height(50.dp)
+                .padding(end = 5.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp), color = Secondary
+        )
+        ModuleItem(
+            Modifier
+                .height(50.dp)
+                .padding(end = 5.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp), color = Secondary
+        )
+        ModuleItem(
+            Modifier
+                .height(50.dp)
+                .padding(end = 5.dp)
+        )
+    }
+
 }
 
 @Composable
 fun DataModule() {
-    ModuleCard(
-        modifier = Modifier.height(300.dp),
-
-        headerTitle = "Datos",
-    ) {}
+    ModuleCard(headerTitle = "Datos") {
+        ModuleItem(
+            Modifier
+                .height(50.dp)
+                .padding(end = 5.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp), color = Secondary
+        )
+        ModuleItem(
+            Modifier
+                .height(50.dp)
+                .padding(end = 5.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp), color = Secondary
+        )
+        ModuleItem(
+            Modifier
+                .height(50.dp)
+                .padding(end = 5.dp)
+        )
+    }
 }
 
 @Preview(showBackground = true)
