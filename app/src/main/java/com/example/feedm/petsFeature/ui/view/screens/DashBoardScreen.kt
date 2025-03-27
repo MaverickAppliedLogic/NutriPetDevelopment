@@ -27,11 +27,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +51,6 @@ import com.example.feedm.petsFeature.ui.view.components.ModuleCard
 import com.example.feedm.petsFeature.ui.view.components.ModuleItem
 import com.example.feedm.petsFeature.ui.view.components.ModuleItemMeal
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
-import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler
 
 @Composable
 fun DashBoardScreen(
@@ -124,61 +121,62 @@ fun MainContent(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        PetList(
-            listOf(
-                PetModel(
-                    petId = 1,
-                    animal = "Dog",
-                    petName = "Buddy",
-                    age = 3.5f,
-                    petWeight = 30.5f,
-                    genre = "Male",
-                    sterilized = true,
-                    activity = "High",
-                    goal = "Maintain weight",
-                    allergies = "None"
-                ), PetModel(
-                    petId = 2,
-                    animal = "cat",
-                    petName = "Whiskers",
-                    age = 5.0f,
-                    petWeight = 4.2f,
-                    genre = "Female",
-                    sterilized = true,
-                    activity = "Low",
-                    goal = "Lose weight",
-                    allergies = "Fish"
-                ),
-                PetModel(
-                    petId = 3,
-                    animal = "dog",
-                    petName = "Kiwi",
-                    age = 1.0f,
-                    petWeight = 0.5f,
-                    genre = null,
-                    sterilized = false,
-                    activity = "Medium",
-                    goal = "Gain weight",
-                    allergies = "Nuts"
-                ),
-                PetModel(
-                    petId = 4,
-                    animal = "dog",
-                    petName = "Max",
-                    age = 7.0f,
-                    petWeight = 38.0f,
-                    genre = "Male",
-                    sterilized = true,
-                    activity = "Low",
-                    goal = "Maintain weight",
-                    allergies = null
-                )
+        val pets =  listOf(
+            PetModel(
+                petId = 1,
+                animal = "Dog",
+                petName = "Buddy",
+                age = 3.5f,
+                petWeight = 30.5f,
+                genre = "Male",
+                sterilized = true,
+                activity = "High",
+                goal = "Maintain weight",
+                allergies = "None"
+            ), PetModel(
+                petId = 2,
+                animal = "cat",
+                petName = "Whiskers",
+                age = 5.0f,
+                petWeight = 4.2f,
+                genre = "Female",
+                sterilized = true,
+                activity = "Low",
+                goal = "Lose weight",
+                allergies = "Fish"
             ),
+            PetModel(
+                petId = 3,
+                animal = "dog",
+                petName = "Kiwi",
+                age = 1.0f,
+                petWeight = 0.5f,
+                genre = null,
+                sterilized = false,
+                activity = "Medium",
+                goal = "Gain weight",
+                allergies = "Nuts"
+            ),
+            PetModel(
+                petId = 4,
+                animal = "dog",
+                petName = "Max",
+                age = 7.0f,
+                petWeight = 38.0f,
+                genre = "Male",
+                sterilized = true,
+                activity = "Low",
+                goal = "Maintain weight",
+                allergies = null
+            )
+        )
+        PetList(
+            pets,
             modifier =
             Modifier
                 .background(NeutralLight)
-                .height(250.dp)
                 .fillMaxWidth()
+                .weight(1f,true)
         )
         Row(
             Modifier
@@ -215,33 +213,31 @@ fun MainContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PetList(petList: List<PetModel>,
-            modifier: Modifier = Modifier,
-           ) {
-    var mutablePetList by remember { mutableStateOf(petList) }
+fun PetList(
+    petList: List<PetModel>,
+    modifier: Modifier = Modifier,
+) {
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(listState) {
-       val loopListHandler = LoopListHandler<PetModel>()
-        loopListHandler.loopListHandler(petList.toMutableList(), 1){
-            mutablePetList = it
-        }
-    }
-    LazyRow(modifier, state = listState,
+    //TODO scrollable list with pets
+    LazyRow(
+        modifier, state = listState,
         contentPadding = PaddingValues(vertical = 15.dp)
     ) {
         items(petList.size) { petIndex ->
             petList[petIndex].let {
-                if(it.animal.equals("dog")){
-                    Icon(painter = painterResource(R.drawable.img_dog_illustration),
-                        contentDescription = "", modifier = Modifier.size(100.dp))
+                if (it.animal.equals("dog")) {
+                    Icon(
+                        painter = painterResource(R.drawable.img_dog_illustration),
+                        contentDescription = "", modifier = Modifier.size(150.dp)
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.icono_gato_sinfondo),
+                        contentDescription = "", modifier = Modifier.size(150.dp)
+                    )
                 }
-                else{
-                    Icon(painter = painterResource(R.drawable.icono_gato_sinfondo),
-                        contentDescription = "", modifier = Modifier.size(100.dp))
             }
-            }
-    }
+        }
     }
 }
 
