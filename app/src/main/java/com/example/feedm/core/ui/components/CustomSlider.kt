@@ -8,7 +8,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,9 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedm.R
-import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.OrangeSemiTransparent
-import com.example.feedm.ui.view.theme.RedSemiTransparent
+import com.example.feedm.core.ui.theme.Primary
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,16 +60,9 @@ fun CustomSlider(
             valueRange = valueRange,
             thumb = { Icon(painter = painterResource(R.drawable.img_dog_illustration),
                 contentDescription = "",
-                tint = Orange,
+                tint = Primary,
                 modifier = Modifier.size(ButtonDefaults.IconSize))},
             steps = steps,
-            colors = SliderDefaults.colors(
-                thumbColor = Orange,
-                inactiveTickColor = Color.Transparent,
-                activeTickColor = Color.Transparent,
-                activeTrackColor = if (errorCommitting) Color.Red else Orange,
-                inactiveTrackColor = if (errorCommitting) RedSemiTransparent else OrangeSemiTransparent
-            ),
             modifier = Modifier.padding(
                 top = 0.dp,
                 bottom = 10.dp, start = 10.dp, end = 10.dp

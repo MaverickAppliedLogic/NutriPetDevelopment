@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.OrangeSemiTransparent
+import com.example.feedm.core.ui.theme.Primary
+import com.example.feedm.core.ui.theme.PrimaryLight
 
 @Composable
 fun CustomRadioGroup(
@@ -63,9 +63,9 @@ fun CustomRadioGroup(
                         enabled = enabled,
                         onClick = { onOptionSelected(option) },
                         colors = RadioButtonColors(
-                            selectedColor = Orange,
+                            selectedColor = Primary,
                             unselectedColor = Color.Black,
-                            disabledSelectedColor = OrangeSemiTransparent,
+                            disabledSelectedColor = PrimaryLight,
                             disabledUnselectedColor = Color.Gray
                         ),
                     )
