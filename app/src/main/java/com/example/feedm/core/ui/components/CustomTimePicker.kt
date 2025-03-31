@@ -19,10 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.feedm.ui.view.theme.AlmostWhite
-import com.example.feedm.ui.view.theme.Orange
-import com.example.feedm.ui.view.theme.OrangeSemiTransparent
-import com.example.feedm.ui.view.theme.OrangeSoft
+import com.example.feedm.core.ui.theme.NeutralLight
+import com.example.feedm.core.ui.theme.Primary
+import com.example.feedm.core.ui.theme.PrimaryLight
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,16 +56,16 @@ fun CustomTimePicker(
             1 -> TimePicker(
                 state = timePickerState,
                 colors = TimePickerDefaults
-                    .colors(clockDialColor = OrangeSemiTransparent,
+                    .colors(clockDialColor = PrimaryLight,
                         clockDialSelectedContentColor = Color.White,
-                        selectorColor = Orange,
+                        selectorColor = Primary,
                         timeSelectorSelectedContentColor = Color.Black,
                         clockDialUnselectedContentColor = Color.Black,
-                        timeSelectorSelectedContainerColor = Orange,
-                        timeSelectorUnselectedContainerColor = OrangeSemiTransparent,
-                        periodSelectorSelectedContainerColor = Orange,
+                        timeSelectorSelectedContainerColor = Primary,
+                        timeSelectorUnselectedContainerColor = PrimaryLight,
+                        periodSelectorSelectedContainerColor = Primary,
                         periodSelectorSelectedContentColor = Color.Black,
-                        periodSelectorUnselectedContainerColor = AlmostWhite
+                        periodSelectorUnselectedContainerColor = NeutralLight
                         ),
                 layoutType = TimePickerLayoutType.Vertical,
             )
@@ -74,25 +73,25 @@ fun CustomTimePicker(
             2 -> TimeInput(
                 state = timePickerState,
                 colors = TimePickerDefaults
-                    .colors(clockDialColor = OrangeSoft,
+                    .colors(clockDialColor = PrimaryLight,
                         selectorColor = Color.Black,
-                        periodSelectorSelectedContainerColor = Orange,
-                        periodSelectorUnselectedContainerColor = AlmostWhite,
+                        periodSelectorSelectedContainerColor = PrimaryLight,
+                        periodSelectorUnselectedContainerColor = NeutralLight,
                         periodSelectorSelectedContentColor = Color.Black,
                         timeSelectorSelectedContentColor = Color.Black,
-                        timeSelectorSelectedContainerColor = Orange,
-                        timeSelectorUnselectedContainerColor = OrangeSemiTransparent,
+                        timeSelectorSelectedContainerColor = Primary,
+                        timeSelectorUnselectedContainerColor = PrimaryLight,
                     ),
             )
         }
         Row {
             Button(onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = Orange)) {
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                 Text("Cancel")
             }
             Spacer(Modifier.padding(10.dp))
             Button(onClick = {onConfirm(timePickerState.hour,timePickerState.minute)},
-                colors = ButtonDefaults.buttonColors(containerColor = Orange)) {
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                 Text("Confirm")
             }
         }
