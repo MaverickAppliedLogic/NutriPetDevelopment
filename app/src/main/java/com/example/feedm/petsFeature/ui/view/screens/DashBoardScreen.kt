@@ -51,12 +51,17 @@ import com.example.feedm.petsFeature.ui.view.components.ModuleCard
 import com.example.feedm.petsFeature.ui.view.components.ModuleItem
 import com.example.feedm.petsFeature.ui.view.components.ModuleItemMeal
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler
+import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler.Companion.RECOVER_DATA
 
 @Composable
 fun DashBoardScreen(
     viewmodel: PetDetailsViewmodel = hiltViewModel(),
     navTo: (String, Int?) -> Unit
 ) {
+    val loopListHandler = LoopListHandler<Int>()
+    loopListHandler.manageLoop(listOf(1,3,4).toMutableList(),RECOVER_DATA, onModifiedList = {})
+
     val scrollState = rememberScrollState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {
