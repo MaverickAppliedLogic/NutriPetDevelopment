@@ -71,7 +71,7 @@ fun AddPetScreen(navToBackStack: () -> Unit = {}) {
                 }
             }
         }
-    }, contentWindowInsets = WindowInsets.safeDrawing
+    }, contentWindowInsets = WindowInsets.safeDrawing){
         AddPetContent(modifier = Modifier.padding(it))
     }
 }
