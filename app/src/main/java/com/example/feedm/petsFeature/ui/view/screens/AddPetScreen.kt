@@ -48,6 +48,7 @@ import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import java.util.Locale
 
+
 @Preview
 @Composable
 fun AddPetScreen(navToBackStack: () -> Unit = {}) {
@@ -58,6 +59,7 @@ fun AddPetScreen(navToBackStack: () -> Unit = {}) {
                 Modifier
                     .fillMaxSize()
                     .background(Color.Transparent),
+
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -69,7 +71,7 @@ fun AddPetScreen(navToBackStack: () -> Unit = {}) {
                 }
             }
         }
-    }, contentWindowInsets = WindowInsets.safeDrawing) {
+    }, contentWindowInsets = WindowInsets.safeDrawing
         AddPetContent(modifier = Modifier.padding(it))
     }
 }
@@ -142,6 +144,7 @@ fun ProgressIndicator(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.weight(1f, true))
         }
+
     }
 }
 
