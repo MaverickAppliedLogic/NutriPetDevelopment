@@ -79,6 +79,7 @@ fun ProgressIndicator(
                     )
                 },
                 valueRange = 0f..0.7f,
+                modifier = Modifier.padding(horizontal = 10.dp)
             )
             Spacer(modifier = Modifier.weight(1f, true))
         }
