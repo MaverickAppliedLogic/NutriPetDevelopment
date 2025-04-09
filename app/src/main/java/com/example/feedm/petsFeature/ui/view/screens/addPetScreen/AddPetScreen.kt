@@ -26,7 +26,13 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,8 +48,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +61,7 @@ import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryDark
 import com.example.feedm.core.ui.theme.PrimaryLight
+import com.example.feedm.core.ui.theme.PrimaryLightest
 import com.example.feedm.core.ui.theme.SecondaryDarkest
 import com.example.feedm.petsFeature.ui.view.components.FormField
 import com.example.feedm.petsFeature.ui.view.components.FormFieldStates.VALID
@@ -130,11 +139,9 @@ fun Form(
             fieldState = statesList[0],
             Modifier.weight(1f, true)
         )
-        FormField(
-            label = "Edad",
-            state = statesList[1],
-            expanded = expansionList[1],
-            onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(1) },
+        AgeField(
+            fieldState = statesList[1],
+            expansionState = expansionList[1],
             modifier = Modifier.weight(1f, true)
         )
         FormField(
@@ -268,25 +275,110 @@ fun PetNameAndAnimalField(
                     label = { Text(text = stringResource(id = R.string.fa_hintEtPetName)) },
                     isError = false,
                     colors = TextFieldDefaults.colors(
-                        cursorColor = PrimaryDark,
-                        unfocusedContainerColor = PrimaryLight,
-                        focusedContainerColor = PrimaryLight,
+                        cursorColor = SecondaryDarkest,
+                        unfocusedContainerColor = PrimaryLightest,
+                        focusedContainerColor = PrimaryLightest,
                         errorContainerColor = Error,
                         unfocusedLabelColor = PrimaryDark,
-                        focusedLabelColor = PrimaryDark,
+                        focusedLabelColor = Primary,
                         errorLabelColor = Error,
                         unfocusedTextColor = PrimaryDark,
                         focusedTextColor = SecondaryDarkest,
                         errorTextColor = Error,
-                        focusedIndicatorColor = PrimaryDark,
+                        focusedIndicatorColor = Primary,
                         unfocusedIndicatorColor = PrimaryDark,
                         errorIndicatorColor = Error
                     ),
-                    modifier = Modifier.padding(bottom = 10.dp)
+                    modifier = Modifier.padding(bottom = 15.dp)
                 )
             }
             Spacer(modifier = Modifier.weight(0.1f, true))
         }
     }
 }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AgeField(
+    fieldState: Int,
+    expansionState: Boolean,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf("") }
+    val options = stringArrayResource(R.array.fa_arrayAgeSelected)
+
+    FormField(
+        label = "Edad",
+        state = fieldState,
+        expanded = expansionState,
+        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(1) },
+        modifier = modifier
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .padding(top = 15.dp),
+            onExpandedChange = {
+                expanded = !expanded
+            }
+        ) {
+                OutlinedTextField(
+                    value = selectedOption,
+                    onValueChange = { selectedOption = it },
+                    readOnly = true,
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = PrimaryLight,
+                        focusedContainerColor = PrimaryLight,
+                        unfocusedTextColor = SecondaryDarkest,
+                        focusedTextColor = SecondaryDarkest,
+                        unfocusedIndicatorColor = PrimaryLight,
+                        focusedIndicatorColor = PrimaryLight,
+                        focusedTrailingIconColor = SecondaryDarkest,
+                        unfocusedTrailingIconColor = SecondaryDarkest
+                    ),
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    modifier = Modifier
+                        .menuAnchor(type = MenuAnchorType.PrimaryNotEditable)
+                        .shadow(2.dp)
+
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    matchTextFieldWidth = true,
+                    containerColor = PrimaryLightest
+                ) {
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                selectedOption = option
+                                expanded = false
+                            },
+                            colors = MenuItemColors(
+                                textColor = SecondaryDarkest,
+                                disabledTextColor = SecondaryDarkest,
+                                leadingIconColor = Color.Transparent,
+                                trailingIconColor = Color.Transparent,
+                                disabledLeadingIconColor = Color.Transparent,
+                                disabledTrailingIconColor = Color.Transparent
+                            )
+                        )
+                    }
+                }
+
+        }
+        }
+    }
+}
+
+
 
