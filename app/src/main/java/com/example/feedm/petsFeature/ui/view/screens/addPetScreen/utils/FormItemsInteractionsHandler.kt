@@ -1,6 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils
 
-import com.example.feedm.petsFeature.ui.view.components.FormFieldStates.WAITING
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.WAITING
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

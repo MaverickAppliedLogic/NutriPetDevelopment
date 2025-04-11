@@ -24,9 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.NeutralLight
-import com.example.feedm.petsFeature.ui.view.components.FormField
-import com.example.feedm.petsFeature.ui.view.components.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.ActivityField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.AgeField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.GoalField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.PetNameAndAnimalField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.ProgressIndicator
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.SexField
@@ -121,11 +123,9 @@ fun Form(
             onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(3) },
             modifier = Modifier.weight(1f, true)
         )
-        FormField(
-            label = "Objetivo",
-            state = statesList[4],
-            expanded = expansionList[4],
-            onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(4) },
+        GoalField(
+            fieldState = statesList[4],
+            expansionState = expansionList[4],
             modifier = Modifier.weight(1f, true)
         )
         SterilizationField(
@@ -133,11 +133,9 @@ fun Form(
             expansionState = expansionList[5],
             modifier = Modifier.weight(1f, true)
         )
-        FormField(
-            label = "Actividad Física",
-            state = statesList[6],
-            expanded = expansionList[6],
-            onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(6) },
+        ActivityField(
+            fieldState = statesList[6],
+            expansionState = expansionList[6],
             modifier = Modifier.weight(1f, true)
         )
     }
