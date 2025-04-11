@@ -1,5 +1,10 @@
 package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +32,6 @@ import com.example.feedm.R
 import com.example.feedm.core.ui.theme.PrimaryLight
 import com.example.feedm.core.ui.theme.PrimaryLightest
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import com.example.feedm.petsFeature.ui.view.components.FormField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,14 +52,19 @@ fun AgeField(
         onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(1) },
         modifier = modifier
     ) {
+        AnimatedVisibility(
+            visible = expansionState,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically(),
+            modifier = Modifier.padding(top = 15.dp)
+        ){
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()) {
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .padding(top = 15.dp),
+                    .fillMaxWidth(0.6f),
                 onExpandedChange = {
                     expanded = !expanded
                 }
@@ -108,6 +117,7 @@ fun AgeField(
                 }
 
             }
+        }
         }
     }
 }

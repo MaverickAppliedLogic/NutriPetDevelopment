@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.components
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Error
 import com.example.feedm.core.ui.theme.Good
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import com.example.feedm.petsFeature.ui.view.components.FormFieldStates.INVALID
-import com.example.feedm.petsFeature.ui.view.components.FormFieldStates.VALID
-import com.example.feedm.petsFeature.ui.view.components.FormFieldStates.WAITING
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.INVALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.WAITING
 
 object FormFieldStates{
     const val WAITING = 0

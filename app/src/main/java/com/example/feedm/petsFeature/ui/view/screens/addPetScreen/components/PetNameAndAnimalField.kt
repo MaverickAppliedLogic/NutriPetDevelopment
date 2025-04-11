@@ -43,7 +43,6 @@ import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryDark
 import com.example.feedm.core.ui.theme.PrimaryLightest
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import com.example.feedm.petsFeature.ui.view.components.FormField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @Composable
@@ -59,6 +58,24 @@ fun PetNameAndAnimalField(
         onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(0) },
         modifier = modifier
     ) {
+        /*** Executes a rotation animation for the `Icons.Default.Refresh`
+         * whenever the card is clicked.
+         * ```
+         * When the user clicks the PetCard, the animation begins by updating the 'animal' value.
+         * The 'animalChanged' flag is then set to true, disabling the card to prevent further
+         * clicks and ensuring the animation isn´t paused in the middle of the rotation.
+         * ```
+         ***/
+
+        /*** Executes a rotation animation for the `Icons.Default.Refresh`
+         * whenever the card is clicked.
+         * ```
+         * When the user clicks the PetCard, the animation begins by updating the 'animal' value.
+         * The 'animalChanged' flag is then set to true, disabling the card to prevent further
+         * clicks and ensuring the animation isn´t paused in the middle of the rotation.
+         * ```
+         ***/
+
         /*** Executes a rotation animation for the `Icons.Default.Refresh`
          * whenever the card is clicked.
          * ```
