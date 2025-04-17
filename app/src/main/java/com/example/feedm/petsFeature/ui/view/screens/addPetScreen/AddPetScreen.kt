@@ -26,13 +26,13 @@ import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.ActivityField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.AgeField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.VALID
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.GoalField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.PetNameAndAnimalField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.ProgressIndicator
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.SexField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.SterilizationField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.WeightField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler
 
 
@@ -116,11 +116,9 @@ fun Form(
             expansionState = expansionList[2],
             modifier = Modifier.weight(1f, true)
         )
-        FormField(
-            label = "Peso",
-            state = statesList[3],
-            expanded = expansionList[3],
-            onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(3) },
+        WeightField(
+            fieldState = statesList[3],
+            expansionState = expansionList[3],
             modifier = Modifier.weight(1f, true)
         )
         GoalField(
@@ -139,8 +137,8 @@ fun Form(
             modifier = Modifier.weight(1f, true)
         )
     }
-
 }
+
 
 
 
