@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainPetActivity : ComponentActivity() {
-    val AddPetViewModel: AddPetViewmodel by viewModels()
+   val AddPetViewModel: AddPetViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

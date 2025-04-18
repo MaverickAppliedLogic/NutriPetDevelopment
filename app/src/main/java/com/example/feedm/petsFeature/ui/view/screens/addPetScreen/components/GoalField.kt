@@ -14,10 +14,6 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
@@ -28,13 +24,14 @@ import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @Composable
 fun GoalField(
+    goal: String,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
-    onTrailingIconClicked: () -> Unit = {}
+    onTrailingIconClicked: () -> Unit = {},
+    onGoalChanged: (String) -> Unit = {}
 ) {
     val options = listOf("Perder peso", "Mantener ", "Ganar peso")
-    var selectedOption by remember { mutableStateOf(options[0]) }
 
     FormField(
         label = "Objetivo",
@@ -56,8 +53,8 @@ fun GoalField(
                 options.forEachIndexed { index, option ->
                     SegmentedButton(
                         shape = SegmentedButtonDefaults.itemShape(index, options.size),
-                        selected = (option == selectedOption),
-                        onClick = { selectedOption = option },
+                        selected = (option == goal),
+                        onClick = { onGoalChanged(option) },
                         colors = SegmentedButtonDefaults.colors(
                             activeBorderColor = SecondaryDarkest,
                             activeContainerColor = NeutralDark,

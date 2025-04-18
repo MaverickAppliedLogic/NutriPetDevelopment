@@ -36,15 +36,21 @@ import com.example.feedm.core.ui.theme.SecondaryDarkest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgeField(
+    age: Float,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
-    onTrailingIconClicked: () -> Unit = {}
+    onTrailingIconClicked: () -> Unit = {},
+    onAgeChanged: (Float) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     val options = stringArrayResource(R.array.fa_arrayAgeSelected)
-    var selectedOption by remember { mutableStateOf(options[0]) }
-
+    val preparedSelection = {
+        if (age == 0f) "Selecciona"
+        else if(age == 0.5f){options[0]}
+        else if(age in 1f..7f){options[1]}
+        else options[2]
+    }
     FormField(
         label = "Edad",
         state = fieldState,
@@ -70,8 +76,8 @@ fun AgeField(
                 }
             ) {
                 OutlinedTextField(
-                    value = selectedOption,
-                    onValueChange = { selectedOption = it },
+                    value = preparedSelection(),
+                    onValueChange = {   },
                     readOnly = true,
                     colors = TextFieldDefaults.colors(
                         unfocusedContainerColor = PrimaryLight,
@@ -101,7 +107,15 @@ fun AgeField(
                         DropdownMenuItem(
                             text = { Text(option) },
                             onClick = {
-                                selectedOption = option
+                               val preparedNewSelection = {
+                                    when(option){
+                                        options[0] -> 0.5f
+                                        options[1] -> 5f
+                                        options[2] -> 7f
+                                        else -> 0f
+                                    }
+                                }
+                                onAgeChanged(preparedNewSelection.invoke())
                                 expanded = false
                             },
                             colors = MenuItemColors(

@@ -12,21 +12,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun SterilizationField(
+    sterilized: Boolean,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
-    onTrailingIconClicked: () -> Unit = {}
+    onTrailingIconClicked: () -> Unit = {},
+    sterilizedChanged: (Boolean) -> Unit = {}
 ){
+    val preparedSelection = if (sterilized) "Si" else "No"
     FormField(
         label = "¿Está esterilizado? (Opcional)",
         state = fieldState,
@@ -35,7 +34,6 @@ fun SterilizationField(
         modifier = modifier
     ){
         val options = listOf("Si", "No")
-        var selectedOption by remember { mutableStateOf(options[0]) }
         AnimatedVisibility(
             visible = expansionState,
             enter = fadeIn() + expandVertically(),
@@ -49,8 +47,8 @@ fun SterilizationField(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.weight(1f,true)) {
                         Text(it)
-                        RadioButton(selected = (it == selectedOption),
-                            onClick = { selectedOption = it })
+                        RadioButton(selected = (it == preparedSelection),
+                            onClick = { sterilizedChanged(it == "Si") })
                     }
                 }
             }

@@ -45,14 +45,14 @@ class PetValidator @Inject constructor() {
     }
 
    private fun validateAge(age: Float) : Boolean {
-        if (age <= 0f) {
+        if (age <= 1f) {
             return false
         }
         return true
     }
 
     private fun validateWeight(weight: Float) : Boolean {
-        if (weight <= 0f) {
+        if (weight <= 1f) {
             return false
         }
         return true
