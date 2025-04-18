@@ -8,12 +8,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.feedm.petsFeature.ui.view.screens.AddFoodScreen
 import com.example.feedm.petsFeature.ui.view.screens.AddMealScreen
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.AddPetScreen
 import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.AddPetScreen
+import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
 
 @Composable
-fun NavigationWrapper() {
+fun NavigationWrapper(
+    addPetViewModel: AddPetViewmodel
+) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = DashBoardScreen) {
         composable<DashBoardScreen> {
@@ -27,7 +30,7 @@ fun NavigationWrapper() {
             }
         }
         composable<AddPetScreen> {
-            AddPetScreen { navController.popBackStack() }
+            AddPetScreen(addPetViewmodel = addPetViewModel) { navController.popBackStack() }
         }
         composable<AddMealScreen> {
             val petId = it.toRoute<AddMealScreen>().petId

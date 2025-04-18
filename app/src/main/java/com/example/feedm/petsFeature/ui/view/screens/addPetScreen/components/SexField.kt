@@ -19,19 +19,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @Composable
 fun SexField(
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
+    onTrailingIconClicked: () -> Unit = {}
 ){
     FormField(
         label = "Sexo (Opcional)",
         state = fieldState,
         expanded = expansionState,
-        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(2) },
+        onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ){
         val options = listOf("Macho", "Hembra")

@@ -25,13 +25,13 @@ import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @Composable
 fun GoalField(
     fieldState: Int,
     expansionState: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTrailingIconClicked: () -> Unit = {}
 ) {
     val options = listOf("Perder peso", "Mantener ", "Ganar peso")
     var selectedOption by remember { mutableStateOf(options[0]) }
@@ -40,7 +40,7 @@ fun GoalField(
         label = "Objetivo",
         state = fieldState,
         expanded = expansionState,
-        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(4) },
+        onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
         AnimatedVisibility(

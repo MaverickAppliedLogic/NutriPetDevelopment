@@ -25,13 +25,13 @@ import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @Composable
 fun ActivityField(
     fieldState: Int,
     expansionState: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTrailingIconClicked: () -> Unit = {}
 ) {
     val options = listOf("Baja", "Media", "Alta")
     var selectedOption by remember { mutableStateOf(options[0]) }
@@ -40,7 +40,7 @@ fun ActivityField(
         label = "Actividad",
         state = fieldState,
         expanded = expansionState,
-        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(6) },
+        onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
         AnimatedVisibility(
@@ -48,11 +48,13 @@ fun ActivityField(
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
             modifier = Modifier.padding(top = 15.dp)
-        ){
+        ) {
 
-            Row(horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()){
-                SingleChoiceSegmentedButtonRow (modifier = Modifier.fillMaxWidth(0.9f)){
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth(0.9f)) {
                     options.forEachIndexed { index, option ->
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(index, options.size),

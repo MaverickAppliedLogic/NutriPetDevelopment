@@ -32,14 +32,14 @@ import com.example.feedm.R
 import com.example.feedm.core.ui.theme.PrimaryLight
 import com.example.feedm.core.ui.theme.PrimaryLightest
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgeField(
     fieldState: Int,
     expansionState: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTrailingIconClicked: () -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     val options = stringArrayResource(R.array.fa_arrayAgeSelected)
@@ -49,7 +49,7 @@ fun AgeField(
         label = "Edad",
         state = fieldState,
         expanded = expansionState,
-        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(1) },
+        onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
         AnimatedVisibility(
