@@ -46,10 +46,14 @@ import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @Composable
 fun PetNameAndAnimalField(
+    animal: String,
+    name: String,
     expansionState: Boolean,
     fieldState: Int,
     modifier: Modifier,
-    onTrailingIconClicked: () -> Unit = {}
+    onTrailingIconClicked: () -> Unit = {},
+    onNameChanged: (String) -> Unit = {},
+    onAnimalChanged: (String) -> Unit = {}
 ) {
     FormField(
         label = "Nuevo Compañero",
@@ -68,7 +72,7 @@ fun PetNameAndAnimalField(
          ***/
 
         var hasAnimalChanged by remember { mutableStateOf(false) }
-        var currentAnimal by remember { mutableStateOf("dog") }
+        var currentAnimal by remember { mutableStateOf(animal) }
         val rotationAnim by animateFloatAsState(
             targetValue = if (hasAnimalChanged) 360f else 0f,
             label = "",
@@ -94,6 +98,7 @@ fun PetNameAndAnimalField(
                 onClick = {
                     currentAnimal = if (currentAnimal == "dog") "cat" else "dog"
                     hasAnimalChanged = true
+                    onAnimalChanged(currentAnimal)
                 },
                 modifier = Modifier
                     .padding(bottom = 15.dp)
@@ -133,8 +138,8 @@ fun PetNameAndAnimalField(
                     .align(Alignment.CenterVertically)
             ) {
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = name,
+                    onValueChange = { onNameChanged(it) },
                     label = { Text(text = stringResource(id = R.string.fa_hintEtPetName)) },
                     isError = false,
                     colors = TextFieldDefaults.colors(

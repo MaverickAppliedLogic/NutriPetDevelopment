@@ -16,10 +16,12 @@ import com.example.feedm.petsFeature.ui.view.components.ScrollableSelector
 
 @Composable
 fun WeightField(
+    weight: Float,
     expansionState: Boolean,
     fieldState: Int,
     modifier: Modifier,
-    onTrailingIconClicked: () -> Unit = {}
+    onTrailingIconClicked: () -> Unit = {},
+    onWeightChanged: (String) -> Unit = {}
 ) {
     FormField(
         label = "Peso",
@@ -28,11 +30,18 @@ fun WeightField(
         onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
-        Row( horizontalArrangement = Arrangement.Center,
+        Row(
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 35.dp)) {
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 35.dp)
+        ) {
             ScrollableSelector(
-                items = (1..100).toList().map { it.toString() })
+                selectedItem = weight.toInt(),
+                enabled = expansionState,
+                items = (0..100).toList().map { it.toString() },
+                onItemSelected = { onWeightChanged(it) })
             Spacer(modifier = Modifier.width(10.dp))
             Text(text = "Kg", textAlign = TextAlign.Center)
         }

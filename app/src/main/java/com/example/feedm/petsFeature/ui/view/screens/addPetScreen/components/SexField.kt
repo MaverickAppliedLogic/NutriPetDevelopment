@@ -12,20 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun SexField(
+    sex: String?,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
-    onTrailingIconClicked: () -> Unit = {}
+    onTrailingIconClicked: () -> Unit = {},
+    onSexChanged: (String) -> Unit = {}
 ){
     FormField(
         label = "Sexo (Opcional)",
@@ -35,7 +33,6 @@ fun SexField(
         modifier = modifier
     ){
         val options = listOf("Macho", "Hembra")
-        var selectedOption by remember { mutableStateOf(options[0]) }
         AnimatedVisibility(
             visible = expansionState,
             enter = fadeIn() + expandVertically(),
@@ -49,8 +46,8 @@ fun SexField(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.weight(1f,true)) {
                         Text(it)
-                        RadioButton(selected = (it == selectedOption),
-                            onClick = { selectedOption = it })
+                        RadioButton(selected = (it == sex),
+                            onClick = { onSexChanged(it) })
                     }
                 }
             }

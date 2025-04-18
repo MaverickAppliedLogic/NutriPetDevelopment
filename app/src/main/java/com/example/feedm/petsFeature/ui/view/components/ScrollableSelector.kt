@@ -28,10 +28,8 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.PrimaryLightest
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * A scrollable selector that lets users scroll through a list of items and highlights
@@ -52,14 +50,16 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun ScrollableSelector(
+    selectedItem: Int,
     items: List<String>,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     onItemSelected: (String) -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
     var firstItem by remember { mutableIntStateOf(0) }
-    val selectedItem = remember { derivedStateOf { firstItem + 1 } }
+    val newSelectedItem = remember { derivedStateOf { firstItem + 1 } }
     val preparedItems = items.toMutableList()
     preparedItems.add(0, "")
     preparedItems.add(preparedItems.size, "")
@@ -67,57 +67,61 @@ fun ScrollableSelector(
     preparedItems.toList()
 
     LazyColumn(
-        state = lazyListState,
-        modifier = modifier
+        state = lazyListState, modifier = modifier
             .clip(RoundedCornerShape(5.dp))
-            .border(1.5.dp, color = SecondaryDarkest,
-                shape = RoundedCornerShape(5.dp)
+            .border(
+                1.5.dp, color = SecondaryDarkest, shape = RoundedCornerShape(5.dp)
             )
     ) {
         items(preparedItems.size) {
             val textAlphaAnim by animateFloatAsState(
-                targetValue = if (it == selectedItem.value) 1f else 0.5f
+                targetValue = if (it == newSelectedItem.value) 1f else 0.5f
             )
             val textSizeAnim by animateFloatAsState(
-                targetValue = if (it == selectedItem.value) 24f else 8f
+                targetValue = if (it == newSelectedItem.value) 24f else 8f
             )
             val boxSizeAnim by animateFloatAsState(
-                targetValue = if (it == selectedItem.value) 0.4f else 0.3f
+                targetValue = if (it == newSelectedItem.value) 0.4f else 0.3f
             )
             Box(
                 modifier = Modifier
                     .background(PrimaryLightest)
                     .width(60.dp)
-                    .fillParentMaxHeight(boxSizeAnim),
-                contentAlignment = Alignment.TopCenter
+                    .fillParentMaxHeight(boxSizeAnim), contentAlignment = Alignment.TopCenter
             ) {
-                    Text(
-                        text = preparedItems[it],
-                        fontSize = TextUnit(textSizeAnim, TextUnitType.Sp),
-                        textAlign = TextAlign.Center,
-                        color = SecondaryDarkest,
-                        modifier = Modifier.alpha(textAlphaAnim)
-                    )
+                Text(
+                    text = preparedItems[it],
+                    fontSize = TextUnit(textSizeAnim, TextUnitType.Sp),
+                    textAlign = TextAlign.Center,
+                    color = SecondaryDarkest,
+                    modifier = Modifier.alpha(textAlphaAnim)
+                )
             }
         }
     }
-    LaunchedEffect(lazyListState) {
-        lazyListState.animateScrollToItem(firstItem)
-        snapshotFlow { lazyListState.isScrollInProgress }
-            .distinctUntilChanged()
-            .collect { scrolling ->
-                withContext(Dispatchers.Default) {
-                    firstItem = lazyListState.firstVisibleItemIndex
-                }
-                coroutineScope.launch {
-                    if(!lazyListState.canScrollForward){
-                        firstItem = preparedItems.size - 4
-                    }
-                    lazyListState.animateScrollToItem(firstItem)
-                }
-                if (!scrolling) {
-                    onItemSelected(preparedItems[selectedItem.value - 1])
-                }
-            }
+    LaunchedEffect(enabled) {
+        lazyListState.animateScrollToItem(selectedItem)
     }
+    if (enabled) {
+        LaunchedEffect(lazyListState) {
+            snapshotFlow { lazyListState.isScrollInProgress }
+                .distinctUntilChanged()
+                .collect { scrolling ->
+                        firstItem = lazyListState.firstVisibleItemIndex
+                        if (!lazyListState.canScrollForward) {
+                            firstItem = preparedItems.size - 4
+                        }
+                    if (!scrolling) {
+                        coroutineScope.launch {
+                        lazyListState.animateScrollToItem(firstItem)
+                        }
+                        onItemSelected(preparedItems[newSelectedItem.value])
+                    }
+                }
+
+
+        }
+    }
+
+
 }
