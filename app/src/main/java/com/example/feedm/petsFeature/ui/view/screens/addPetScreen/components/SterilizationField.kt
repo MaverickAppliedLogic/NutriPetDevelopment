@@ -19,19 +19,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @Composable
 fun SterilizationField(
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
+    onTrailingIconClicked: () -> Unit = {}
 ){
     FormField(
         label = "¿Está esterilizado? (Opcional)",
         state = fieldState,
         expanded = expansionState,
-        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(5) },
+        onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ){
         val options = listOf("Si", "No")

@@ -13,19 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.feedm.petsFeature.ui.view.components.ScrollableSelector
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.formItemsHandler
 
 @Composable
 fun WeightField(
     expansionState: Boolean,
     fieldState: Int,
-    modifier: Modifier
+    modifier: Modifier,
+    onTrailingIconClicked: () -> Unit = {}
 ) {
     FormField(
         label = "Peso",
         state = fieldState,
         expanded = expansionState,
-        onTrailingIconClicked = { formItemsHandler.onItemExpansionChanged(3) },
+        onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
         Row( horizontalArrangement = Arrangement.Center,
