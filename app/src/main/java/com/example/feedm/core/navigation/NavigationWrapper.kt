@@ -12,15 +12,17 @@ import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.AddPetScreen
 import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 
 @Composable
 fun NavigationWrapper(
-    addPetViewModel: AddPetViewmodel
+    addPetViewModel: AddPetViewmodel,
+    dashBoardViewModel: PetDetailsViewmodel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = DashBoardScreen) {
         composable<DashBoardScreen> {
-            DashBoardScreen { destination, petId ->
+            DashBoardScreen(dashBoardViewModel) { destination, petId ->
                 when (destination) {
                     "AddPetScreen" -> navController.navigate(AddPetScreen)
                     "AddMealScreen" -> navController.navigate(AddMealScreen(petId!!))

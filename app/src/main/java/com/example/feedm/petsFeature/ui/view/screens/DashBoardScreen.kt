@@ -37,9 +37,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.feedm.R
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
@@ -56,7 +54,7 @@ import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler.Compa
 
 @Composable
 fun DashBoardScreen(
-    viewmodel: PetDetailsViewmodel = hiltViewModel(),
+    viewmodel: PetDetailsViewmodel,
     navTo: (String, Int?) -> Unit
 ) {
     val loopListHandler = LoopListHandler<Int>()
@@ -333,8 +331,3 @@ fun DataModule() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DashBoardScreenPreview() {
-    DashBoardScreen(navTo = { _, _ -> })
-}

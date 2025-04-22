@@ -201,12 +201,12 @@ private fun actionTriggered(
         ACTIVITY_FIELD
     )
     when(action){
-        0 -> onAddCicked(fields, addPetViewmodel, petToBeAdded, formItemsHandler, navigateBack)
+        0 -> onAddClicked(fields, addPetViewmodel, petToBeAdded, formItemsHandler, navigateBack)
         else -> onTrailingIconClicked(index, fields, addPetViewmodel, formItemsHandler)
     }
 }
 
-private fun onAddCicked(
+private fun onAddClicked(
     fields: List<Int>,
     addPetViewmodel: AddPetViewmodel,
     petToBeAdded: PetModel,
