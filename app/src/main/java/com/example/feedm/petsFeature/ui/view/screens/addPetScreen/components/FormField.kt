@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.HorizontalDivider
@@ -41,7 +41,7 @@ object FormFieldStates{
 fun FormField(
     label: String,
     modifier: Modifier = Modifier,
-    state: Int = WAITING,
+    state: Int ,
     expanded: Boolean = false,
     onTrailingIconClicked: () -> Unit,
     content: @Composable () -> Unit = {}
@@ -68,7 +68,7 @@ fun FormField(
                 RadioButton(selected = false, onClick = {},
                     colors = RadioButtonDefaults.colors(unselectedColor = SecondaryDarkest ))
             VALID ->
-                Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Good)
+                Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null, tint = Good)
             INVALID ->
                 Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = Error)
         }

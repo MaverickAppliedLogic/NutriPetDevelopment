@@ -1,7 +1,5 @@
 package com.example.feedm.petsFeature.ui.view.screens.addPetScreen
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +15,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +30,7 @@ import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.Act
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.AgeField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.INVALID
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.WAITING
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.GoalField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.PetNameAndAnimalField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.ProgressIndicator
@@ -37,10 +38,15 @@ import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.Sex
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.SterilizationField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.WeightField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.PET_NAME_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.SEX_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.STERILIZED_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
 
-
-private val formItemsHandler = FormItemsInteractionsHandler(7)
 
 @Preview
 @Composable
@@ -48,10 +54,50 @@ fun AddPetScreen(
     addPetViewmodel: AddPetViewmodel = viewModel(),
     navigateBack: () -> Unit = {}
 ) {
-
+    val formItemsHandler = remember { FormItemsInteractionsHandler() }
     val petToBeAdded by addPetViewmodel.petToBeAdded.collectAsState()
-    val states by formItemsHandler.statesList.collectAsState()
-    val expansions by formItemsHandler.expansionList.collectAsState()
+    // Colectores para FieldState
+    val petNameFieldState by formItemsHandler.petNameFieldState.collectAsState()
+    val ageFieldState by formItemsHandler.ageFieldState.collectAsState()
+    val sexFieldState by formItemsHandler.sexFieldState.collectAsState()
+    val weightFieldState by formItemsHandler.weightFieldState.collectAsState()
+    val goalFieldState by formItemsHandler.goalFieldState.collectAsState()
+    val sterilizedFieldState by formItemsHandler.sterilizedFieldState.collectAsState()
+    val activityFieldState by formItemsHandler.activityFieldState.collectAsState()
+
+    // Colectores para FieldVisibility
+    val petNameFieldVisibility by formItemsHandler.petNameFieldVisibility.collectAsState()
+    val ageFieldVisibility by formItemsHandler.ageFieldVisibility.collectAsState()
+    val sexFieldVisibility by formItemsHandler.sexFieldVisibility.collectAsState()
+    val weightFieldVisibility by formItemsHandler.weightFieldVisibility.collectAsState()
+    val goalFieldVisibility by formItemsHandler.goalFieldVisibility.collectAsState()
+    val sterilizedFieldVisibility by formItemsHandler.sterilizedFieldVisibility.collectAsState()
+    val activityFieldVisibility by formItemsHandler.activityField.collectAsState()
+
+    // Uso de derivedStateOf para evitar recomposición innecesaria
+    val petNameFieldData = remember {
+        derivedStateOf { Pair(petNameFieldState, petNameFieldVisibility) } }
+    val ageFieldData = remember {
+        derivedStateOf { Pair(ageFieldState, ageFieldVisibility) } }
+    val sexFieldData = remember {
+        derivedStateOf { Pair(sexFieldState, sexFieldVisibility) } }
+    val weightFieldData = remember {
+        derivedStateOf { Pair(weightFieldState, weightFieldVisibility) } }
+    val goalFieldData = remember {
+        derivedStateOf { Pair(goalFieldState, goalFieldVisibility) } }
+    val sterilizedFieldData = remember {
+        derivedStateOf { Pair(sterilizedFieldState, sterilizedFieldVisibility) } }
+    val activityFieldData = remember {
+        derivedStateOf { Pair(activityFieldState, activityFieldVisibility) } }
+    val listOfStates = remember { derivedStateOf { listOf(
+        petNameFieldData.value,
+        ageFieldData.value,
+        sexFieldData.value,
+        weightFieldData.value,
+        goalFieldData.value,
+        sterilizedFieldData.value,
+        activityFieldData.value
+    )}}
 
     Scaffold(
         bottomBar = {
@@ -76,102 +122,91 @@ fun AddPetScreen(
     ) { paddingValues ->
         AddPetContent(
             pet = petToBeAdded,
-            states = states,
-            expansions = expansions,
-            onItemExpansionChanged = { index ->
-                formItemsHandler.onItemExpansionChanged(index)
-                if (expansions[index]) {
-                    checkFormValidity(index, addPetViewmodel)
-                }
-            },
+            listOfStates = listOfStates.value,
+            addPetViewmodel = addPetViewmodel,
+            formItemsHandler = formItemsHandler,
             onPetChanged = { addPetViewmodel.petChanged(it) },
             modifier = Modifier.padding(paddingValues)
         )
     }
 }
 
-fun checkFormValidity(
-    index: Int,
-    addPetViewmodel: AddPetViewmodel
-) {
-    when (index) {
-        0 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Name")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-
-        1 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Age")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-
-        2 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Sex")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-
-        3 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Weight")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-
-        4 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Goal")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-
-        5 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Sterilized")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-
-        6 ->
-            if (addPetViewmodel.validatePet() == Pair(false, "Activity")) {
-                formItemsHandler.onItemStateChanged(index, INVALID)
-            } else formItemsHandler.onItemStateChanged(index, VALID)
-    }
-}
 
 @Composable
 fun AddPetContent(
+    modifier: Modifier = Modifier,
     pet: PetModel,
-    states: List<Int>,
-    expansions: List<Boolean>,
-    onItemExpansionChanged: (Int) -> Unit,
+    listOfStates: List<Pair<Int, Boolean>>,
+    addPetViewmodel: AddPetViewmodel,
+    formItemsHandler: FormItemsInteractionsHandler,
     onPetChanged: (PetModel) -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
-    val progress by animateFloatAsState(
-        targetValue = states.count { it == VALID }.toFloat().div(10),
-        animationSpec = tween(500),
-        label = ""
-    )
+
+
+
     Column(modifier = modifier.fillMaxSize()) {
         ProgressIndicator(
-            progress = progress,
+            validateList = listOfStates.map { it.first },
             modifier = Modifier.weight(0.25f, true)
         )
         Form(
             pet = pet,
-            statesList = states,
-            expansionList = expansions,
-            onItemExpansionChanged = { onItemExpansionChanged(it) },
+            petNameFieldData = listOfStates[PET_NAME_FIELD],
+            ageFieldData = listOfStates[AGE_FIELD],
+            sexFieldData = listOfStates[SEX_FIELD],
+            weightFieldData = listOfStates[WEIGHT_FIELD],
+            goalFieldData = listOfStates[GOAL_FIELD],
+            sterilizedFieldData = listOfStates[STERILIZED_FIELD],
+            activityFieldData = listOfStates[ACTIVITY_FIELD],
             onPetChanged = { onPetChanged(it) },
+            onTrailingIconClicked = {
+                val fields = mutableListOf(
+                    PET_NAME_FIELD,
+                    AGE_FIELD,
+                    SEX_FIELD,
+                    WEIGHT_FIELD,
+                    GOAL_FIELD,
+                    STERILIZED_FIELD,
+                    ACTIVITY_FIELD
+                )
+                formItemsHandler.onItemExpansionChanged(it)
+                val valid = addPetViewmodel.validatePet()
+                for (i in fields) {
+                    if (!valid.contains(i)) {
+                        when(i){
+                            SEX_FIELD ->
+                                formItemsHandler.onItemStateChanged(i, WAITING)
+                            STERILIZED_FIELD ->
+                                formItemsHandler.onItemStateChanged(i, WAITING)
+                            else ->
+                                formItemsHandler.onItemStateChanged(i, INVALID)
+                        }
+                    }
+                    else formItemsHandler.onItemStateChanged(i, VALID)
+
+                }
+
+            },
             modifier = Modifier.weight(0.75f, true)
         )
     }
 }
 
+
 @Composable
 fun Form(
     pet: PetModel,
-    statesList: List<Int>,
-    expansionList: List<Boolean>,
-    onItemExpansionChanged: (Int) -> Unit,
+    petNameFieldData: Pair<Int, Boolean>,
+    ageFieldData: Pair<Int, Boolean>,
+    sexFieldData: Pair<Int, Boolean>,
+    weightFieldData: Pair<Int, Boolean>,
+    goalFieldData: Pair<Int, Boolean>,
+    sterilizedFieldData: Pair<Int, Boolean>,
+    activityFieldData: Pair<Int, Boolean>,
     modifier: Modifier = Modifier,
-    onPetChanged: (PetModel) -> Unit = {}
+    onPetChanged: (PetModel) -> Unit = {},
+    onTrailingIconClicked: (Int) -> Unit = {}
 ) {
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -180,63 +215,87 @@ fun Form(
         PetNameAndAnimalField(
             animal = pet.animal,
             name = pet.petName,
-            expansionState = expansionList[0],
-            fieldState = statesList[0],
+            expansionState = petNameFieldData.second,
+            fieldState = petNameFieldData.first,
             modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(0) },
+            onTrailingIconClicked = {
+                onTrailingIconClicked(PET_NAME_FIELD)
+            },
             onNameChanged = { onPetChanged(pet.copy(petName = it)) },
             onAnimalChanged = { onPetChanged(pet.copy(animal = it)) }
         )
+
         AgeField(
             age = pet.age,
-            fieldState = statesList[1],
-            expansionState = expansionList[1],
+            expansionState = ageFieldData.second,
+            fieldState = ageFieldData.first,
             modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(1) },
-            onAgeChanged = { onPetChanged(pet.copy(age = it.toFloat())) }
+            onTrailingIconClicked = {
+                onTrailingIconClicked(AGE_FIELD)
+            },
+            onAgeChanged = { onPetChanged(pet.copy(age = it)) }
         )
+
         SexField(
             sex = pet.genre,
-            fieldState = statesList[2],
-            expansionState = expansionList[2],
+            expansionState = sexFieldData.second,
+            fieldState = sexFieldData.first,
             modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(2) },
+            onTrailingIconClicked = {
+                onTrailingIconClicked(SEX_FIELD)
+            },
             onSexChanged = { onPetChanged(pet.copy(genre = it)) }
         )
+
         WeightField(
             weight = pet.petWeight,
-            fieldState = statesList[3],
-            expansionState = expansionList[3],
+            expansionState = weightFieldData.second,
+            fieldState = weightFieldData.first,
             modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(3) },
-            onWeightChanged = { onPetChanged(pet.copy(petWeight = it.toFloat()?: 0f)) }
+            onTrailingIconClicked = {
+                onTrailingIconClicked(WEIGHT_FIELD)
+            },
+            onWeightChanged = { onPetChanged(pet.copy(petWeight = it)) }
         )
+
         GoalField(
             goal = pet.goal,
-            fieldState = statesList[4],
-            expansionState = expansionList[4],
+            expansionState = goalFieldData.second,
+            fieldState = goalFieldData.first,
             modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(4) },
+            onTrailingIconClicked = {
+                onTrailingIconClicked(GOAL_FIELD)
+            },
             onGoalChanged = { onPetChanged(pet.copy(goal = it)) }
+        )
+
+        ActivityField(
+            activity = pet.activity,
+            expansionState = activityFieldData.second,
+            fieldState = activityFieldData.first,
+            modifier = Modifier.weight(1f, true),
+            onTrailingIconClicked = {
+                onTrailingIconClicked(ACTIVITY_FIELD)
+            },
+            onActivityChanged = { onPetChanged(pet.copy(activity = it)) }
         )
         SterilizationField(
             sterilized = pet.sterilized,
-            fieldState = statesList[5],
-            expansionState = expansionList[5],
+            expansionState = sterilizedFieldData.second,
+            fieldState = sterilizedFieldData.first,
             modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(5) },
+            onTrailingIconClicked = {
+                onTrailingIconClicked(STERILIZED_FIELD)
+            },
             sterilizedChanged = { onPetChanged(pet.copy(sterilized = it)) }
         )
-        ActivityField(
-            activity = pet.activity,
-            fieldState = statesList[6],
-            expansionState = expansionList[6],
-            modifier = Modifier.weight(1f, true),
-            onTrailingIconClicked = { onItemExpansionChanged(6) },
-            onActivityChanged = { onPetChanged(pet.copy(activity = it)) }
-        )
+
     }
 }
+
+
+
+
 
 
 

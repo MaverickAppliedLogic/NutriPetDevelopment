@@ -1,5 +1,7 @@
 package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
@@ -26,15 +29,35 @@ import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.PET_NAME_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProgressIndicator(
-    progress: Float,
-    modifier: Modifier = Modifier) {
-    val sliderText = String.format(Locale.getDefault(), "%.0f/7", progress * 10)
+    validateList: List<Int>,
+    modifier: Modifier = Modifier
+) {
 
+    val progress by animateFloatAsState(
+        targetValue = validateList.count { it == VALID }.toFloat() / 10,
+        animationSpec = tween(500),
+        label = ""
+    )
+    val sliderText = String.format(Locale.getDefault(), "%.0f/7", progress * 10)
+    val indicatorText =
+        if (progress == 0.7f) "¡Ficha completa! :D"
+        else if (progress < 0.5f || validateList[PET_NAME_FIELD] != VALID ||
+            validateList[AGE_FIELD] != VALID || validateList[WEIGHT_FIELD] != VALID ||
+            validateList[GOAL_FIELD] != VALID || validateList[ACTIVITY_FIELD] != VALID
+        ) {
+            "Necesitamos más datos"
+        } else "Ficha valida :)"
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -53,10 +76,10 @@ fun ProgressIndicator(
             )
             Spacer(modifier = Modifier.weight(1f, true))
             Text(
-                text = sliderText,
+                text = "$sliderText $indicatorText",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 color = Primary,
-                modifier = Modifier.padding(horizontal = 10.dp)
+                modifier = Modifier.padding(horizontal = 15.dp)
             )
             Slider(
                 value = progress,

@@ -20,7 +20,6 @@ lifecycleViewmodelKtx = "2.8.7"
 loggingInterceptor = "4.12.0"
 activity = "1.10.0"
 constraintlayout = "2.2.0"
-material3 = "1.3.1"
 mockk = "1.13.16"
 mockkAndroid = "1.13.16"
 navigationFragmentKtx = "2.8.6"
@@ -37,10 +36,10 @@ composeBom = "2025.01.01"
 runtimeLivedata = "1.7.7"
 junitJupiter = "5.11.4"
 coreKtxVersion = "1.6.1"
-junitJupiterVersion = "5.8.1"
-navigationCompose = "2.8.2"
 kotlinxSerialization = "1.8.0"
 kotlin = "2.0.21"
+foundationAndroid = "1.7.8"
+material3 = "1.3.2"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -93,12 +92,10 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
-junit-junit = { group = "junit", name = "junit", version.ref = "junit" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
-jupiter-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiterVersion" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

@@ -2,8 +2,8 @@ package com.example.feedm.mealsFeature.data
 
 import com.example.feedm.core.data.database.dao.MealDao
 import com.example.feedm.core.data.database.entities.MealEntity
-import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.data.MealsRepository
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
@@ -43,7 +43,7 @@ class MealsRepositoryTest{
     fun `it should send a MealEntity`(){
         runBlocking {
             //Given
-            val meal = MealModel(0,0,0,0f)
+            val meal = MealModel(0,0,0,0, ration = 0f)
 
             //When
              mealsRepository.addMealForAPet(meal)

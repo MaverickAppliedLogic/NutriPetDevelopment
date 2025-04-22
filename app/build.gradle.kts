@@ -88,7 +88,10 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
+    implementation(libs.material)
+
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.foundation.android)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

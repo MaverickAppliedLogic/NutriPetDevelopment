@@ -1,6 +1,7 @@
 package com.example.feedm.petsFeature.ui.view.components
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -28,8 +29,10 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.PrimaryLightest
 import com.example.feedm.core.ui.theme.SecondaryDarkest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A scrollable selector that lets users scroll through a list of items and highlights
@@ -43,13 +46,15 @@ import kotlinx.coroutines.launch
  * - Trigger a callback (`onItemSelected`) when a new item is selected.
  *
  * Parameters:
+ * @param selectedItem The index of the currently selected item.
  * @param items List of items to display.
+ * @param enabled Whether the selector is enabled or not.
  * @param modifier Modifier to customize the layout.
  * @param onItemSelected Callback triggered when an item is selected.
  */
 
 @Composable
-fun ScrollableSelector(
+fun ScrollableNumberSelector(
     selectedItem: Int,
     items: List<String>,
     enabled: Boolean,
@@ -61,67 +66,57 @@ fun ScrollableSelector(
     var firstItem by remember { mutableIntStateOf(0) }
     val newSelectedItem = remember { derivedStateOf { firstItem + 1 } }
     val preparedItems = items.toMutableList()
-    preparedItems.add(0, "")
+    preparedItems.add (0, "")
     preparedItems.add(preparedItems.size, "")
     preparedItems.add(preparedItems.size, "")
     preparedItems.toList()
 
-    LazyColumn(
-        state = lazyListState, modifier = modifier
-            .clip(RoundedCornerShape(5.dp))
-            .border(
-                1.5.dp, color = SecondaryDarkest, shape = RoundedCornerShape(5.dp)
-            )
-    ) {
+    LazyColumn(state = lazyListState, modifier = modifier
+        .clip(RoundedCornerShape(5.dp))
+        .border(1.5.dp, color = SecondaryDarkest, shape = RoundedCornerShape(5.dp))) {
         items(preparedItems.size) {
             val textAlphaAnim by animateFloatAsState(
-                targetValue = if (it == newSelectedItem.value) 1f else 0.5f
-            )
+                targetValue = if (it == newSelectedItem.value) 1f else 0.5f,
+                animationSpec = tween())
             val textSizeAnim by animateFloatAsState(
-                targetValue = if (it == newSelectedItem.value) 24f else 8f
-            )
+                targetValue = if (it == newSelectedItem.value) 24f else 8f,
+                animationSpec = tween())
             val boxSizeAnim by animateFloatAsState(
-                targetValue = if (it == newSelectedItem.value) 0.4f else 0.3f
+                targetValue = if (it == newSelectedItem.value) 0.4f else 0.3f,
+                animationSpec = tween())
+
+            Box (modifier =
+                Modifier.background(PrimaryLightest).width(60.dp)
+                    .fillParentMaxHeight(boxSizeAnim), contentAlignment = Alignment.TopCenter) {
+            Text(
+                text = preparedItems[it],
+                fontSize = TextUnit(textSizeAnim, TextUnitType.Sp),
+                textAlign = TextAlign.Center,
+                color = SecondaryDarkest,
+                modifier = Modifier.alpha(textAlphaAnim)
             )
-            Box(
-                modifier = Modifier
-                    .background(PrimaryLightest)
-                    .width(60.dp)
-                    .fillParentMaxHeight(boxSizeAnim), contentAlignment = Alignment.TopCenter
-            ) {
-                Text(
-                    text = preparedItems[it],
-                    fontSize = TextUnit(textSizeAnim, TextUnitType.Sp),
-                    textAlign = TextAlign.Center,
-                    color = SecondaryDarkest,
-                    modifier = Modifier.alpha(textAlphaAnim)
-                )
-            }
+        }
         }
     }
-    LaunchedEffect(enabled) {
-        lazyListState.animateScrollToItem(selectedItem)
-    }
-    if (enabled) {
         LaunchedEffect(lazyListState) {
-            snapshotFlow { lazyListState.isScrollInProgress }
+            lazyListState.animateScrollToItem((selectedItem -1).coerceAtLeast(0))
+            snapshotFlow { Pair(lazyListState.isScrollInProgress,enabled) }
                 .distinctUntilChanged()
                 .collect { scrolling ->
+                    withContext(Dispatchers.Default) {
                         firstItem = lazyListState.firstVisibleItemIndex
                         if (!lazyListState.canScrollForward) {
-                            firstItem = preparedItems.size - 4
+                        firstItem = preparedItems.size - 4
                         }
-                    if (!scrolling) {
-                        coroutineScope.launch {
-                        lazyListState.animateScrollToItem(firstItem)
-                        }
-                        onItemSelected(preparedItems[newSelectedItem.value])
                     }
+                    if (!scrolling.first && scrolling.second) {
+                    coroutineScope.launch {
+                        lazyListState.animateScrollToItem(firstItem)
+                        onItemSelected (preparedItems[newSelectedItem.value])
+                    }
+
                 }
-
-
+                }
         }
-    }
-
 
 }

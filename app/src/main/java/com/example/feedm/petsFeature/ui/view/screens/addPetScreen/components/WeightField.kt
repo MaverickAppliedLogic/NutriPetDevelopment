@@ -1,5 +1,10 @@
 package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.feedm.petsFeature.ui.view.components.ScrollableSelector
+import com.example.feedm.petsFeature.ui.view.components.customSlider.CustomSlider
 
 @Composable
 fun WeightField(
@@ -21,7 +26,7 @@ fun WeightField(
     fieldState: Int,
     modifier: Modifier,
     onTrailingIconClicked: () -> Unit = {},
-    onWeightChanged: (String) -> Unit = {}
+    onWeightChanged: (Float) -> Unit = {}
 ) {
     FormField(
         label = "Peso",
@@ -30,20 +35,28 @@ fun WeightField(
         onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 35.dp)
+        AnimatedVisibility(
+            visible = expansionState,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically(),
+            modifier = Modifier.padding(top = 15.dp)
         ) {
-            ScrollableSelector(
-                selectedItem = weight.toInt(),
-                enabled = expansionState,
-                items = (0..100).toList().map { it.toString() },
-                onItemSelected = { onWeightChanged(it) })
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(text = "Kg", textAlign = TextAlign.Center)
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(bottom = 15.dp)
+                    .fillMaxWidth()
+            ) {
+               CustomSlider(
+                   weight = weight,
+                   onWeightChanged = { onWeightChanged(it) },
+                   valueRange = 0f..80f,
+                   errorCommitting = false
+               )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(text = "Kg", textAlign = TextAlign.Center)
+            }
         }
     }
 }
