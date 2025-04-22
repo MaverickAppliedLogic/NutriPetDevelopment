@@ -8,11 +8,13 @@ import androidx.activity.viewModels
 import com.example.feedm.core.navigation.NavigationWrapper
 import com.example.feedm.core.ui.theme.TailyCareTheme
 import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainPetActivity : ComponentActivity() {
    val AddPetViewModel: AddPetViewmodel by viewModels()
+    val PetDetailsViewmodel: PetDetailsViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +22,8 @@ class MainPetActivity : ComponentActivity() {
         setContent {
             TailyCareTheme {
                 NavigationWrapper(
-                    addPetViewModel = AddPetViewModel
+                    addPetViewModel = AddPetViewModel,
+                    dashBoardViewModel = PetDetailsViewmodel
                 )
             }
         }
