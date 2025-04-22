@@ -18,7 +18,7 @@ class AddPetViewmodel @Inject constructor(
 ):ViewModel(){
 
     private val _petToBeAdded = MutableStateFlow(PetModel(
-        animal = "",
+        animal = "dog",
         petName = "",
         age = 0f,
         petWeight = 0f,

@@ -29,7 +29,7 @@ import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.FormFieldStates.VALID
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
@@ -51,13 +51,13 @@ fun ProgressIndicator(
     )
     val sliderText = String.format(Locale.getDefault(), "%.0f/7", progress * 10)
     val indicatorText =
-        if (progress == 0.7f) "¡Ficha completa! :D"
+        if (progress == 0.7f) "¡Datos al completo! :D"
         else if (progress < 0.5f || validateList[PET_NAME_FIELD] != VALID ||
             validateList[AGE_FIELD] != VALID || validateList[WEIGHT_FIELD] != VALID ||
             validateList[GOAL_FIELD] != VALID || validateList[ACTIVITY_FIELD] != VALID
         ) {
-            "Necesitamos más datos"
-        } else "Ficha valida :)"
+            "Hacen falta más datos"
+        } else "Datos suficientes :)"
     Row(
         modifier = modifier
             .fillMaxWidth()
