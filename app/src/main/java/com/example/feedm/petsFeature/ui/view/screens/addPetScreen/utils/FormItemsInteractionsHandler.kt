@@ -1,6 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils
 
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.FormFieldStates.WAITING
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.FormFieldStates.WAITING
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,8 +12,8 @@ class FormItemsInteractionsHandler {
         const val SEX_FIELD = 2
         const val WEIGHT_FIELD = 3
         const val GOAL_FIELD = 4
-        const val STERILIZED_FIELD = 5
-        const val ACTIVITY_FIELD = 6
+        const val ACTIVITY_FIELD = 5
+        const val STERILIZED_FIELD = 6
     }
     private val fieldWasVisible = mutableListOf(false, false, false, false, false, false, false)
 
@@ -49,7 +49,25 @@ class FormItemsInteractionsHandler {
     var sterilizedFieldState: StateFlow<Int> = _sterilizedFieldState
     var activityFieldState: StateFlow<Int> = _activityFieldState
 
+    fun allFieldsChanged(index: Int, state: Int){
+        when (index) {
+            PET_NAME_FIELD ->
+                    _petNameFieldState.value = state
 
+            AGE_FIELD ->
+                    _ageFieldState.value = state
+            SEX_FIELD ->
+                    _sexFieldState.value = state
+            WEIGHT_FIELD ->
+                    _weightFieldState.value = state
+            GOAL_FIELD ->
+                    _goalFieldState.value = state
+            STERILIZED_FIELD ->
+                    _sterilizedFieldState.value = state
+            ACTIVITY_FIELD ->
+                    _activityFieldState.value = state
+        }
+    }
 
     fun onItemExpansionChanged(index: Int){
         if (!fieldWasVisible[index]) fieldWasVisible[index] = true

@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -7,50 +7,55 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.RadioButton
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.feedm.petsFeature.ui.view.components.customSlider.CustomSlider
 
 @Composable
-fun SterilizationField(
-    sterilized: Boolean,
-    fieldState: Int,
+fun WeightField(
+    weight: Float,
     expansionState: Boolean,
-    modifier: Modifier = Modifier,
+    fieldState: Int,
+    modifier: Modifier,
     onTrailingIconClicked: () -> Unit = {},
-    sterilizedChanged: (Boolean) -> Unit = {}
-){
-    val preparedSelection = if (sterilized) "Si" else "No"
+    onWeightChanged: (Float) -> Unit = {}
+) {
     FormField(
-        label = "¿Está esterilizado? (Opcional)",
+        label = "Peso",
         state = fieldState,
         expanded = expansionState,
         onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
-    ){
-        val options = listOf("Si", "No")
+    ) {
         AnimatedVisibility(
             visible = expansionState,
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
             modifier = Modifier.padding(top = 15.dp)
-        ){
-
-            Row(Modifier.fillMaxWidth()) {
-                options.forEach{
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.weight(1f,true)) {
-                        Text(it)
-                        RadioButton(selected = (it == preparedSelection),
-                            onClick = { sterilizedChanged(it == "Si") })
-                    }
-                }
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(bottom = 15.dp)
+                    .fillMaxWidth()
+            ) {
+               CustomSlider(
+                   weight = weight,
+                   onWeightChanged = { onWeightChanged(it) },
+                   valueRange = 0f..80f,
+                   errorCommitting = false
+               )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(text = "Kg", textAlign = TextAlign.Center)
             }
         }
     }

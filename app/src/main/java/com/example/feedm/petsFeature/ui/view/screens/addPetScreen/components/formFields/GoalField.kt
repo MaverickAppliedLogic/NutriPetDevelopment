@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -17,9 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
-import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
-import com.example.feedm.core.ui.theme.Primary
+import com.example.feedm.core.ui.theme.PrimaryLight
 import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @Composable
@@ -57,8 +56,8 @@ fun GoalField(
                         onClick = { onGoalChanged(option) },
                         colors = SegmentedButtonDefaults.colors(
                             activeBorderColor = SecondaryDarkest,
-                            activeContainerColor = NeutralDark,
-                            activeContentColor = Primary,
+                            activeContainerColor = PrimaryLight,
+                            activeContentColor = SecondaryDarkest,
                             inactiveBorderColor = SecondaryDarkest,
                             inactiveContainerColor = NeutralLight,
                             inactiveContentColor = SecondaryDarkest
