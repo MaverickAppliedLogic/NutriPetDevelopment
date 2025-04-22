@@ -17,7 +17,7 @@ class AddPetViewmodel @Inject constructor(
     private val petValidator: PetValidator
 ):ViewModel(){
 
-    val _petToBeAdded = MutableStateFlow(PetModel(
+    private val _petToBeAdded = MutableStateFlow(PetModel(
         animal = "",
         petName = "",
         age = 0f,
@@ -35,7 +35,7 @@ class AddPetViewmodel @Inject constructor(
         _petToBeAdded.value = petModel
     }
 
-    fun validatePet(): Pair<Boolean, String> {
+    fun validatePet(): List<Int> {
        return petValidator.validatePet(_petToBeAdded.value)
     }
 

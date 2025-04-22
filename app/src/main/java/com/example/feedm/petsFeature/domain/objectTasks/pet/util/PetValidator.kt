@@ -1,64 +1,80 @@
 package com.example.feedm.petsFeature.domain.objectTasks.pet.util
 
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.PET_NAME_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.SEX_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.STERILIZED_FIELD
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import javax.inject.Inject
 
 
 class PetValidator @Inject constructor() {
 
-    fun validatePet(pet: PetModel): Pair<Boolean, String> {
+    fun validatePet(pet: PetModel): List<Int> {
+        val validFields = mutableListOf(
+            PET_NAME_FIELD,
+            AGE_FIELD,
+            SEX_FIELD,
+            WEIGHT_FIELD,
+            GOAL_FIELD,
+            STERILIZED_FIELD,
+            ACTIVITY_FIELD
+        )
 
         if (validateName(pet.petName).not()) {
-            return Pair(false, "Name")
-        }
-        if (validateAnimal(pet.animal).not()) {
-            return Pair(false, "Animal")
+            validFields.remove(PET_NAME_FIELD)
         }
         if (validateAge(pet.age).not()) {
-            return Pair(false, "Age")
+            validFields.remove(AGE_FIELD)
         }
-
+        if (pet.genre.isNullOrBlank()) {
+            validFields.remove(SEX_FIELD)
+        }
         if (validateWeight(pet.petWeight).not()) {
-            return Pair(false, "Weight")
+            validFields.remove(WEIGHT_FIELD)
         }
-
         if (validateGoal(pet.goal).not()) {
-            return Pair(false, "Goal")
+            validFields.remove(GOAL_FIELD)
         }
-
+        if (!pet.sterilized) {
+            validFields.remove(STERILIZED_FIELD)
+        }
+        if (validateActivity(pet.activity)) {
+            validFields.remove(ACTIVITY_FIELD)
+        }
         if (pet.allergies.isNullOrBlank()) {
             pet.allergies = "No allergies registered"
         }
 
-        return Pair(true, "")
+        return validFields
     }
 
-    private fun validateName(name: String) : Boolean {
+    private fun validateName(name: String): Boolean {
         return name.isNotBlank()
     }
 
-    private fun validateAnimal(animal: String) : Boolean {
-        if (animal != "Dog" && animal != "Cat") {
+    private fun validateAge(age: Float): Boolean {
+        if (age < 0.5f) {
             return false
         }
         return true
     }
 
-   private fun validateAge(age: Float) : Boolean {
-        if (age <= 1f) {
+    private fun validateWeight(weight: Float): Boolean {
+        if (weight < 1f) {
             return false
         }
         return true
     }
 
-    private fun validateWeight(weight: Float) : Boolean {
-        if (weight <= 1f) {
-            return false
-        }
-        return true
-    }
-
-    private fun validateGoal(goal: String) : Boolean {
+    private fun validateGoal(goal: String): Boolean {
         return goal.isNotBlank()
+    }
+
+    private fun validateActivity(activity: String?): Boolean {
+        return activity.isNullOrBlank()
     }
 }

@@ -17,9 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
-import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
-import com.example.feedm.core.ui.theme.Primary
+import com.example.feedm.core.ui.theme.PrimaryLight
 import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @Composable
@@ -51,6 +50,7 @@ fun ActivityField(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
+                if (expansionState) {
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth(0.9f)) {
                     options.forEachIndexed { index, option ->
                         SegmentedButton(
@@ -59,8 +59,8 @@ fun ActivityField(
                             onClick = { onActivityChanged(option) },
                             colors = SegmentedButtonDefaults.colors(
                                 activeBorderColor = SecondaryDarkest,
-                                activeContainerColor = NeutralDark,
-                                activeContentColor = Primary,
+                                activeContainerColor = PrimaryLight,
+                                activeContentColor = SecondaryDarkest,
                                 inactiveBorderColor = SecondaryDarkest,
                                 inactiveContainerColor = NeutralLight,
                                 inactiveContentColor = SecondaryDarkest
@@ -72,6 +72,7 @@ fun ActivityField(
                         }
 
                     }
+                }
                 }
             }
         }
