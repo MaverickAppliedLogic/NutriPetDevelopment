@@ -1,4 +1,4 @@
-package com.example.feedm.core.ui.components
+package com.example.feedm.petsFeature.ui.view.components
 
 
 import androidx.compose.foundation.layout.fillMaxSize
