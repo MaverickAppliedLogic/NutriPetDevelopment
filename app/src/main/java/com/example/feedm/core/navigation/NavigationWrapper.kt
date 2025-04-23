@@ -24,7 +24,7 @@ fun NavigationWrapper(
                 when (destination) {
                     "AddPetScreen" -> navController.navigate(AddPetScreen)
                     "AddMealScreen" -> navController.navigate(AddMealScreen(petId!!))
-                    "AddFoodScreen" -> navController.navigate(AddFoodScreen())
+                    "AddFoodScreen" -> navController.navigate(AddFoodScreen(""))
                     "EditPetScreen" -> navController.navigate(EditPetScreen(petId!!))
                 }
             }
@@ -35,6 +35,7 @@ fun NavigationWrapper(
         composable<AddMealScreen> {
             val petId = it.toRoute<AddMealScreen>().petId
             AddMealScreen(
+                petId = petId,
                 navToFoodList = { navController.navigate(FoodListScreen("FromAddMeal", petId)) },
                 navToBackStack = { navController.popBackStack() })
         }
