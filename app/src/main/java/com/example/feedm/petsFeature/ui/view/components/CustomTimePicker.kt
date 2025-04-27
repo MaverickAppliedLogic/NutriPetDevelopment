@@ -17,11 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
+import com.example.feedm.core.ui.theme.Secondary
+import com.example.feedm.core.ui.theme.SecondaryDarkest
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,16 +58,19 @@ fun CustomTimePicker(
             1 -> TimePicker(
                 state = timePickerState,
                 colors = TimePickerDefaults
-                    .colors(clockDialColor = PrimaryLight,
-                        clockDialSelectedContentColor = Color.White,
+                    .colors(
                         selectorColor = Primary,
-                        timeSelectorSelectedContentColor = Color.Black,
-                        clockDialUnselectedContentColor = Color.Black,
+                        clockDialColor = Neutral,
+                        clockDialSelectedContentColor = SecondaryDarkest,
+                        clockDialUnselectedContentColor = SecondaryDarkest,
+                        timeSelectorSelectedContentColor = SecondaryDarkest,
                         timeSelectorSelectedContainerColor = Primary,
                         timeSelectorUnselectedContainerColor = PrimaryLight,
+                        timeSelectorUnselectedContentColor = Secondary,
                         periodSelectorSelectedContainerColor = Primary,
-                        periodSelectorSelectedContentColor = Color.Black,
-                        periodSelectorUnselectedContainerColor = NeutralLight
+                        periodSelectorSelectedContentColor = SecondaryDarkest,
+                        periodSelectorUnselectedContainerColor = NeutralLight,
+                        periodSelectorUnselectedContentColor = Secondary
                         ),
                 layoutType = TimePickerLayoutType.Vertical,
             )
@@ -98,16 +103,4 @@ fun CustomTimePicker(
     }
 
 }
-@Preview(showBackground = true)
-@Composable
-fun CustomTimePickerModel1Preview() {
-    CustomTimePicker(onConfirm = { _, _ ->},
-        onDismiss={}, minute = 0, hour = 0)
-}
 
-@Preview(showBackground = true)
-@Composable
-fun CustomTimePickerModel2Preview() {
-    CustomTimePicker(onConfirm = {_, _ ->},
-        onDismiss={}, mode = 2, minute = 0, hour = 0)
-}
