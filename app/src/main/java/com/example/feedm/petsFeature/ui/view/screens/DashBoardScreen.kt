@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DashBoardScreen(navTo: (String,Int?) -> Unit) {
+fun DashBoardScreen(navTo: (String, Int?) -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize(),

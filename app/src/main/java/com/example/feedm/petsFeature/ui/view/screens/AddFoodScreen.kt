@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AddFoodScreen(navToBackStack: () -> Unit,
-                  navToFoodList: () -> Unit){
+fun Content(navToBackStack: () -> Unit,
+            navToFoodList: () -> Unit){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

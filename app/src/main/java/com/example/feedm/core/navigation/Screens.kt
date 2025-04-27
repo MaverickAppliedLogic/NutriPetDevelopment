@@ -9,7 +9,7 @@ object DashBoardScreen
 object AddPetScreen
 
 @Serializable
-data class AddMealScreen(val petId: Int)
+data class AddMealScreen(val petId: Int? = null)
 
 @Serializable
 data class AddFoodScreen(val origin: String? = null)
