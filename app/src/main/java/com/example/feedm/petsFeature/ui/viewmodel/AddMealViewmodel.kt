@@ -1,71 +1,62 @@
 package com.example.feedm.petsFeature.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
-import com.example.feedm.petsFeature.domain.objectTasks.food.useCase.DeleteFoodUseCase
+import com.example.feedm.petsFeature.domain.objectTasks.food.useCase.GetFoodUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.AddMealUseCase
-import com.example.feedm.petsFeature.domain.objectTasks.petFood.useCase.GetFoodsByPetIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddMealViewmodel @Inject constructor(
     private val addMealUseCase: AddMealUseCase,
-    private val getFoodsByPetIdUseCase: GetFoodsByPetIdUseCase,
-    private val deleteFoodUseCase: DeleteFoodUseCase
+    private val getFoodUseCase: GetFoodUseCase
     ): ViewModel() {
 
-    private val _petId = MutableLiveData<Int>()
-    private val _foods = MutableLiveData<List<FoodModel>>()
-    val foods: LiveData<List<FoodModel>> = _foods
-    private val _foodToBeDeleted = MutableLiveData<FoodModel>()
-    val foodToBeDeleted: LiveData<FoodModel> = _foodToBeDeleted
+    private val _mealToBeAdded = MutableStateFlow(
+        MealModel(
+            petId = 0,
+            foodId = 0,
+            mealTime = 0,
+            ration = 0f
+        )
+    )
+
+    private val _foodSelected = MutableStateFlow(
+        FoodModel(
+            foodId = -1,
+            foodName = "",
+            brand = "",
+            foodWeight = 0f,
+            calories = 0f,)
+    )
+
+    val mealToBeAdded : StateFlow<MealModel> = _mealToBeAdded
+    val foodSelected : StateFlow<FoodModel> = _foodSelected
 
 
-    fun getFoodsByPetId(petId: Int) {
+    fun mealToBeAddedChanged(mealModel: MealModel) {
         viewModelScope.launch {
-            _petId.value = petId
-            val foodsList = getFoodsByPetIdUseCase(petId)
-            _foods.value = foodsList
+            _mealToBeAdded.value = mealModel
         }
     }
 
-    fun getFoodToBeDeleted(foodSelected: String){
+    fun getFood(foodId: Int){
         viewModelScope.launch {
-            for(food in _foods.value!!){
-                if(food.foodName.equals(foodSelected)){
-                _foodToBeDeleted.value = food
-                }
-            }
+            _foodSelected.value = getFoodUseCase(foodId)
         }
     }
 
-
-    fun addMeal(mealModel: MealModel?,
-                ration: Float?,
-                hour: Int?,
-                min: Int?,
-                mealCalories: Double?,
-                food: FoodModel,
-                petId: Int?){
+    fun addMeal(){
         viewModelScope.launch {
-        addMealUseCase(
-            mealModel = mealModel,
-            ration = ration, hour = hour, min = min,
-            mealCalories =  mealCalories, food = food, petId =  petId)
+        addMealUseCase(_mealToBeAdded.value)
         }
     }
 
-    fun deleteFood(foodModel: FoodModel){
-        viewModelScope.launch {
-            deleteFoodUseCase(foodModel)
-            _foods.value = getFoodsByPetIdUseCase(_petId.value!!)
-        }
-    }
 
 }

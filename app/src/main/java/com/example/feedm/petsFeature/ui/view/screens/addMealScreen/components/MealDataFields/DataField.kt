@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Error
 import com.example.feedm.core.ui.theme.NeutralLight
@@ -24,8 +26,11 @@ import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @Composable
 fun DataField(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    ration: String,
+    onRationChanged: (String) -> Unit
 ) {
+
     Column(
         modifier = modifier
             .padding(horizontal = 60.dp)
@@ -40,9 +45,10 @@ fun DataField(
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = "25",
-            onValueChange = { /*TODO manejar evento cambia value Racion */},
+            value = ration,
+            onValueChange = { onRationChanged(it) },
             isError = false,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)   ,
             colors = TextFieldDefaults.colors(
                 cursorColor = SecondaryDarkest,
                 unfocusedContainerColor = NeutralLight,

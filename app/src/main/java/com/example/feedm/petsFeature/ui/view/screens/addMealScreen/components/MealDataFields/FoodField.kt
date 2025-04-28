@@ -28,7 +28,7 @@ import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
 
 @Composable
-fun MealField(
+fun FoodField(
     navToFoodList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
