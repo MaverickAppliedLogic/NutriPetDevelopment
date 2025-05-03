@@ -22,6 +22,7 @@ import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealDataFields.DataField
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealDataFields.FoodField
 
+
 @Composable
 fun MealData(
     modifier: Modifier = Modifier,
@@ -30,7 +31,6 @@ fun MealData(
     navToFoodList: () -> Unit,
     addButtonClicked: () -> Unit,
     onRationChanged: (String) -> Unit) {
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = modifier

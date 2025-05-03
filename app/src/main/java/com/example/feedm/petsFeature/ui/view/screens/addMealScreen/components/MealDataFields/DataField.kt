@@ -30,7 +30,6 @@ fun DataField(
     ration: String,
     onRationChanged: (String) -> Unit
 ) {
-
     Column(
         modifier = modifier
             .padding(horizontal = 60.dp)

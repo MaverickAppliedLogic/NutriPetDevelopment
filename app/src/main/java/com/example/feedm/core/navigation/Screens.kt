@@ -11,6 +11,7 @@ object AddPetScreen
 @Serializable
 data class AddMealScreen(val petId: Int? = null, val foodId: Int? = null)
 
+
 @Serializable
 data class AddFoodScreen(val origin: String? = null)
 

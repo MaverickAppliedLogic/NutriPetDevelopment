@@ -1,5 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components
 
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Card
@@ -46,6 +47,4 @@ fun MealTimePicker(
             onMealTimeChanged(timeFormatter.formatIntToMills(hourSet, minSet, 0, 0))},
         onTimepickerVisibilityChange = { onTimepickerVisibilityChange(it) }
     )
-
-
 }
