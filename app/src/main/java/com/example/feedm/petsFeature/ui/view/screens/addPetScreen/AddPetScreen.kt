@@ -16,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
@@ -51,24 +51,26 @@ fun AddPetScreen(
     navigateBack: () -> Unit = {}
 ) {
     val formItemsHandler = remember { FormItemsInteractionsHandler() }
-    val petToBeAdded by addPetViewmodel.petToBeAdded.collectAsState()
-    // Colectores para FieldState
-    val petNameFieldState by formItemsHandler.petNameFieldState.collectAsState()
-    val ageFieldState by formItemsHandler.ageFieldState.collectAsState()
-    val sexFieldState by formItemsHandler.sexFieldState.collectAsState()
-    val weightFieldState by formItemsHandler.weightFieldState.collectAsState()
-    val goalFieldState by formItemsHandler.goalFieldState.collectAsState()
-    val sterilizedFieldState by formItemsHandler.sterilizedFieldState.collectAsState()
-    val activityFieldState by formItemsHandler.activityFieldState.collectAsState()
+    val petToBeAdded by addPetViewmodel.petToBeAdded.collectAsStateWithLifecycle()
 
-    // Colectores para FieldVisibility
-    val petNameFieldVisibility by formItemsHandler.petNameFieldVisibility.collectAsState()
-    val ageFieldVisibility by formItemsHandler.ageFieldVisibility.collectAsState()
-    val sexFieldVisibility by formItemsHandler.sexFieldVisibility.collectAsState()
-    val weightFieldVisibility by formItemsHandler.weightFieldVisibility.collectAsState()
-    val goalFieldVisibility by formItemsHandler.goalFieldVisibility.collectAsState()
-    val sterilizedFieldVisibility by formItemsHandler.sterilizedFieldVisibility.collectAsState()
-    val activityFieldVisibility by formItemsHandler.activityField.collectAsState()
+// Colectores para FieldState
+    val petNameFieldState by formItemsHandler.petNameFieldState.collectAsStateWithLifecycle()
+    val ageFieldState by formItemsHandler.ageFieldState.collectAsStateWithLifecycle()
+    val sexFieldState by formItemsHandler.sexFieldState.collectAsStateWithLifecycle()
+    val weightFieldState by formItemsHandler.weightFieldState.collectAsStateWithLifecycle()
+    val goalFieldState by formItemsHandler.goalFieldState.collectAsStateWithLifecycle()
+    val sterilizedFieldState by formItemsHandler.sterilizedFieldState.collectAsStateWithLifecycle()
+    val activityFieldState by formItemsHandler.activityFieldState.collectAsStateWithLifecycle()
+
+// Colectores para FieldVisibility
+    val petNameFieldVisibility by formItemsHandler.petNameFieldVisibility.collectAsStateWithLifecycle()
+    val ageFieldVisibility by formItemsHandler.ageFieldVisibility.collectAsStateWithLifecycle()
+    val sexFieldVisibility by formItemsHandler.sexFieldVisibility.collectAsStateWithLifecycle()
+    val weightFieldVisibility by formItemsHandler.weightFieldVisibility.collectAsStateWithLifecycle()
+    val goalFieldVisibility by formItemsHandler.goalFieldVisibility.collectAsStateWithLifecycle()
+    val sterilizedFieldVisibility by formItemsHandler.sterilizedFieldVisibility.collectAsStateWithLifecycle()
+    val activityFieldVisibility by formItemsHandler.activityField.collectAsStateWithLifecycle()
+
 
     // Uso de derivedStateOf para evitar recomposición innecesaria
     val petNameFieldData = remember {

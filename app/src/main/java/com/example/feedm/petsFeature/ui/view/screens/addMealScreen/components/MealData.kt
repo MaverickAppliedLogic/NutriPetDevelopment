@@ -18,14 +18,19 @@ import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.SecondaryDarkest
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealDataFields.DataField
-import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealDataFields.MealField
+import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealDataFields.FoodField
+
 
 @Composable
 fun MealData(
     modifier: Modifier = Modifier,
+    ration: String,
+    food: FoodModel,
     navToFoodList: () -> Unit,
-    navToBackStack: () -> Unit) {
+    addButtonClicked: () -> Unit,
+    onRationChanged: (String) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = modifier
@@ -34,14 +39,17 @@ fun MealData(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MealField(modifier = Modifier.weight(0.3f, true), navToFoodList = {navToFoodList()})
-            DataField(modifier = Modifier.weight(0.6f, true))
+            FoodField(modifier = Modifier.weight(0.3f, true), navToFoodList = {navToFoodList()})
+            DataField(
+                modifier = Modifier.weight(0.6f, true),
+                ration = ration ,
+                onRationChanged = {onRationChanged(it)})
             Button(
                 colors = ButtonDefaults
                     .buttonColors(containerColor = Primary, contentColor = SecondaryDarkest),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp),
                 shape = RoundedCornerShape(10.dp),
-                onClick = { navToBackStack() },
+                onClick = { addButtonClicked() },
                 modifier = Modifier
                     .fillMaxWidth(0.3f)
                     .padding(vertical = 10.dp)

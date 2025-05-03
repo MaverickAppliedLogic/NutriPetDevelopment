@@ -40,6 +40,7 @@ fun NavigationWrapper(
             val petId = it.toRoute<AddMealScreen>().petId
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
+                foodId = -1,
                 petId = 0,
                 navToFoodList = { navController.navigate(FoodListScreen("FromAddMeal", petId)) },
                 navToBackStack = { navController.popBackStack() })

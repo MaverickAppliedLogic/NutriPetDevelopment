@@ -83,12 +83,14 @@ fun DashBoardScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
-        CustomBottomBar()
+        CustomBottomBar(navto = { navTo(it, 0) })
     }
 }
 
 @Composable
-fun CustomBottomBar() {
+fun CustomBottomBar(
+    navto: (String) -> Unit = {}
+) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -104,7 +106,7 @@ fun CustomBottomBar() {
                 )
         ) {
             FloatingActionButton(
-                onClick = {},
+                onClick = {navto("AddMealScreen")},
                 shape = CircleShape, containerColor = Primary,
                 contentColor = SecondaryDarkest,
                 modifier = Modifier
