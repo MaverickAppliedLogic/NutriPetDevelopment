@@ -28,7 +28,7 @@ fun MealData(
     ration: String,
     food: FoodModel,
     navToFoodList: () -> Unit,
-    navToBackStack: () -> Unit,
+    addButtonClicked: () -> Unit,
     onRationChanged: (String) -> Unit) {
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -49,7 +49,7 @@ fun MealData(
                     .buttonColors(containerColor = Primary, contentColor = SecondaryDarkest),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp),
                 shape = RoundedCornerShape(10.dp),
-                onClick = { navToBackStack() },
+                onClick = { addButtonClicked() },
                 modifier = Modifier
                     .fillMaxWidth(0.3f)
                     .padding(vertical = 10.dp)

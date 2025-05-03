@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.feedm.core.ui.theme.SecondaryDarkest
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
-import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealData
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealTimePicker
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
@@ -35,21 +35,32 @@ fun AddMealScreen(
 ) {
     val mealToBeAdded by addMealViewmodel.mealToBeAdded.collectAsStateWithLifecycle()
     val foodSelected by addMealViewmodel.foodSelected.collectAsStateWithLifecycle()
+    var rationFormatted by remember {
+        mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
+    }
+    var mealTime by remember {
+        mutableLongStateOf(mealToBeAdded.mealTime)
+    }
 
-
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(petId = petId))
     }
-    LaunchedEffect(foodId){
+    LaunchedEffect(foodId) {
         if (foodId != -1) addMealViewmodel.getFood(foodId)
     }
     Scaffold {
         AddMealContent(
-            meal = mealToBeAdded,
+            rationFormatted = rationFormatted,
+            mealTime = mealTime,
             food = foodSelected,
             navToFoodList = { navToFoodList() },
-            navToBackStack = { navToBackStack() },
-            onMealChanged = {meal -> addMealViewmodel.mealToBeAddedChanged(meal)},
+            addButtonClicked = {
+                addMealViewmodel.mealToBeAddedChanged(
+                    mealToBeAdded.copy(
+                        ration = rationFormatted.toFloatOrNull()?:0f))
+                navToBackStack() },
+            onRationChanged = {newRation -> rationFormatted = newRation },
+            onMealTimeChanged = {newMealTime -> mealTime = newMealTime },
             modifier = Modifier.padding(it)
         )
     }
@@ -57,23 +68,24 @@ fun AddMealScreen(
 
 @Composable
 fun AddMealContent(
-    meal: MealModel,
+    rationFormatted: String,
+    mealTime: Long,
     food: FoodModel,
     navToFoodList: () -> Unit,
-    navToBackStack: () -> Unit,
-    onMealChanged: (MealModel) -> Unit,
+    addButtonClicked: () -> Unit,
+    onRationChanged: (String) -> Unit,
+    onMealTimeChanged: (Long) -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     var timePickerIsVisible by remember { mutableStateOf(false) }
-    var rationFormatted by remember {
-        mutableStateOf(String.format(Locale.getDefault(),"%.0f", meal.ration)) }
+
 
     MealData(
         ration = rationFormatted,
         food = food,
-        onRationChanged = { rationFormatted = it },
+        onRationChanged = { onRationChanged(it) },
         navToFoodList = { navToFoodList() },
-        navToBackStack = { navToBackStack() },
+        addButtonClicked = { addButtonClicked() },
         modifier = modifier.blur(if (timePickerIsVisible) 10.dp else 0.dp)
     )
     Text(
@@ -84,6 +96,8 @@ fun AddMealContent(
     )
     MealTimePicker(
         timePickerIsVisible = timePickerIsVisible,
+        mealTime = mealTime,
+        onMealTimeChanged = { onMealTimeChanged(it) },
         onTimepickerVisibilityChange = { timePickerIsVisible = it }
     )
     Spacer(modifier = Modifier.height(8.dp))
