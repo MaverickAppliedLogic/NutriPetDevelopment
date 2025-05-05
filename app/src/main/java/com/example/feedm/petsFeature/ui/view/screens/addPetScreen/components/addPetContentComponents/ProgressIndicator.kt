@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -29,7 +29,7 @@ import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.FormFieldStates.VALID
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD

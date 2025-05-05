@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -62,6 +62,33 @@ fun PetNameAndAnimalField(
         onTrailingIconClicked = { onTrailingIconClicked()},
         modifier = modifier
     ) {
+        /**Executes a rotation animation for the `Icons.Default.Refresh`
+         * whenever the card is clicked.
+         * ```
+         * When the user clicks the PetCard, the animation begins by updating the 'animal' value.
+         * The 'animalChanged' flag is then set to true, disabling the card to prevent further
+         * clicks and ensuring the animation isn´t paused in the middle of the rotation.
+         * ```
+         ***/
+
+        /**Executes a rotation animation for the `Icons.Default.Refresh`
+         * whenever the card is clicked.
+         * ```
+         * When the user clicks the PetCard, the animation begins by updating the 'animal' value.
+         * The 'animalChanged' flag is then set to true, disabling the card to prevent further
+         * clicks and ensuring the animation isn´t paused in the middle of the rotation.
+         * ```
+         ***/
+
+        /**Executes a rotation animation for the `Icons.Default.Refresh`
+         * whenever the card is clicked.
+         * ```
+         * When the user clicks the PetCard, the animation begins by updating the 'animal' value.
+         * The 'animalChanged' flag is then set to true, disabling the card to prevent further
+         * clicks and ensuring the animation isn´t paused in the middle of the rotation.
+         * ```
+         ***/
+
         /**Executes a rotation animation for the `Icons.Default.Refresh`
          * whenever the card is clicked.
          * ```
