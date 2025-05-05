@@ -106,7 +106,7 @@ fun CustomBottomBar(
                 )
         ) {
             FloatingActionButton(
-                onClick = {navto("AddMealScreen")},
+                onClick = {navto("AddPetScreen")},
                 shape = CircleShape, containerColor = Primary,
                 contentColor = SecondaryDarkest,
                 modifier = Modifier

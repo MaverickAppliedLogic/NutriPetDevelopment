@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically

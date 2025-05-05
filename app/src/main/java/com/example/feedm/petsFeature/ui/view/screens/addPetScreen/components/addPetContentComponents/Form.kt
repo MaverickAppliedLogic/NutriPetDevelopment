@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components
+package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.ActivityField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.AgeField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.GoalField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.PetNameAndAnimalField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.SexField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.SterilizationField
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.WeightField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.ActivityField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.AgeField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.GoalField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.PetNameAndAnimalField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.SexField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.SterilizationField
+import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields.WeightField
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
