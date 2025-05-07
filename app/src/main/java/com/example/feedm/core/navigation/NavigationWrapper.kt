@@ -10,7 +10,7 @@ import com.example.feedm.petsFeature.ui.view.screens.Content
 import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.AddPetScreen
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
@@ -26,43 +26,44 @@ fun NavigationWrapper(
         composable<DashBoardScreen> {
             DashBoardScreen(dashBoardViewModel) { destination, petId ->
                 when (destination) {
-                    "AddPetScreen" -> navController.navigate(AddPetScreen)
-                    "AddMealScreen" -> navController.navigate(AddMealScreen(petId))
-                    "AddFoodScreen" -> navController.navigate(AddFoodScreen(""))
-                    "EditPetScreen" -> navController.navigate(EditPetScreen(petId!!))
+                    "RegisterPet" -> navController.navigate(RegisterPet(petId))
+                    "AddMeal" -> navController.navigate(AddMeal(petId))
+                    "AddFood" -> navController.navigate(AddFood(""))
                 }
             }
         }
-        composable<AddPetScreen> {
-            AddPetScreen(addPetViewmodel = addPetViewModel) { navController.popBackStack() }
+        composable<RegisterPet> {
+            val registerPet = it.toRoute<RegisterPet>()
+            RegisterPetScreen(petId = registerPet.petId,
+                addPetViewmodel = addPetViewModel) { navController.popBackStack() }
         }
-        composable<AddMealScreen> {
-            val petId = it.toRoute<AddMealScreen>().petId
+        composable<AddMeal> {
+            val addMeal = it.toRoute<AddMeal>()
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
                 foodId = -1,
                 petId = 0,
-                navToFoodList = { navController.navigate(FoodListScreen("FromAddMeal", petId)) },
+                navToFoodList = { navController.navigate(FoodList("FromAddMeal", addMeal.petId)) },
                 navToBackStack = { navController.popBackStack() })
         }
-        composable<AddFoodScreen> {
-            val origin = it.toRoute<AddFoodScreen>().origin
+        composable<AddFood> {
+            val addFood = it.toRoute<AddFood>()
             val getBackDestination = {
-                if (origin == "FromFoodList") {
-                    navController.navigate(FoodListScreen("FromAddMeal")) {
-                        popUpTo<FoodListScreen> { inclusive = true }
+                if (addFood.origin == "FromFoodList") {
+                    navController.navigate(FoodList("FromAddMeal")) {
+                        popUpTo<FoodList> { inclusive = true }
                     }
                 } else {
                     navController.popBackStack()
                 }
             }
             val getDestination = {
-                if (origin == "FromAddMeal") {
-                    navController.navigate(FoodListScreen("FromAddMeal")) {
-                        popUpTo<FoodListScreen> { inclusive = true }
+                if (addFood.origin == "FromAddMeal") {
+                    navController.navigate(FoodList("FromAddMeal")) {
+                        popUpTo<FoodList> { inclusive = true }
                     }
                 } else {
-                    navController.navigate(FoodListScreen("FromAddFood"))
+                    navController.navigate(FoodList("FromAddFood"))
                 }
             }
             BackHandler { getBackDestination() }
@@ -71,23 +72,23 @@ fun NavigationWrapper(
                     getDestination()
                 })
         }
-        composable<FoodListScreen> {
-            val foodListOrigin = it.toRoute<FoodListScreen>().origin
-            val petId = it.toRoute<FoodListScreen>().petId
+        composable<FoodList> {
+            val foodListOrigin = it.toRoute<FoodList>().origin
+            val petId = it.toRoute<FoodList>().petId
             val getBackDestination =  {
                 when (foodListOrigin) {
                     "FromAddFood" -> navController.navigate(DashBoardScreen) {
                         popUpTo<DashBoardScreen> { inclusive = true }
                     }
-                    "FromAddMeal" -> navController.navigate(AddMealScreen(petId)) {
-                        popUpTo<AddMealScreen> { inclusive = true }
+                    "FromAddMeal" -> navController.navigate(AddMeal(petId)) {
+                        popUpTo<AddMeal> { inclusive = true }
                     }
                     else -> {}
                 }
             }
             BackHandler { getBackDestination() }
             FoodListScreen(
-                navToAddFood = { navController.navigate(AddFoodScreen(foodListOrigin)) },
+                navToAddFood = { navController.navigate(AddFood(foodListOrigin)) },
                 navToBackStack = { getBackDestination() }
             )
         }

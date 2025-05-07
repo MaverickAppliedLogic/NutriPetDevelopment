@@ -8,7 +8,7 @@ import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 @Entity(tableName = "pet_table")
 data class PetEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "pet_id")val petId: Int = 0,
+    @ColumnInfo(name = "pet_id")val petId: Int = -1,
     @ColumnInfo(name = "animal")val animal: String,
     @ColumnInfo(name = "pet_name")val petName: String,
     @ColumnInfo(name = "age")val age: Float,
