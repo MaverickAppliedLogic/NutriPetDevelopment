@@ -29,7 +29,7 @@ import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.AddPetContent
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormStateManager
-import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import rememberFieldStates
 
 
@@ -37,15 +37,15 @@ import rememberFieldStates
 @Composable
 fun RegisterPetScreen(
     petId: Int? = null,
-    addPetViewmodel: AddPetViewmodel = viewModel(),
+    registerPetViewmodel: RegisterPetViewmodel = viewModel(),
     navigateBack: () -> Unit = {}
 ) {
     val formItemsHandler = remember { FormItemsInteractionsHandler() }
-    val petToBeAdded by addPetViewmodel.petToBeRegistered.collectAsStateWithLifecycle()
+    val petToBeAdded by registerPetViewmodel.petToBeRegistered.collectAsStateWithLifecycle()
     val formStateManager = FormStateManager()
     LaunchedEffect(true) {
         if (petId != null) {
-            addPetViewmodel.getPetById(petId)
+            registerPetViewmodel.getPetById(petId)
         }
     }
 // Colectores para FieldState
@@ -68,7 +68,7 @@ fun RegisterPetScreen(
                         onClick = { formStateManager.
                            actionTriggered(0,
                                0,
-                               addPetViewmodel,
+                               registerPetViewmodel,
                                petToBeAdded,
                                formItemsHandler,
                                navigateBack)
@@ -85,9 +85,9 @@ fun RegisterPetScreen(
             pet = petToBeAdded,
             formStateManager = formStateManager,
             listOfStates = listOfStates,
-            addPetViewmodel = addPetViewmodel,
+            registerPetViewmodel = registerPetViewmodel,
             formItemsHandler = formItemsHandler,
-            onPetChanged = { addPetViewmodel.petChanged(it) },
+            onPetChanged = { registerPetViewmodel.petChanged(it) },
             modifier = Modifier.padding(paddingValues)
         )
     }

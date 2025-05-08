@@ -23,7 +23,7 @@ class RegisterPetUseCaseTest {
     }
 
     @Test
-    fun `should update pet if pet already exists`() = runBlocking {
+    fun `should update pet if petId is not -1`() = runBlocking {
         // Given
         val petModel = PetModel(
             petId = 123,
@@ -38,34 +38,21 @@ class RegisterPetUseCaseTest {
             allergies = "None"
         )
 
-        coEvery { repository.getPetById(petModel.petId) } returns petModel
+        coEvery { repository.insertPet(any()) } just Runs
         coEvery { repository.updatePet(any()) } just Runs
 
         // When
         registerPetUseCase.invoke(petModel)
 
         // Then
-        coVerify(exactly = 1) { repository.getPetById(petModel.petId) }
         coVerify(exactly = 1) { repository.updatePet(any()) }
         coVerify(exactly = 0) { repository.insertPet(any()) }
     }
 
     @Test
-    fun `should insert pet if pet does not exist`() = runBlocking {
+    fun `should insert pet if petId is -1`() = runBlocking {
         // Given
         val petModel = PetModel(
-            petId = 456,
-            animal = "Cat",
-            petName = "Whiskers",
-            age = 2.0f,
-            petWeight = 4.5f,
-            genre = "Female",
-            sterilized = false,
-            activity = "Medium",
-            goal = "Maintain weight",
-            allergies = "None"
-        )
-        val petModelFake = PetModel(
             petId = -1,
             animal = "Cat",
             petName = "Whiskers",
@@ -78,14 +65,14 @@ class RegisterPetUseCaseTest {
             allergies = "None"
         )
 
-        coEvery { repository.getPetById(petModel.petId) } returns petModelFake
+
+        coEvery { repository.updatePet(any()) } just Runs
         coEvery { repository.insertPet(any()) } just Runs
 
         // When
         registerPetUseCase.invoke(petModel)
 
         // Then
-        coVerify(exactly = 1) { repository.getPetById(petModel.petId) }
         coVerify(exactly = 0) { repository.updatePet(any()) }
         coVerify(exactly = 1) { repository.insertPet(any()) }
     }

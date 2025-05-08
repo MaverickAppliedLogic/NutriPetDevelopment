@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields
+package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState

@@ -83,7 +83,7 @@ fun DashBoardScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
-        CustomBottomBar(navto = { navTo(it, 0) })
+        CustomBottomBar(navto = { navTo(it, null) })
     }
 }
 

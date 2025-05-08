@@ -13,13 +13,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPetViewmodel @Inject constructor(
+class RegisterPetViewmodel @Inject constructor(
     private val registerPetUseCase: RegisterPetUseCase,
     private val getPetByIdUseCase: GetPetByIdUseCase,
     private val petValidator: PetValidator
 ):ViewModel(){
 
-    private val _petToBeRegistered = MutableStateFlow(PetModel(
+    private val _initialPet = PetModel(
         animal = "dog",
         petName = "",
         age = 0f,
@@ -29,9 +29,14 @@ class AddPetViewmodel @Inject constructor(
         activity = "",
         goal = "",
         allergies = ""
-    ))
+    )
+    private val _petToBeRegistered = MutableStateFlow(_initialPet)
 
     val petToBeRegistered : StateFlow<PetModel> = _petToBeRegistered
+
+    fun setInitialPet(){
+        _petToBeRegistered.value = _initialPet
+    }
 
     fun getPetById(petId: Int) {
         viewModelScope.launch {

@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents
+package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.ActivityField
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.AgeField
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.GoalField
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.PetNameAndAnimalField
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.SexField
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.SterilizationField
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.formFields.WeightField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.ActivityField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.AgeField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.GoalField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.PetNameAndAnimalField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.SexField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.SterilizationField
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.WeightField
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD

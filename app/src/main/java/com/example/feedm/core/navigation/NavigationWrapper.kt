@@ -12,12 +12,12 @@ import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
-import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 
 @Composable
 fun NavigationWrapper(
-    addPetViewModel: AddPetViewmodel,
+    registerPetViewModel: RegisterPetViewmodel,
     addMealViewmodel: AddMealViewmodel,
     dashBoardViewModel: PetDetailsViewmodel
 ) {
@@ -35,7 +35,10 @@ fun NavigationWrapper(
         composable<RegisterPet> {
             val registerPet = it.toRoute<RegisterPet>()
             RegisterPetScreen(petId = registerPet.petId,
-                addPetViewmodel = addPetViewModel) { navController.popBackStack() }
+                registerPetViewmodel = registerPetViewModel) {
+                navController.navigate(DashBoardScreen) {
+                    popUpTo<DashBoardScreen> { inclusive = true }
+                registerPetViewModel.setInitialPet()}}
         }
         composable<AddMeal> {
             val addMeal = it.toRoute<AddMeal>()

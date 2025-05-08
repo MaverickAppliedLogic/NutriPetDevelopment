@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.Form
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.addPetContentComponents.ProgressIndicator
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.Form
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.ProgressIndicator
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
@@ -16,7 +16,7 @@ import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.For
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.STERILIZED_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormStateManager
-import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 
 @Composable
 fun AddPetContent(
@@ -24,7 +24,7 @@ fun AddPetContent(
     pet: PetModel,
     formStateManager: FormStateManager,
     listOfStates: List<Pair<Int,Boolean>>,
-    addPetViewmodel: AddPetViewmodel,
+    registerPetViewmodel: RegisterPetViewmodel,
     formItemsHandler: FormItemsInteractionsHandler,
     onPetChanged: (PetModel) -> Unit = {},
 ) {
@@ -45,7 +45,7 @@ fun AddPetContent(
             onPetChanged = { onPetChanged(it) },
             onTrailingIconClicked = {
                 formStateManager.actionTriggered(
-                    1, it, addPetViewmodel, pet, formItemsHandler, {})
+                    1, it, registerPetViewmodel, pet, formItemsHandler, {})
             },
             modifier = Modifier.weight(0.75f, true)
         )
