@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen
+package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,22 +26,28 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feedm.core.ui.theme.NeutralLight
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.AddPetContent
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormStateManager
-import com.example.feedm.petsFeature.ui.viewmodel.AddPetViewmodel
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.AddPetContent
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormStateManager
+import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import rememberFieldStates
 
 
 @Preview
 @Composable
-fun AddPetScreen(
-    addPetViewmodel: AddPetViewmodel = viewModel(),
+fun RegisterPetScreen(
+    petId: Int? = null,
+    registerPetViewmodel: RegisterPetViewmodel = viewModel(),
     navigateBack: () -> Unit = {}
 ) {
     val formItemsHandler = remember { FormItemsInteractionsHandler() }
-    val petToBeAdded by addPetViewmodel.petToBeAdded.collectAsStateWithLifecycle()
+    val petToBeAdded by registerPetViewmodel.petToBeRegistered.collectAsStateWithLifecycle()
     val formStateManager = FormStateManager()
+    LaunchedEffect(true) {
+        if (petId != null) {
+            registerPetViewmodel.getPetById(petId)
+        }
+    }
 // Colectores para FieldState
     val listOfStates = rememberFieldStates(formItemsHandler)
     Scaffold(
@@ -61,13 +68,13 @@ fun AddPetScreen(
                         onClick = { formStateManager.
                            actionTriggered(0,
                                0,
-                               addPetViewmodel,
+                               registerPetViewmodel,
                                petToBeAdded,
                                formItemsHandler,
                                navigateBack)
                         },
                     ) {
-                        Text(text = "Añadir")
+                        Text(text = "Confirmar")
                     }
                 }
             }
@@ -78,9 +85,9 @@ fun AddPetScreen(
             pet = petToBeAdded,
             formStateManager = formStateManager,
             listOfStates = listOfStates,
-            addPetViewmodel = addPetViewmodel,
+            registerPetViewmodel = registerPetViewmodel,
             formItemsHandler = formItemsHandler,
-            onPetChanged = { addPetViewmodel.petChanged(it) },
+            onPetChanged = { registerPetViewmodel.petChanged(it) },
             modifier = Modifier.padding(paddingValues)
         )
     }

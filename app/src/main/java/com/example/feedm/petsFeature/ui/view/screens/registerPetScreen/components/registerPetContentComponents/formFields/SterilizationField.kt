@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.addPetContentComponents.formFields
+package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -17,22 +17,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SexField(
-    sex: String?,
+fun SterilizationField(
+    sterilized: Boolean,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
     onTrailingIconClicked: () -> Unit = {},
-    onSexChanged: (String) -> Unit = {}
+    sterilizedChanged: (Boolean) -> Unit = {}
 ){
+    val preparedSelection = if (sterilized) "Si" else "No"
     FormField(
-        label = "Sexo (Opcional)",
+        label = "¿Está esterilizado? (Opcional)",
         state = fieldState,
         expanded = expansionState,
         onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ){
-        val options = listOf("Macho", "Hembra")
+        val options = listOf("Si", "No")
         AnimatedVisibility(
             visible = expansionState,
             enter = fadeIn() + expandVertically(),
@@ -46,8 +47,8 @@ fun SexField(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.weight(1f,true)) {
                         Text(it)
-                        RadioButton(selected = (it == sex),
-                            onClick = { onSexChanged(it) })
+                        RadioButton(selected = (it == preparedSelection),
+                            onClick = { sterilizedChanged(it == "Si") })
                     }
                 }
             }

@@ -1,7 +1,7 @@
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils.FormItemsInteractionsHandler
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler
 
 @Composable
 fun rememberFieldStates(handler: FormItemsInteractionsHandler): List<Pair<Int,Boolean>> {

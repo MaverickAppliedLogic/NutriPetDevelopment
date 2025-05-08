@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.AddPetUseCase
+import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.RegisterPetUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.DeletePetUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.EditPetUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.GetPetsUseCase
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PetsListViewModel @Inject constructor(
-    private val addPetUseCase: AddPetUseCase,
+    private val registerPetUseCase: RegisterPetUseCase,
     private val deletePetUseCase: DeletePetUseCase,
     private val editPetUseCase: EditPetUseCase,
     private val getPetsUseCase: GetPetsUseCase,
