@@ -7,9 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.example.feedm.core.navigation.NavigationWrapper
 import com.example.feedm.core.ui.theme.TailyCareTheme
+import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
-import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +18,7 @@ class MainPetActivity : ComponentActivity() {
     private val registerPetViewModel: RegisterPetViewmodel by viewModels()
     private val addMealViewmodel: AddMealViewmodel by viewModels()
     private val petDetailsViewmodel: PetDetailsViewmodel by viewModels()
+    private val addFoodViewmodel: AddFoodViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +28,8 @@ class MainPetActivity : ComponentActivity() {
                 NavigationWrapper(
                     registerPetViewModel = registerPetViewModel,
                     addMealViewmodel = addMealViewmodel,
-                    dashBoardViewModel = petDetailsViewmodel
+                    dashBoardViewModel = petDetailsViewmodel,
+                    addFoodViewModel = addFoodViewmodel
                 )
             }
         }
