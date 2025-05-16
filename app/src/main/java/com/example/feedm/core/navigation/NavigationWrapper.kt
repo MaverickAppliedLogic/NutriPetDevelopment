@@ -6,11 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.feedm.petsFeature.ui.view.screens.Content
 import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
+import com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.AddFoodScreen
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
+import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
@@ -19,7 +20,8 @@ import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 fun NavigationWrapper(
     registerPetViewModel: RegisterPetViewmodel,
     addMealViewmodel: AddMealViewmodel,
-    dashBoardViewModel: PetDetailsViewmodel
+    dashBoardViewModel: PetDetailsViewmodel,
+    addFoodViewModel: AddFoodViewModel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = DashBoardScreen) {
@@ -55,22 +57,28 @@ fun NavigationWrapper(
                 if (addFood.origin == "FromFoodList") {
                     navController.navigate(FoodList("FromAddMeal")) {
                         popUpTo<FoodList> { inclusive = true }
+                        addFoodViewModel.setInitialFood()
                     }
                 } else {
                     navController.popBackStack()
+                    addFoodViewModel.setInitialFood()
                 }
             }
             val getDestination = {
                 if (addFood.origin == "FromAddMeal") {
                     navController.navigate(FoodList("FromAddMeal")) {
                         popUpTo<FoodList> { inclusive = true }
+                        addFoodViewModel.setInitialFood()
                     }
                 } else {
                     navController.navigate(FoodList("FromAddFood"))
+                    addFoodViewModel.setInitialFood()
                 }
             }
             BackHandler { getBackDestination() }
-            Content(navToBackStack = { getBackDestination() },
+            AddFoodScreen(
+                addFoodViewModel = addFoodViewModel,
+                navToBackStack = { getBackDestination() },
                 navToFoodList = {
                     getDestination()
                 })
