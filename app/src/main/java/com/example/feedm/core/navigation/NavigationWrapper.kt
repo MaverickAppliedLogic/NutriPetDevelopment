@@ -15,13 +15,15 @@ import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
+import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 
 @Composable
 fun NavigationWrapper(
     registerPetViewModel: RegisterPetViewmodel,
     addMealViewmodel: AddMealViewmodel,
     dashBoardViewModel: PetDetailsViewmodel,
-    addFoodViewModel: AddFoodViewModel
+    addFoodViewModel: AddFoodViewModel,
+    foodListViewModel: FoodsListViewmodel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = DashBoardScreen) {
@@ -100,7 +102,8 @@ fun NavigationWrapper(
             BackHandler { getBackDestination() }
             FoodListScreen(
                 navToAddFood = { navController.navigate(AddFood(foodListOrigin)) },
-                navToBackStack = { getBackDestination() }
+                navToBackStack = { getBackDestination() },
+                foodsListViewmodel = foodListViewModel
             )
         }
     }

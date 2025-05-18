@@ -2,6 +2,7 @@ package com.example.feedm.petsFeature.ui.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -37,33 +41,48 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.feedm.R
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
+import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 
 @Composable
 fun FoodListScreen(
+    foodsListViewmodel: FoodsListViewmodel,
     navToAddFood: () -> Unit,
     navToBackStack: () -> Unit
 ) {
+    val foodList by foodsListViewmodel.foods.collectAsStateWithLifecycle()
+    val formattedFoodList by remember {
+        derivedStateOf {
+            foodList.map { food ->
+                Triple(food.foodId, food.foodName, R.drawable.ic_tailycare)
+            }
+        }
+    }
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing
     ) {
-        FoodListContent(modifier = Modifier.padding(it))
+        FoodListContent(
+            foodList = formattedFoodList,
+            modifier = Modifier.padding(it),
+            onAddButtonClicked = { navToAddFood() },
+            onEditButtonClicked = { }
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FoodListContent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    foodList: List<Triple<Int, String, Int>> = emptyList(),
+    onAddButtonClicked: () -> Unit = {},
+    onEditButtonClicked: () -> Unit = {}
 ) {
-    val foodItems = listOf(
-        Pair("Snack", R.drawable.img_dog_illustration), // Reemplaza con tu recurso
-        Pair("Pienso", R.drawable.ic_tailycare)
-    )
     val lazyListState = rememberLazyListState()
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -86,8 +105,9 @@ fun FoodListContent(
             LazyColumn(
                 state = lazyListState,
             ) {
-                items(foodItems.size) { item ->
-                    FoodItemCard(label = foodItems[item].first, imageRes = foodItems[item].second)
+                items(foodList.size) { item ->
+                    FoodItemCard(id = foodList[item].first,
+                        name = foodList[item].second, image = foodList[item].third)
                 }
 
             }
@@ -100,14 +120,14 @@ fun FoodListContent(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             FloatingActionButton(
-                onClick = { /* Acción editar */ },
+                onClick = { onEditButtonClicked() },
                 containerColor = Primary
             ) {
                 Icon(Icons.Default.Edit, contentDescription = "Edit")
             }
 
             FloatingActionButton(
-                onClick = { /* Acción agregar */ },
+                onClick = { onAddButtonClicked() },
                 containerColor = Primary
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
@@ -117,7 +137,12 @@ fun FoodListContent(
 }
 
 @Composable
-fun FoodItemCard(label: String, imageRes: Int) {
+fun FoodItemCard(
+    id: Int,
+    name: String,
+    image: Int,
+    onCardClicked:(Int) -> Unit = {}
+) {
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(8.dp),
@@ -126,13 +151,14 @@ fun FoodItemCard(label: String, imageRes: Int) {
             .padding(vertical = 16.dp)
             .fillMaxWidth()
             .height(80.dp)
+            .clickable { onCardClicked(id) }
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = label,
+                text = name,
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 16.dp),
@@ -140,8 +166,8 @@ fun FoodItemCard(label: String, imageRes: Int) {
             )
 
             Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = label,
+                painter = painterResource(id = image),
+                contentDescription = name,
                 modifier = Modifier
                     .fillMaxHeight()
                     .aspectRatio(1f),
