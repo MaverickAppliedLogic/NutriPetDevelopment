@@ -30,9 +30,9 @@ class FoodsListViewmodel @Inject constructor(
         }
     }
 
-    fun deleteFood(food: FoodModel) {
+    fun deleteFood(id: Int) {
         viewModelScope.launch {
-            deleteFoodUseCase(food)
+            deleteFoodUseCase(id)
             fetchData()
         }
     }

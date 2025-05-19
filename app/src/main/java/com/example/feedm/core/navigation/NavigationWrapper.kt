@@ -7,9 +7,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
-import com.example.feedm.petsFeature.ui.view.screens.FoodListScreen
 import com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.AddFoodScreen
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
+import com.example.feedm.petsFeature.ui.view.screens.foodListScreen.FoodListScreen
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
 import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
