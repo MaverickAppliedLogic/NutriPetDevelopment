@@ -1,5 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components.MealDataFields
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,15 +21,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.feedm.R
 import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 
 @Composable
 fun FoodField(
+    food: FoodModel,
     navToFoodList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -60,7 +66,17 @@ fun FoodField(
                     modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
-                ) { Text(text = "Seleccionar Comida") }
+                ) {
+                    Text(text = if (food.foodId == -1) "Añadir Comida" else food.foodName,
+                        modifier = Modifier.weight(0.7f), textAlign = TextAlign.Center)
+                    if (food.foodId != -1) {
+                    Image(painter = painterResource(R.drawable.ic_tailycare),
+                        contentDescription = "",
+                        alignment = Alignment.CenterEnd,
+                        modifier = Modifier.weight(0.3f))
+
+                    }
+                }
             }
             Spacer(modifier = Modifier.weight(1f, true))
         }

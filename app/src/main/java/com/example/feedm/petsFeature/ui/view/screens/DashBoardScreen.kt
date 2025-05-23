@@ -83,7 +83,7 @@ fun DashBoardScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
-        CustomBottomBar(navto = { navTo(it, 0) })
+        CustomBottomBar(navto = { navTo(it, null) })
     }
 }
 
@@ -106,7 +106,7 @@ fun CustomBottomBar(
                 )
         ) {
             FloatingActionButton(
-                onClick = {navto("AddMealScreen")},
+                onClick = {navto("AddMeal")},
                 shape = CircleShape, containerColor = Primary,
                 contentColor = SecondaryDarkest,
                 modifier = Modifier

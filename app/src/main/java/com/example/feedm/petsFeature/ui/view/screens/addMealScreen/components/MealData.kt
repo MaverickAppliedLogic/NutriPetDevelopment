@@ -1,7 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.screens.addMealScreen.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,10 +35,10 @@ fun MealData(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = Neutral),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            FoodField(modifier = Modifier.weight(0.3f, true), navToFoodList = {navToFoodList()})
+            FoodField(food = food,
+                modifier = Modifier.weight(0.3f, true), navToFoodList = {navToFoodList()})
             DataField(
                 modifier = Modifier.weight(0.6f, true),
                 ration = ration ,

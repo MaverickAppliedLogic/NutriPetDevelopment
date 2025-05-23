@@ -4,7 +4,7 @@ import com.example.feedm.core.data.database.entities.PetEntity
 
 
 data class PetModel(
-    var petId: Int = 0,
+    var petId: Int = -1,
     var animal: String,
     var petName: String,
     var age: Float,

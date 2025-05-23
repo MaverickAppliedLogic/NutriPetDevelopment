@@ -10,7 +10,9 @@ class FoodRepository @Inject constructor(
     private val foodDao: FoodDao,
 ) {
 
-    // DataBase
+    suspend fun getAllFoods(): List<FoodModel> {
+        return foodDao.getAllFoods().map { it.toDomain() }
+    }
 
     suspend fun getFoodById(foodId: Int): FoodModel {
         return foodDao.getFoodById(foodId).toDomain()

@@ -1,6 +1,6 @@
-package com.example.feedm.petsFeature.ui.view.screens.addPetScreen.utils
+package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils
 
-import com.example.feedm.petsFeature.ui.view.screens.addPetScreen.components.formFields.FormFieldStates.WAITING
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.FormFieldStates.WAITING
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -53,7 +53,6 @@ class FormItemsInteractionsHandler {
         when (index) {
             PET_NAME_FIELD ->
                     _petNameFieldState.value = state
-
             AGE_FIELD ->
                     _ageFieldState.value = state
             SEX_FIELD ->
