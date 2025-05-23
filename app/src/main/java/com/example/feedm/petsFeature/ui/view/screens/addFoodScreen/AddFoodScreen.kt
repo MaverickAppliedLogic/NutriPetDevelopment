@@ -48,6 +48,7 @@ fun AddFoodScreen(
         onCommitButtonClicked = {
             foodIsValid = validateFood(food)
             if (foodIsValid) {
+                addFoodViewModel.addFood()
                 navToFoodList()
             }
         },

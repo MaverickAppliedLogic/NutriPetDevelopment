@@ -18,6 +18,13 @@ class AddMealViewmodel @Inject constructor(
     private val getFoodUseCase: GetFoodUseCase
     ): ViewModel() {
 
+        private val initialSelectedFood = FoodModel(
+            foodId = -1,
+            foodName = "",
+            brand = "",
+            foodWeight = 0f,
+            calories = 0f,)
+
     private val _mealToBeAdded = MutableStateFlow(
         MealModel(
             petId = 0,
@@ -27,19 +34,14 @@ class AddMealViewmodel @Inject constructor(
         )
     )
 
-    private val _foodSelected = MutableStateFlow(
-        FoodModel(
-            foodId = -1,
-            foodName = "",
-            brand = "",
-            foodWeight = 0f,
-            calories = 0f,)
-    )
+    private val _foodSelected = MutableStateFlow(initialSelectedFood)
 
     val mealToBeAdded : StateFlow<MealModel> = _mealToBeAdded
     val foodSelected : StateFlow<FoodModel> = _foodSelected
 
-
+    fun setInitialSelectedFood(){
+        _foodSelected.value = initialSelectedFood
+    }
     fun mealToBeAddedChanged(mealModel: MealModel) {
         viewModelScope.launch {
             _mealToBeAdded.value = mealModel

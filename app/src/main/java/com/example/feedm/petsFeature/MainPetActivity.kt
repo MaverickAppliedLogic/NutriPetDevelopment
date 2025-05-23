@@ -11,6 +11,7 @@ import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
+import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +20,7 @@ class MainPetActivity : ComponentActivity() {
     private val addMealViewmodel: AddMealViewmodel by viewModels()
     private val petDetailsViewmodel: PetDetailsViewmodel by viewModels()
     private val addFoodViewmodel: AddFoodViewModel by viewModels()
+    private val foodsListViewmodel: FoodsListViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +31,8 @@ class MainPetActivity : ComponentActivity() {
                     registerPetViewModel = registerPetViewModel,
                     addMealViewmodel = addMealViewmodel,
                     dashBoardViewModel = petDetailsViewmodel,
-                    addFoodViewModel = addFoodViewmodel
+                    addFoodViewModel = addFoodViewmodel,
+                    foodListViewModel = foodsListViewmodel
                 )
             }
         }
