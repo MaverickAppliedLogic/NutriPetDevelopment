@@ -20,7 +20,7 @@ import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 fun FoodListScreen(
     foodsListViewmodel: FoodsListViewmodel,
     navToAddFood: () -> Unit,
-    navToBackStack: () -> Unit
+    navToBackStack: (Int?) -> Unit
 ) {
     val foodList by foodsListViewmodel.foods.collectAsStateWithLifecycle()
     val formattedFoodList by remember {
@@ -41,8 +41,9 @@ fun FoodListScreen(
             isEditing = isEditing,
             onAddButtonClicked = { navToAddFood() },
             onEditButtonClicked = { isEditing = !isEditing },
-            onCardClicked = { },
-            onIconClicked = { id-> foodsListViewmodel.deleteFood(id)}
+            onCardClicked = { id-> navToBackStack(id)},
+            onIconClicked = { id-> foodsListViewmodel.deleteFood(id)},
+            onDropdownClicked = { navToBackStack(null)}
         )
     }
 }

@@ -110,6 +110,7 @@ fun FoodForm(
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
             value = foodName,
+            singleLine = true,
             onValueChange = { onFoodNameChanged(it) },
             isError = !foodIsValid,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -141,6 +142,7 @@ fun FoodForm(
         OutlinedTextField(
             value = foodCalories,
             onValueChange = { onFoodCaloriesChanged(it) },
+            singleLine = true,
             isError = !foodIsValid,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = TextFieldDefaults.colors(

@@ -24,7 +24,7 @@ class FoodsListViewmodel @Inject constructor(
         fetchData()
     }
 
-    private fun fetchData(){
+    fun fetchData(){
         viewModelScope.launch {
             _foods.value = getAllFoodsUseCase()
         }

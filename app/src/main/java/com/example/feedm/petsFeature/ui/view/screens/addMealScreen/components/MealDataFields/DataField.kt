@@ -36,7 +36,7 @@ fun DataField(
             .fillMaxSize()
             .background(color = Color.Transparent)
     ) {
-        Spacer(modifier = Modifier.weight(0.3f, true))
+        Spacer(modifier = Modifier.weight(0.2f, true))
         Text(
             text = "Ración",
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -65,6 +65,6 @@ fun DataField(
             ),
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.weight(0.7f, true))
+        Spacer(modifier = Modifier.weight(0.8f, true))
     }
 }

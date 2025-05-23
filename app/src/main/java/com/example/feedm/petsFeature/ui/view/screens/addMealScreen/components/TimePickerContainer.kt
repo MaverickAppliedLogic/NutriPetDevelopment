@@ -34,12 +34,12 @@ fun TimePickerContainer(
     onTimepickerVisibilityChange: (Boolean) -> Unit,
 ){
     val timePickerPaddingTopAnim by animateDpAsState(
-        targetValue = if (timePickerIsVisible) 200.dp else { 600.dp },
+        targetValue = if (timePickerIsVisible) 200.dp else { 570.dp },
         animationSpec = spring(dampingRatio = 0.7f, stiffness = 150f),
         label = "TimePickerAnimation"
     )
     val timePickerPaddingBottomAnim by animateDpAsState(
-        targetValue = if (timePickerIsVisible) 200.dp else { 170.dp },
+        targetValue = if (timePickerIsVisible) 170.dp else { 200.dp },
         animationSpec = tween(),
         label = "TimePickerAnimation"
     )
@@ -48,9 +48,11 @@ fun TimePickerContainer(
     )
     Card(
         onClick = { onTimepickerVisibilityChange(true) },
+        enabled = !timePickerIsVisible,
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
         colors =
-        CardDefaults.cardColors(containerColor = NeutralLight, contentColor = SecondaryDarkest),
+        CardDefaults.cardColors(containerColor = NeutralLight, contentColor = SecondaryDarkest,
+            disabledContainerColor = NeutralLight, disabledContentColor = SecondaryDarkest),
         modifier = Modifier
             .fillMaxSize()
             .padding(
