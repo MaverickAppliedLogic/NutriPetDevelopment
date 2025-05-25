@@ -1,5 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,14 +26,20 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
@@ -51,6 +58,8 @@ import com.example.feedm.petsFeature.ui.view.components.ModuleItemMeal
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler
 import com.example.feedm.petsFeature.utils.loopListHandler.LoopListHandler.Companion.RECOVER_DATA
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 @Composable
 fun DashBoardScreen(
@@ -58,7 +67,8 @@ fun DashBoardScreen(
     navTo: (String, Int?) -> Unit
 ) {
     val loopListHandler = LoopListHandler<Int>()
-    loopListHandler.manageLoop(listOf(1,3,4).toMutableList(),RECOVER_DATA, onModifiedList = {})
+    loopListHandler.manageLoop(listOf(1, 3, 4).toMutableList(), RECOVER_DATA, onModifiedList = {})
+
 
     val scrollState = rememberScrollState()
     Scaffold(modifier = Modifier.fillMaxSize(),
@@ -78,6 +88,69 @@ fun DashBoardScreen(
                 )
         )
         MainContent(
+            pets = listOf(
+                PetModel(
+                    petId = 1,
+                    "dog",
+                    "toby",
+                    5.0f,
+                    5.0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ),
+                PetModel(
+                    petId = 1,
+                    "cat",
+                    "toby",
+                    5.0f,
+                    5.0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ),
+                PetModel(
+                    petId = 1,
+                    "dog",
+                    "toby",
+                    5.0f,
+                    5.0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ),
+                PetModel(
+                    petId = 1,
+                    "dog",
+                    "toby",
+                    5.0f,
+                    5.0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                ),
+                PetModel(
+                    petId = 1,
+                    "dog",
+                    "toby",
+                    5.0f,
+                    5.0f,
+                    null,
+                    false,
+                    null,
+                    "",
+                    null
+                )
+            ),
+
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
@@ -106,7 +179,7 @@ fun CustomBottomBar(
                 )
         ) {
             FloatingActionButton(
-                onClick = {navto("AddMeal")},
+                onClick = { navto("AddMeal") },
                 shape = CircleShape, containerColor = Primary,
                 contentColor = SecondaryDarkest,
                 modifier = Modifier
@@ -120,98 +193,60 @@ fun CustomBottomBar(
 }
 
 @Composable
-fun MainContent(modifier: Modifier = Modifier) {
+fun MainContent(
+    pets: List<PetModel>,
+    modifier: Modifier = Modifier
+) {
+
     Column(
         modifier = modifier.background(Neutral),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val pets =  listOf(
-            PetModel(
-                petId = 1,
-                animal = "Dog",
-                petName = "Buddy",
-                age = 3.5f,
-                petWeight = 30.5f,
-                genre = "Male",
-                sterilized = true,
-                activity = "High",
-                goal = "Maintain weight",
-                allergies = "None"
-            ), PetModel(
-                petId = 2,
-                animal = "cat",
-                petName = "Whiskers",
-                age = 5.0f,
-                petWeight = 4.2f,
-                genre = "Female",
-                sterilized = true,
-                activity = "Low",
-                goal = "Lose weight",
-                allergies = "Fish"
-            ),
-            PetModel(
-                petId = 3,
-                animal = "dog",
-                petName = "Kiwi",
-                age = 1.0f,
-                petWeight = 0.5f,
-                genre = null,
-                sterilized = false,
-                activity = "Medium",
-                goal = "Gain weight",
-                allergies = "Nuts"
-            ),
-            PetModel(
-                petId = 4,
-                animal = "dog",
-                petName = "Max",
-                age = 7.0f,
-                petWeight = 38.0f,
-                genre = "Male",
-                sterilized = true,
-                activity = "Low",
-                goal = "Maintain weight",
-                allergies = null
+        if (pets.isEmpty()) {
+            Text(
+                text = "Agrega a tus compañeros",
+                fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
-        )
-        PetList(
-            pets,
-            modifier =
-            Modifier
-                .background(NeutralLight)
-                .fillMaxWidth()
-                .weight(1f,true)
-        )
-        Row(
-            Modifier
-                .height(50.dp)
-                .fillMaxWidth()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(NeutralLight, Neutral),
-                            startY = 0f,
-                            endY = Float.POSITIVE_INFINITY,
-                            tileMode = TileMode.Clamp
+        } else {
+            PetList(
+                pets,
+                modifier =
+                Modifier
+                    .background(NeutralLight)
+                    .fillMaxWidth()
+                    .height(250.dp)
+            )
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(NeutralLight, Neutral),
+                                startY = 0f,
+                                endY = Float.POSITIVE_INFINITY,
+                                tileMode = TileMode.Clamp
+                            )
                         )
-                    )
-            )
-        }
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(horizontal = 15.dp)
-        ) {
-            MealsModule()
-            Spacer(Modifier.height(50.dp))
-            HealthModule()
-            Spacer(Modifier.height(50.dp))
-            DataModule()
-            Spacer(Modifier.height(100.dp))
+                )
+            }
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+            ) {
+                MealsModule()
+                Spacer(Modifier.height(50.dp))
+                HealthModule()
+                Spacer(Modifier.height(50.dp))
+                DataModule()
+                Spacer(Modifier.height(100.dp))
+            }
         }
 
     }
@@ -223,27 +258,39 @@ fun PetList(
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
-    //TODO scrollable list with pets
-    LazyRow(
-        modifier, state = listState,
-        contentPadding = PaddingValues(vertical = 15.dp)
-    ) {
-        items(petList.size) { petIndex ->
-            petList[petIndex].let {
-                if (it.animal.equals("dog")) {
-                    Icon(
-                        painter = painterResource(R.drawable.img_dog_illustration),
-                        contentDescription = "", modifier = Modifier.size(150.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(R.drawable.icono_gato_sinfondo),
-                        contentDescription = "", modifier = Modifier.size(150.dp)
-                    )
+    val coroutineScope = rememberCoroutineScope()
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center) {
+        LazyRow(
+            Modifier.fillMaxSize(), state = listState,
+            contentPadding = PaddingValues(vertical = 40.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            items(petList.size) { petIndex ->
+                Image(painter = if (petList[petIndex].animal != "dog")
+                    painterResource(R.drawable.icono_gato_sinfondo)
+                else painterResource(R.drawable.img_dog_illustration),
+                    contentDescription = "", modifier = Modifier.fillParentMaxSize().scale(0.8f)
+                )
+                LaunchedEffect(listState) {
+                    snapshotFlow { listState.isScrollInProgress }
+                        .distinctUntilChanged()
+                        .collect {
+                            val firstItem = listState.firstVisibleItemIndex
+                            if (!it) {
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(firstItem)
+
+                                }
+                            }
+                        }
                 }
             }
+
+
         }
     }
+
 }
 
 
