@@ -13,6 +13,7 @@ import com.example.feedm.petsFeature.ui.view.screens.foodListScreen.FoodListScre
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
 import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
 import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import com.example.feedm.ui.viewmodel.FoodsListViewmodel
@@ -21,7 +22,7 @@ import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 fun NavigationWrapper(
     registerPetViewModel: RegisterPetViewmodel,
     addMealViewmodel: AddMealViewmodel,
-    dashBoardViewModel: PetDetailsViewmodel,
+    dashBoardViewModel: DashboardViewModel,
     addFoodViewModel: AddFoodViewModel,
     foodListViewModel: FoodsListViewmodel
 ) {

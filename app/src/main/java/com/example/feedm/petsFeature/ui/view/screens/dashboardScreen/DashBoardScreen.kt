@@ -16,11 +16,11 @@ import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.CustomBottomBar
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.DashboardContent
-import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
 
 @Composable
 fun DashBoardScreen(
-    viewmodel: PetDetailsViewmodel,
+    dashboardViewModel: DashboardViewModel,
     navTo: (String, Int?) -> Unit
 ) {
     val scrollState = rememberScrollState()
