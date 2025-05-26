@@ -1,7 +1,6 @@
 package com.example.feedm.petsFeature.ui.view.components
 
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -16,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,16 +32,18 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.feedm.core.ui.theme.PrimaryLightest
+import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDropDownMenu(
-    options: List<String>, title: String,
+    options: List<String>,
+    title: String,
     selectedOption: String?,
     modifier: Modifier = Modifier,
     errorCommitting: Boolean,
@@ -56,25 +58,21 @@ fun CustomDropDownMenu(
 
         TextField(
             value = selectedOption ?: "",
-            textStyle = TextStyle(fontSize = 16.sp),
+            textStyle = TextStyle(
+                fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+                color = SecondaryDarkest,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+            ),
             isError = errorCommitting,
             onValueChange = {},
             trailingIcon = {
-                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "")
+                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "",
+                    tint = SecondaryDarkest)
             },
-            label = {
-                val textColor: Color = if (errorCommitting) Color.Red else Color.Black
-                Text(
-                    text = title, style = TextStyle(
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = textColor,
-                    )
-                )
-            },
+            singleLine = true,
             readOnly = true,
             modifier = modifier
-                .fillMaxSize()
                 .menuAnchor(type = MenuAnchorType.PrimaryNotEditable, enabled = true),
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
@@ -89,7 +87,8 @@ fun CustomDropDownMenu(
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            containerColor = Color.White,
+            matchTextFieldWidth = true,
+            containerColor = PrimaryLightest,
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .clip(
@@ -103,14 +102,7 @@ fun CustomDropDownMenu(
                     text = {
                         Text(
                             text = option,
-                            color = if (option == "Nueva comida") Color.LightGray else Color.Black,
-                            style =
-                            if (option == "Nueva comida")
-                                TextStyle(
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            else TextStyle(fontWeight = FontWeight.Normal)
+                            color = SecondaryDarkest,
                         )
                     },
                     onClick = { onSelectOption(option); expanded = false },
