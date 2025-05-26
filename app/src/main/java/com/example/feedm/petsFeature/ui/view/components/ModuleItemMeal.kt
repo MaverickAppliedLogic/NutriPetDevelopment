@@ -59,15 +59,12 @@ fun ModuleItemMeal(
             modifier = Modifier.weight(0.3f, true))
         TimeValues(mealHour, modifier = Modifier.weight(0.25f, true), editable)
         FoodValues(mealRation, modifier = Modifier.weight(0.20f, true), editable)
-        if(editable){
-            IconButton(onClick = iconClicked, modifier = Modifier.weight(0.07f, true)) {
-                Icon(imageVector = Icons.TwoTone.Delete, contentDescription = "",
-                    tint = SecondaryDark, modifier = Modifier.size(22.dp))
+        if (editable) {
+            IconButton(onClick = iconClicked) {
+                Icon(imageVector = Icons.TwoTone.Delete, contentDescription = "Eliminar", tint = Error)
             }
         }
-        else{
         StateIndicator(state, modifier = Modifier.weight(valuesWeight, true))
-        }
     }
 }
 
