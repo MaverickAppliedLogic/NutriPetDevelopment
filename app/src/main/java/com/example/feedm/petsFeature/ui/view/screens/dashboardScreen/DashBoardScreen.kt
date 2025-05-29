@@ -26,7 +26,7 @@ fun DashBoardScreen(
     navTo: (String, Int?) -> Unit
 ) {
     val pets by dashboardViewModel.pets.collectAsStateWithLifecycle()
-    val meals by dashboardViewModel.meals.collectAsStateWithLifecycle()
+    val mealsWithFoods by dashboardViewModel.mealsWithFoods.collectAsStateWithLifecycle()
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
     LaunchedEffect(pets) {
         if (pets.isNotEmpty()){
@@ -51,7 +51,7 @@ fun DashBoardScreen(
                         tileMode = TileMode.Clamp)))
         DashboardContent(
             pets = pets,
-            meals = meals,
+            mealsWithFoods = mealsWithFoods,
             onPetSelected = { dashboardViewModel.setPetId(it) },
             onMealDeleteClicked = { dashboardViewModel.deleteMeal(it) },
             modifier = Modifier

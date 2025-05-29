@@ -26,17 +26,19 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields.DataModule
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields.HealthModule
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields.MealsModule
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields.PetList
+import java.util.Locale
 
 @Composable
 fun DashboardContent(
     pets: List<PetModel>,
-    meals: List<MealModel>,
+    mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
     onPetSelected: (Int) -> Unit,
     onMealDeleteClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -87,19 +89,22 @@ fun DashboardContent(
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
             ) {
-                MealsModule(meals = meals,
+                val petWeightFormatted = String
+                    .format(Locale.getDefault(),"%.1f", petSelected.petWeight)
+                val petSterilizedFormatted = if (petSelected.sterilized) "Si" else "No"
+                MealsModule(mealsWithFoods = mealsWithFoods,
                     onDeleteIconClicked = { onMealDeleteClicked(it) })
                 Spacer(Modifier.height(50.dp))
                 HealthModule(
-                    petWeight = petSelected.petWeight.toString(),
+                    petWeight = petWeightFormatted,
                     petGoal = petSelected.goal,
                     petActivity = petSelected.activity ?: "-"
                 )
                 Spacer(Modifier.height(50.dp))
                 DataModule(
-                    petSterilize = petSelected.sterilized.toString(),
+                    petSterilize = petSterilizedFormatted,
                     petGenre = petSelected.genre ?: "-",
-                    petAge = petSelected.age.toString()
+                    petAge = petSelected.age.toInt().toString()
                 )
                 Spacer(Modifier.height(150.dp))
             }

@@ -45,11 +45,13 @@ import com.example.feedm.core.ui.theme.SecondaryLight
 fun ModuleItemMeal(
     modifier: Modifier = Modifier,
     mealId: Int = 0,
+    mealCalories: Double = 0.0,
     mealHour: String = "00:00",
     mealRation: String = "0",
     foodName: String = "Food",
     editable: Boolean,
-    onDeleteIconClicked: (Int) -> Unit = {}
+    onAddIconClicked: (Double) -> Unit = {},
+    onDeleteIconClicked: (Int,Double) -> Unit
 ) {
     var state by remember { mutableIntStateOf(1) }
     Row(
@@ -68,7 +70,7 @@ fun ModuleItemMeal(
         FoodValues(mealRation, modifier = Modifier.weight(0.20f, true), editable)
         if (editable) {
             IconButton(
-                onClick = { onDeleteIconClicked(mealId) },
+                onClick = { onDeleteIconClicked(mealId,mealCalories) },
                 modifier = Modifier.weight(0.07f, true)
             ) {
                 Icon(
@@ -79,7 +81,8 @@ fun ModuleItemMeal(
         } else {
             StateIndicator(
                 state = state,
-                onClick = { state = 0 },
+                onClick = { state = 0
+                          onAddIconClicked(mealCalories)},
                 modifier = Modifier.weight(valuesWeight, true)
             )
         }
@@ -207,5 +210,7 @@ fun StateIndicator(
 @Preview(showBackground = true)
 @Composable
 fun ModuleItemMealPreview() {
-    ModuleItemMeal(modifier = Modifier.fillMaxWidth(), editable = true)
+    ModuleItemMeal(modifier = Modifier.fillMaxWidth(),
+        onDeleteIconClicked = {_,_->},
+        editable = true)
 }

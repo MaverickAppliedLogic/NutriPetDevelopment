@@ -2,6 +2,8 @@ package com.example.feedm.petsFeature.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
+import com.example.feedm.petsFeature.domain.objectTasks.food.useCase.GetFoodUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.DeleteMealUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.GetMealsUseCase
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val getPetsUseCase: GetPetsUseCase,
     private val getMealsUseCase: GetMealsUseCase,
+    private val getFoodsUseCase: GetFoodUseCase,
     private val deleteMealUseCase: DeleteMealUseCase,
 ) : ViewModel() {
 
@@ -25,8 +28,8 @@ class DashboardViewModel @Inject constructor(
     private val _pets = MutableStateFlow<List<PetModel>>(emptyList())
     val pets: StateFlow<List<PetModel>> = _pets
 
-    private val _meals = MutableStateFlow<List<MealModel>>(emptyList())
-    val meals: StateFlow<List<MealModel>> = _meals
+    private val _mealsWithFoods = MutableStateFlow<List<Pair<MealModel,FoodModel?>>>(emptyList())
+    val mealsWithFoods: StateFlow<List<Pair<MealModel,FoodModel?>>> = _mealsWithFoods
 
     init {
         fetchData()
@@ -43,7 +46,23 @@ class DashboardViewModel @Inject constructor(
     }
     fun getMeals() {
         viewModelScope.launch {
-            _meals.value = getMealsUseCase(selectedPetId.value!!)
+            val meals = getMealsUseCase(selectedPetId.value!!)
+            getFoods(meals)
+        }
+    }
+
+    private fun getFoods(meals: List<MealModel>) {
+        viewModelScope.launch {
+            val mealsAndFoods = mutableListOf<Pair<MealModel, FoodModel?>>()
+            meals.forEach {
+                if (it.foodId != null) {
+                    mealsAndFoods.add(Pair(it, getFoodsUseCase(it.foodId!!)))
+                }
+                else {
+                    mealsAndFoods.add(Pair(it, null))
+                }
+            }
+            _mealsWithFoods.value = mealsAndFoods
         }
     }
 
