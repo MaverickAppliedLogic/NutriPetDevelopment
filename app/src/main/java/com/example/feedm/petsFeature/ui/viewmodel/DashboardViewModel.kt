@@ -3,7 +3,6 @@ package com.example.feedm.petsFeature.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
-import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.AddMealUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.DeleteMealUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.GetMealsUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
@@ -18,39 +17,46 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val getPetsUseCase: GetPetsUseCase,
     private val getMealsUseCase: GetMealsUseCase,
-    private val addMealUseCase: AddMealUseCase,
     private val deleteMealUseCase: DeleteMealUseCase,
 ) : ViewModel() {
+
+    var selectedPetId = MutableStateFlow<Int?>(null)
+
     private val _pets = MutableStateFlow<List<PetModel>>(emptyList())
     val pets: StateFlow<List<PetModel>> = _pets
 
     private val _meals = MutableStateFlow<List<MealModel>>(emptyList())
     val meals: StateFlow<List<MealModel>> = _meals
 
-    init{
+    init {
+        fetchData()
+    }
+
+    private fun fetchData() {
         viewModelScope.launch {
             _pets.value = getPetsUseCase()
-            if (_pets.value.isNotEmpty()) {
-                val allMeals = mutableListOf<MealModel>()
-                _pets.value.forEach { pet ->
-                    allMeals += getMealsUseCase(pet.petId)
-                }
-                _meals.value = allMeals
-            } else {
-                _meals.value = emptyList()
-            }
+        }
+    }
+
+    fun setPetId(petId: Int) {
+        selectedPetId.value = petId
+    }
+    fun getMeals() {
+        viewModelScope.launch {
+            _meals.value = getMealsUseCase(selectedPetId.value!!)
         }
     }
 
     fun deleteMeal(mealId: Int) {
         viewModelScope.launch {
             deleteMealUseCase(listOf(mealId))
+            getMeals()
         }
     }
 
     fun editMeal(meal: MealModel) {
         viewModelScope.launch {
-            addMealUseCase(meal)
+            getMeals()
         }
     }
 }

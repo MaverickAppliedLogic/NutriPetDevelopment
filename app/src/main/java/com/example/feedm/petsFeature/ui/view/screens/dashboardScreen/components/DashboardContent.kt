@@ -13,6 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -20,6 +26,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
+import com.example.feedm.petsFeature.domain.objectTasks.meal.model.MealModel
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields.DataModule
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields.HealthModule
@@ -29,6 +36,9 @@ import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.
 @Composable
 fun DashboardContent(
     pets: List<PetModel>,
+    meals: List<MealModel>,
+    onPetSelected: (Int) -> Unit,
+    onMealDeleteClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -42,10 +52,14 @@ fun DashboardContent(
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         } else {
+            var petIndexSelected by remember { mutableIntStateOf(0) }
+            val petSelected by remember { derivedStateOf { pets[petIndexSelected] } }
+            LaunchedEffect(petIndexSelected) { onPetSelected(petSelected.petId) }
+
             PetList(
-                pets,
-                modifier =
-                Modifier
+                petList = pets,
+                onPetSelected = { petIndexSelected = it },
+                modifier = Modifier
                     .background(NeutralLight)
                     .fillMaxWidth()
                     .height(250.dp)
@@ -53,7 +67,7 @@ fun DashboardContent(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
+                    .height(75.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -73,12 +87,21 @@ fun DashboardContent(
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
             ) {
-                MealsModule()
+                MealsModule(meals = meals,
+                    onDeleteIconClicked = { onMealDeleteClicked(it) })
                 Spacer(Modifier.height(50.dp))
-                HealthModule()
+                HealthModule(
+                    petWeight = petSelected.petWeight.toString(),
+                    petGoal = petSelected.goal,
+                    petActivity = petSelected.activity ?: "-"
+                )
                 Spacer(Modifier.height(50.dp))
-                DataModule()
-                Spacer(Modifier.height(100.dp))
+                DataModule(
+                    petSterilize = petSelected.sterilized.toString(),
+                    petGenre = petSelected.genre ?: "-",
+                    petAge = petSelected.age.toString()
+                )
+                Spacer(Modifier.height(150.dp))
             }
         }
 

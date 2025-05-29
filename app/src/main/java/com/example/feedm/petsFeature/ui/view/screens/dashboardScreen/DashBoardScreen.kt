@@ -8,12 +8,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
-import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.CustomBottomBar
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.DashboardContent
 import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
@@ -23,6 +25,20 @@ fun DashBoardScreen(
     dashboardViewModel: DashboardViewModel,
     navTo: (String, Int?) -> Unit
 ) {
+    val pets by dashboardViewModel.pets.collectAsStateWithLifecycle()
+    val meals by dashboardViewModel.meals.collectAsStateWithLifecycle()
+    val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
+    LaunchedEffect(pets) {
+        if (pets.isNotEmpty()){
+        dashboardViewModel.setPetId(pets.first().petId)
+            dashboardViewModel.getMeals()
+        }
+    }
+    LaunchedEffect(petIdSelected) {
+        if (petIdSelected != null) {
+            dashboardViewModel.getMeals()
+        }
+    }
     val scrollState = rememberScrollState()
     Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
         Box(modifier = Modifier
@@ -34,74 +50,19 @@ fun DashBoardScreen(
                         endY = Float.POSITIVE_INFINITY,
                         tileMode = TileMode.Clamp)))
         DashboardContent(
-            pets = listOf(
-                PetModel(
-                    petId = 1,
-                    "dog",
-                    "Masfdfdddf",
-                    5.0f,
-                    5.0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                ),
-                PetModel(
-                    petId = 1,
-                    "cat",
-                    "toby",
-                    5.0f,
-                    5.0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                ),
-                PetModel(
-                    petId = 1,
-                    "dog",
-                    "toby",
-                    5.0f,
-                    5.0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                ),
-                PetModel(
-                    petId = 1,
-                    "dog",
-                    "toby",
-                    5.0f,
-                    5.0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                ),
-                PetModel(
-                    petId = 1,
-                    "dog",
-                    "toby",
-                    5.0f,
-                    5.0f,
-                    null,
-                    false,
-                    null,
-                    "",
-                    null
-                )
-            ),
+            pets = pets,
+            meals = meals,
+            onPetSelected = { dashboardViewModel.setPetId(it) },
+            onMealDeleteClicked = { dashboardViewModel.deleteMeal(it) },
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
-        CustomBottomBar(navTo = { navTo(it, null) })
+        CustomBottomBar(navTo = {
+            println("NavToDashBoard")
+            println(petIdSelected)
+            navTo(it, petIdSelected) })
     }
 }
 

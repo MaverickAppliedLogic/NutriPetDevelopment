@@ -51,11 +51,13 @@ class AddMealViewmodel @Inject constructor(
     fun getFood(foodId: Int){
         viewModelScope.launch {
             _foodSelected.value = getFoodUseCase(foodId)
+            _mealToBeAdded.value = _mealToBeAdded.value.copy(foodId = _foodSelected.value.foodId)
         }
     }
 
     fun addMeal(){
         viewModelScope.launch {
+            println("Antes de ser agregado: ${_mealToBeAdded.value.mealTime}")
         addMealUseCase(_mealToBeAdded.value)
         }
     }

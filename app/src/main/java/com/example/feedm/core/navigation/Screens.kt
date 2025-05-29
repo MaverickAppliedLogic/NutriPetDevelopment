@@ -12,7 +12,7 @@ data class RegisterPet(val petId: Int?)
 data class AddMeal(val petId: Int? = null, val foodId: Int? = null)
 
 @Serializable
-data class AddFood(val origin: String? = null)
+data class AddFood(val origin: String, val petId: Int? = null)
 
 @Serializable
 data class FoodList(val origin: String, val petId: Int? = null)

@@ -10,10 +10,9 @@ import com.example.feedm.core.data.database.entities.FoodEntity
 import com.example.feedm.core.data.database.entities.MealEntity
 import com.example.feedm.core.data.database.entities.PetEntity
 import com.example.feedm.core.data.database.entities.PetFoodEntity
-import dagger.Provides
 
 @Database(entities = [PetEntity::class, MealEntity::class, FoodEntity::class, PetFoodEntity::class],
-    version = 11)
+    version = 12)
 
 abstract class AppDatabase: RoomDatabase() {
 

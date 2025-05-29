@@ -41,7 +41,10 @@ fun FoodListScreen(
             isEditing = isEditing,
             onAddButtonClicked = { navToAddFood() },
             onEditButtonClicked = { isEditing = !isEditing },
-            onCardClicked = { id-> navToBackStack(id)},
+            onCardClicked = { id->
+                println("CardClickedFoodList")
+                println(id)
+                navToBackStack(id)},
             onIconClicked = { id-> foodsListViewmodel.deleteFood(id)},
             onDropdownClicked = { navToBackStack(null)}
         )

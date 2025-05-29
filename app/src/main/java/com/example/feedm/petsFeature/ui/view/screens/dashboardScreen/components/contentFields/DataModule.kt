@@ -11,10 +11,16 @@ import com.example.feedm.petsFeature.ui.view.components.ModuleCard
 import com.example.feedm.petsFeature.ui.view.components.ModuleItem
 
 @Composable
-fun DataModule() {
+fun DataModule(
+    petSterilize: String,
+    petGenre: String,
+    petAge: String
+) {
     ModuleCard(headerTitle = "Datos") {
         ModuleItem(
-            Modifier
+            headerText = "Esterilizado",
+            trailingText = petSterilize,
+            modifier = Modifier
                 .height(50.dp)
                 .padding(end = 5.dp)
         )
@@ -22,15 +28,20 @@ fun DataModule() {
             modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp), color = Secondary
         )
         ModuleItem(
-            Modifier
+            headerText = "Sexo",
+            trailingText = petGenre,
+            modifier = Modifier
                 .height(50.dp)
                 .padding(end = 5.dp)
+
         )
         HorizontalDivider(
             modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp), color = Secondary
         )
         ModuleItem(
-            Modifier
+            headerText = "Edad",
+            trailingText = petAge,
+            modifier = Modifier
                 .height(50.dp)
                 .padding(end = 5.dp)
         )

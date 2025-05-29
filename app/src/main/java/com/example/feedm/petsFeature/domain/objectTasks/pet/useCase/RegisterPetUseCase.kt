@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class RegisterPetUseCase @Inject constructor(private val repository: PetsRepository) {
    suspend operator fun invoke(petModel: PetModel){
-       if(petModel.petId != -1){
+       if(petModel.petId != 0){
            repository.updatePet(petModel.toDataBase())
        }
        else{

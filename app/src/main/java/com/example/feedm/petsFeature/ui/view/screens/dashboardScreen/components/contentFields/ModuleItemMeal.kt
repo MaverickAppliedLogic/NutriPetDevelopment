@@ -1,4 +1,4 @@
-package com.example.feedm.petsFeature.ui.view.components
+package com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.contentFields
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +22,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,13 +44,14 @@ import com.example.feedm.core.ui.theme.SecondaryLight
 @Composable
 fun ModuleItemMeal(
     modifier: Modifier = Modifier,
+    mealId: Int = 0,
     mealHour: String = "00:00",
     mealRation: String = "0",
     foodName: String = "Food",
-    state: Int = 1,
-    editable: Boolean = true,
-    iconClicked: () -> Unit = {}
+    editable: Boolean,
+    onDeleteIconClicked: (Int) -> Unit = {}
 ) {
+    var state by remember { mutableIntStateOf(1) }
     Row(
         modifier = modifier
             .padding(vertical = 5.dp, horizontal = 5.dp)
@@ -54,19 +59,29 @@ fun ModuleItemMeal(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val valuesWeight = if(state == 0) 0.07f else 0.15f
-        Text(text = foodName, color = SecondaryDarkest,
-            modifier = Modifier.weight(0.3f, true))
+        val valuesWeight = if (state == 0) 0.07f else 0.15f
+        Text(
+            text = foodName, color = SecondaryDarkest,
+            modifier = Modifier.weight(0.3f, true)
+        )
         TimeValues(mealHour, modifier = Modifier.weight(0.25f, true), editable)
         FoodValues(mealRation, modifier = Modifier.weight(0.20f, true), editable)
-        if(editable){
-            IconButton(onClick = iconClicked, modifier = Modifier.weight(0.07f, true)) {
-                Icon(imageVector = Icons.TwoTone.Delete, contentDescription = "",
-                    tint = SecondaryDark, modifier = Modifier.size(22.dp))
+        if (editable) {
+            IconButton(
+                onClick = { onDeleteIconClicked(mealId) },
+                modifier = Modifier.weight(0.07f, true)
+            ) {
+                Icon(
+                    imageVector = Icons.TwoTone.Delete, contentDescription = "",
+                    tint = SecondaryDark, modifier = Modifier.size(22.dp)
+                )
             }
-        }
-        else{
-        StateIndicator(state, modifier = Modifier.weight(valuesWeight, true))
+        } else {
+            StateIndicator(
+                state = state,
+                onClick = { state = 0 },
+                modifier = Modifier.weight(valuesWeight, true)
+            )
         }
     }
 }
@@ -74,12 +89,13 @@ fun ModuleItemMeal(
 @Composable
 fun TimeValues(mealHour: String, modifier: Modifier = Modifier, editable: Boolean) {
     Row(modifier, Arrangement.End) {
-        val modifierForValues = if (editable) { Modifier
-            .shadow(elevation = 2.dp, shape = RoundedCornerShape(5.dp), clip = true)
-            .clip(RoundedCornerShape(5.dp))
-            .background(PrimaryLightest)
-            .width(30.dp)}
-        else{
+        val modifierForValues = if (editable) {
+            Modifier
+                .shadow(elevation = 2.dp, shape = RoundedCornerShape(5.dp), clip = true)
+                .clip(RoundedCornerShape(5.dp))
+                .background(PrimaryLightest)
+                .width(30.dp)
+        } else {
             Modifier
                 .clip(RoundedCornerShape(5.dp))
                 .background(SecondaryLight)
@@ -88,9 +104,11 @@ fun TimeValues(mealHour: String, modifier: Modifier = Modifier, editable: Boolea
         Box(
             modifier = modifierForValues
         ) {
-            Text(mealHour.slice(0..1),
+            Text(
+                mealHour.slice(0..1),
                 color = SecondaryDarkest,
-                modifier = Modifier.align(Alignment.Center))
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
         Spacer(modifier = Modifier.padding(horizontal = 2.dp))
         Text(":", color = SecondaryDarkest)
@@ -98,8 +116,10 @@ fun TimeValues(mealHour: String, modifier: Modifier = Modifier, editable: Boolea
         Box(
             modifier = modifierForValues
         ) {
-            Text(mealHour.slice(3..4), color = SecondaryDarkest,
-                modifier = Modifier.align(Alignment.Center))
+            Text(
+                mealHour.slice(3..4), color = SecondaryDarkest,
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
         Spacer(modifier = Modifier.padding(horizontal = 2.dp))
         Text("h", color = SecondaryDarkest)
@@ -110,20 +130,23 @@ fun TimeValues(mealHour: String, modifier: Modifier = Modifier, editable: Boolea
 fun FoodValues(mealRation: String, modifier: Modifier = Modifier, editable: Boolean) {
     Row(modifier, horizontalArrangement = Arrangement.End) {
         Box(
-            modifier = if (editable) { Modifier
-                .clip(RoundedCornerShape(1.dp))
-                .border(1.5.dp, SecondaryDark, RoundedCornerShape(1.dp))
-                .background(PrimaryLightest)
-                .width(30.dp)}
-            else{
+            modifier = if (editable) {
+                Modifier
+                    .clip(RoundedCornerShape(1.dp))
+                    .border(1.5.dp, SecondaryDark, RoundedCornerShape(1.dp))
+                    .background(PrimaryLightest)
+                    .width(30.dp)
+            } else {
                 Modifier
                     .clip(RoundedCornerShape(1.dp))
                     .background(SecondaryLight)
                     .width(30.dp)
             }
         ) {
-            Text(mealRation, color = SecondaryDarkest,
-                modifier = Modifier.align(Alignment.Center))
+            Text(
+                mealRation, color = SecondaryDarkest,
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
         Spacer(modifier = Modifier.padding(horizontal = 2.dp))
         Text("gr", color = SecondaryDarkest)
@@ -132,30 +155,36 @@ fun FoodValues(mealRation: String, modifier: Modifier = Modifier, editable: Bool
 }
 
 @Composable
-fun StateIndicator(state: Int, modifier: Modifier = Modifier) {
+fun StateIndicator(
+    modifier: Modifier = Modifier,
+    state: Int,
+    onClick: () -> Unit = {}
+) {
     Row(
         modifier.fillMaxHeight(), verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
         when (state) {
-            0->{
+            0 -> {
                 Icon(
                     imageVector = Icons.Default.Check, contentDescription = "",
                     tint = Good, modifier = Modifier.size(25.dp)
                 )
             }
+
             1 -> {
                 Icon(
                     imageVector = Icons.TwoTone.Warning, contentDescription = "",
                     tint = Pending, modifier = Modifier.weight(0.5f)
                 )
-                IconButton(onClick = {}, modifier = Modifier.weight(0.5f)) {
+                IconButton(onClick = { onClick() }, modifier = Modifier.weight(0.5f)) {
                     Icon(
                         imageVector = Icons.Default.Add, contentDescription = "",
                         tint = SecondaryDarkest
                     )
                 }
             }
+
             2 -> {
                 Icon(
                     imageVector = Icons.Default.Info, contentDescription = "",
@@ -178,5 +207,5 @@ fun StateIndicator(state: Int, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun ModuleItemMealPreview() {
-    ModuleItemMeal(modifier = Modifier.fillMaxWidth())
+    ModuleItemMeal(modifier = Modifier.fillMaxWidth(), editable = true)
 }
