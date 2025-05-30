@@ -56,7 +56,7 @@ object DataModule {
             .build()
 
 
-    private val MIGRATION = object : Migration(11, 12) {
+    private val MIGRATION = object : Migration(12, 13) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
@@ -92,6 +92,7 @@ object DataModule {
                 food_id INTEGER DEFAULT NULL,
                 meal_time INTEGER NOT NULL,
                 ration REAL NOT NULL,
+                meal_state INTEGER NOT NULL,
                 meal_calories REAL NOT NULL,
                 is_daily_meal INTEGER NOT NULL,
                 FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,

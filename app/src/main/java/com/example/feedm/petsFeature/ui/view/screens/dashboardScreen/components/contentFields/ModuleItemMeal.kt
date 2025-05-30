@@ -22,10 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,15 +41,15 @@ import com.example.feedm.core.ui.theme.SecondaryLight
 fun ModuleItemMeal(
     modifier: Modifier = Modifier,
     mealId: Int = 0,
+    state: Int = 1,
     mealCalories: Double = 0.0,
     mealHour: String = "00:00",
     mealRation: String = "0",
     foodName: String = "Food",
     editable: Boolean,
-    onAddIconClicked: (Double) -> Unit = {},
-    onDeleteIconClicked: (Int,Double) -> Unit
+    onAddIconClicked: (Int) -> Unit = {},
+    onDeleteIconClicked: (Int) -> Unit
 ) {
-    var state by remember { mutableIntStateOf(1) }
     Row(
         modifier = modifier
             .padding(vertical = 5.dp, horizontal = 5.dp)
@@ -70,7 +66,7 @@ fun ModuleItemMeal(
         FoodValues(mealRation, modifier = Modifier.weight(0.20f, true), editable)
         if (editable) {
             IconButton(
-                onClick = { onDeleteIconClicked(mealId,mealCalories) },
+                onClick = { onDeleteIconClicked(mealId) },
                 modifier = Modifier.weight(0.07f, true)
             ) {
                 Icon(
@@ -81,8 +77,7 @@ fun ModuleItemMeal(
         } else {
             StateIndicator(
                 state = state,
-                onClick = { state = 0
-                          onAddIconClicked(mealCalories)},
+                onClick = { onAddIconClicked(mealId)},
                 modifier = Modifier.weight(valuesWeight, true)
             )
         }
@@ -211,6 +206,6 @@ fun StateIndicator(
 @Composable
 fun ModuleItemMealPreview() {
     ModuleItemMeal(modifier = Modifier.fillMaxWidth(),
-        onDeleteIconClicked = {_,_->},
+        onDeleteIconClicked = {_->},
         editable = true)
 }

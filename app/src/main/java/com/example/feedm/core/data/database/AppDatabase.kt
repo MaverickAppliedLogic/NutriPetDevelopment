@@ -12,7 +12,7 @@ import com.example.feedm.core.data.database.entities.PetEntity
 import com.example.feedm.core.data.database.entities.PetFoodEntity
 
 @Database(entities = [PetEntity::class, MealEntity::class, FoodEntity::class, PetFoodEntity::class],
-    version = 12)
+    version = 13)
 
 abstract class AppDatabase: RoomDatabase() {
 

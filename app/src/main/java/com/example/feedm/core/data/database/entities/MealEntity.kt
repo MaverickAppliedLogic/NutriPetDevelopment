@@ -25,10 +25,11 @@ data class MealEntity(
     @ColumnInfo(name = "food_id") val foodId: Int?,
     @ColumnInfo(name = "meal_time") val mealTime: Long,
     @ColumnInfo(name = "ration") val ration: Float,
+    @ColumnInfo(name = "meal_state") val mealState: Int = 1,
     @ColumnInfo(name = "meal_calories") val mealCalories: Double,
     @ColumnInfo(name = "is_daily_meal") val isDailyMeal: Boolean // Nuevo atributo
 )
 
 fun MealModel.toDatabase() =
-    MealEntity(mealId, petId, foodId, mealTime, ration, mealCalories, isDailyMeal)
+    MealEntity(mealId, petId, foodId, mealTime, ration, mealState, mealCalories, isDailyMeal)
 

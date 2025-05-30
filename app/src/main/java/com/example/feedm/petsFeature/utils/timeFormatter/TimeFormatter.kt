@@ -10,7 +10,7 @@ class TimeFormatter(private val calendarProvider: CalendarFactory = CalendarProv
         fun formatMillsToInt(milliseconds: Long): Pair<Int, Int> {
 
             val time = calendarProvider.getInstance().apply {
-                timeZone = TimeZone.getTimeZone("UTC")
+                timeZone = TimeZone.getDefault()
                 timeInMillis = milliseconds }
 
             val hour = time.get(Calendar.HOUR_OF_DAY)
@@ -22,7 +22,7 @@ class TimeFormatter(private val calendarProvider: CalendarFactory = CalendarProv
         fun formatIntToMills(hour: Int, min: Int, secs: Int, mills: Int): Long {
 
             val time = calendarProvider.getInstance().apply {
-                timeZone = TimeZone.getTimeZone("UTC")
+                timeZone = TimeZone.getDefault()
                 set(Calendar.HOUR_OF_DAY, hour)
                 set(Calendar.MINUTE, min)
                 set(Calendar.SECOND, secs)

@@ -25,9 +25,12 @@ fun DashBoardScreen(
     dashboardViewModel: DashboardViewModel,
     navTo: (String, Int?) -> Unit
 ) {
+
     val pets by dashboardViewModel.pets.collectAsStateWithLifecycle()
     val mealsWithFoods by dashboardViewModel.mealsWithFoods.collectAsStateWithLifecycle()
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
+    val requiredCalories by dashboardViewModel.requiredCalories.collectAsStateWithLifecycle()
+
     LaunchedEffect(pets) {
         if (pets.isNotEmpty()){
         dashboardViewModel.setPetId(pets.first().petId)
@@ -51,8 +54,14 @@ fun DashBoardScreen(
                         tileMode = TileMode.Clamp)))
         DashboardContent(
             pets = pets,
+            requiredCalories = requiredCalories?:0,
             mealsWithFoods = mealsWithFoods,
             onPetSelected = { dashboardViewModel.setPetId(it) },
+            onMealAddClicked = { id ->
+                val pair = mealsWithFoods.find { it.first.mealId == id }
+                println(pair)
+                dashboardViewModel.editMeal(pair!!.first.copy(mealState = 0))
+            },
             onMealDeleteClicked = { dashboardViewModel.deleteMeal(it) },
             modifier = Modifier
                 .padding(paddingValues)

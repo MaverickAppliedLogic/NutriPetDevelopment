@@ -12,7 +12,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,11 +30,15 @@ import java.util.Locale
 @Composable
 fun MealsModule(
     mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
+    requiredCalories: Int,
+    onAddIconClicked: (Int) -> Unit = {},
     onDeleteIconClicked: (Int) -> Unit = {},
 ) {
     val timeFormatter = TimeFormatter()
     var editable by remember { mutableStateOf(false) }
-    val caloriesConsumed = remember { mutableStateListOf<Int>() }
+    val caloriesConsumed = mealsWithFoods
+        .filter { it.first.mealState == 0 }
+        .map { it.first.mealCalories.toInt() }
 
     ModuleCard(
         headerTitle = "Comidas Diarias",
@@ -53,7 +56,7 @@ fun MealsModule(
         },
         captionEnabled = true,
         captionHead = "Recomendado",
-        captionTrailing = "${caloriesConsumed.sumOf { it }} kcal"
+        captionTrailing = "${caloriesConsumed.sumOf { it }} / $requiredCalories kcal"
     ) {
         if (mealsWithFoods.isEmpty()) {
             Text(
@@ -76,12 +79,12 @@ fun MealsModule(
                 ModuleItemMeal(
                     mealId = meal.mealId,
                     mealRation = meal.ration.toInt().toString(),
+                    state = meal.mealState,
                     mealCalories = meal.mealCalories,
                     mealHour = formatedStringHour,
                     foodName = food?.foodName?: "No registrado",
-                    onAddIconClicked = { calories -> caloriesConsumed.add(calories.toInt()) },
-                    onDeleteIconClicked = { id,calories ->
-                        caloriesConsumed.remove(calories.toInt());onDeleteIconClicked(id) },
+                    onAddIconClicked = { id -> onAddIconClicked(id) },
+                    onDeleteIconClicked = { id -> onDeleteIconClicked(id) },
                     modifier = Modifier.height(40.dp), editable = editable
                 )
                 if (it != mealsWithFoods.last()) {

@@ -38,8 +38,10 @@ import java.util.Locale
 @Composable
 fun DashboardContent(
     pets: List<PetModel>,
+    requiredCalories: Int,
     mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
     onPetSelected: (Int) -> Unit,
+    onMealAddClicked: (Int) -> Unit,
     onMealDeleteClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -93,6 +95,8 @@ fun DashboardContent(
                     .format(Locale.getDefault(),"%.1f", petSelected.petWeight)
                 val petSterilizedFormatted = if (petSelected.sterilized) "Si" else "No"
                 MealsModule(mealsWithFoods = mealsWithFoods,
+                    requiredCalories = requiredCalories,
+                    onAddIconClicked = { onMealAddClicked(it) },
                     onDeleteIconClicked = { onMealDeleteClicked(it) })
                 Spacer(Modifier.height(50.dp))
                 HealthModule(

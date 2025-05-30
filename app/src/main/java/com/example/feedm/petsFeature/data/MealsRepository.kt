@@ -20,6 +20,10 @@ class MealsRepository @Inject constructor(private val mealsDao: MealDao) {
         mealsDao.addMealForAPet(meal.toDatabase())
     }
 
+    suspend fun editMeal(meal: MealModel) {
+        mealsDao.editMeal(meal.toDatabase())
+    }
+
     suspend fun deleteMealForAPet(mealId: List<Int>) {
         mealsDao.deleteMealForAPet(mealId)
     }
