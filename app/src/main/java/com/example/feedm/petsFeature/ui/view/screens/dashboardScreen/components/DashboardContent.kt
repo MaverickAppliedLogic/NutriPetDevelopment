@@ -41,6 +41,7 @@ fun DashboardContent(
     requiredCalories: Int,
     mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
     onPetSelected: (Int) -> Unit,
+    onMealDataClicked: (Int) -> Unit,
     onMealAddClicked: (Int) -> Unit,
     onMealDeleteClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -96,6 +97,7 @@ fun DashboardContent(
                 val petSterilizedFormatted = if (petSelected.sterilized) "Si" else "No"
                 MealsModule(mealsWithFoods = mealsWithFoods,
                     requiredCalories = requiredCalories,
+                    onDataClicked = { onMealDataClicked(it) },
                     onAddIconClicked = { onMealAddClicked(it) },
                     onDeleteIconClicked = { onMealDeleteClicked(it) })
                 Spacer(Modifier.height(50.dp))

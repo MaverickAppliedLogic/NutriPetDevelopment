@@ -23,7 +23,7 @@ import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
 @Composable
 fun DashBoardScreen(
     dashboardViewModel: DashboardViewModel,
-    navTo: (String, Int?) -> Unit
+    navTo: (String, Int?, Int?) -> Unit
 ) {
 
     val pets by dashboardViewModel.pets.collectAsStateWithLifecycle()
@@ -57,6 +57,7 @@ fun DashBoardScreen(
             requiredCalories = requiredCalories?:0,
             mealsWithFoods = mealsWithFoods,
             onPetSelected = { dashboardViewModel.setPetId(it) },
+            onMealDataClicked = { id -> navTo("AddMeal", petIdSelected, id) },
             onMealAddClicked = { id ->
                 val pair = mealsWithFoods.find { it.first.mealId == id }
                 println(pair)
@@ -71,7 +72,7 @@ fun DashBoardScreen(
         CustomBottomBar(navTo = {
             println("NavToDashBoard")
             println(petIdSelected)
-            navTo(it, petIdSelected) })
+            navTo(it, petIdSelected, null) })
     }
 }
 

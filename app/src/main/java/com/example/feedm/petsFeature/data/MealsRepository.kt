@@ -12,6 +12,10 @@ class MealsRepository @Inject constructor(private val mealsDao: MealDao) {
        return mealsDao.getMealsByPetId(petId).map { it.toDomain() }
     }
 
+    suspend fun getMealById(mealId: Int): MealModel {
+       return mealsDao.getMealById(mealId).toDomain()
+    }
+
     suspend fun clearAllMeals() {
         mealsDao.clearAllMeals()
     }

@@ -31,6 +31,7 @@ import java.util.Locale
 fun MealsModule(
     mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
     requiredCalories: Int,
+    onDataClicked: (Int) -> Unit = {},
     onAddIconClicked: (Int) -> Unit = {},
     onDeleteIconClicked: (Int) -> Unit = {},
 ) {
@@ -83,6 +84,7 @@ fun MealsModule(
                     mealCalories = meal.mealCalories,
                     mealHour = formatedStringHour,
                     foodName = food?.foodName?: "No registrado",
+                    onDataClicked = { id -> onDataClicked(id) },
                     onAddIconClicked = { id -> onAddIconClicked(id) },
                     onDeleteIconClicked = { id -> onDeleteIconClicked(id) },
                     modifier = Modifier.height(40.dp), editable = editable

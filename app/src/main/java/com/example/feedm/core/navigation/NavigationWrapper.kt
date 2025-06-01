@@ -28,10 +28,10 @@ fun NavigationWrapper(
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = DashBoardScreen) {
         composable<DashBoardScreen> {
-            DashBoardScreen(dashBoardViewModel) { destination, petId ->
+            DashBoardScreen(dashBoardViewModel) { destination, petId, mealId ->
                 when (destination) {
                     "RegisterPet" -> navController.navigate(RegisterPet(null))
-                    "AddMeal" -> navController.navigate(AddMeal(petId = petId!!))
+                    "AddMeal" -> navController.navigate(AddMeal(petId = petId!!, mealId = mealId))
                     "AddFood" -> navController.navigate(AddFood(""))
                     "EditPet" -> navController.navigate(RegisterPet(petId))
                 }
@@ -57,6 +57,7 @@ fun NavigationWrapper(
             } }
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
+                mealId = addMeal.mealId ?: -1,
                 foodId = addMeal.foodId ?: -1,
                 petId = addMeal.petId!!,
                 navToFoodList = { navController.navigate(FoodList("FromAddMeal", addMeal.petId)) },

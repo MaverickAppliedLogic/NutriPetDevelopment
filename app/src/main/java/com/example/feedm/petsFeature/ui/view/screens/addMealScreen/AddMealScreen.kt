@@ -18,6 +18,7 @@ import java.util.Locale
 @Composable
 fun AddMealScreen(
     addMealViewmodel: AddMealViewmodel,
+    mealId: Int,
     petId: Int,
     foodId: Int,
     navToFoodList: () -> Unit,
@@ -29,6 +30,9 @@ fun AddMealScreen(
         mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
     }
     addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(petId = petId))
+    LaunchedEffect(mealId) {
+        if (mealId != -1) addMealViewmodel.getMeal(mealId)
+    }
 
     LaunchedEffect(foodId) {
         if (foodId != -1) addMealViewmodel.getFood(foodId)
