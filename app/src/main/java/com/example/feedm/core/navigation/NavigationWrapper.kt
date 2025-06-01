@@ -30,9 +30,10 @@ fun NavigationWrapper(
         composable<DashBoardScreen> {
             DashBoardScreen(dashBoardViewModel) { destination, petId ->
                 when (destination) {
-                    "RegisterPet" -> navController.navigate(RegisterPet(petId))
+                    "RegisterPet" -> navController.navigate(RegisterPet(null))
                     "AddMeal" -> navController.navigate(AddMeal(petId = petId!!))
                     "AddFood" -> navController.navigate(AddFood(""))
+                    "EditPet" -> navController.navigate(RegisterPet(petId))
                 }
             }
         }

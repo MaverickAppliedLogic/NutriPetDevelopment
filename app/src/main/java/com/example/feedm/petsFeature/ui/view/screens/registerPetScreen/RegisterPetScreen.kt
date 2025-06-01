@@ -48,7 +48,6 @@ fun RegisterPetScreen(
             registerPetViewmodel.getPetById(petId)
         }
     }
-// Colectores para FieldState
     val listOfStates = rememberFieldStates(formItemsHandler)
     Scaffold(
         bottomBar = {
