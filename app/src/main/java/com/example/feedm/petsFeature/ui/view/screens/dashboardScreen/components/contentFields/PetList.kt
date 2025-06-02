@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -22,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,20 +45,35 @@ import kotlinx.coroutines.launch
 @Composable
 fun PetList(
     petList: List<PetModel>,
-    onPetSelected: (Int) -> Unit,
-    onEditIconClicked: (Int) -> Unit,
+    petModel: PetModel,
+    onPetSelected: (PetModel) -> Unit,
+    onEditIconClicked: () -> Unit,
     onDeleteIconClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    var petIndexSelected by remember { mutableIntStateOf(0) }
-    var thereIsPrevious by remember { mutableStateOf(petIndexSelected != 0 ) }
-    var thereIsNext by remember { mutableStateOf(petIndexSelected != petList.lastIndex) }
-    LaunchedEffect(petIndexSelected) {
-        onPetSelected(petList[petIndexSelected].petId)
-        thereIsPrevious = petIndexSelected != 0
-        thereIsNext = petIndexSelected != petList.lastIndex
+    val listKey = remember(petList) { petList.map { it.petId } }
+    val listState = remember(listKey) { LazyListState() }
+    var pet by remember { mutableStateOf<PetModel?>(null) }
+    var thereArePrevious by remember { mutableStateOf(petList.size > 1) }
+    var thereAreNext by remember { mutableStateOf(false) }
+    var needRefresh by remember { mutableStateOf(true) }
+   LaunchedEffect(listKey) {
+       pet = petModel
+       thereArePrevious = pet != petList.first()
+       thereAreNext = pet != petList.last()
+   }
+    LaunchedEffect(pet) {
+        if (pet != null && pet != petModel) {
+            onPetSelected(pet!!)
+            thereArePrevious = pet != petList.first()
+            thereAreNext = pet != petList.last()
+            coroutineScope.launch {
+                listState.animateScrollToItem(
+                    petList.indexOf(pet)
+                )
+            }
+        }
     }
 
     Column(
@@ -69,29 +83,30 @@ fun PetList(
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             CustomDropDownMenu(
                 options = petList.map { it.petName },
-                selectedOption = petList[petIndexSelected].petName,
+                selectedOption = pet?.petName ?: "",
                 errorCommitting = false,
                 onSelectOption = { selectedOption ->
-                    petIndexSelected = petList.indexOfFirst { it.petName == selectedOption }
-                    coroutineScope.launch {
-                        listState.animateScrollToItem(petIndexSelected)
-                    }
+                    pet = petList.find { it.petName == selectedOption }!!
                 },
                 onDeleteIconClicked = {},
                 modifier = Modifier.fillMaxWidth(0.5f)
             )
 
             Row(modifier = Modifier.fillMaxWidth(0.95f), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = { onDeleteIconClicked()}) {
-                    Icon(imageVector = Icons.TwoTone.Delete,
+                IconButton(onClick = { onDeleteIconClicked(); needRefresh = true }) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Delete,
                         contentDescription = "",
-                        tint = Error)
+                        tint = Error
+                    )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { onEditIconClicked(petList[petIndexSelected].petId) }) {
-                    Icon(imageVector = Icons.Default.Create,
+                IconButton(onClick = { onEditIconClicked() }) {
+                    Icon(
+                        imageVector = Icons.Default.Create,
                         contentDescription = "",
-                        tint = SecondaryDarkest)
+                        tint = SecondaryDarkest
+                    )
                 }
             }
         }
@@ -101,8 +116,8 @@ fun PetList(
                 state = listState,
                 horizontalArrangement = Arrangement.Center
             ) {
-                items(petList.size, key = { petList[it].petId }) { petIndex ->
-                    val petAnimal by remember { mutableStateOf(petList[petIndex].animal)}
+                items(petList.size, key = {petList[it].petId}) {petIndex ->
+                    val petAnimal by remember { mutableStateOf(petList[petIndex].animal) }
                     Box(
                         modifier = Modifier.fillParentMaxSize(),
                         contentAlignment = Alignment.BottomCenter
@@ -122,78 +137,64 @@ fun PetList(
                             .collect {
                                 val firstItem = listState.firstVisibleItemIndex
                                 if (!it) {
-                                    if (firstItem != petIndexSelected) {
-                                        petIndexSelected = firstItem
-                                    }
-                                    listState.animateScrollToItem(petIndexSelected)
+                                    pet = petList[firstItem]
                                 }
                             }
                     }
-                    LaunchedEffect(petIndexSelected) {
-                        onPetSelected(petIndexSelected)
-                    }
                 }
-
-
             }
-            Row {
-                Spacer(modifier = Modifier.weight(0.15f))
-                IconButton(
-                    onClick = {
-                        petIndexSelected = petList.indexOfFirst {
-                            it.petId == petList[petIndexSelected - 1].petId
-                        }
-                        coroutineScope.launch {
-                            listState.animateScrollToItem(petIndexSelected)
-                        }
-                    },
-                    enabled = thereIsPrevious
-                ) {
-                    AnimatedVisibility(
-                        visible = thereIsPrevious,
-                        enter = fadeIn(),
-                        exit = fadeOut(),
+            if (petList.size > 1) {
+                Row {
+                    Spacer(modifier = Modifier.weight(0.15f))
+                    IconButton(
+                        onClick = {
+                            pet = petList[petList.indexOf(pet) - 1]
+                            println(pet)
+                        },
+                        enabled = thereArePrevious
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = "",
-                            tint = SecondaryDark,
-                            modifier = Modifier
-                                .rotate(90f)
-                                .scale(1.75f)
-                                .alpha(0.5f)
-                        )
+                        AnimatedVisibility(
+                            visible = thereArePrevious,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowDown,
+                                contentDescription = "",
+                                tint = SecondaryDark,
+                                modifier = Modifier
+                                    .rotate(90f)
+                                    .scale(1.75f)
+                                    .alpha(0.5f)
+                            )
+                        }
                     }
-                }
-                Spacer(modifier = Modifier.weight(0.7f))
-                IconButton(
-                    onClick = {
-                        petIndexSelected = petList.indexOfFirst {
-                            it.petId == petList[petIndexSelected + 1].petId
-                        }
-                        coroutineScope.launch {
-                            listState.animateScrollToItem(petIndexSelected)
-                        }
-                    },
-                    enabled = thereIsNext
-                ) {
-                    AnimatedVisibility(
-                        visible = thereIsNext,
-                        enter = fadeIn(animationSpec = tween()),
-                        exit = fadeOut(animationSpec = tween()),
+                    Spacer(modifier = Modifier.weight(0.7f))
+                    IconButton(
+                        onClick = {
+                            pet = petList[petList.indexOf(pet) + 1]
+                            println(pet)
+                        },
+                        enabled = thereAreNext
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = "",
-                            tint = SecondaryDark,
-                            modifier = Modifier
-                                .rotate(-90f)
-                                .scale(1.75f)
-                                .alpha(0.5f)
-                        )
+                        AnimatedVisibility(
+                            visible = thereAreNext,
+                            enter = fadeIn(animationSpec = tween()),
+                            exit = fadeOut(animationSpec = tween()),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowDown,
+                                contentDescription = "",
+                                tint = SecondaryDark,
+                                modifier = Modifier
+                                    .rotate(-90f)
+                                    .scale(1.75f)
+                                    .alpha(0.5f)
+                            )
+                        }
                     }
+                    Spacer(modifier = Modifier.weight(0.15f))
                 }
-                Spacer(modifier = Modifier.weight(0.15f))
             }
         }
     }

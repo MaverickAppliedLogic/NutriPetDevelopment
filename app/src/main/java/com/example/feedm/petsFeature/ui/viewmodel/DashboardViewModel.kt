@@ -49,9 +49,12 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun setPetId(petId: Int) {
-        selectedPetId.value = petId
-        requiredCalories.value =
-            calculateCaloriesUseCase(_pets.value.find { it.petId == petId }!!).toInt()
+            selectedPetId.value = petId
+            val pet = _pets.value.find { it.petId == petId }
+        if (pet != null){
+            requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
+        }
+
     }
 
     fun deletePet(petId: Int) {

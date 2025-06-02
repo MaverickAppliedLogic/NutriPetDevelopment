@@ -13,12 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,7 +36,7 @@ fun DashboardContent(
     requiredCalories: Int,
     mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
     onPetSelected: (Int) -> Unit,
-    onEditIconClicked: (Int) -> Unit,
+    onEditIconClicked: () -> Unit,
     onDeleteIconClicked: () -> Unit,
     onMealDataClicked: (Int) -> Unit,
     onMealAddClicked: (Int) -> Unit,
@@ -54,25 +48,18 @@ fun DashboardContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (pets.isEmpty()) {
+        if (pets.isEmpty() || petIdSelected == null) {
             Text(
                 text = "Agrega a tus compañeros",
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         } else {
-            var petSelected by remember { mutableStateOf(pets.first()) }
-            LaunchedEffect(petIdSelected) {
-                if(petIdSelected != null) petSelected = pets.first { it.petId == petIdSelected }
-            }
-            var petIndexSelected by remember { mutableIntStateOf(0) }
-            LaunchedEffect(petIndexSelected) {
-                onPetSelected(pets[petIndexSelected].petId)
-            }
-
+            val petSelected = pets.find { it.petId == petIdSelected }?: pets.first()
             PetList(
                 petList = pets,
-                onPetSelected = { petIndexSelected = it },
-                onEditIconClicked = { onEditIconClicked(it) },
+                petModel = petSelected,
+                onPetSelected = { onPetSelected(it.petId) },
+                onEditIconClicked = { onEditIconClicked() },
                 onDeleteIconClicked = { onDeleteIconClicked() },
                 modifier = Modifier
                     .background(NeutralLight)

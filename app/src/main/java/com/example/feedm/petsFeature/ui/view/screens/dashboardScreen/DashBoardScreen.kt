@@ -1,24 +1,44 @@
 package com.example.feedm.petsFeature.ui.view.screens.dashboardScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.feedm.core.ui.theme.Error
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
+import com.example.feedm.core.ui.theme.SecondaryDarkest
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.CustomBottomBar
 import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.components.DashboardContent
 import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun DashBoardScreen(
@@ -26,16 +46,18 @@ fun DashBoardScreen(
     needToRefresh: Boolean,
     navTo: (String, Int?, Int?) -> Unit
 ) {
-    val pets by dashboardViewModel.pets.collectAsStateWithLifecycle()
+    val pets by dashboardViewModel.pets.collectAsState()
     val mealsWithFoods by dashboardViewModel.mealsWithFoods.collectAsStateWithLifecycle()
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
     val requiredCalories by dashboardViewModel.requiredCalories.collectAsStateWithLifecycle()
+    var openDialog by remember { mutableStateOf(false) }
+    val snackBarHostState = remember { SnackbarHostState()}
+    val scope = rememberCoroutineScope()
 
     if (needToRefresh) dashboardViewModel.fetchData()
     LaunchedEffect(pets.size) {
         if (pets.isNotEmpty()) {
             dashboardViewModel.setPetId(pets.first().petId)
-            dashboardViewModel.getMeals()
         }
     }
     LaunchedEffect(petIdSelected) {
@@ -44,7 +66,15 @@ fun DashBoardScreen(
         }
     }
     val scrollState = rememberScrollState()
-    Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(snackBarHostState){
+            Snackbar(snackbarData = it,
+                containerColor = SecondaryDarkest,
+                contentColor = NeutralLight,
+                modifier = Modifier.padding(bottom = 80.dp).clickable {
+                    snackBarHostState.currentSnackbarData?.dismiss() })
+        } },
+        ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,11 +96,11 @@ fun DashBoardScreen(
                 dashboardViewModel.setPetId(it)
             },
             onEditIconClicked = {
-                navTo("EditPet", it, null)
+                navTo("EditPet", petIdSelected, null)
             },
             onDeleteIconClicked = {
                 println("onDeleteIconClicked")
-                dashboardViewModel.deletePet(petIdSelected!!)
+                openDialog = true
             },
             onMealDataClicked = { id ->
                 navTo("AddMeal", petIdSelected, id)
@@ -88,11 +118,51 @@ fun DashBoardScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
+        if(openDialog && petIdSelected != null){
+            val petName = pets.find { it.petId == petIdSelected }!!.petName
+
+            AlertDialog(
+            onDismissRequest = { openDialog = false },
+            title = {
+                Text(buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                    append("¿Desea eliminar a")
+                    }
+                    withStyle(style = SpanStyle(color = Error,
+                        fontWeight = FontWeight.Bold,
+                    )) {
+                        append(" $petName ")
+                    }
+                    withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                    append("?")
+                    }
+                })
+                    },
+            text = {
+                Text(text = "Una vez eliminado no podrá recuperar ninguno de sus datos",
+                    color = SecondaryDarkest)
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    openDialog = false
+                }){ Text(text = "Cancelar", color = SecondaryDarkest, fontWeight = FontWeight.Bold) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    dashboardViewModel.deletePet(petIdSelected!!);openDialog = false
+                  scope.launch {
+                      snackBarHostState.showSnackbar("$petName eliminado/a correctamente.")
+                  }
+                }){ Text(text = "Eliminar", color = Error) } },
+            containerColor = NeutralLight,
+        )
+        }
         CustomBottomBar(navTo = {
             println("NavToDashBoard")
             println(petIdSelected)
             navTo(it, petIdSelected, null)
-        })
+        }
+        )
     }
 }
 
