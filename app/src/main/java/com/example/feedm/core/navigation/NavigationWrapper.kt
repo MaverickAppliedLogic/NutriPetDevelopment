@@ -6,14 +6,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.feedm.petsFeature.ui.view.screens.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.AddFoodScreen
 import com.example.feedm.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
+import com.example.feedm.petsFeature.ui.view.screens.dashboardScreen.DashBoardScreen
 import com.example.feedm.petsFeature.ui.view.screens.foodListScreen.FoodListScreen
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
 import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.AddMealViewmodel
-import com.example.feedm.petsFeature.ui.viewmodel.PetDetailsViewmodel
+import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
 import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 
@@ -21,18 +21,20 @@ import com.example.feedm.ui.viewmodel.FoodsListViewmodel
 fun NavigationWrapper(
     registerPetViewModel: RegisterPetViewmodel,
     addMealViewmodel: AddMealViewmodel,
-    dashBoardViewModel: PetDetailsViewmodel,
+    dashBoardViewModel: DashboardViewModel,
     addFoodViewModel: AddFoodViewModel,
     foodListViewModel: FoodsListViewmodel
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = DashBoardScreen) {
+    NavHost(navController = navController, startDestination = DashBoardScreen(false)) {
         composable<DashBoardScreen> {
-            DashBoardScreen(dashBoardViewModel) { destination, petId ->
+          val shouldRefresh = it.toRoute<DashBoardScreen>().shouldRefresh?:false
+            DashBoardScreen(dashBoardViewModel, needToRefresh = shouldRefresh) { destination, petId, mealId ->
                 when (destination) {
-                    "RegisterPet" -> navController.navigate(RegisterPet(petId))
-                    "AddMeal" -> navController.navigate(AddMeal(petId))
+                    "RegisterPet" -> navController.navigate(RegisterPet(null))
+                    "AddMeal" -> navController.navigate(AddMeal(petId = petId!!, mealId = mealId))
                     "AddFood" -> navController.navigate(AddFood(""))
+                    "EditPet" -> navController.navigate(RegisterPet(petId))
                 }
             }
         }
@@ -42,7 +44,7 @@ fun NavigationWrapper(
                 petId = registerPet.petId,
                 registerPetViewmodel = registerPetViewModel
             ) {
-                navController.navigate(DashBoardScreen) {
+                navController.navigate(DashBoardScreen(shouldRefresh = true)) {
                     popUpTo<DashBoardScreen> { inclusive = true }
                     registerPetViewModel.setInitialPet()
                 }
@@ -50,18 +52,18 @@ fun NavigationWrapper(
         }
         composable<AddMeal> {
             val addMeal = it.toRoute<AddMeal>()
-            val foodId = it.toRoute<AddMeal>().foodId
-            BackHandler {  navController.navigate(DashBoardScreen) {
+            BackHandler {  navController.navigate(DashBoardScreen(false)) {
                 popUpTo<DashBoardScreen> { inclusive = true }
                 addMealViewmodel.setInitialSelectedFood()
             } }
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
-                foodId = foodId ?: -1,
-                petId = 0,
+                mealId = addMeal.mealId ?: -1,
+                foodId = addMeal.foodId ?: -1,
+                petId = addMeal.petId!!,
                 navToFoodList = { navController.navigate(FoodList("FromAddMeal", addMeal.petId)) },
                 navToBackStack = {
-                    navController.navigate(DashBoardScreen) {
+                    navController.navigate(DashBoardScreen(false)) {
                         popUpTo<DashBoardScreen> { inclusive = true }
                         addMealViewmodel.setInitialSelectedFood()
                     }
@@ -69,9 +71,12 @@ fun NavigationWrapper(
         }
         composable<AddFood> {
             val addFood = it.toRoute<AddFood>()
+            val petId = it.toRoute<AddFood>().petId
+            println("AddFoodNavigationWrapper")
+            println(petId)
             val getBackDestination = {
-                if (addFood.origin == "FromFoodList") {
-                    navController.navigate(FoodList("FromAddMeal")) {
+                if (addFood.origin == "FromAddMeal") {
+                    navController.navigate(FoodList("FromAddMeal", petId)) {
                         popUpTo<FoodList> { inclusive = true }
                         addFoodViewModel.setInitialFood()
                     }
@@ -82,7 +87,7 @@ fun NavigationWrapper(
             }
             val getDestination = {
                 if (addFood.origin == "FromAddMeal") {
-                    navController.navigate(FoodList("FromAddMeal")) {
+                    navController.navigate(FoodList("FromAddMeal", petId)) {
                         popUpTo<FoodList> { inclusive = true }
                         addFoodViewModel.setInitialFood()
                     }
@@ -105,7 +110,7 @@ fun NavigationWrapper(
             foodListViewModel.fetchData()
             val getBackDestination = { foodId: Int? ->
                 when (foodListOrigin) {
-                    "FromAddFood" -> navController.navigate(DashBoardScreen) {
+                    "FromAddFood" -> navController.navigate(DashBoardScreen(false)) {
                         popUpTo<DashBoardScreen> { inclusive = true }
                     }
 
@@ -118,7 +123,7 @@ fun NavigationWrapper(
             }
             BackHandler { getBackDestination(null) }
             FoodListScreen(
-                navToAddFood = { navController.navigate(AddFood(foodListOrigin)) },
+                navToAddFood = { navController.navigate(AddFood(foodListOrigin,petId)) },
                 navToBackStack = { foodId -> getBackDestination(foodId) },
                 foodsListViewmodel = foodListViewModel
             )

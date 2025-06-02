@@ -24,30 +24,21 @@ import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
 import com.example.feedm.core.ui.theme.Secondary
 import com.example.feedm.core.ui.theme.SecondaryDarkest
-import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTimePicker(
+    modifier: Modifier = Modifier,
     onConfirm: (Int,Int) -> Unit,
     onDismiss: () -> Unit,
     hour: Int,
     minute: Int,
-    mode: Int = 1,
-    modifier: Modifier = Modifier
+    mode: Int = 1
 ) {
-    val calendar = Calendar.getInstance()
-    var initialHour = calendar.get(Calendar.HOUR_OF_DAY)
-    var initialMinute = calendar.get(Calendar.MINUTE)
 
-    if (hour != calendar.get(Calendar.HOUR_OF_DAY) ||
-        minute != calendar.get(Calendar.MINUTE)){
-        initialHour = hour
-        initialMinute = minute
-    }
     val timePickerState = rememberTimePickerState(
-        initialHour = initialHour,
-        initialMinute = initialMinute,
+        initialHour = hour,
+        initialMinute = minute,
         is24Hour = false
     )
     Column(

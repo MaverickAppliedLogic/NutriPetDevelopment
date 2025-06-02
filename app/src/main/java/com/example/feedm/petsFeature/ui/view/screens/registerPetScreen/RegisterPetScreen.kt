@@ -21,10 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.AddPetContent
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler
@@ -33,12 +31,11 @@ import com.example.feedm.petsFeature.ui.viewmodel.RegisterPetViewmodel
 import rememberFieldStates
 
 
-@Preview
 @Composable
 fun RegisterPetScreen(
     petId: Int? = null,
-    registerPetViewmodel: RegisterPetViewmodel = viewModel(),
-    navigateBack: () -> Unit = {}
+    registerPetViewmodel: RegisterPetViewmodel,
+    navigateBack: (Boolean) -> Unit = {}
 ) {
     val formItemsHandler = remember { FormItemsInteractionsHandler() }
     val petToBeAdded by registerPetViewmodel.petToBeRegistered.collectAsStateWithLifecycle()
@@ -48,7 +45,6 @@ fun RegisterPetScreen(
             registerPetViewmodel.getPetById(petId)
         }
     }
-// Colectores para FieldState
     val listOfStates = rememberFieldStates(formItemsHandler)
     Scaffold(
         bottomBar = {

@@ -24,11 +24,11 @@ class RegisterPetViewmodel @Inject constructor(
         petName = "",
         age = 0f,
         petWeight = 0f,
-        genre = "",
+        genre = null,
         sterilized = false,
-        activity = "",
+        activity = null,
         goal = "",
-        allergies = ""
+        allergies = null
     )
     private val _petToBeRegistered = MutableStateFlow(_initialPet)
 

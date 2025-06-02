@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.feedm.core.data.database.entities.MealEntity
 
 @Dao
@@ -23,6 +24,12 @@ interface MealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMealForAPet(meal: MealEntity)
 
+    @Query("SELECT * FROM meal_table WHERE meal_id = :mealId")
+    suspend fun getMealById(mealId: Int): MealEntity
+
     @Query("DELETE FROM meal_table WHERE (meal_id in (:mealId))")
     suspend fun deleteMealForAPet(mealId: List<Int>)
+
+    @Update
+    suspend fun editMeal(meal: MealEntity)
 }

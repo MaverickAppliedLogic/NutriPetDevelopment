@@ -3,12 +3,14 @@ package com.example.feedm.petsFeature.domain.objectTasks.meal.model
 import com.example.feedm.core.data.database.entities.MealEntity
 
 data class MealModel(
-    var mealId : Int = 0,
-    var petId: Int,
-    var foodId: Int = 0,
-    var mealTime: Long,
-    var ration: Float,
-    var mealCalories: Double = 0.0
+    val mealId : Int = 0,
+    val petId: Int,
+    val foodId: Int?= 0,
+    val mealTime: Long,
+    val ration: Float,
+    val mealState: Int = 1,
+    val mealCalories: Double = 0.0,
+    val isDailyMeal: Boolean = false
 )
 
 fun MealEntity.toDomain() =
@@ -17,4 +19,6 @@ fun MealEntity.toDomain() =
         foodId = foodId,
         mealTime = mealTime,
         ration = ration,
-        mealCalories = mealCalories)
+        mealState = mealState,
+        mealCalories = mealCalories,
+        isDailyMeal = isDailyMeal)

@@ -1,10 +1,7 @@
 package com.example.feedm.core.di
 
 import android.content.Context
-import androidx.datastore.core.DataStoreFactory
-import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.migration.Migration
@@ -59,13 +56,11 @@ object DataModule {
             .build()
 
 
-    val MIGRATION = object : Migration(10, 11) {
+    private val MIGRATION = object : Migration(12, 13) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
-            // Crear la tabla "food_table_new"
-            db.execSQL(
-                """
+            db.execSQL("""
             CREATE TABLE food_table_new (
                 food_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 food_name TEXT NOT NULL,
@@ -73,12 +68,9 @@ object DataModule {
                 food_weight REAL,
                 calories REAL NOT NULL
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Crear la tabla "pet_table_new" con claves foráneas
-            db.execSQL(
-                """
+            db.execSQL("""
             CREATE TABLE pet_table_new (
                 pet_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 animal TEXT NOT NULL,
@@ -91,28 +83,24 @@ object DataModule {
                 goal TEXT NOT NULL,
                 allergies TEXT
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Crear la tabla "meal_table_new" con claves foráneas, incluyendo food_id
-            db.execSQL(
-                """
+            db.execSQL("""
             CREATE TABLE meal_table_new (
                 meal_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 pet_id INTEGER NOT NULL,
-                food_id INTEGER NOT NULL,
+                food_id INTEGER DEFAULT NULL,
                 meal_time INTEGER NOT NULL,
                 ration REAL NOT NULL,
+                meal_state INTEGER NOT NULL,
                 meal_calories REAL NOT NULL,
+                is_daily_meal INTEGER NOT NULL,
                 FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,
                 FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE SET DEFAULT
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Crear la tabla "pet_food_table_new_new" para la relación N:M
-            db.execSQL(
-                """
+            db.execSQL("""
             CREATE TABLE pet_food_table_new_new (
                 pet_id INTEGER NOT NULL,
                 food_id INTEGER NOT NULL,
@@ -120,40 +108,28 @@ object DataModule {
                 FOREIGN KEY(pet_id) REFERENCES pet_table(pet_id) ON DELETE CASCADE,
                 FOREIGN KEY(food_id) REFERENCES food_table(food_id) ON DELETE CASCADE
             )
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Migración de datos para food_table
-            db.execSQL(
-                """
+            // Migración de datos
+            db.execSQL("""
             INSERT INTO food_table_new (food_id, food_name, brand, food_weight, calories)
             SELECT food_id, food_name, brand, food_weight, calories FROM food_table
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Migración de datos para pet_table
-            db.execSQL(
-                """
+            db.execSQL("""
             INSERT INTO pet_table_new (pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies)
             SELECT pet_id, animal, pet_name, age, pet_weight, genre, sterilized, activity, goal, allergies FROM pet_table
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Migración de datos para pet_food_table
-            db.execSQL(
-                """
+            db.execSQL("""
             INSERT INTO pet_food_table_new_new (pet_id, food_id)
             SELECT pet_id, food_id FROM pet_food_table
-            """.trimIndent()
-            )
+        """.trimIndent())
 
-            // Migración de datos para meal_table
-            db.execSQL(
-                """
-            INSERT INTO meal_table_new (meal_id, pet_id, meal_time, ration, meal_calories)
-            SELECT meal_id, pet_id, meal_time, ration, calories FROM meal_table
-            """.trimIndent()
-            )
+            db.execSQL("""
+            INSERT INTO meal_table_new (meal_id, pet_id, food_id, meal_time, ration, meal_calories, is_daily_meal)
+            SELECT meal_id, pet_id, food_id, meal_time, ration, meal_calories, 1 FROM meal_table
+        """.trimIndent())
 
             // Eliminar las tablas antiguas
             db.execSQL("DROP TABLE food_table")

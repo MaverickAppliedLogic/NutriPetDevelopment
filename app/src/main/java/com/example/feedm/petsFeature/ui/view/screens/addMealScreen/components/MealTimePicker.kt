@@ -44,6 +44,8 @@ fun MealTimePicker(
         hour = hour,
         min = min,
         onMealTimeChanged = { hourSet, minSet ->
+            println("HourSet: $hourSet")
+            println("MinSet: $minSet")
             onMealTimeChanged(timeFormatter.formatIntToMills(hourSet, minSet, 0, 0))},
         onTimepickerVisibilityChange = { onTimepickerVisibilityChange(it) }
     )

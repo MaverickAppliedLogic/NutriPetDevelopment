@@ -5,7 +5,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,6 +18,7 @@ import java.util.Locale
 @Composable
 fun AddMealScreen(
     addMealViewmodel: AddMealViewmodel,
+    mealId: Int,
     petId: Int,
     foodId: Int,
     navToFoodList: () -> Unit,
@@ -29,30 +29,33 @@ fun AddMealScreen(
     var rationFormatted by remember {
         mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
     }
-    var mealTime by remember {
-        mutableLongStateOf(mealToBeAdded.mealTime)
+    addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(petId = petId))
+    LaunchedEffect(mealId) {
+        if (mealId != -1) addMealViewmodel.getMeal(mealId)
     }
 
-    LaunchedEffect(true) {
-        addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(petId = petId))
-    }
     LaunchedEffect(foodId) {
         if (foodId != -1) addMealViewmodel.getFood(foodId)
     }
     Scaffold {
         AddMealContent(
             rationFormatted = rationFormatted,
-            mealTime = mealTime,
+            mealTime = mealToBeAdded.mealTime,
             food = foodSelected,
-            navToFoodList = { navToFoodList() },
+            navToFoodList = {
+                println("NavToFoodListAddMeal")
+                println(mealToBeAdded.petId)
+                navToFoodList() },
             addButtonClicked = {
-                addMealViewmodel.mealToBeAddedChanged(
-                    mealToBeAdded.copy(
+                addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(
                         ration = rationFormatted.toFloatOrNull()?:0f))
+                println(mealToBeAdded.foodId)
+                println(mealToBeAdded.petId)
                 addMealViewmodel.addMeal()
                 navToBackStack() },
             onRationChanged = {newRation -> rationFormatted = newRation },
-            onMealTimeChanged = {newMealTime -> mealTime = newMealTime },
+            onMealTimeChanged = {newMealTime ->
+                addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(mealTime = newMealTime)) },
             modifier = Modifier.padding(it)
         )
     }

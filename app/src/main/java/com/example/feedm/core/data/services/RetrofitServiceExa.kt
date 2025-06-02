@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 
 interface RetrofitServiceExa {
-/*Currently not working because of redesign*/
+/***Currently disconnected because of redesign***/
     @Headers("")
     @POST("search")
     suspend fun listProperFoods(@Body request : SearchRequest): ExaRemoteResult
