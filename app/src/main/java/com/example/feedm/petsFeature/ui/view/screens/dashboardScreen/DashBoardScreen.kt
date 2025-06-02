@@ -23,17 +23,18 @@ import com.example.feedm.petsFeature.ui.viewmodel.DashboardViewModel
 @Composable
 fun DashBoardScreen(
     dashboardViewModel: DashboardViewModel,
+    needToRefresh: Boolean,
     navTo: (String, Int?, Int?) -> Unit
 ) {
-
     val pets by dashboardViewModel.pets.collectAsStateWithLifecycle()
     val mealsWithFoods by dashboardViewModel.mealsWithFoods.collectAsStateWithLifecycle()
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
     val requiredCalories by dashboardViewModel.requiredCalories.collectAsStateWithLifecycle()
 
-    LaunchedEffect(pets) {
-        if (pets.isNotEmpty()){
-        dashboardViewModel.setPetId(pets.first().petId)
+    if (needToRefresh) dashboardViewModel.fetchData()
+    LaunchedEffect(pets.size) {
+        if (pets.isNotEmpty()) {
+            dashboardViewModel.setPetId(pets.first().petId)
             dashboardViewModel.getMeals()
         }
     }
@@ -44,26 +45,44 @@ fun DashBoardScreen(
     }
     val scrollState = rememberScrollState()
     Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-        Box(modifier = Modifier
+        Box(
+            modifier = Modifier
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(NeutralLight, Neutral),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY,
-                        tileMode = TileMode.Clamp)))
+                        tileMode = TileMode.Clamp
+                    )
+                )
+        )
         DashboardContent(
             pets = pets,
-            requiredCalories = requiredCalories?:0,
+            petIdSelected = petIdSelected,
+            requiredCalories = requiredCalories ?: 0,
             mealsWithFoods = mealsWithFoods,
-            onPetSelected = { dashboardViewModel.setPetId(it) },
-            onMealDataClicked = { id -> navTo("AddMeal", petIdSelected, id) },
+            onPetSelected = {
+                dashboardViewModel.setPetId(it)
+            },
+            onEditIconClicked = {
+                navTo("EditPet", it, null)
+            },
+            onDeleteIconClicked = {
+                println("onDeleteIconClicked")
+                dashboardViewModel.deletePet(petIdSelected!!)
+            },
+            onMealDataClicked = { id ->
+                navTo("AddMeal", petIdSelected, id)
+            },
             onMealAddClicked = { id ->
                 val pair = mealsWithFoods.find { it.first.mealId == id }
                 println(pair)
                 dashboardViewModel.editMeal(pair!!.first.copy(mealState = 0))
             },
-            onMealDeleteClicked = { dashboardViewModel.deleteMeal(it) },
+            onMealDeleteClicked = {
+                dashboardViewModel.deleteMeal(it)
+            },
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
@@ -72,7 +91,8 @@ fun DashBoardScreen(
         CustomBottomBar(navTo = {
             println("NavToDashBoard")
             println(petIdSelected)
-            navTo(it, petIdSelected, null) })
+            navTo(it, petIdSelected, null)
+        })
     }
 }
 

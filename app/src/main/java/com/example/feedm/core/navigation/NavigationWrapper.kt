@@ -26,9 +26,10 @@ fun NavigationWrapper(
     foodListViewModel: FoodsListViewmodel
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = DashBoardScreen) {
+    NavHost(navController = navController, startDestination = DashBoardScreen(false)) {
         composable<DashBoardScreen> {
-            DashBoardScreen(dashBoardViewModel) { destination, petId, mealId ->
+          val shouldRefresh = it.toRoute<DashBoardScreen>().shouldRefresh?:false
+            DashBoardScreen(dashBoardViewModel, needToRefresh = shouldRefresh) { destination, petId, mealId ->
                 when (destination) {
                     "RegisterPet" -> navController.navigate(RegisterPet(null))
                     "AddMeal" -> navController.navigate(AddMeal(petId = petId!!, mealId = mealId))
@@ -43,7 +44,7 @@ fun NavigationWrapper(
                 petId = registerPet.petId,
                 registerPetViewmodel = registerPetViewModel
             ) {
-                navController.navigate(DashBoardScreen) {
+                navController.navigate(DashBoardScreen(shouldRefresh = true)) {
                     popUpTo<DashBoardScreen> { inclusive = true }
                     registerPetViewModel.setInitialPet()
                 }
@@ -51,7 +52,7 @@ fun NavigationWrapper(
         }
         composable<AddMeal> {
             val addMeal = it.toRoute<AddMeal>()
-            BackHandler {  navController.navigate(DashBoardScreen) {
+            BackHandler {  navController.navigate(DashBoardScreen(false)) {
                 popUpTo<DashBoardScreen> { inclusive = true }
                 addMealViewmodel.setInitialSelectedFood()
             } }
@@ -62,7 +63,7 @@ fun NavigationWrapper(
                 petId = addMeal.petId!!,
                 navToFoodList = { navController.navigate(FoodList("FromAddMeal", addMeal.petId)) },
                 navToBackStack = {
-                    navController.navigate(DashBoardScreen) {
+                    navController.navigate(DashBoardScreen(false)) {
                         popUpTo<DashBoardScreen> { inclusive = true }
                         addMealViewmodel.setInitialSelectedFood()
                     }
@@ -109,7 +110,7 @@ fun NavigationWrapper(
             foodListViewModel.fetchData()
             val getBackDestination = { foodId: Int? ->
                 when (foodListOrigin) {
-                    "FromAddFood" -> navController.navigate(DashBoardScreen) {
+                    "FromAddFood" -> navController.navigate(DashBoardScreen(false)) {
                         popUpTo<DashBoardScreen> { inclusive = true }
                     }
 

@@ -45,8 +45,8 @@ class PetsRepository @Inject constructor(
         petsDao.insertPet(petEntity)
     }
 
-    suspend fun deletePet(petEntity: PetEntity) {
-        petsDao.deletePet(petEntity.petId)
+    suspend fun deletePet(petId: Int) {
+        petsDao.deletePet(petId)
     }
 
     suspend fun updatePet(petEntity: PetEntity) {

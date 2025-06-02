@@ -9,6 +9,7 @@ import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.DeleteMealU
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.EditMealUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.meal.useCase.GetMealsUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
+import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.DeletePetUseCase
 import com.example.feedm.petsFeature.domain.objectTasks.pet.useCase.GetPetsUseCase
 import com.example.feedm.petsFeature.domain.otherTasks.useCase.CalculateCaloriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val getPetsUseCase: GetPetsUseCase,
+    private val deletePetUseCase: DeletePetUseCase,
     private val getMealsUseCase: GetMealsUseCase,
     private val editMealUseCase: EditMealUseCase,
     private val getFoodsUseCase: GetFoodUseCase,
@@ -40,7 +42,7 @@ class DashboardViewModel @Inject constructor(
         fetchData()
     }
 
-    private fun fetchData() {
+    fun fetchData() {
         viewModelScope.launch {
             _pets.value = getPetsUseCase()
         }
@@ -50,6 +52,13 @@ class DashboardViewModel @Inject constructor(
         selectedPetId.value = petId
         requiredCalories.value =
             calculateCaloriesUseCase(_pets.value.find { it.petId == petId }!!).toInt()
+    }
+
+    fun deletePet(petId: Int) {
+        viewModelScope.launch {
+            deletePetUseCase(petId)
+            fetchData()
+        }
     }
     fun getMeals() {
         viewModelScope.launch {

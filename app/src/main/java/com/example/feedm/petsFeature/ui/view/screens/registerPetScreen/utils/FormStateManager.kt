@@ -21,7 +21,7 @@ class FormStateManager {
         registerPetViewmodel: RegisterPetViewmodel,
         petToBeAdded: PetModel,
         formItemsHandler: FormItemsInteractionsHandler,
-        navigateBack: () -> Unit
+        navigateBack: (Boolean) -> Unit
     ){
         val fields = mutableListOf(
             PET_NAME_FIELD,
@@ -44,7 +44,7 @@ class FormStateManager {
         registerPetViewmodel: RegisterPetViewmodel,
         petToBeAdded: PetModel,
         formItemsHandler: FormItemsInteractionsHandler,
-        navigateBack: () -> Unit
+        navigateBack: (Boolean) -> Unit
     ) {
         val validationResults = validateFields(fields, registerPetViewmodel)
         var canPetBeAdded = true
@@ -56,7 +56,7 @@ class FormStateManager {
 
         if (canPetBeAdded) {
             registerPetViewmodel.registerPet(petToBeAdded)
-            navigateBack()
+            navigateBack(true)
         }
     }
 

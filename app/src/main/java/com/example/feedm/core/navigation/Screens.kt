@@ -3,7 +3,7 @@ package com.example.feedm.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object DashBoardScreen
+data class DashBoardScreen(val shouldRefresh: Boolean?)
 
 @Serializable
 data class RegisterPet(val petId: Int?)

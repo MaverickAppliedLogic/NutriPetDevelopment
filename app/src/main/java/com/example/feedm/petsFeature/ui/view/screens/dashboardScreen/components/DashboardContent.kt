@@ -14,9 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,9 +38,12 @@ import java.util.Locale
 @Composable
 fun DashboardContent(
     pets: List<PetModel>,
+    petIdSelected: Int?,
     requiredCalories: Int,
     mealsWithFoods: List<Pair<MealModel, FoodModel?>>,
     onPetSelected: (Int) -> Unit,
+    onEditIconClicked: (Int) -> Unit,
+    onDeleteIconClicked: () -> Unit,
     onMealDataClicked: (Int) -> Unit,
     onMealAddClicked: (Int) -> Unit,
     onMealDeleteClicked: (Int) -> Unit,
@@ -57,13 +60,20 @@ fun DashboardContent(
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         } else {
+            var petSelected by remember { mutableStateOf(pets.first()) }
+            LaunchedEffect(petIdSelected) {
+                if(petIdSelected != null) petSelected = pets.first { it.petId == petIdSelected }
+            }
             var petIndexSelected by remember { mutableIntStateOf(0) }
-            val petSelected by remember { derivedStateOf { pets[petIndexSelected] } }
-            LaunchedEffect(petIndexSelected) { onPetSelected(petSelected.petId) }
+            LaunchedEffect(petIndexSelected) {
+                onPetSelected(pets[petIndexSelected].petId)
+            }
 
             PetList(
                 petList = pets,
                 onPetSelected = { petIndexSelected = it },
+                onEditIconClicked = { onEditIconClicked(it) },
+                onDeleteIconClicked = { onDeleteIconClicked() },
                 modifier = Modifier
                     .background(NeutralLight)
                     .fillMaxWidth()
