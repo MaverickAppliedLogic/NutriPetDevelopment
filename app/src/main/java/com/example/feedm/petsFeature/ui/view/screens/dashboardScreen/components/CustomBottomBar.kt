@@ -40,6 +40,7 @@ import com.example.feedm.core.ui.theme.SecondaryDarkest
 
 @Composable
 fun CustomBottomBar(
+    petListSize: Int,
     navTo: (String) -> Unit = {}
 ) {
     var buttonClicked by remember { mutableStateOf(false) }
@@ -56,45 +57,52 @@ fun CustomBottomBar(
         )  {
            Row(modifier = Modifier.fillMaxWidth(widthAnimation).fillMaxHeight(0.2f)) {
 
-               FloatingActionButton(
-                   onClick = { navTo("RegisterPet") },
+               if (petListSize > 0) {
+
+                   FloatingActionButton(
+                   onClick = { navTo("AddMeal") },
                    shape = CircleShape, containerColor = Primary,
                    contentColor = SecondaryDarkest,
                    modifier = Modifier
                        .padding(bottom = 20.dp , top = 20.dp)
                        .size(65.dp)
                ) {
-                   Icon(painter = painterResource(id = R.mipmap.ic_pet_add),
-                       contentDescription = "",
-                       modifier = Modifier.fillMaxSize(0.5f),
-                       tint = SecondaryDarkest)               }
-               Spacer(modifier = Modifier.weight(1f))
-               FloatingActionButton(
-                   onClick = { navTo("AddMeal") },
-                   shape = CircleShape, containerColor = Primary,
-                   contentColor = SecondaryDarkest,
-                   modifier = Modifier
-                       .padding(bottom = 20.dp)
-                       .size(65.dp)
-               ) {
                    Icon(painter = painterResource(id = R.mipmap.ic_meal_add),
                        contentDescription = "",
-                       modifier = Modifier.fillMaxSize(0.6f),
+                       modifier = Modifier.fillMaxSize(0.5f),
                        tint = SecondaryDarkest)
-               }
+                   }}
                Spacer(modifier = Modifier.weight(1f))
-               FloatingActionButton(
-                   onClick = { navTo("AddFood") },
-                   shape = CircleShape, containerColor = Primary,
-                   contentColor = SecondaryDarkest,
-                   modifier = Modifier
-                       .padding(bottom = 20.dp, top = 20.dp)
-                       .size(65.dp)
-               ) {
-                   Icon(painter = painterResource(id = R.mipmap.ic_food_add),
-                       contentDescription = "",
-                       modifier = Modifier.fillMaxSize(0.6f),
-                       tint = SecondaryDarkest)               }
+                   FloatingActionButton(
+                       onClick = { navTo("RegisterPet") },
+                       shape = CircleShape, containerColor = Primary,
+                       contentColor = SecondaryDarkest,
+                       modifier = Modifier
+                           .padding(bottom = 20.dp)
+                           .size(65.dp)
+                   ) {
+                       Icon(painter = painterResource(id = R.mipmap.ic_pet_add),
+                           contentDescription = "",
+                           modifier = Modifier.fillMaxSize(0.6f),
+                           tint = SecondaryDarkest)
+                   }
+
+
+               Spacer(modifier = Modifier.weight(1f))
+               if (petListSize > 0) {
+                   FloatingActionButton(
+                       onClick = { navTo("AddFood") },
+                       shape = CircleShape, containerColor = Primary,
+                       contentColor = SecondaryDarkest,
+                       modifier = Modifier
+                           .padding(bottom = 20.dp, top = 20.dp)
+                           .size(65.dp)
+                   ) {
+                       Icon(painter = painterResource(id = R.mipmap.ic_food_add),
+                           contentDescription = "",
+                           modifier = Modifier.fillMaxSize(0.6f),
+                           tint = SecondaryDarkest)               }
+               }
            }
         }
 

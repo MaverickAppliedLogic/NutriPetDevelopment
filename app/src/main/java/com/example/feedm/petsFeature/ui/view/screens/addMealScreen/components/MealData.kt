@@ -27,6 +27,8 @@ fun MealData(
     modifier: Modifier = Modifier,
     ration: String,
     food: FoodModel,
+    foodIsValid: Boolean,
+    rationIsValid: Boolean,
     navToFoodList: () -> Unit,
     addButtonClicked: () -> Unit,
     onRationChanged: (String) -> Unit) {
@@ -38,9 +40,11 @@ fun MealData(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FoodField(food = food,
+                errorAppearing = foodIsValid,
                 modifier = Modifier.weight(0.3f, true), navToFoodList = {navToFoodList()})
             DataField(
                 modifier = Modifier.weight(0.6f, true),
+                errorAppearing = rationIsValid,
                 ration = ration ,
                 onRationChanged = {onRationChanged(it)})
             Button(

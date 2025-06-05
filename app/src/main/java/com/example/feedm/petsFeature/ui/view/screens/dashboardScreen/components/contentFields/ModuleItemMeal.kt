@@ -34,7 +34,7 @@ fun ModuleItemMeal(
     foodName: String = "Food",
     editable: Boolean,
     onDataClicked: (Int) -> Unit = {},
-    onAddIconClicked: (Int) -> Unit = {},
+    iconClicked: (Int) -> Unit = {},
     onDeleteIconClicked: (Int) -> Unit
 ) {
     Row(
@@ -44,7 +44,6 @@ fun ModuleItemMeal(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val valuesWeight = if (state == 0) 0.07f else 0.15f
         Text(
             text = foodName, color = SecondaryDarkest,
             modifier = Modifier.weight(0.3f, true)
@@ -74,8 +73,8 @@ fun ModuleItemMeal(
         } else {
             StateIndicator(
                 state = state,
-                onClick = { onAddIconClicked(mealId) },
-                modifier = Modifier.weight(valuesWeight, true)
+                onClick = { iconClicked(mealId) },
+                modifier = Modifier.weight(0.15f, true)
             )
         }
     }

@@ -1,12 +1,12 @@
 package com.example.feedm.core.utils
 
 
+import android.icu.util.Calendar
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.first
-import android.icu.util.Calendar
-import androidx.datastore.preferences.core.edit
 import javax.inject.Inject
 
 
@@ -31,7 +31,7 @@ class DayHandler @Inject constructor(
         }
     }
 
-    suspend fun getLastDay(): Int? {
+    private suspend fun getLastDay(): Int? {
         return dataStore.data.first()[LAST_DAY_KEY]
 
     }

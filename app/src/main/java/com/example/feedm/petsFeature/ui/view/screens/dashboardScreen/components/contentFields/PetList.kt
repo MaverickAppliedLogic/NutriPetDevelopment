@@ -46,6 +46,7 @@ import kotlinx.coroutines.launch
 fun PetList(
     petList: List<PetModel>,
     petModel: PetModel,
+    petMealsChanged: Boolean,
     onPetSelected: (PetModel) -> Unit,
     onEditIconClicked: () -> Unit,
     onDeleteIconClicked: () -> Unit,
@@ -63,6 +64,10 @@ fun PetList(
        thereArePrevious = pet != petList.first()
        thereAreNext = pet != petList.last()
    }
+    LaunchedEffect(petMealsChanged) {
+        thereArePrevious = pet != petList.first()
+        thereAreNext = pet != petList.last()
+    }
     LaunchedEffect(pet) {
         if (pet != null && pet != petModel) {
             onPetSelected(pet!!)

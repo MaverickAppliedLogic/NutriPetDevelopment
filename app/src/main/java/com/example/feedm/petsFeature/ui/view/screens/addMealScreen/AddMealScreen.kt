@@ -26,6 +26,7 @@ fun AddMealScreen(
 ) {
     val mealToBeAdded by addMealViewmodel.mealToBeAdded.collectAsStateWithLifecycle()
     val foodSelected by addMealViewmodel.foodSelected.collectAsStateWithLifecycle()
+    val mealIsValid by addMealViewmodel.mealIsValid.collectAsStateWithLifecycle()
     var rationFormatted by remember {
         mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
     }
@@ -39,23 +40,35 @@ fun AddMealScreen(
     }
     Scaffold {
         AddMealContent(
+            mealIsValid = mealIsValid,
             rationFormatted = rationFormatted,
             mealTime = mealToBeAdded.mealTime,
             food = foodSelected,
             navToFoodList = {
                 println("NavToFoodListAddMeal")
                 println(mealToBeAdded.petId)
-                navToFoodList() },
-            addButtonClicked = {
-                addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(
-                        ration = rationFormatted.toFloatOrNull()?:0f))
-                println(mealToBeAdded.foodId)
-                println(mealToBeAdded.petId)
+                navToFoodList()
+            },
+            addButtonClicked = {makeItDaily ->
+                addMealViewmodel.mealToBeAddedChanged(
+                    mealToBeAdded.copy(
+                        isDailyMeal = makeItDaily
+                    )
+                )
                 addMealViewmodel.addMeal()
-                navToBackStack() },
-            onRationChanged = {newRation -> rationFormatted = newRation },
-            onMealTimeChanged = {newMealTime ->
-                addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(mealTime = newMealTime)) },
+                navToBackStack()
+            },
+            onRationChanged = { newRation ->
+                rationFormatted = newRation
+                addMealViewmodel.mealToBeAddedChanged(
+                    mealToBeAdded.copy(
+                        ration = newRation.toFloatOrNull() ?: 0f
+                    )
+                )
+                              },
+            onMealTimeChanged = { newMealTime ->
+                addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(mealTime = newMealTime))
+            },
             modifier = Modifier.padding(it)
         )
     }

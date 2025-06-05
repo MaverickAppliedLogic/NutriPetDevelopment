@@ -26,15 +26,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.feedm.R
+import com.example.feedm.core.ui.theme.Error
 import com.example.feedm.core.ui.theme.NeutralDark
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
+import com.example.feedm.core.ui.theme.SecondaryDarkest
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
 
 @Composable
 fun FoodField(
     food: FoodModel,
+    errorAppearing: Boolean,
     navToFoodList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -55,7 +58,8 @@ fun FoodField(
             Spacer(modifier = Modifier.weight(1f, true))
             Card(
                 onClick = { navToFoodList() },
-                colors = CardDefaults.cardColors(containerColor = PrimaryLight),
+                colors = CardDefaults.cardColors(containerColor = PrimaryLight,
+                    contentColor = if (errorAppearing) Error else SecondaryDarkest),
                 elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
                 modifier = Modifier
                     .fillMaxWidth()

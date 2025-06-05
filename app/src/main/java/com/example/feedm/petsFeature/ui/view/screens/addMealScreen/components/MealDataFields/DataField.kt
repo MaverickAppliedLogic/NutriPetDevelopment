@@ -27,9 +27,11 @@ import com.example.feedm.core.ui.theme.SecondaryDarkest
 @Composable
 fun DataField(
     modifier: Modifier = Modifier,
+    errorAppearing: Boolean,
     ration: String,
     onRationChanged: (String) -> Unit
 ) {
+
     Column(
         modifier = modifier
             .padding(horizontal = 60.dp)
@@ -45,14 +47,17 @@ fun DataField(
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = ration,
+            trailingIcon = {
+                Text(text="gr", color = SecondaryDarkest)
+            },
             onValueChange = { onRationChanged(it) },
-            isError = false,
+            isError = errorAppearing,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)   ,
             colors = TextFieldDefaults.colors(
                 cursorColor = SecondaryDarkest,
                 unfocusedContainerColor = NeutralLight,
                 focusedContainerColor = NeutralLight,
-                errorContainerColor = Error,
+                errorContainerColor = NeutralLight,
                 unfocusedLabelColor = PrimaryDark,
                 focusedLabelColor = Primary,
                 errorLabelColor = Error,

@@ -20,6 +20,14 @@ class MealsRepository @Inject constructor(private val mealsDao: MealDao) {
         mealsDao.clearAllMeals()
     }
 
+    suspend fun getDailyMeals(): List<MealModel> {
+        return mealsDao.getDailyMeals().map { it.toDomain() }
+    }
+
+    suspend fun clearNotDailyMeals() {
+        mealsDao.clearNotDailyMeals()
+    }
+
     suspend fun addMealForAPet(meal: MealModel) {
         mealsDao.addMealForAPet(meal.toDatabase())
     }

@@ -33,6 +33,7 @@ fun MealsModule(
     requiredCalories: Int,
     onDataClicked: (Int) -> Unit = {},
     onAddIconClicked: (Int) -> Unit = {},
+    onCloseIconClicked: (Int) -> Unit = {},
     onDeleteIconClicked: (Int) -> Unit = {},
 ) {
     val timeFormatter = TimeFormatter()
@@ -85,7 +86,13 @@ fun MealsModule(
                     mealHour = formatedStringHour,
                     foodName = food?.foodName?: "No registrado",
                     onDataClicked = { id -> onDataClicked(id) },
-                    onAddIconClicked = { id -> onAddIconClicked(id) },
+                    iconClicked = { id ->
+                        when(meal.mealState){
+                            0 -> onCloseIconClicked(id)
+                            1 -> onAddIconClicked(id)
+                            2 -> onAddIconClicked(id)
+                        }
+                    },
                     onDeleteIconClicked = { id -> onDeleteIconClicked(id) },
                     modifier = Modifier.height(40.dp), editable = editable
                 )

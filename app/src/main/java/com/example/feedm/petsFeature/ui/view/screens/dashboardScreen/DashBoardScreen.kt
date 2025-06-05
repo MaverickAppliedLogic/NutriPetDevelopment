@@ -14,6 +14,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -46,6 +47,7 @@ fun DashBoardScreen(
     needToRefresh: Boolean,
     navTo: (String, Int?, Int?) -> Unit
 ) {
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val pets by dashboardViewModel.pets.collectAsState()
     val mealsWithFoods by dashboardViewModel.mealsWithFoods.collectAsStateWithLifecycle()
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
@@ -88,6 +90,7 @@ fun DashBoardScreen(
                 )
         )
         DashboardContent(
+            windowSizeClass = windowSizeClass,
             pets = pets,
             petIdSelected = petIdSelected,
             requiredCalories = requiredCalories ?: 0,
@@ -107,8 +110,11 @@ fun DashBoardScreen(
             },
             onMealAddClicked = { id ->
                 val pair = mealsWithFoods.find { it.first.mealId == id }
-                println(pair)
                 dashboardViewModel.editMeal(pair!!.first.copy(mealState = 0))
+            },
+            onMealCloseClicked = { id ->
+                val pair = mealsWithFoods.find { it.first.mealId == id }
+                dashboardViewModel.editMeal(pair!!.first.copy(mealState = 1))
             },
             onMealDeleteClicked = {
                 dashboardViewModel.deleteMeal(it)
@@ -157,11 +163,9 @@ fun DashBoardScreen(
             containerColor = NeutralLight,
         )
         }
-        CustomBottomBar(navTo = {
-            println("NavToDashBoard")
-            println(petIdSelected)
-            navTo(it, petIdSelected, null)
-        }
+        CustomBottomBar(
+            petListSize = pets.size,
+            navTo = { navTo(it, petIdSelected, null) }
         )
     }
 }

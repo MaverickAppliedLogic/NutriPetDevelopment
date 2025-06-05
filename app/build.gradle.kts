@@ -92,6 +92,8 @@ dependencies {
 
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.material3.window.size.android)
+    implementation(libs.androidx.adaptive.android)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

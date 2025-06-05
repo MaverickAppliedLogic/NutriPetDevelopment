@@ -13,11 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowSizeClass
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
@@ -31,6 +37,7 @@ import java.util.Locale
 
 @Composable
 fun DashboardContent(
+    windowSizeClass: WindowSizeClass,
     pets: List<PetModel>,
     petIdSelected: Int?,
     requiredCalories: Int,
@@ -40,9 +47,11 @@ fun DashboardContent(
     onDeleteIconClicked: () -> Unit,
     onMealDataClicked: (Int) -> Unit,
     onMealAddClicked: (Int) -> Unit,
+    onMealCloseClicked: (Int) -> Unit,
     onMealDeleteClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    println(windowSizeClass)
     Column(
         modifier = modifier.background(Neutral),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -54,11 +63,16 @@ fun DashboardContent(
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         } else {
+            var petMealsChanged by remember{ mutableStateOf(false) }
             val petSelected = pets.find { it.petId == petIdSelected }?: pets.first()
+            LaunchedEffect(mealsWithFoods.map { it.first })  {
+                petMealsChanged = true
+            }
             PetList(
                 petList = pets,
                 petModel = petSelected,
-                onPetSelected = { onPetSelected(it.petId) },
+                petMealsChanged = petMealsChanged,
+                onPetSelected = { onPetSelected(it.petId); petMealsChanged = false },
                 onEditIconClicked = { onEditIconClicked() },
                 onDeleteIconClicked = { onDeleteIconClicked() },
                 modifier = Modifier
@@ -96,6 +110,7 @@ fun DashboardContent(
                     requiredCalories = requiredCalories,
                     onDataClicked = { onMealDataClicked(it) },
                     onAddIconClicked = { onMealAddClicked(it) },
+                    onCloseIconClicked = { onMealCloseClicked(it) },
                     onDeleteIconClicked = { onMealDeleteClicked(it) })
                 Spacer(Modifier.height(50.dp))
                 HealthModule(

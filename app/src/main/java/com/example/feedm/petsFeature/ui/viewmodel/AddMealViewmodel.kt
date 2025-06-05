@@ -18,46 +18,54 @@ class AddMealViewmodel @Inject constructor(
     private val addMealUseCase: AddMealUseCase,
     private val getFoodUseCase: GetFoodUseCase,
     private val getMealUseCase: GetMealByIdUseCase,
-    ): ViewModel() {
+) : ViewModel() {
 
-        private val initialSelectedFood = FoodModel(
-            foodId = -1,
-            foodName = "",
-            brand = "",
-            foodWeight = 0f,
-            calories = 0f,)
+
+    private val initialSelectedFood = FoodModel(
+        foodId = -1,
+        foodName = "",
+        brand = "",
+        foodWeight = 0f,
+        calories = 0f,
+    )
 
     private val _mealToBeAdded = MutableStateFlow(
         MealModel(
             petId = 0,
-            foodId = 0,
+            foodId = -1,
             mealTime = 0,
-            ration = 0f
+            ration = 0f,
+            isDailyMeal = false,
         )
     )
 
     private val _foodSelected = MutableStateFlow(initialSelectedFood)
+    private val _mealIsValid = MutableStateFlow(Pair<String?, Boolean>(null, true))
 
-    val mealToBeAdded : StateFlow<MealModel> = _mealToBeAdded
-    val foodSelected : StateFlow<FoodModel> = _foodSelected
+    val mealToBeAdded: StateFlow<MealModel> = _mealToBeAdded
+    val foodSelected: StateFlow<FoodModel> = _foodSelected
+    val mealIsValid: StateFlow<Pair<String?, Boolean>> = _mealIsValid
 
-    fun setInitialSelectedFood(){
+    fun setInitialSelectedFood() {
         _foodSelected.value = initialSelectedFood
+        _mealIsValid.value = Pair(null, false)
     }
+
     fun mealToBeAddedChanged(mealModel: MealModel) {
         viewModelScope.launch {
             _mealToBeAdded.value = mealModel
+            validateMeal()
         }
     }
 
-    fun getFood(foodId: Int){
+    fun getFood(foodId: Int) {
         viewModelScope.launch {
             _foodSelected.value = getFoodUseCase(foodId)
             _mealToBeAdded.value = _mealToBeAdded.value.copy(foodId = _foodSelected.value.foodId)
         }
     }
 
-    fun getMeal(mealId: Int){
+    fun getMeal(mealId: Int) {
         viewModelScope.launch {
             _mealToBeAdded.value = getMealUseCase(mealId)
             if (_mealToBeAdded.value.foodId != null) {
@@ -66,13 +74,28 @@ class AddMealViewmodel @Inject constructor(
         }
     }
 
-    fun addMeal(){
+    fun addMeal() {
         viewModelScope.launch {
-            println("Antes de ser agregado: ${_mealToBeAdded.value.mealTime}")
             _mealToBeAdded.value =
-                _mealToBeAdded.value.copy(mealCalories = (
-                        _foodSelected.value.calories * _mealToBeAdded.value.ration).toDouble() )
-        addMealUseCase(_mealToBeAdded.value)
+                _mealToBeAdded.value.copy(
+                    mealCalories = (
+                            (_foodSelected.value.calories / 100) * _mealToBeAdded.value.ration)
+                        .toDouble()
+                )
+            addMealUseCase(_mealToBeAdded.value)
+        }
+    }
+
+    private fun validateMeal() {
+        var isValid = ""
+        if (_mealToBeAdded.value.ration <= 0) isValid = "Ration"
+        if (_mealToBeAdded.value.foodId == -1) isValid = "Food"
+        if (_mealToBeAdded.value.mealTime == 0L) isValid = "Time"
+        when (isValid) {
+            "Ration" -> _mealIsValid.value = Pair("Ration", false)
+            "Food" -> _mealIsValid.value = Pair("Food", false)
+            "Time" -> _mealIsValid.value = Pair("Time", false)
+            else -> _mealIsValid.value = Pair("", true)
         }
     }
 

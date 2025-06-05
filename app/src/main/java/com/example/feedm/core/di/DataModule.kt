@@ -56,7 +56,7 @@ object DataModule {
             .build()
 
 
-    private val MIGRATION = object : Migration(12, 13) {
+    private val MIGRATION = object : Migration(11, 13) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Crear las nuevas tablas con los índices adecuados
 
