@@ -102,6 +102,8 @@ fun TailyCareTheme(
         }
     }
 
+
+
     AppUtils(dimens) {
         MaterialTheme(
             colorScheme = DarkColorScheme,
@@ -112,3 +114,7 @@ fun TailyCareTheme(
 }
 
 val MaterialTheme.dimens @Composable get() = LocalAppDimens.current
+
+val ScreenOrientation @Composable get() = LocalConfiguration.current.orientation
+val ScreenHeight @Composable get() = LocalConfiguration.current.screenHeightDp
+

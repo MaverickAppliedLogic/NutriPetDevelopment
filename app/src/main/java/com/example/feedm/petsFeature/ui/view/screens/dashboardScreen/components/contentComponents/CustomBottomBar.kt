@@ -69,7 +69,7 @@ fun CustomBottomBar(
                            bottom = MaterialTheme.dimens.small2,
                            top = MaterialTheme.dimens.small2
                        )
-                       .size(MaterialTheme.dimens.large2)
+                       .size(MaterialTheme.dimens.buttonSize)
                ) {
                    Icon(painter = painterResource(id = R.mipmap.ic_meal_add),
                        contentDescription = "",
@@ -83,7 +83,7 @@ fun CustomBottomBar(
                        contentColor = SecondaryDarkest,
                        modifier = Modifier
                            .padding(bottom = MaterialTheme.dimens.small2)
-                           .size(MaterialTheme.dimens.large2)
+                           .size(MaterialTheme.dimens.buttonSize)
                    ) {
                        Icon(painter = painterResource(id = R.mipmap.ic_pet_add),
                            contentDescription = "",
@@ -102,7 +102,7 @@ fun CustomBottomBar(
                            .padding(
                                bottom = MaterialTheme.dimens.small2,
                                top = MaterialTheme.dimens.small2)
-                           .size(MaterialTheme.dimens.large2)
+                           .size(MaterialTheme.dimens.buttonSize)
                    ) {
                        Icon(painter = painterResource(id = R.mipmap.ic_food_add),
                            contentDescription = "",
@@ -131,7 +131,7 @@ fun CustomBottomBar(
                 contentColor = SecondaryDarkest,
                 modifier = Modifier
                     .padding(bottom = MaterialTheme.dimens.small2)
-                    .size(MaterialTheme.dimens.large2)
+                    .size(MaterialTheme.dimens.buttonSize)
             ) {
                 Icon(imageVector = if(!buttonClicked) Icons.Default.Add else Icons.Default.Close,
                     contentDescription = "")

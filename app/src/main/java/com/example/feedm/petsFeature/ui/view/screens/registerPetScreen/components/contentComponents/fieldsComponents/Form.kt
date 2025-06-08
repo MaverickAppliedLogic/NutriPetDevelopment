@@ -78,6 +78,7 @@ fun Form(
 
         WeightField(
             weight = pet.petWeight,
+            animal = pet.animal,
             expansionState = weightFieldData.second,
             fieldState = weightFieldData.first,
             modifier = Modifier.weight(1f, true),

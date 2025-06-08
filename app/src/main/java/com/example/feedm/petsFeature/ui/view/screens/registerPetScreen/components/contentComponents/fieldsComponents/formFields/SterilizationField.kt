@@ -28,7 +28,8 @@ fun SterilizationField(
 ){
     val preparedSelection = if (sterilized) "Si" else "No"
     FormField(
-        label = "¿Está esterilizado? (Opcional)",
+        label = "¿Esterilizado? (Opcional)",
+        isLastField = true,
         state = fieldState,
         expanded = expansionState,
         onTrailingIconClicked = { onTrailingIconClicked() },

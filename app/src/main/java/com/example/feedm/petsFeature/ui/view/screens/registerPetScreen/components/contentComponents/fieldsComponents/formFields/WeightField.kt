@@ -14,6 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -24,11 +29,13 @@ import com.example.feedm.petsFeature.ui.view.components.customSlider.CustomSlide
 fun WeightField(
     weight: Float,
     expansionState: Boolean,
+    animal: String,
     fieldState: Int,
     modifier: Modifier,
     onTrailingIconClicked: () -> Unit = {},
     onWeightChanged: (Float) -> Unit = {}
 ) {
+    var valueRange by remember { mutableStateOf(0f..80f) }
     FormField(
         label = "Peso",
         state = fieldState,
@@ -36,6 +43,18 @@ fun WeightField(
         onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ) {
+        LaunchedEffect(animal) {
+            when(animal){
+                "dog" -> {
+                    valueRange = 0f..80f
+                    onWeightChanged(weight * 3.2f)
+                }
+                "cat" -> {
+                    valueRange = 0f..25f
+                    onWeightChanged(weight / 3.2f)
+                }
+            }
+        }
         AnimatedVisibility(
             visible = expansionState,
             enter = fadeIn() + expandVertically(),
@@ -52,7 +71,7 @@ fun WeightField(
                CustomSlider(
                    weight = weight,
                    onWeightChanged = { onWeightChanged(it) },
-                   valueRange = 0f..80f,
+                   valueRange = valueRange,
                    errorCommitting = false
                )
                 Spacer(modifier = Modifier.width(MaterialTheme.dimens.extraSmall1))

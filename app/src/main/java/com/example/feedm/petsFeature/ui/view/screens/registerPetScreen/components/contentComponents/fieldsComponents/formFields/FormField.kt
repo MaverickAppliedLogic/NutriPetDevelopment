@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Error
 import com.example.feedm.core.ui.theme.Good
 import com.example.feedm.core.ui.theme.SecondaryDarkest
+import com.example.feedm.core.ui.theme.dimens
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.INVALID
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.VALID
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.WAITING
@@ -39,8 +40,9 @@ object FormFieldStates{
 
 @Composable
 fun FormField(
-    label: String,
     modifier: Modifier = Modifier,
+    label: String,
+    isLastField: Boolean = false,
     state: Int ,
     expanded: Boolean = false,
     onTrailingIconClicked: () -> Unit,
@@ -58,9 +60,10 @@ fun FormField(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                top = 10.dp, bottom = 10.dp,
-                start = if (state == WAITING) 0.dp else 10.dp,
-                end = 10.dp
+                top = MaterialTheme.dimens.extraSmall4,
+                bottom = MaterialTheme.dimens.extraSmall4,
+                start = if (state == WAITING) 0.dp else MaterialTheme.dimens.extraSmall4,
+                end = MaterialTheme.dimens.extraSmall4
             )
     ) {
         when (state) {
@@ -72,8 +75,8 @@ fun FormField(
             INVALID ->
                 Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = Error)
         }
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(text = label, style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.extraSmall3))
+        Text(text = label, style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = { onTrailingIconClicked()}) {
             Icon(imageVector = Icons.Default.KeyboardArrowDown,
@@ -87,6 +90,5 @@ fun FormField(
         content()
 
     }
-
-    HorizontalDivider()
+    if (!isLastField) HorizontalDivider()
 }

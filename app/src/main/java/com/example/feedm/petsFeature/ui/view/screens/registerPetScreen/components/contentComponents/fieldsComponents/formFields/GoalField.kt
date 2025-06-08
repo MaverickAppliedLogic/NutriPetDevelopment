@@ -31,7 +31,7 @@ fun GoalField(
     onTrailingIconClicked: () -> Unit = {},
     onGoalChanged: (String) -> Unit = {}
 ) {
-    val options = listOf("Perder peso", "Mantener ", "Ganar peso")
+    val options = listOf("Bajar peso", "Mantener", "Subir peso")
 
     FormField(
         label = "Objetivo",

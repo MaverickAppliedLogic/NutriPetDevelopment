@@ -6,9 +6,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,6 +21,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
@@ -40,8 +44,10 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProgressIndicator(
+    modifier: Modifier = Modifier,
     validateList: List<Int>,
-    modifier: Modifier = Modifier
+    isLandscapeMode: Boolean,
+    buttonClicked: () -> Unit = {}
 ) {
 
     val progress by animateFloatAsState(
@@ -68,12 +74,27 @@ fun ProgressIndicator(
             )
     ) {
         Column {
-            Text(
-                text = "Nuevo Compañero",
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                color = Primary,
-                modifier = Modifier.padding(MaterialTheme.dimens.extraSmall4)
-            )
+            Row(verticalAlignment = CenterVertically, modifier = Modifier.fillMaxHeight(0.5f)) {
+                Text(
+                    text = "Nuevo Compañero",
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = Primary,
+                    modifier = Modifier.padding(MaterialTheme.dimens.extraSmall4)
+                )
+                if (isLandscapeMode){
+                    Spacer(modifier = Modifier.weight(1f, true))
+                    Button(
+                        shape = RoundedCornerShape(MaterialTheme.dimens.extraSmall2),
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.dimens.small1,
+                                bottom = MaterialTheme.dimens.small2,
+                                top = MaterialTheme.dimens.small2),
+                        onClick = { buttonClicked() },
+                    ) {
+                        Text(text = "Confirmar")
+                    }
+                }
+            }
             Spacer(modifier = Modifier.weight(1f, true))
             Text(
                 text = "$sliderText $indicatorText",
