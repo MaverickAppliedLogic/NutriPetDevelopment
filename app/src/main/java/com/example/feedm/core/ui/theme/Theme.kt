@@ -3,14 +3,30 @@ package com.example.feedm.core.ui.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import com.example.feedm.ui.view.theme.Typography
+import androidx.window.core.layout.WindowWidthSizeClass
+import com.example.feedm.core.ui.AppUtils
+import com.example.feedm.core.ui.LocalAppDimens
+import com.example.feedm.core.ui.dimens.CompactDimens
+import com.example.feedm.core.ui.dimens.CompactMediumDimens
+import com.example.feedm.core.ui.dimens.CompactSmallDimens
+import com.example.feedm.core.ui.dimens.Dimens
+import com.example.feedm.core.ui.dimens.ExpandedDimens
+import com.example.feedm.core.ui.dimens.MediumDimens
+import com.example.feedm.ui.view.theme.CompactMediumTypography
+import com.example.feedm.ui.view.theme.CompactSmallTypography
+import com.example.feedm.ui.view.theme.CompactTypography
+import com.example.feedm.ui.view.theme.ExpandedTypography
+import com.example.feedm.ui.view.theme.MediumTypography
 
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
@@ -19,7 +35,6 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = SecondaryDarkest,
     onPrimary = SecondaryDarkest,
     tertiary = Neutral
-
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -41,10 +56,10 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+
 @Composable
 fun TailyCareTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -57,10 +72,43 @@ fun TailyCareTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val config = LocalConfiguration.current
+    val typography : Typography
+    val dimens : Dimens
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    when(windowSizeClass.windowWidthSizeClass){
+        WindowWidthSizeClass.COMPACT -> {
+            if (config.screenWidthDp <= 360){
+                dimens = CompactSmallDimens
+                typography = CompactSmallTypography
+            }
+            else if ( config.screenWidthDp < 599){
+                dimens = CompactMediumDimens
+                typography = CompactMediumTypography
+            }
+            else{
+                dimens = CompactDimens
+                typography = CompactTypography
+            }
+        }
+        WindowWidthSizeClass.MEDIUM -> {
+            dimens = MediumDimens
+            typography = MediumTypography
+        }
+        else -> {
+            dimens = ExpandedDimens
+            typography = ExpandedTypography
+        }
+    }
+
+    AppUtils(dimens) {
+        MaterialTheme(
+            colorScheme = DarkColorScheme,
+            typography = typography,
+            content = content,
+        )
+    }
 }
+
+val MaterialTheme.dimens @Composable get() = LocalAppDimens.current

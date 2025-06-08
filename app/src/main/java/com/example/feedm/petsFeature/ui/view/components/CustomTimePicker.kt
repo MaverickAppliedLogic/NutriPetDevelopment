@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
@@ -17,13 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.example.feedm.core.ui.theme.Neutral
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryLight
 import com.example.feedm.core.ui.theme.Secondary
 import com.example.feedm.core.ui.theme.SecondaryDarkest
+import com.example.feedm.core.ui.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +86,7 @@ fun CustomTimePicker(
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                 Text("Cancel")
             }
-            Spacer(Modifier.padding(10.dp))
+            Spacer(Modifier.padding(MaterialTheme.dimens.small1))
             Button(onClick = {onConfirm(timePickerState.hour,timePickerState.minute)},
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                 Text("Confirm")

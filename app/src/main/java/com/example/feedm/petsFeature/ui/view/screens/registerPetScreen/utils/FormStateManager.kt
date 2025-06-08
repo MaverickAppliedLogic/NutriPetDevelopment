@@ -1,9 +1,9 @@
 package com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils
 
 import com.example.feedm.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.FormFieldStates.INVALID
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.FormFieldStates.VALID
-import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.registerPetContentComponents.formFields.FormFieldStates.WAITING
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.INVALID
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.VALID
+import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.WAITING
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.example.feedm.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD

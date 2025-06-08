@@ -1,83 +1,62 @@
 package com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.example.feedm.core.ui.theme.Neutral
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.feedm.petsFeature.domain.objectTasks.food.model.FoodModel
+import com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.components.contentComponents.FoodFields
+import com.example.feedm.petsFeature.ui.viewmodel.AddFoodViewModel
+import java.util.Locale
 
 @Composable
 fun AddFoodContent(
-    modifier: Modifier = Modifier,
-    foodIsValid: Boolean,
-    foodName: String,
-    foodCalories: String,
-    onFoodNameChanged: (String) -> Unit,
-    onFoodCaloriesChanged: (String) -> Unit,
-    onCommitButtonClicked: () -> Unit = {},
-    onCloseIconClicked: () -> Unit = {}
+    addFoodViewModel: AddFoodViewModel = viewModel(),
+    navToBackStack: () -> Unit,
+    navToFoodList: () -> Unit
 ) {
-
-    Scaffold(
-        modifier = modifier,
-        bottomBar = {
-            BottomAppBar(
-                containerColor = Neutral
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        onClick = { onCommitButtonClicked() },
-                        elevation = ButtonDefaults.buttonElevation(10.dp),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .padding(bottom = 24.dp)
-                            .fillMaxWidth(0.5f)
-                            .height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD59E))
-                    ) {
-                        Text("Confirmar", color = Color.Black)
-                    }
-                }
+    val food by addFoodViewModel.foodToBeAdded.collectAsStateWithLifecycle()
+    var foodIsValid by remember { mutableStateOf(true) }
+    var foodCalories by remember {
+        mutableStateOf(
+            String.format(Locale.getDefault(), "%.0f", food.calories)
+        )
+    }
+    FoodFields(
+        foodName = food.foodName,
+        foodCalories = foodCalories,
+        foodIsValid = foodIsValid,
+        onFoodNameChanged = { newFoodName ->
+            foodIsValid = true
+            addFoodViewModel.foodChanged(food.copy(foodName = newFoodName))},
+        onFoodCaloriesChanged = { newCalories ->
+            foodIsValid = true
+            foodCalories = newCalories
+            if (newCalories.isNotEmpty()) {
+                addFoodViewModel.foodChanged(
+                    food.copy(calories = newCalories.toFloat()))
+            }
+            else {
+                addFoodViewModel.foodChanged(food.copy(calories = 0f))
+            }
+            },
+        onCommitButtonClicked = {
+            foodIsValid = validateFood(food)
+            if (foodIsValid) {
+                addFoodViewModel.addFood()
+                navToFoodList()
             }
         },
+        onCloseIconClicked = { navToBackStack() },
     )
-    {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-                .background(Neutral),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            FoodForm(
-                modifier = Modifier.weight(0.95f),
-                foodIsValid = foodIsValid,
-                foodName = foodName,
-                foodCalories = foodCalories,
-                onFoodNameChanged = { newFoodName -> onFoodNameChanged(newFoodName) },
-                onFoodCaloriesChanged = { newCalories -> onFoodCaloriesChanged(newCalories) },
-                onCloseIconClicked = { onCloseIconClicked() }
-            )
-            Spacer(modifier = Modifier.weight(0.05f))
-        }
-    }
 }
+
+fun validateFood(foodModel: FoodModel): Boolean {
+    return foodModel.foodName.isNotEmpty() && foodModel.calories > 0
+}
+
+
+
