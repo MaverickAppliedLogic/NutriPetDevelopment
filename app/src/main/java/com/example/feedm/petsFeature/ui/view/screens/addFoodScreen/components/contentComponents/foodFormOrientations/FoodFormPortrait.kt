@@ -1,5 +1,7 @@
-package com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.components.contentComponents
+package com.example.feedm.petsFeature.ui.view.screens.addFoodScreen.components.contentComponents.foodFormOrientations
 
+import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,22 +28,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.feedm.R
 import com.example.feedm.core.ui.theme.Error
 import com.example.feedm.core.ui.theme.NeutralLight
 import com.example.feedm.core.ui.theme.Primary
 import com.example.feedm.core.ui.theme.PrimaryDark
 import com.example.feedm.core.ui.theme.PrimaryLightest
+import com.example.feedm.core.ui.theme.ScreenHeight
+import com.example.feedm.core.ui.theme.ScreenOrientation
 import com.example.feedm.core.ui.theme.SecondaryDark
 import com.example.feedm.core.ui.theme.SecondaryDarkest
 import com.example.feedm.core.ui.theme.dimens
 
 @Composable
-fun FoodForm(
+fun FoodFormPortrait(
     modifier: Modifier = Modifier,
     foodIsValid: Boolean,
     foodName: String,
@@ -65,43 +70,55 @@ fun FoodForm(
             .background(NeutralLight),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(contentAlignment = Alignment.CenterEnd) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = MaterialTheme.dimens.small2),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = "Crear Alimento", style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
-                )
+        if (!(ScreenOrientation == Configuration.ORIENTATION_LANDSCAPE || ScreenHeight < 600)) {
+
+            Box(contentAlignment = Alignment.CenterEnd) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = MaterialTheme.dimens.small2),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = "Crear Alimento", style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
+                    )
+                }
+                IconButton(onClick = { onCloseIconClicked() }) {
+                    Icon(
+                        Icons.Default.Close, contentDescription = "Icono",
+                        modifier = Modifier.padding(end = MaterialTheme.dimens.small1)
+                    )
+                }
+
             }
-            IconButton(onClick = { onCloseIconClicked() }) {
-                Icon(
-                    Icons.Default.Close, contentDescription = "Icono",
-                    modifier = Modifier.padding(end = MaterialTheme.dimens.small1)
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .size(MaterialTheme.dimens.extraLarge3)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.extraSmall4)),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.img_food),
+                    contentDescription = "Pet food Image",
+                    modifier = Modifier.fillMaxSize()
                 )
+
             }
 
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Box(
-            modifier = Modifier
-                .size(MaterialTheme.dimens.extraLarge3)
-                .background(Color(0xFFD9D9D9),
-                    shape = RoundedCornerShape(MaterialTheme.dimens.extraSmall3)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                Icons.Default.Close,
-                contentDescription = "Icono",
-                tint = Color.Gray,
-                modifier = Modifier.size(MaterialTheme.dimens.large2)
-            )
+        else{
+            Box(contentAlignment = Alignment.CenterEnd) {
+                IconButton(onClick = { onCloseIconClicked() }) {
+                    Icon(
+                        Icons.Default.Close, contentDescription = "Icono",
+                    )
+                }
 
+            }
         }
 
         Spacer(modifier = Modifier.weight(1f))
