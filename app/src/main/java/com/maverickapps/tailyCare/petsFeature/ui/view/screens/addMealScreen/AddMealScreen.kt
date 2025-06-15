@@ -8,9 +8,9 @@ import com.maverickapps.tailyCare.petsFeature.ui.viewmodel.AddMealViewmodel
 @Composable
 fun AddMealScreen(
     addMealViewmodel: AddMealViewmodel,
-    mealId: Int,
+    mealId: Int?,
     petId: Int,
-    foodId: Int,
+    foodId: Int?,
     navToFoodList: () -> Unit,
     navToBackStack: () -> Unit
 ){
@@ -19,7 +19,7 @@ fun AddMealScreen(
             addMealViewmodel = addMealViewmodel,
             mealId = mealId,
             petId = petId,
-            foodId = foodId,
+            foodId = foodId?:-1,
             navToFoodList = navToFoodList,
             navToBackStack = navToBackStack
         )

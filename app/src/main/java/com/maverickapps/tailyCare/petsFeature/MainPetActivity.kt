@@ -11,6 +11,7 @@ import com.maverickapps.tailyCare.petsFeature.ui.viewmodel.AddFoodViewModel
 import com.maverickapps.tailyCare.petsFeature.ui.viewmodel.AddMealViewmodel
 import com.maverickapps.tailyCare.petsFeature.ui.viewmodel.DashboardViewModel
 import com.maverickapps.tailyCare.petsFeature.ui.viewmodel.RegisterPetViewmodel
+import com.maverickapps.tailyCare.petsFeature.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.tailyCare.ui.viewmodel.FoodsListViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +22,7 @@ class MainPetActivity : ComponentActivity() {
     private val dashboardViewModel: DashboardViewModel by viewModels()
     private val addFoodViewmodel: AddFoodViewModel by viewModels()
     private val foodsListViewmodel: FoodsListViewmodel by viewModels()
+    private val sharedDataViewmodel: SharedDataViewmodel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class MainPetActivity : ComponentActivity() {
         setContent {
             TailyCareTheme {
                 NavigationWrapper(
+                    sharedDataViewmodel = sharedDataViewmodel,
                     registerPetViewModel = registerPetViewModel,
                     addMealViewmodel = addMealViewmodel,
                     dashBoardViewModel = dashboardViewModel,

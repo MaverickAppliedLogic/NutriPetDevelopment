@@ -18,7 +18,7 @@ import java.util.Locale
 @Composable
 fun AddMealContent(
     addMealViewmodel: AddMealViewmodel,
-    mealId: Int,
+    mealId: Int?,
     petId: Int,
     foodId: Int,
     navToFoodList: () -> Unit,
@@ -27,12 +27,16 @@ fun AddMealContent(
     val mealToBeAdded by addMealViewmodel.mealToBeAdded.collectAsStateWithLifecycle()
     val foodSelected by addMealViewmodel.foodSelected.collectAsStateWithLifecycle()
     val mealIsValid by addMealViewmodel.mealIsValid.collectAsStateWithLifecycle()
-    var rationFormatted by remember {
-        mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
+    var rationFormatted by remember(mealToBeAdded.ration) {
+        if (mealToBeAdded.ration == 0f) mutableStateOf("")
+        else mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
+
     }
     addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(petId = petId))
     LaunchedEffect(mealId) {
-        if (mealId != -1) addMealViewmodel.getMeal(mealId)
+        if (mealId != null){
+            addMealViewmodel.getMeal(mealId)
+        }
     }
 
     LaunchedEffect(foodId) {
@@ -45,8 +49,6 @@ fun AddMealContent(
             mealTime = mealToBeAdded.mealTime,
             food = foodSelected,
             navToFoodList = {
-                println("NavToFoodListAddMeal")
-                println(mealToBeAdded.petId)
                 navToFoodList()
             },
             addButtonClicked = {makeItDaily ->

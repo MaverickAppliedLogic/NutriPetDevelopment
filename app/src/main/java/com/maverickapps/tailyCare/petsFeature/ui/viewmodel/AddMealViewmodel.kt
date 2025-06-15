@@ -29,16 +29,15 @@ class AddMealViewmodel @Inject constructor(
         calories = 0f,
     )
 
-    private val _mealToBeAdded = MutableStateFlow(
-        MealModel(
-            petId = 0,
-            foodId = -1,
-            mealTime = 0,
-            ration = 0f,
-            isDailyMeal = false,
-        )
+    private val initialMeal = MealModel(
+        petId = 0,
+        foodId = -1,
+        mealTime = 0,
+        ration = 0f,
+        isDailyMeal = false,
     )
 
+    private val _mealToBeAdded = MutableStateFlow(initialMeal)
     private val _foodSelected = MutableStateFlow(initialSelectedFood)
     private val _mealIsValid = MutableStateFlow(Pair<String?, Boolean>(null, true))
 
@@ -46,8 +45,9 @@ class AddMealViewmodel @Inject constructor(
     val foodSelected: StateFlow<FoodModel> = _foodSelected
     val mealIsValid: StateFlow<Pair<String?, Boolean>> = _mealIsValid
 
-    fun setInitialSelectedFood() {
+    fun setInitialMeal() {
         _foodSelected.value = initialSelectedFood
+        _mealToBeAdded.value = initialMeal
         _mealIsValid.value = Pair(null, false)
     }
 

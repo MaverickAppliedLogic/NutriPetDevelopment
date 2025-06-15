@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 data class DashBoardScreen(val shouldRefresh: Boolean?)
 
 @Serializable
-data class RegisterPet(val petId: Int?)
+object RegisterPet
 
 @Serializable
-data class AddMeal(val petId: Int? = null, val foodId: Int? = null, val mealId: Int? = null)
+object AddMeal
 
 @Serializable
-data class AddFood(val origin: String, val petId: Int? = null)
+data class AddFood(val origin: String)
 
 @Serializable
-data class FoodList(val origin: String, val petId: Int? = null)
+data class FoodList(val origin: String)

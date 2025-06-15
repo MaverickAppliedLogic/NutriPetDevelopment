@@ -8,13 +8,13 @@ import javax.inject.Inject
 class GetPetsUseCase @Inject constructor(private val repository: PetsRepository){
     suspend operator fun invoke(): List<PetModel>{
         var pets = repository.getAllPetsFromDB()
-        return if (pets.isNotEmpty()){
+        return if (pets.isNullOrEmpty().not()){
             repository.insertPetsToStorage(pets)
             pets
         }
         else{
             pets = repository.getAllPetsFromStorage()
-            if(pets.isNotEmpty()){
+            if(pets.isNullOrEmpty().not()){
                 repository.insertPetsToDB(pets.map { it.toDataBase() })
                 //Se vuelve a recoger de la DB para que se les asignen ID's
                 pets = repository.getAllPetsFromDB()
