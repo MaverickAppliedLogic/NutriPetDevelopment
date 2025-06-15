@@ -12,7 +12,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.maverickapps.tailycare"
+        applicationId = "com.maverickapps.nutripet"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

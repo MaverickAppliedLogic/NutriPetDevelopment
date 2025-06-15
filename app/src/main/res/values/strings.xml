@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     //AddPetActivity Strings
-    <string name="app_name">TailyCare</string>
+    <string name="app_name">NutriPet</string>
     <string name="fa_hintEtPetName">Name</string>
     <string name="ma_txtSpinnerEdad">Edad*</string>
     <array name="fa_arrayAgeSelected">
@@ -65,7 +65,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="title_activity_pet_compose">PetsActivity</string>
+    <string name="title_activity_pet_compose">NutriPet</string>
     <string name="title_activity_from_compose">FormActivity</string>
     <string name="title_activity_pet">PetActivity</string>
     <string name="pia_FoodModuleTitle">Registro Comidas</string>
