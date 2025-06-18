@@ -10,8 +10,17 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
-/build
-/captures
+/build/
+/captures/
 .externalNativeBuild
 .cxx
 local.properties
+
+#PUBLIC PUSH CONFIGURATION
+#/gradle/
+#app/src/main/java/com/maverickapps/nutripet/petsFeature/utils/CaloriesCalculator.kt
+#app/src/main/java/com/maverickapps/nutripet/petsFeature/utils/loopListHandler
+#app/src/main/java/com/maverickapps/nutripet/core/data/services
+#app/src/main/java/com/maverickapps/nutripet/core/data/local/
+#app/src/main/java/com/maverickapps/nutripet/core/domain/remoteResultModel
+#app/src/test/java/com/maverickapps/nutripet/core/utils/
