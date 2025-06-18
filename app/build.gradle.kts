@@ -12,7 +12,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tailycare"
+        applicationId = "com.maverickapps.nutripet"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -24,14 +24,16 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+
         }
     }
     compileOptions {
@@ -51,6 +53,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
         }
     }
 }
@@ -92,6 +96,8 @@ dependencies {
 
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.material3.window.size.android)
+    implementation(libs.androidx.adaptive.android)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
