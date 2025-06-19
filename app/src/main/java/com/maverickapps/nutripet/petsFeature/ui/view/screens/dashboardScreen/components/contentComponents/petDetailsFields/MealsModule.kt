@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
+import com.maverickapps.nutripet.core.ui.theme.Error
 import com.maverickapps.nutripet.core.ui.theme.Secondary
 import com.maverickapps.nutripet.core.ui.theme.SecondaryDarkest
 import com.maverickapps.nutripet.core.ui.theme.dimens
@@ -59,7 +60,10 @@ fun MealsModule(
         },
         captionEnabled = true,
         captionHead = "Recomendado",
-        captionTrailing = "${caloriesConsumed.sumOf { it }} / $requiredCalories kcal"
+        captionHeadColor = SecondaryDarkest,
+        captionTrailing = "${caloriesConsumed.sumOf { it }} / $requiredCalories kcal",
+        captionTrailingColor =
+        if (caloriesConsumed.sumOf { it } > requiredCalories) Error else SecondaryDarkest
     ) {
         if (mealsWithFoods.isEmpty()) {
             Text(

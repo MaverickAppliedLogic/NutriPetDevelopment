@@ -44,7 +44,7 @@ fun TimePickerContainer(
                 end = MaterialTheme.dimens.large1)
             .height(MaterialTheme.dimens.extraLarge1)) {
             Text(
-                text = MaterialTheme.dimens.extraLarge1.toString(),
+                text = "Hora",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 color = SecondaryDarkest,
                 modifier = Modifier.padding()

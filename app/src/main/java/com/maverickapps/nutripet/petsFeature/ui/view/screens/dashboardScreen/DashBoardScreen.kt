@@ -8,12 +8,16 @@ import com.maverickapps.nutripet.petsFeature.ui.viewmodel.DashboardViewModel
 @Composable
 fun DashBoardScreen(
     dashboardViewModel: DashboardViewModel,
+    isUpdated: Boolean,
     needToRefresh: Boolean,
+    setUpdateState: (Boolean) -> Unit,
     navTo: (String, Int?, Int?) -> Unit
 ) {
     NutriPetTheme {
         DashboardContent(
             dashboardViewModel = dashboardViewModel,
+            isUpdated = isUpdated,
+            setUpdateState ={ isUpdated -> setUpdateState(isUpdated)},
             needToRefresh = needToRefresh,
             navTo = navTo)
     }

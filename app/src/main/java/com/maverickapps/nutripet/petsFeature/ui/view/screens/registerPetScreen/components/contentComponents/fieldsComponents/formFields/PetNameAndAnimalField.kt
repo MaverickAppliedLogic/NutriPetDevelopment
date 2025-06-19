@@ -74,7 +74,7 @@ fun PetNameAndAnimalField(
          ***/
 
         var hasAnimalChanged by remember { mutableStateOf(false) }
-        var currentAnimal by remember { mutableStateOf(animal) }
+        var currentAnimal by remember(animal) { mutableStateOf(animal) }
         val rotationAnim by animateFloatAsState(
             targetValue = if (hasAnimalChanged) 360f else 0f,
             label = "",
@@ -98,7 +98,8 @@ fun PetNameAndAnimalField(
                     disabledContentColor = Color.Transparent
                 ),
                 onClick = {
-                    currentAnimal = if (currentAnimal == "dog") "cat" else "dog"
+                    currentAnimal =
+                        if (currentAnimal == "dog" || currentAnimal == "") "cat" else "dog"
                     hasAnimalChanged = true
                     onAnimalChanged(currentAnimal)
                 },
@@ -116,10 +117,12 @@ fun PetNameAndAnimalField(
                         .align(Alignment.CenterHorizontally)
                         .rotate(rotationAnim)
                 )
-                val animalImage = if (currentAnimal == "dog") {
-                    R.drawable.img_dog_illustration
-                } else {
+                val animalImage = if (currentAnimal == "cat" ) {
                     R.drawable.icono_gato_sinfondo
+
+                } else {
+                    R.drawable.img_dog_illustration
+
                 }
                 Image(
                     painter = painterResource(id = animalImage),

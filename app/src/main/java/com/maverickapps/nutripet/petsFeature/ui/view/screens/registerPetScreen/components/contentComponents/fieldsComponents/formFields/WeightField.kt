@@ -36,6 +36,7 @@ fun WeightField(
     onWeightChanged: (Float) -> Unit = {}
 ) {
     var valueRange by remember { mutableStateOf(0f..80f) }
+    var lastAnimal by remember { mutableStateOf(animal) }
     FormField(
         label = "Peso",
         state = fieldState,
@@ -44,14 +45,27 @@ fun WeightField(
         modifier = modifier
     ) {
         LaunchedEffect(animal) {
-            when(animal){
-                "dog" -> {
-                    valueRange = 0f..80f
-                    onWeightChanged(weight * 3.2f)
+            if(lastAnimal == ""){
+                when(animal){
+                    "dog" -> {
+                        valueRange = 0f..80f
+                    }
+                    "cat" -> {
+                        valueRange = 0f..25f
+                    }
                 }
-                "cat" -> {
-                    valueRange = 0f..25f
-                    onWeightChanged(weight / 3.2f)
+                lastAnimal = animal
+            }
+            else{
+                when(animal){
+                    "dog" -> {
+                        valueRange = 0f..80f
+                        onWeightChanged(weight * 3.2f)
+                    }
+                    "cat" -> {
+                        valueRange = 0f..25f
+                        onWeightChanged(weight / 3.2f)
+                    }
                 }
             }
         }

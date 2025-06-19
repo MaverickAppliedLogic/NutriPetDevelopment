@@ -20,7 +20,7 @@ class RegisterPetViewmodel @Inject constructor(
 ):ViewModel(){
 
     private val _initialPet = PetModel(
-        animal = "dog",
+        animal = "",
         petName = "",
         age = 0f,
         petWeight = 0f,

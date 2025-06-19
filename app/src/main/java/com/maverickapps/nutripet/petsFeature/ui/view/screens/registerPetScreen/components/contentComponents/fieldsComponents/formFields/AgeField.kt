@@ -49,7 +49,7 @@ fun AgeField(
     val preparedSelection = {
         if (age == 0f) "Selecciona"
         else if(age == 0.5f){options[0]}
-        else if(age in 1f..7f){options[1]}
+        else if(age in 1f..6f){options[1]}
         else options[2]
     }
     FormField(

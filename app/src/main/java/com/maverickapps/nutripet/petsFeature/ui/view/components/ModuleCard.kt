@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +34,9 @@ fun ModuleCard(
     headerIcon: @Composable () -> Unit = {},
     captionEnabled: Boolean = false,
     captionHead: String = "",
+    captionHeadColor: Color = SecondaryDarkest,
     captionTrailing: String = "",
+    captionTrailingColor: Color = SecondaryDarkest,
     content: @Composable () -> Unit
 ) {
     val modifierForElements = Modifier
@@ -74,14 +77,14 @@ fun ModuleCard(
             Row(modifier = modifierForElements.padding(bottom = 5.dp)){
                 Text(
                     text = captionHead,
-                    color = SecondaryDarkest,
+                    color = captionHeadColor,
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.weight(0.5f)
                 )
                 Text(
                     text = captionTrailing,
-                    color = SecondaryDarkest,
+                    color = captionTrailingColor,
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.weight(0.5f)
@@ -106,6 +109,8 @@ fun ModuleCardPreview() {
         captionEnabled = true,
         captionHead = "Example",
         captionTrailing = "Example",
+        captionHeadColor = SecondaryDarkest,
+        captionTrailingColor = SecondaryDarkest,
         content = {}
     )
 }

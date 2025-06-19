@@ -38,6 +38,7 @@ class DashboardViewModel @Inject constructor(
     private val _mealsWithFoods = MutableStateFlow<List<Pair<MealModel,FoodModel?>>>(emptyList())
     val mealsWithFoods: StateFlow<List<Pair<MealModel,FoodModel?>>> = _mealsWithFoods
 
+
     init {
         fetchData()
     }

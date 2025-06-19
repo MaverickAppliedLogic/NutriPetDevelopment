@@ -1,17 +1,39 @@
 package com.maverickapps.nutripet.petsFeature.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.maverickapps.nutripet.petsFeature.domain.otherTasks.useCase.GetUpdateStateUseCase
+import com.maverickapps.nutripet.petsFeature.domain.otherTasks.useCase.SetUpdateStateUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-class SharedDataViewmodel : ViewModel(){
+@HiltViewModel
+class SharedDataViewmodel @Inject constructor(
+    private val getUpdateStateUseCase: GetUpdateStateUseCase,
+    private val setUpdateStateUseCase: SetUpdateStateUseCase
+): ViewModel(){
 
-    val _selectedPetId = MutableStateFlow(null as Int?)
-    val _selectedMealId = MutableStateFlow(null as Int?)
-    val _selectedFoodId = MutableStateFlow(null as Int?)
+    private val _selectedPetId = MutableStateFlow(null as Int?)
+    private val _selectedMealId = MutableStateFlow(null as Int?)
+    private val _selectedFoodId = MutableStateFlow(null as Int?)
+    private val _isUpdated = MutableStateFlow(false)
 
     val selectedPetId = _selectedPetId
     val selectedMealId = _selectedMealId
     val selectedFoodId = _selectedFoodId
+    val isUpdated = _isUpdated
+
+    init {
+        getUpdateState()
+    }
+
+    private fun getUpdateState(){
+        _isUpdated.value = getUpdateStateUseCase()
+    }
+
+    fun setUpdateState(isUpdated: Boolean){
+        setUpdateStateUseCase(isUpdated)
+    }
 
     fun fetchPetId(petId: Int?){
         _selectedPetId.value = petId
