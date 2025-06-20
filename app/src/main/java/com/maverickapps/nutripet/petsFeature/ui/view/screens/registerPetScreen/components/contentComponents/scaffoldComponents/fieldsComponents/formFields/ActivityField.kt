@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields
+package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -23,18 +23,18 @@ import com.maverickapps.nutripet.core.ui.theme.SecondaryDarkest
 import com.maverickapps.nutripet.core.ui.theme.dimens
 
 @Composable
-fun GoalField(
-    goal: String,
+fun ActivityField(
+    activity: String?,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
     onTrailingIconClicked: () -> Unit = {},
-    onGoalChanged: (String) -> Unit = {}
+    onActivityChanged: (String) -> Unit = {}
 ) {
-    val options = listOf("Bajar peso", "Mantener", "Subir peso")
+    val options = listOf("Baja", "Media", "Alta")
 
     FormField(
-        label = "Objetivo",
+        label = "Actividad",
         state = fieldState,
         expanded = expansionState,
         onTrailingIconClicked = { onTrailingIconClicked() },
@@ -45,33 +45,37 @@ fun GoalField(
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
             modifier = Modifier.padding(top = MaterialTheme.dimens.small1)
-        ){
+        ) {
 
-        Row(horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()){
-            SingleChoiceSegmentedButtonRow (modifier = Modifier.fillMaxWidth(0.9f)){
-                options.forEachIndexed { index, option ->
-                    SegmentedButton(
-                        shape = SegmentedButtonDefaults.itemShape(index, options.size),
-                        selected = (option == goal),
-                        onClick = { onGoalChanged(option) },
-                        colors = SegmentedButtonDefaults.colors(
-                            activeBorderColor = SecondaryDarkest,
-                            activeContainerColor = PrimaryLight,
-                            activeContentColor = SecondaryDarkest,
-                            inactiveBorderColor = SecondaryDarkest,
-                            inactiveContainerColor = NeutralLight,
-                            inactiveContentColor = SecondaryDarkest
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (expansionState) {
+                SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth(0.9f)) {
+                    options.forEachIndexed { index, option ->
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index, options.size),
+                            selected = (option == activity),
+                            onClick = { onActivityChanged(option) },
+                            colors = SegmentedButtonDefaults.colors(
+                                activeBorderColor = SecondaryDarkest,
+                                activeContainerColor = PrimaryLight,
+                                activeContentColor = SecondaryDarkest,
+                                inactiveBorderColor = SecondaryDarkest,
+                                inactiveContainerColor = NeutralLight,
+                                inactiveContentColor = SecondaryDarkest
 
-                        ),
-                        modifier = Modifier.scale(1f)
+                            ),
+                            modifier = Modifier.scale(1f)
                         ) {
-                        Text(text = option)
-                    }
+                            Text(text = option)
+                        }
 
+                    }
+                }
                 }
             }
-        }
         }
     }
 

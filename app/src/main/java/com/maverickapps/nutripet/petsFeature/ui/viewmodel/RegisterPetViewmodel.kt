@@ -38,11 +38,12 @@ class RegisterPetViewmodel @Inject constructor(
         _petToBeRegistered.value = _initialPet
     }
 
-    fun getPetById(petId: Int) {
+    fun getPetById(petId: Int): Boolean {
         viewModelScope.launch {
             val result = getPetByIdUseCase(petId)
             _petToBeRegistered.value = result
         }
+        return true
     }
 
     fun petChanged(petModel: PetModel){

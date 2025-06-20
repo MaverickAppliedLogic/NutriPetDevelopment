@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields
+package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -18,24 +18,22 @@ import androidx.compose.ui.Modifier
 import com.maverickapps.nutripet.core.ui.theme.dimens
 
 @Composable
-fun SterilizationField(
-    sterilized: Boolean,
+fun SexField(
+    sex: String?,
     fieldState: Int,
     expansionState: Boolean,
     modifier: Modifier = Modifier,
     onTrailingIconClicked: () -> Unit = {},
-    sterilizedChanged: (Boolean) -> Unit = {}
+    onSexChanged: (String) -> Unit = {}
 ){
-    val preparedSelection = if (sterilized) "Si" else "No"
     FormField(
-        label = "¿Esterilizado? (Opcional)",
-        isLastField = true,
+        label = "Sexo (Opcional)",
         state = fieldState,
         expanded = expansionState,
         onTrailingIconClicked = { onTrailingIconClicked() },
         modifier = modifier
     ){
-        val options = listOf("Si", "No")
+        val options = listOf("Macho", "Hembra")
         AnimatedVisibility(
             visible = expansionState,
             enter = fadeIn() + expandVertically(),
@@ -49,8 +47,8 @@ fun SterilizationField(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.weight(1f,true)) {
                         Text(it)
-                        RadioButton(selected = (it == preparedSelection),
-                            onClick = { sterilizedChanged(it == "Si") })
+                        RadioButton(selected = (it == sex),
+                            onClick = { onSexChanged(it) })
                     }
                 }
             }

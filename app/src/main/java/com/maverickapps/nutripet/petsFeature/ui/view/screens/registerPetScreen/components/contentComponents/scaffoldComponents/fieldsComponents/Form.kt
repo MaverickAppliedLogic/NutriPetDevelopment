@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents
+package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.maverickapps.nutripet.core.ui.theme.NeutralLight
 import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.ActivityField
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.AgeField
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.GoalField
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.PetNameAndAnimalField
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.SexField
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.SterilizationField
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.WeightField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.ActivityField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.AgeField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.GoalField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.PetNameAndAnimalField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.SexField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.SterilizationField
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.WeightField
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
@@ -24,7 +24,9 @@ import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.u
 
 @Composable
 fun Form(
+    modifier: Modifier = Modifier,
     pet: PetModel,
+    isEditing: Boolean = false,
     petNameFieldData: Pair<Int, Boolean>,
     ageFieldData: Pair<Int, Boolean>,
     sexFieldData: Pair<Int, Boolean>,
@@ -32,7 +34,6 @@ fun Form(
     goalFieldData: Pair<Int, Boolean>,
     sterilizedFieldData: Pair<Int, Boolean>,
     activityFieldData: Pair<Int, Boolean>,
-    modifier: Modifier = Modifier,
     onPetChanged: (PetModel) -> Unit = {},
     onTrailingIconClicked: (Int) -> Unit = {}
 ) {
@@ -79,6 +80,7 @@ fun Form(
         WeightField(
             weight = pet.petWeight,
             animal = pet.animal,
+            isEditing = isEditing,
             expansionState = weightFieldData.second,
             fieldState = weightFieldData.first,
             modifier = Modifier.weight(1f, true),

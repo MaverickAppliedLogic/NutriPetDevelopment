@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields
+package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically

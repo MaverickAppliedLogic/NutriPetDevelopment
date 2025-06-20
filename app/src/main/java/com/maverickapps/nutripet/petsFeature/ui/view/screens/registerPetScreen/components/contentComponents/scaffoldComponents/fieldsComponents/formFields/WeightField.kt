@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields
+package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -28,6 +28,7 @@ import com.maverickapps.nutripet.petsFeature.ui.view.components.customSlider.Cus
 @Composable
 fun WeightField(
     weight: Float,
+    isEditing: Boolean,
     expansionState: Boolean,
     animal: String,
     fieldState: Int,
@@ -36,7 +37,7 @@ fun WeightField(
     onWeightChanged: (Float) -> Unit = {}
 ) {
     var valueRange by remember { mutableStateOf(0f..80f) }
-    var lastAnimal by remember { mutableStateOf(animal) }
+    var changeBecauseInit by remember { mutableStateOf(isEditing) }
     FormField(
         label = "Peso",
         state = fieldState,
@@ -45,18 +46,7 @@ fun WeightField(
         modifier = modifier
     ) {
         LaunchedEffect(animal) {
-            if(lastAnimal == ""){
-                when(animal){
-                    "dog" -> {
-                        valueRange = 0f..80f
-                    }
-                    "cat" -> {
-                        valueRange = 0f..25f
-                    }
-                }
-                lastAnimal = animal
-            }
-            else{
+            if(!changeBecauseInit){
                 when(animal){
                     "dog" -> {
                         valueRange = 0f..80f
@@ -67,6 +57,17 @@ fun WeightField(
                         onWeightChanged(weight / 3.2f)
                     }
                 }
+            }
+             else{
+                when(animal){
+                    "dog" -> {
+                        valueRange = 0f..80f
+                    }
+                    "cat" -> {
+                        valueRange = 0f..25f
+                    }
+                }
+                changeBecauseInit = false
             }
         }
         AnimatedVisibility(

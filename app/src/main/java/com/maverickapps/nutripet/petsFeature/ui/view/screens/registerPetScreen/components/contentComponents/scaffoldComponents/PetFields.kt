@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents
+package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.maverickapps.nutripet.core.ui.theme.dimens
 import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.Form
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.Form
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
@@ -19,16 +18,14 @@ import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.u
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.STERILIZED_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormStateManager
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.RegisterPetViewmodel
 
 @Composable
 fun PortraitPetFields(
     modifier: Modifier = Modifier,
     pet: PetModel,
+    isEditing: Boolean = false,
     formStateManager: FormStateManager,
     listOfStates: List<Pair<Int,Boolean>>,
-    registerPetViewmodel: RegisterPetViewmodel,
-    formItemsHandler: FormItemsInteractionsHandler,
     onPetChanged: (PetModel) -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -39,6 +36,7 @@ fun PortraitPetFields(
         )
         Form(
             pet = pet,
+            isEditing = isEditing,
             petNameFieldData = listOfStates[PET_NAME_FIELD],
             ageFieldData = listOfStates[AGE_FIELD],
             sexFieldData = listOfStates[SEX_FIELD],
@@ -47,10 +45,7 @@ fun PortraitPetFields(
             sterilizedFieldData = listOfStates[STERILIZED_FIELD],
             activityFieldData = listOfStates[ACTIVITY_FIELD],
             onPetChanged = { onPetChanged(it) },
-            onTrailingIconClicked = {
-                formStateManager.actionTriggered(
-                    1, it, registerPetViewmodel, pet, formItemsHandler, {})
-            },
+            onTrailingIconClicked = { formStateManager.actionTriggered(1, it, pet, {})},
             modifier = Modifier.weight(0.80f, true)
         )
     }
@@ -60,10 +55,9 @@ fun PortraitPetFields(
 fun LandscapePetFields(
     modifier: Modifier = Modifier,
     pet: PetModel,
+    isEditing: Boolean = false,
     formStateManager: FormStateManager,
     listOfStates: List<Pair<Int,Boolean>>,
-    registerPetViewmodel: RegisterPetViewmodel,
-    formItemsHandler: FormItemsInteractionsHandler,
     buttonClicked: () -> Unit,
     onPetChanged: (PetModel) -> Unit = {},
 ) {
@@ -76,6 +70,7 @@ fun LandscapePetFields(
         )
         Form(
             pet = pet,
+            isEditing = isEditing,
             petNameFieldData = listOfStates[PET_NAME_FIELD],
             ageFieldData = listOfStates[AGE_FIELD],
             sexFieldData = listOfStates[SEX_FIELD],
@@ -85,8 +80,7 @@ fun LandscapePetFields(
             activityFieldData = listOfStates[ACTIVITY_FIELD],
             onPetChanged = { onPetChanged(it) },
             onTrailingIconClicked = {
-                formStateManager.actionTriggered(
-                    1, it, registerPetViewmodel, pet, formItemsHandler, {})
+                formStateManager.actionTriggered(1, it, pet, {})
             },
             modifier = Modifier.height(570.dp)
         )

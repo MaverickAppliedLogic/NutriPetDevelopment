@@ -39,9 +39,6 @@ class PetValidator @Inject constructor() {
         if (validateGoal(pet.goal).not()) {
             validFields.remove(GOAL_FIELD)
         }
-        if (!pet.sterilized) {
-            validFields.remove(STERILIZED_FIELD)
-        }
         if (validateActivity(pet.activity)) {
             validFields.remove(ACTIVITY_FIELD)
         }

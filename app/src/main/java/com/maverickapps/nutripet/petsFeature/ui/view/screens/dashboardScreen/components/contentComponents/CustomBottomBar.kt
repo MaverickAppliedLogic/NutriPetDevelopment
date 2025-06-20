@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import com.example.feedm.R
 import com.maverickapps.nutripet.core.ui.theme.Primary
 import com.maverickapps.nutripet.core.ui.theme.SecondaryDarkest
@@ -41,6 +42,7 @@ import com.maverickapps.nutripet.core.ui.theme.dimens
 
 @Composable
 fun CustomBottomBar(
+    bottomPadding: Dp,
     petListSize: Int,
     navTo: (String) -> Unit = {}
 ) {
@@ -56,7 +58,8 @@ fun CustomBottomBar(
             enter = slideInVertically(initialOffsetY = { it }),
             exit = slideOutVertically(targetOffsetY = { it })
         )  {
-           Row(modifier = Modifier.fillMaxWidth(widthAnimation).fillMaxHeight(0.225f)) {
+           Row(modifier = Modifier.fillMaxWidth(widthAnimation)
+               .height(bottomPadding + MaterialTheme.dimens.extraLarge3)) {
 
                if (petListSize > 0) {
 
@@ -130,7 +133,7 @@ fun CustomBottomBar(
                 shape = CircleShape, containerColor = Primary,
                 contentColor = SecondaryDarkest,
                 modifier = Modifier
-                    .padding(bottom = MaterialTheme.dimens.small2)
+                    .padding(bottom = bottomPadding + MaterialTheme.dimens.small1)
                     .size(MaterialTheme.dimens.buttonSize)
             ) {
                 Icon(imageVector = if(!buttonClicked) Icons.Default.Add else Icons.Default.Close,

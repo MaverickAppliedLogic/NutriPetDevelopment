@@ -3,8 +3,11 @@ package com.maverickapps.nutripet.petsFeature.ui.view.screens.dashboardScreen.co
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -61,6 +64,7 @@ fun DashboardContent(
         }
     }
     val scrollState = rememberScrollState()
+    val windowInsets = WindowInsets.safeDrawing
     Scaffold(modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackBarHostState){
             Snackbar(snackbarData = it,
@@ -69,6 +73,7 @@ fun DashboardContent(
                 modifier = Modifier.padding(bottom = MaterialTheme.dimens.medium2).clickable {
                     snackBarHostState.currentSnackbarData?.dismiss() })
         } },
+        contentWindowInsets = windowInsets
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -131,6 +136,7 @@ fun DashboardContent(
             )
         }
         CustomBottomBar(
+            bottomPadding = windowInsets.asPaddingValues().calculateBottomPadding(),
             petListSize = pets.size,
             navTo = { navTo(it, petIdSelected, null) }
         )

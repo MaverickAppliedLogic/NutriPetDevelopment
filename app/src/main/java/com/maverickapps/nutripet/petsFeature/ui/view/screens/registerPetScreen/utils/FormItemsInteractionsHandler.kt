@@ -1,10 +1,11 @@
 package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils
 
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.WAITING
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.FormFieldStates.WAITING
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class FormItemsInteractionsHandler {
+class FormItemsInteractionsHandler @Inject constructor() {
 
     companion object {
         const val PET_NAME_FIELD = 0
@@ -15,6 +16,7 @@ class FormItemsInteractionsHandler {
         const val ACTIVITY_FIELD = 5
         const val STERILIZED_FIELD = 6
     }
+
     private val fieldWasVisible = mutableListOf(false, false, false, false, false, false, false)
 
     private val _petNameFieldVisibility = MutableStateFlow(false)
@@ -31,7 +33,7 @@ class FormItemsInteractionsHandler {
     var weightFieldVisibility: StateFlow<Boolean> = _weightFieldVisibility
     var goalFieldVisibility: StateFlow<Boolean> = _goalFieldVisibility
     var sterilizedFieldVisibility: StateFlow<Boolean> = _sterilizedFieldVisibility
-    var activityField : StateFlow<Boolean> = _activityFieldVisibility
+    var activityField: StateFlow<Boolean> = _activityFieldVisibility
 
     private val _petNameFieldState = MutableStateFlow(WAITING)
     private val _ageFieldState = MutableStateFlow(WAITING)
@@ -49,40 +51,53 @@ class FormItemsInteractionsHandler {
     var sterilizedFieldState: StateFlow<Int> = _sterilizedFieldState
     var activityFieldState: StateFlow<Int> = _activityFieldState
 
-    fun allFieldsChanged(index: Int, state: Int){
+    fun allFieldsChanged(index: Int, state: Int) {
         when (index) {
             PET_NAME_FIELD ->
-                    _petNameFieldState.value = state
+                _petNameFieldState.value = state
+
             AGE_FIELD ->
-                    _ageFieldState.value = state
+                _ageFieldState.value = state
+
             SEX_FIELD ->
-                    _sexFieldState.value = state
+                _sexFieldState.value = state
+
             WEIGHT_FIELD ->
-                    _weightFieldState.value = state
+                _weightFieldState.value = state
+
             GOAL_FIELD ->
-                    _goalFieldState.value = state
+                _goalFieldState.value = state
+
             STERILIZED_FIELD ->
-                    _sterilizedFieldState.value = state
+                _sterilizedFieldState.value = state
+
             ACTIVITY_FIELD ->
-                    _activityFieldState.value = state
+                _activityFieldState.value = state
         }
     }
 
-    fun onItemExpansionChanged(index: Int){
+
+    fun onItemExpansionChanged(index: Int) {
         if (!fieldWasVisible[index]) fieldWasVisible[index] = true
-        when(index){
+        when (index) {
             PET_NAME_FIELD ->
                 togglePetNameFieldVisibility()
+
             AGE_FIELD ->
                 toggleAgeFieldVisibility()
+
             SEX_FIELD ->
                 toggleSexFieldVisibility()
+
             WEIGHT_FIELD ->
                 toggleWeightFieldVisibility()
+
             GOAL_FIELD ->
                 toggleGoalFieldVisibility()
+
             STERILIZED_FIELD ->
                 toggleSterilizedFieldVisibility()
+
             ACTIVITY_FIELD ->
                 toggleActivityFieldVisibility()
         }
@@ -94,33 +109,38 @@ class FormItemsInteractionsHandler {
                 if (fieldWasVisible[index] && !_petNameFieldVisibility.value) {
                     _petNameFieldState.value = state
                 }
+
             AGE_FIELD ->
                 if (fieldWasVisible[index] && !_ageFieldVisibility.value) {
                     _ageFieldState.value = state
                 }
+
             SEX_FIELD ->
                 if (fieldWasVisible[index] && !_sexFieldVisibility.value) {
                     _sexFieldState.value = state
                 }
+
             WEIGHT_FIELD ->
                 if (fieldWasVisible[index] && !_weightFieldVisibility.value) {
                     _weightFieldState.value = state
                 }
+
             GOAL_FIELD ->
                 if (fieldWasVisible[index] && !_goalFieldVisibility.value) {
                     _goalFieldState.value = state
                 }
+
             STERILIZED_FIELD ->
                 if (fieldWasVisible[index] && !_sterilizedFieldVisibility.value) {
                     _sterilizedFieldState.value = state
                 }
+
             ACTIVITY_FIELD ->
                 if (fieldWasVisible[index] && !_activityFieldVisibility.value) {
                     _activityFieldState.value = state
                 }
         }
     }
-
 
 
     private fun togglePetNameFieldVisibility() {

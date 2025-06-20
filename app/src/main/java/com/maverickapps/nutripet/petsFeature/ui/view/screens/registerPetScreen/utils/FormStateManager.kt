@@ -1,9 +1,9 @@
 package com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils
 
 import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.INVALID
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.VALID
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.fieldsComponents.formFields.FormFieldStates.WAITING
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.FormFieldStates.INVALID
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.FormFieldStates.VALID
+import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.components.contentComponents.scaffoldComponents.fieldsComponents.formFields.FormFieldStates.WAITING
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
@@ -12,46 +12,45 @@ import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.u
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.STERILIZED_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import com.maverickapps.nutripet.petsFeature.ui.viewmodel.RegisterPetViewmodel
+import javax.inject.Inject
 
-class FormStateManager {
+class FormStateManager @Inject constructor(
+   private val registerPetViewmodel: RegisterPetViewmodel,
+    private val formItemsHandler: FormItemsInteractionsHandler,
+
+) {
+
+    private val fields = mutableListOf(
+        PET_NAME_FIELD,
+        AGE_FIELD,
+        SEX_FIELD,
+        WEIGHT_FIELD,
+        GOAL_FIELD,
+        ACTIVITY_FIELD,
+        STERILIZED_FIELD
+    )
 
     fun actionTriggered(
         action: Int,
         index: Int,
-        registerPetViewmodel: RegisterPetViewmodel,
         petToBeAdded: PetModel,
-        formItemsHandler: FormItemsInteractionsHandler,
         navigateBack: (Boolean) -> Unit
     ){
-        val fields = mutableListOf(
-            PET_NAME_FIELD,
-            AGE_FIELD,
-            SEX_FIELD,
-            WEIGHT_FIELD,
-            GOAL_FIELD,
-            ACTIVITY_FIELD,
-            STERILIZED_FIELD
-        )
+
         when(action){
-            0 -> onAddClicked(fields, registerPetViewmodel, petToBeAdded, formItemsHandler, navigateBack)
-            else -> onTrailingIconClicked(index, fields, registerPetViewmodel, formItemsHandler)
+            0 -> onAddClicked(petToBeAdded, navigateBack)
+            else -> onTrailingIconClicked(index)
         }
     }
 
 
     private fun onAddClicked(
-        fields: List<Int>,
-        registerPetViewmodel: RegisterPetViewmodel,
         petToBeAdded: PetModel,
-        formItemsHandler: FormItemsInteractionsHandler,
         navigateBack: (Boolean) -> Unit
     ) {
-        val validationResults = validateFields(fields, registerPetViewmodel)
         var canPetBeAdded = true
-
-        validationResults.forEach { (field, state) ->
-            formItemsHandler.allFieldsChanged(field, state)
-            if (state == INVALID) canPetBeAdded = false
+        triggerAllFields().forEach{
+            if (it.value == INVALID) canPetBeAdded = false
         }
 
         if (canPetBeAdded) {
@@ -60,16 +59,19 @@ class FormStateManager {
         }
     }
 
+    fun triggerAllFields(): Map<Int, Int> {
+        val validationResults = validateFields()
+        validationResults.forEach { (field, state) ->
+            formItemsHandler.allFieldsChanged(field, state)
+        }
+        return validationResults
+    }
 
-    private fun onTrailingIconClicked(
-        index: Int,
-        fields: List<Int>,
-        registerPetViewmodel: RegisterPetViewmodel,
-        formItemsHandler: FormItemsInteractionsHandler
-    ) {
+
+    private fun onTrailingIconClicked(index: Int) {
         formItemsHandler.onItemExpansionChanged(index)
 
-        val validationResults = validateFields(fields, registerPetViewmodel)
+        val validationResults = validateFields()
 
         validationResults.forEach { (field, state) ->
             formItemsHandler.onItemStateChanged(field, state)
@@ -77,12 +79,12 @@ class FormStateManager {
     }
 
 
-    private fun validateFields(fields: List<Int>, registerPetViewmodel: RegisterPetViewmodel): Map<Int, Int> {
+    private fun validateFields(): Map<Int, Int> {
         val validFields = registerPetViewmodel.validatePet()
         return fields.associateWith { field ->
             when {
                 validFields.contains(field) -> VALID
-                field == SEX_FIELD || field == STERILIZED_FIELD -> WAITING
+                field == SEX_FIELD -> WAITING
                 else -> INVALID
             }
         }
