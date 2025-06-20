@@ -27,6 +27,7 @@ fun Form(
     modifier: Modifier = Modifier,
     pet: PetModel,
     isEditing: Boolean = false,
+    stopChangingForEditing: () -> Unit = {},
     petNameFieldData: Pair<Int, Boolean>,
     ageFieldData: Pair<Int, Boolean>,
     sexFieldData: Pair<Int, Boolean>,
@@ -87,6 +88,7 @@ fun Form(
             onTrailingIconClicked = {
                 onTrailingIconClicked(WEIGHT_FIELD)
             },
+            stopChangingForEditing = { stopChangingForEditing() },
             onWeightChanged = { onPetChanged(pet.copy(petWeight = it)) }
         )
 

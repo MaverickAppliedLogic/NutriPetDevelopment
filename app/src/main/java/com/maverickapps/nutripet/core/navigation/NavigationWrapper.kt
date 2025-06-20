@@ -30,14 +30,16 @@ fun NavigationWrapper(
     foodListViewModel: FoodsListViewmodel
 ) {
     val navController = rememberNavController()
-    val showDialog by sharedDataViewmodel.showDialog.collectAsStateWithLifecycle()
+    val needToUpdate by sharedDataViewmodel.needToUpdate.collectAsStateWithLifecycle()
+    val recentlyUpdated by sharedDataViewmodel.isRecentlyUpdated.collectAsStateWithLifecycle()
     NavHost(navController = navController, startDestination = DashBoardScreen(false)) {
         composable<DashBoardScreen> {
             val shouldRefresh = it.toRoute<DashBoardScreen>().shouldRefresh ?: false
             DashBoardScreen(
                 dashBoardViewModel,
-                showDialog = showDialog,
-                fetchCurrentVer = { sharedDataViewmodel.fetchCurrentVer() },
+                needToUpdate = needToUpdate,
+                showUpdateNotes = recentlyUpdated,
+                dialogSeen = { sharedDataViewmodel.updateDialogSeen() },
                 needToRefresh = shouldRefresh
             ) { destination, petId, mealId ->
                 when (destination) {

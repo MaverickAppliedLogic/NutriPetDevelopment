@@ -14,14 +14,16 @@ class VersionManageRepository @Inject constructor(
     }
 
     suspend fun fetchVersionLocalStorage(){
-        remoteConfigService.fetchValues()
+        val fetched = remoteConfigService.fetchValues()
+        println(fetched)
         val newVersion = remoteConfigService.getLatestVersion()
         versionLocalStorage.setUpdateState(newVersion)
+
     }
 
     suspend fun getLatestVersion(): Double {
-        remoteConfigService.fetchValues()
+        val fetched = remoteConfigService.fetchValues()
+        println(fetched)
         return remoteConfigService.getLatestVersion()
     }
-
 }

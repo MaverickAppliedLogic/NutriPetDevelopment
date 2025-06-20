@@ -24,6 +24,7 @@ fun PortraitPetFields(
     modifier: Modifier = Modifier,
     pet: PetModel,
     isEditing: Boolean = false,
+    stopChangingForEditing: () -> Unit = {},
     formStateManager: FormStateManager,
     listOfStates: List<Pair<Int,Boolean>>,
     onPetChanged: (PetModel) -> Unit = {},
@@ -37,6 +38,7 @@ fun PortraitPetFields(
         Form(
             pet = pet,
             isEditing = isEditing,
+            stopChangingForEditing = { stopChangingForEditing() },
             petNameFieldData = listOfStates[PET_NAME_FIELD],
             ageFieldData = listOfStates[AGE_FIELD],
             sexFieldData = listOfStates[SEX_FIELD],
@@ -56,6 +58,7 @@ fun LandscapePetFields(
     modifier: Modifier = Modifier,
     pet: PetModel,
     isEditing: Boolean = false,
+    stopChangingForEditing: () -> Unit = {},
     formStateManager: FormStateManager,
     listOfStates: List<Pair<Int,Boolean>>,
     buttonClicked: () -> Unit,
@@ -71,6 +74,7 @@ fun LandscapePetFields(
         Form(
             pet = pet,
             isEditing = isEditing,
+            stopChangingForEditing = { stopChangingForEditing() },
             petNameFieldData = listOfStates[PET_NAME_FIELD],
             ageFieldData = listOfStates[AGE_FIELD],
             sexFieldData = listOfStates[SEX_FIELD],

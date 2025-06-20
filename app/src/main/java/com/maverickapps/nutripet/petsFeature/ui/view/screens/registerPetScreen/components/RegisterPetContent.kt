@@ -50,6 +50,7 @@ fun RegisterPetContent(
                 listOfStates = listOfStates,
                 onPetChanged = { registerPetViewmodel.petChanged(it) },
                 isEditing = isEditing,
+                stopChangingForEditing = { isEditing = false },
                 buttonClicked = {
                     formStateManager.actionTriggered(
                         0,
@@ -74,6 +75,7 @@ fun RegisterPetContent(
                 formStateManager = formStateManager,
                 listOfStates = listOfStates,
                 isEditing = isEditing,
+                stopChangingForEditing = { isEditing = false },
                 onPetChanged = { registerPetViewmodel.petChanged(it) },
                 modifier = Modifier.padding(paddingValues)
             )

@@ -33,7 +33,7 @@ import com.maverickapps.nutripet.core.ui.theme.NeutralLight
 import com.maverickapps.nutripet.core.ui.theme.SecondaryDarkest
 import com.maverickapps.nutripet.core.ui.theme.dimens
 import com.maverickapps.nutripet.petsFeature.ui.view.components.alerts.ConfirmPetDialog
-import com.maverickapps.nutripet.petsFeature.ui.view.components.alerts.UpdateNotesDialog
+import com.maverickapps.nutripet.petsFeature.ui.view.components.alerts.UpdateDialog
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.dashboardScreen.components.contentComponents.CustomBottomBar
 import com.maverickapps.nutripet.petsFeature.ui.view.screens.dashboardScreen.components.contentComponents.PetDetails
 import com.maverickapps.nutripet.petsFeature.ui.viewmodel.DashboardViewModel
@@ -41,11 +41,12 @@ import com.maverickapps.nutripet.petsFeature.ui.viewmodel.DashboardViewModel
 @Composable
 fun DashboardContent(
     dashboardViewModel: DashboardViewModel,
-    showDialog: Boolean,
+    needToUpdate: Boolean,
+    showUpdateNotes: Boolean,
     needToRefresh: Boolean,
     dialogSeen: () -> Unit,
     navTo: (String, Int?, Int?) -> Unit
-){
+) {
     val pets by dashboardViewModel.pets.collectAsState()
     val mealsWithFoods by dashboardViewModel.mealsWithFoods.collectAsStateWithLifecycle()
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
@@ -66,14 +67,20 @@ fun DashboardContent(
     }
     val scrollState = rememberScrollState()
     val windowInsets = WindowInsets.safeDrawing
-    Scaffold(modifier = Modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(snackBarHostState){
-            Snackbar(snackbarData = it,
-                containerColor = SecondaryDarkest,
-                contentColor = NeutralLight,
-                modifier = Modifier.padding(bottom = MaterialTheme.dimens.medium2).clickable {
-                    snackBarHostState.currentSnackbarData?.dismiss() })
-        } },
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(snackBarHostState) {
+                Snackbar(snackbarData = it,
+                    containerColor = SecondaryDarkest,
+                    contentColor = NeutralLight,
+                    modifier = Modifier
+                        .padding(bottom = MaterialTheme.dimens.medium2)
+                        .clickable {
+                            snackBarHostState.currentSnackbarData?.dismiss()
+                        })
+            }
+        },
         contentWindowInsets = windowInsets
     ) { paddingValues ->
         Box(
@@ -100,7 +107,6 @@ fun DashboardContent(
                 navTo("EditPet", petIdSelected, null)
             },
             onDeleteIconClicked = {
-                println("onDeleteIconClicked")
                 openDialog = true
             },
             onMealDataClicked = { id ->
@@ -122,21 +128,22 @@ fun DashboardContent(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         )
-        if(openDialog && petIdSelected != null){
+        if (openDialog && petIdSelected != null) {
             val petName = pets.find { it.petId == petIdSelected }!!.petName
             ConfirmPetDialog(
                 petName = petName,
                 petIdSelected = petIdSelected,
                 dashboardViewModel = dashboardViewModel,
                 snackBarHostState = snackBarHostState,
-            ){openDialog = it}
+            ) { openDialog = it }
         }
-        if (showDialog){
-            UpdateNotesDialog(
-                onDismiss = { dialogSeen() },
-                modifier = Modifier.fillMaxHeight(0.6f)
-            )
-        }
+        UpdateDialog(
+            onDismiss = { dialogSeen() },
+            needToUpdate = needToUpdate,
+            showUpdateNotes = showUpdateNotes,
+            modifier = Modifier.fillMaxHeight(0.6f)
+        )
+
         CustomBottomBar(
             bottomPadding = windowInsets.asPaddingValues().calculateBottomPadding(),
             petListSize = pets.size,

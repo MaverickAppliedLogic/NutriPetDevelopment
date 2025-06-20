@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.petsFeature.ui.view.components.alerts
+package com.maverickapps.nutripet.petsFeature.ui.view.components.alerts.updateDialogs
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +31,6 @@ fun UpdateNotesDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {}
 ) {
-    Box(modifier = modifier) {
         AlertDialog(
             containerColor = NeutralDark,
             textContentColor = SecondaryDarkest,
@@ -162,5 +161,5 @@ fun UpdateNotesDialog(
                 }
             },
         )
-    }
+
 }

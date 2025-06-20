@@ -33,11 +33,11 @@ fun WeightField(
     animal: String,
     fieldState: Int,
     modifier: Modifier,
+    stopChangingForEditing: () -> Unit,
     onTrailingIconClicked: () -> Unit = {},
     onWeightChanged: (Float) -> Unit = {}
 ) {
     var valueRange by remember { mutableStateOf(0f..80f) }
-    var changeBecauseInit by remember { mutableStateOf(isEditing) }
     FormField(
         label = "Peso",
         state = fieldState,
@@ -46,7 +46,7 @@ fun WeightField(
         modifier = modifier
     ) {
         LaunchedEffect(animal) {
-            if(!changeBecauseInit){
+            if(!isEditing){
                 when(animal){
                     "dog" -> {
                         valueRange = 0f..80f
@@ -67,7 +67,7 @@ fun WeightField(
                         valueRange = 0f..25f
                     }
                 }
-                changeBecauseInit = false
+                stopChangingForEditing()
             }
         }
         AnimatedVisibility(

@@ -13,7 +13,7 @@ class RemoteConfigServiceLatestVerImpl : RemoteConfigService {
     init{
         remoteConfig.setConfigSettingsAsync(
             remoteConfigSettings {
-                minimumFetchIntervalInSeconds = 3600
+                minimumFetchIntervalInSeconds = 0
             }
         )
     }
