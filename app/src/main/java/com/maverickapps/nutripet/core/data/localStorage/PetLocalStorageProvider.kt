@@ -1,9 +1,9 @@
-package com.maverickapps.nutripet.core.data.local
+package com.maverickapps.nutripet.core.data.localStorage
 
 
-import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
 import java.io.File
 import java.io.FileWriter
 

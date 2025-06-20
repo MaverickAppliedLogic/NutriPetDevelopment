@@ -6,19 +6,21 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.gson.Gson
 import com.maverickapps.nutripet.core.data.database.AppDatabase
 import com.maverickapps.nutripet.core.data.database.dao.FoodDao
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
 import com.maverickapps.nutripet.core.data.database.dao.PetDao
 import com.maverickapps.nutripet.core.data.database.dao.PetFoodDao
-import com.maverickapps.nutripet.core.data.local.PetLocalStorageProvider
-import com.maverickapps.nutripet.core.data.local.UpdatesNotifier
+import com.maverickapps.nutripet.core.data.localStorage.PetLocalStorageProvider
+import com.maverickapps.nutripet.core.data.localStorage.VersionLocalStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.io.File
+import java.io.FileWriter
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -37,17 +39,22 @@ object DataModule {
     @Provides
     @Named("UpdateFile")
     fun provideUpdateStateFilesDir(@ApplicationContext context: Context): File {
+        val gson = Gson()
         val updateFile = File(context.filesDir, "updateState")
         if (!updateFile.exists()) {
             updateFile.createNewFile()
+            val json = gson.toJson(true)
+            FileWriter(updateFile).use { writer ->
+                writer.write(json)
+            }
         }
         return updateFile
     }
 
     @Singleton
     @Provides
-    fun provideUpdateState(@Named("UpdateFile")file: File): UpdatesNotifier {
-        return UpdatesNotifier(file)
+    fun provideUpdateState(@Named("UpdateFile")file: File): VersionLocalStorage {
+        return VersionLocalStorage(file)
     }
 
     @Singleton

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -40,9 +41,9 @@ import com.maverickapps.nutripet.petsFeature.ui.viewmodel.DashboardViewModel
 @Composable
 fun DashboardContent(
     dashboardViewModel: DashboardViewModel,
-    isUpdated: Boolean,
+    showDialog: Boolean,
     needToRefresh: Boolean,
-    setUpdateState: (Boolean) -> Unit,
+    dialogSeen: () -> Unit,
     navTo: (String, Int?, Int?) -> Unit
 ){
     val pets by dashboardViewModel.pets.collectAsState()
@@ -130,9 +131,10 @@ fun DashboardContent(
                 snackBarHostState = snackBarHostState,
             ){openDialog = it}
         }
-        if (isUpdated){
+        if (showDialog){
             UpdateNotesDialog(
-                onDismiss = { setUpdateState(false) }
+                onDismiss = { dialogSeen() },
+                modifier = Modifier.fillMaxHeight(0.6f)
             )
         }
         CustomBottomBar(

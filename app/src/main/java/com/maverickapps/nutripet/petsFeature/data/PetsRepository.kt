@@ -2,7 +2,7 @@ package com.maverickapps.nutripet.petsFeature.data
 
 import com.maverickapps.nutripet.core.data.database.dao.PetDao
 import com.maverickapps.nutripet.core.data.database.entities.PetEntity
-import com.maverickapps.nutripet.core.data.local.PetLocalStorageProvider
+import com.maverickapps.nutripet.core.data.localStorage.PetLocalStorageProvider
 import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
 import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.toDomain
 import javax.inject.Inject

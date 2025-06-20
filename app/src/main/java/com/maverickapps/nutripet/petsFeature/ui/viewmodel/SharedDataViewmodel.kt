@@ -1,38 +1,45 @@
 package com.maverickapps.nutripet.petsFeature.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.maverickapps.nutripet.petsFeature.domain.otherTasks.useCase.GetUpdateStateUseCase
-import com.maverickapps.nutripet.petsFeature.domain.otherTasks.useCase.SetUpdateStateUseCase
+import androidx.lifecycle.viewModelScope
+import com.maverickapps.nutripet.core.domain.useCase.CheckCurrentVerIsLatestUseCase
+import com.maverickapps.nutripet.core.domain.useCase.FetchCurrentVerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedDataViewmodel @Inject constructor(
-    private val getUpdateStateUseCase: GetUpdateStateUseCase,
-    private val setUpdateStateUseCase: SetUpdateStateUseCase
+    private val checkCurrentVerIsLatestUseCase: CheckCurrentVerIsLatestUseCase,
+    private val fetchCurrentVerUseCase: FetchCurrentVerUseCase
 ): ViewModel(){
 
     private val _selectedPetId = MutableStateFlow(null as Int?)
     private val _selectedMealId = MutableStateFlow(null as Int?)
     private val _selectedFoodId = MutableStateFlow(null as Int?)
-    private val _isUpdated = MutableStateFlow(false)
+    private val _showDialog = MutableStateFlow(false)
 
     val selectedPetId = _selectedPetId
     val selectedMealId = _selectedMealId
     val selectedFoodId = _selectedFoodId
-    val isUpdated = _isUpdated
+    val showDialog = _showDialog
 
     init {
-        getUpdateState()
+        mustShowVerNotes()
     }
 
-    private fun getUpdateState(){
-        _isUpdated.value = getUpdateStateUseCase()
+    private fun mustShowVerNotes(){
+        viewModelScope.launch {
+        _showDialog.value = checkCurrentVerIsLatestUseCase()
+        }
     }
 
-    fun setUpdateState(isUpdated: Boolean){
-        setUpdateStateUseCase(isUpdated)
+    fun fetchCurrentVer(){
+        viewModelScope.launch {
+            fetchCurrentVerUseCase()
+            _showDialog.value = false
+        }
     }
 
     fun fetchPetId(petId: Int?){

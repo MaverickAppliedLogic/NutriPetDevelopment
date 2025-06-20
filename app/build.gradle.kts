@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id ("com.google.gms.google-services")
     alias(libs.plugins.kotlin.android)
 }
 
@@ -114,6 +115,11 @@ dependencies {
     // KSP (Kotlin Symbol Processing) dependencies
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.room.compiler)
+
+    //FireBase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.config.ktx)
 
     // UI tests
     androidTestImplementation(libs.androidx.junit)
