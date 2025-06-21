@@ -18,6 +18,7 @@ class VersionManageRepository @Inject constructor(
         val fetched = remoteConfigService.fetchValues()
         println(fetched)
         val newVersion = remoteConfigService.getLatestVersion()
+        println("newVersion: $newVersion")
         versionLocalStorage.setUpdateState(newVersion)
 
     }

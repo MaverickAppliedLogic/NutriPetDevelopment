@@ -50,11 +50,11 @@ fun WeightField(
                 when(animal){
                     "dog" -> {
                         valueRange = 0f..80f
-                        onWeightChanged(weight * 3.2f)
+                        onWeightChanged(minOf(weight, 80f))
                     }
                     "cat" -> {
                         valueRange = 0f..25f
-                        onWeightChanged(weight / 3.2f)
+                        onWeightChanged(minOf(weight, 25f))
                     }
                 }
             }
@@ -84,7 +84,7 @@ fun WeightField(
                     .fillMaxWidth()
             ) {
                CustomSlider(
-                   weight = weight,
+                   weight = minOf(weight, valueRange.endInclusive),
                    onWeightChanged = { onWeightChanged(it) },
                    valueRange = valueRange,
                    errorCommitting = false

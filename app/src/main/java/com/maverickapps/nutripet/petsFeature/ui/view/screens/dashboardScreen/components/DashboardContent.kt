@@ -52,16 +52,22 @@ fun DashboardContent(
     val petIdSelected by dashboardViewModel.selectedPetId.collectAsStateWithLifecycle()
     val requiredCalories by dashboardViewModel.requiredCalories.collectAsStateWithLifecycle()
     var openDialog by remember { mutableStateOf(false) }
+    val mustRefresh = remember(needToRefresh) { mutableStateOf(needToRefresh) }
     val snackBarHostState = remember { SnackbarHostState() }
 
-    if (needToRefresh) dashboardViewModel.fetchData()
-    LaunchedEffect(pets.size) {
-        if (pets.isNotEmpty()) {
-            dashboardViewModel.setPetId(pets.first().petId)
+    LaunchedEffect(mustRefresh) {
+        if (mustRefresh.value){
+            dashboardViewModel.fetchData()
+            mustRefresh.value = false
         }
     }
-    LaunchedEffect(petIdSelected) {
-        if (petIdSelected != null) {
+    LaunchedEffect(pets.size) {
+        if (pets.isNotEmpty()) {
+            dashboardViewModel.fetchData()
+        }
+    }
+    LaunchedEffect(pets.find { it.petId == petIdSelected }) {
+        if (petIdSelected != null ) {
             dashboardViewModel.getMeals()
         }
     }

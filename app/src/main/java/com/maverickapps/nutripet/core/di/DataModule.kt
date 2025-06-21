@@ -6,7 +6,6 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.google.gson.Gson
 import com.maverickapps.nutripet.core.data.database.AppDatabase
 import com.maverickapps.nutripet.core.data.database.dao.FoodDao
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
@@ -20,7 +19,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.io.File
-import java.io.FileWriter
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -34,30 +32,44 @@ object DataModule {
     fun provideDataStore(@ApplicationContext context: Context) = PreferenceDataStoreFactory.create{
         context.preferencesDataStoreFile(USER_PREFERENCES_NAME)
     }
-
+/*
     @Singleton
     @Provides
     @Named("UpdateFile")
     fun provideUpdateStateFilesDir(@ApplicationContext context: Context): File {
         val updateFile = File(context.filesDir, "updateState")
-        val gson = Gson()
         if (!updateFile.exists()) {
             updateFile.createNewFile()
         }
-        else{
-            val json = gson.toJson(0.5)
-            FileWriter(updateFile).use { writer ->
-                writer.write(json)
-            }
+        return updateFile
+    }*/
+
+    /**TODO se debe eliminar en la siguiente versión, es solo un fix para la version actual
+     */
+    @Singleton
+    @Provides
+    @Named("UpdateFile")
+    fun provideProvisionalUpdateStateFilesDir(@ApplicationContext context: Context): File {
+        val updateFile = File(context.filesDir, "updateProvisionalState")
+        if (!updateFile.exists()) {
+            updateFile.createNewFile()
         }
         return updateFile
     }
 
+    /**TODO se debe eliminar en la siguiente versión, es solo un fix para la version actual
+     */
     @Singleton
+    @Provides
+    fun provideProvisionalUpdateState(@Named("UpdateFile")file: File): VersionLocalStorage {
+        return VersionLocalStorage(file)
+    }
+
+  /*  @Singleton
     @Provides
     fun provideUpdateState(@Named("UpdateFile")file: File): VersionLocalStorage {
         return VersionLocalStorage(file)
-    }
+    }*/
 
     @Singleton
     @Provides

@@ -18,7 +18,7 @@ class VersionLocalStorage(private val updateFile: File) {
 
     fun setUpdateState(currentVersion: Double) {
         val json = gson.toJson(currentVersion)
-        println(currentVersion)
+        println ("setupdate $currentVersion")
         FileWriter(updateFile).use { writer ->
             writer.write(json)
         }

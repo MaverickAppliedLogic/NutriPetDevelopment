@@ -56,12 +56,11 @@ fun PetList(
     val listKey = remember(petList) { petList.map { it.petId } }
     val listState = remember(listKey) { LazyListState() }
     var pet by remember { mutableStateOf<PetModel?>(null) }
-    var thereArePrevious by remember { mutableStateOf(petList.size > 1) }
-    var thereAreNext by remember { mutableStateOf(false) }
-    var needRefresh by remember { mutableStateOf(true) }
+    var thereArePrevious by remember { mutableStateOf(false) }
+    var thereAreNext by remember { mutableStateOf(petList.size > 1) }
    LaunchedEffect(listKey) {
        pet = petModel
-       thereArePrevious = pet != petList.first()
+       thereArePrevious = false
        thereAreNext = pet != petList.last()
    }
     LaunchedEffect(petMealsChanged) {
@@ -69,14 +68,16 @@ fun PetList(
         thereAreNext = pet != petList.last()
     }
     LaunchedEffect(pet) {
-        if (pet != null && pet != petModel) {
+        if (pet != null && pet != petModel ) {
             onPetSelected(pet!!)
             thereArePrevious = pet != petList.first()
             thereAreNext = pet != petList.last()
             coroutineScope.launch {
+                if (petList.indexOf(pet) != -1) {
                 listState.animateScrollToItem(
                     petList.indexOf(pet)
                 )
+                }
             }
         }
     }
@@ -98,7 +99,7 @@ fun PetList(
             )
 
             Row(modifier = Modifier.fillMaxWidth(0.95f), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = { onDeleteIconClicked(); needRefresh = true }) {
+                IconButton(onClick = { onDeleteIconClicked() }) {
                     Icon(
                         imageVector = Icons.TwoTone.Delete,
                         contentDescription = "",
@@ -122,7 +123,7 @@ fun PetList(
                 horizontalArrangement = Arrangement.Center
             ) {
                 items(petList.size, key = {petList[it].petId}) {petIndex ->
-                    val petAnimal by remember { mutableStateOf(petList[petIndex].animal) }
+                    val petAnimal = petList[petIndex].animal
                     Box(
                         modifier = Modifier.fillParentMaxSize(),
                         contentAlignment = Alignment.BottomCenter

@@ -46,16 +46,25 @@ class DashboardViewModel @Inject constructor(
     fun fetchData() {
         viewModelScope.launch {
             _pets.value = getPetsUseCase()
+            setPetId(_pets.value.firstOrNull()?.petId)
+            if (selectedPetId.value != null) {
+                getMeals()
+
+            }
         }
     }
 
-    fun setPetId(petId: Int) {
+    fun setPetId(petId: Int?) {
             selectedPetId.value = petId
             val pet = _pets.value.find { it.petId == petId }
         if (pet != null){
-            requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
+            calculateRequiredCalories(pet)
         }
 
+    }
+
+    fun calculateRequiredCalories(pet: PetModel) {
+        requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
     }
 
     fun deletePet(petId: Int) {
