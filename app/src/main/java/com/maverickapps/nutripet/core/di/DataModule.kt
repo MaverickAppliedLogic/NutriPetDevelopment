@@ -39,11 +39,13 @@ object DataModule {
     @Provides
     @Named("UpdateFile")
     fun provideUpdateStateFilesDir(@ApplicationContext context: Context): File {
-        val gson = Gson()
         val updateFile = File(context.filesDir, "updateState")
+        val gson = Gson()
         if (!updateFile.exists()) {
             updateFile.createNewFile()
-            val json = gson.toJson(true)
+        }
+        else{
+            val json = gson.toJson(0.5)
             FileWriter(updateFile).use { writer ->
                 writer.write(json)
             }

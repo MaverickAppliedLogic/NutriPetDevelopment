@@ -11,9 +11,10 @@ class VersionLocalStorage(private val updateFile: File) {
     fun getUpdateState(): Double {
         val lastVersion: Double
         val json = updateFile.readText()
-        lastVersion = gson.fromJson(json, Double::class.java) ?: 0.0
+        lastVersion = gson.fromJson(json, Double::class.java) ?: 0.5
         return lastVersion
     }
+
 
     fun setUpdateState(currentVersion: Double) {
         val json = gson.toJson(currentVersion)

@@ -13,6 +13,7 @@ class VersionManageRepository @Inject constructor(
         return versionLocalStorage.getUpdateState()
     }
 
+
     suspend fun fetchVersionLocalStorage(){
         val fetched = remoteConfigService.fetchValues()
         println(fetched)
