@@ -99,9 +99,23 @@ fun UpdateNotesDialog(
                         )
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
                     BulletPoint {
                         Text("'Esterilizado' ahora se reconoce como campo válido al seleccionar 'No'.",
+                            color = SecondaryDarkest,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
+
+                    BulletPoint {
+                        Text("Solucionado un fallo que cerraba la app al cambiar a la primera mascota ",
+                            color = SecondaryDarkest,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
+                    BulletPoint {
+                        Text("Corregido un error de formato en los ficheros que impedía abrir la aplicación",
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
