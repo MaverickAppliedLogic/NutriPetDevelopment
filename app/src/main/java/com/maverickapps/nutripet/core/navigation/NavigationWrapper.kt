@@ -8,16 +8,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.addFoodScreen.AddFoodScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.dashboardScreen.DashBoardScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.foodListScreen.FoodListScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.AddFoodViewModel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.AddMealViewmodel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.DashboardViewModel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.RegisterPetViewmodel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.SharedDataViewmodel
+import com.maverickapps.nutripet.features.pets.ui.view.screens.addFoodScreen.AddFoodScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.addMealScreen.AddMealScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.dashboardScreen.DashBoardScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.foodListScreen.FoodListScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.RegisterPetScreen
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddFoodViewModel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddMealViewmodel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.DashboardViewModel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.RegisterPetViewmodel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.nutripet.ui.viewmodel.FoodsListViewmodel
 
 @Composable

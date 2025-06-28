@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.petsFeature.utils
 
-import com.maverickapps.nutripet.petsFeature.utils.timeFormatter.FakeCalendarProvider
-import com.maverickapps.nutripet.petsFeature.utils.timeFormatter.TimeFormatter
+import com.maverickapps.nutripet.features.pets.utils.timeFormatter.FakeCalendarProvider
+import com.maverickapps.nutripet.features.pets.utils.timeFormatter.TimeFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.Calendar

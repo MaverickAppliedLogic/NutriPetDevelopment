@@ -2,8 +2,6 @@ package com.maverickapps.nutripet.core.di
 
 import android.content.Context
 import android.icu.util.Calendar
-import com.maverickapps.nutripet.petsFeature.utils.CaloriesCalculatorCat
-import com.maverickapps.nutripet.petsFeature.utils.CaloriesCalculatorDog
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,26 +29,10 @@ object AppModule {
     }
 
 
-
     @Singleton
     @Provides
     fun provideCalendar(): Calendar {
             return Calendar.getInstance(Locale.getDefault())
     }
-
-    //Utils
-    @Singleton
-    @Provides
-    fun provideCalculatorDog(): CaloriesCalculatorDog {
-        return CaloriesCalculatorDog()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCalculatorCat(): CaloriesCalculatorCat {
-        return CaloriesCalculatorCat()
-    }
-
-
 
 }
