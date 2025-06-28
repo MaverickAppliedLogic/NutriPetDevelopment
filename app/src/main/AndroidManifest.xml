@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
 
     <application
@@ -17,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Feedm"
         tools:targetApi="31">
+        <receiver android:name="com.maverickapps.nutripet.features.notifications.domain.receiver.MealNotification"
+            android:enabled="true"/>
         <activity
             android:name="com.maverickapps.nutripet.features.pets.MainPetActivity"
             android:exported="true"
