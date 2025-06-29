@@ -1,16 +1,16 @@
 package com.maverickapps.nutripet.core.data
 
-import com.maverickapps.nutripet.core.data.localStorage.VersionLocalStorage
+import com.maverickapps.nutripet.core.data.datastore.VersionDatastore
 import com.maverickapps.nutripet.core.data.services.firebase.remoteConfig.RemoteConfigService
 import javax.inject.Inject
 
 class VersionManageRepository @Inject constructor(
-    private val versionLocalStorage: VersionLocalStorage,
+    private val versionDatastore: VersionDatastore,
     private val remoteConfigService: RemoteConfigService
 ) {
 
     fun getVersionLocalStorage(): Double{
-        return versionLocalStorage.getUpdateState()
+        return versionDatastore.getUpdateState()
     }
 
 
@@ -19,7 +19,7 @@ class VersionManageRepository @Inject constructor(
         println(fetched)
         val newVersion = remoteConfigService.getLatestVersion()
         println("newVersion: $newVersion")
-        versionLocalStorage.setUpdateState(newVersion)
+        versionDatastore.setUpdateState(newVersion)
 
     }
 

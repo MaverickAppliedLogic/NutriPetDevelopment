@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase
 
 
-import com.maverickapps.nutripet.features.pets.data.PetsRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.PetsRepository
 import javax.inject.Inject
 
 class DeletePetUseCase @Inject constructor(

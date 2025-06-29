@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase
 
-import com.maverickapps.nutripet.features.pets.data.MealsRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.MealsRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject

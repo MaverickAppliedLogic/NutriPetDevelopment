@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.petFood.useCase
 
-import com.maverickapps.nutripet.features.pets.data.FoodRepository
-import com.maverickapps.nutripet.features.pets.data.PetFoodRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.FoodRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.PetFoodRepository
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.food.model.FoodModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers

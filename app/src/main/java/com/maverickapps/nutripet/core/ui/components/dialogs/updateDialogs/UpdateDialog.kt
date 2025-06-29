@@ -1,10 +1,8 @@
-package com.maverickapps.nutripet.features.pets.ui.view.components.alerts
+package com.maverickapps.nutripet.core.ui.components.dialogs.updateDialogs
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.maverickapps.nutripet.features.pets.ui.view.components.alerts.updateDialogs.NeedToUpdateDialog
-import com.maverickapps.nutripet.features.pets.ui.view.components.alerts.updateDialogs.UpdateNotesDialog
 
 @Composable
 fun UpdateDialog(

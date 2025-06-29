@@ -1,6 +1,8 @@
 package com.maverickapps.nutripet.core.navigation
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -8,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.maverickapps.nutripet.features.events.ui.viewmodel.PermissionsViewmodel
 import com.maverickapps.nutripet.features.pets.ui.view.screens.addFoodScreen.AddFoodScreen
 import com.maverickapps.nutripet.features.pets.ui.view.screens.addMealScreen.AddMealScreen
 import com.maverickapps.nutripet.features.pets.ui.view.screens.dashboardScreen.DashBoardScreen
@@ -20,6 +23,7 @@ import com.maverickapps.nutripet.features.pets.ui.viewmodel.RegisterPetViewmodel
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.nutripet.ui.viewmodel.FoodsListViewmodel
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun NavigationWrapper(
     sharedDataViewmodel: SharedDataViewmodel,
@@ -27,7 +31,8 @@ fun NavigationWrapper(
     addMealViewmodel: AddMealViewmodel,
     dashBoardViewModel: DashboardViewModel,
     addFoodViewModel: AddFoodViewModel,
-    foodListViewModel: FoodsListViewmodel
+    foodListViewModel: FoodsListViewmodel,
+    permissionsViewmodel: PermissionsViewmodel
 ) {
     val navController = rememberNavController()
     val needToUpdate by sharedDataViewmodel.needToUpdate.collectAsStateWithLifecycle()
@@ -97,6 +102,7 @@ fun NavigationWrapper(
             BackHandler { getBack() }
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
+                permissionsViewmodel = permissionsViewmodel,
                 mealId = mealId,
                 foodId = foodId,
                 petId = petId!!,

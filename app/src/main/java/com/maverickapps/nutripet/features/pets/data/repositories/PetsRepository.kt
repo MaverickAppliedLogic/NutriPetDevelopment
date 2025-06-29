@@ -1,8 +1,8 @@
-package com.maverickapps.nutripet.features.pets.data
+package com.maverickapps.nutripet.features.pets.data.repositories
 
 import com.maverickapps.nutripet.core.data.database.dao.PetDao
 import com.maverickapps.nutripet.core.data.database.entities.PetEntity
-import com.maverickapps.nutripet.core.data.localStorage.PetLocalStorageProvider
+import com.maverickapps.nutripet.features.pets.data.datastore.PetDatastore
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.toDomain
 import javax.inject.Inject
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class PetsRepository @Inject constructor(
     private val petsDao: PetDao,
-    private val petsStorage: PetLocalStorageProvider
+    private val petsStorage: PetDatastore
 ) {
 
 

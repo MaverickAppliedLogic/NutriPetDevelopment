@@ -1,10 +1,10 @@
-package com.maverickapps.nutripet.core.data.localStorage
+package com.maverickapps.nutripet.core.data.datastore
 
 import com.google.gson.Gson
 import java.io.File
 import java.io.FileWriter
 
-class VersionLocalStorage(private val updateFile: File) {
+class VersionDatastore(private val updateFile: File) {
 
     private val gson = Gson()
 

@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.food.useCase
 
-import com.maverickapps.nutripet.features.pets.data.FoodRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.FoodRepository
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.food.model.FoodModel
 import jakarta.inject.Inject
 

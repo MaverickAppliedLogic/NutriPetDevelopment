@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.useCase
 
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.RegisterPetUseCase
-import com.maverickapps.nutripet.features.pets.data.PetsRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.PetsRepository
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetModel
 import io.mockk.Runs
 import io.mockk.coEvery

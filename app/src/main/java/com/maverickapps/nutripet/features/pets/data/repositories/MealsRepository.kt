@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.features.pets.data
+package com.maverickapps.nutripet.features.pets.data.repositories
 
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
 import com.maverickapps.nutripet.core.data.database.entities.toDatabase

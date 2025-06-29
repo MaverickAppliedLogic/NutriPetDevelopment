@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.features.pets.ui.view.components.alerts
+package com.maverickapps.nutripet.features.pets.ui.view.components.dialogs
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.SnackbarHostState

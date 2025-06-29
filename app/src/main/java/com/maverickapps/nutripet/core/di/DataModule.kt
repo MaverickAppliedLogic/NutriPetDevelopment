@@ -11,8 +11,7 @@ import com.maverickapps.nutripet.core.data.database.dao.FoodDao
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
 import com.maverickapps.nutripet.core.data.database.dao.PetDao
 import com.maverickapps.nutripet.core.data.database.dao.PetFoodDao
-import com.maverickapps.nutripet.core.data.localStorage.PetLocalStorageProvider
-import com.maverickapps.nutripet.core.data.localStorage.VersionLocalStorage
+import com.maverickapps.nutripet.core.data.datastore.VersionDatastore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,29 +26,18 @@ import javax.inject.Singleton
 object DataModule {
 
     private const val USER_PREFERENCES_NAME = "user_preferences"
+
     @Singleton
     @Provides
     fun provideDataStore(@ApplicationContext context: Context) = PreferenceDataStoreFactory.create{
         context.preferencesDataStoreFile(USER_PREFERENCES_NAME)
     }
-/*
-    @Singleton
-    @Provides
-    @Named("UpdateFile")
-    fun provideUpdateStateFilesDir(@ApplicationContext context: Context): File {
-        val updateFile = File(context.filesDir, "updateState")
-        if (!updateFile.exists()) {
-            updateFile.createNewFile()
-        }
-        return updateFile
-    }*/
 
-    /**TODO se debe eliminar en la siguiente versión, es solo un fix para la version actual
-     */
+
     @Singleton
     @Provides
     @Named("UpdateFile")
-    fun provideProvisionalUpdateStateFilesDir(@ApplicationContext context: Context): File {
+    fun provideVersionFilesDir(@ApplicationContext context: Context): File {
         val updateFile = File(context.filesDir, "updateProvisionalState")
         if (!updateFile.exists()) {
             updateFile.createNewFile()
@@ -57,36 +45,12 @@ object DataModule {
         return updateFile
     }
 
-    /**TODO se debe eliminar en la siguiente versión, es solo un fix para la version actual
-     */
     @Singleton
     @Provides
-    fun provideProvisionalUpdateState(@Named("UpdateFile")file: File): VersionLocalStorage {
-        return VersionLocalStorage(file)
+    fun provideVersionDatastore(@Named("UpdateFile")file: File): VersionDatastore {
+        return VersionDatastore(file)
     }
 
-  /*  @Singleton
-    @Provides
-    fun provideUpdateState(@Named("UpdateFile")file: File): VersionLocalStorage {
-        return VersionLocalStorage(file)
-    }*/
-
-    @Singleton
-    @Provides
-    @Named("PetsFile")
-    fun providePetsFilesDir(@ApplicationContext context: Context): File {
-        val petsFile = File(context.filesDir, "pets")
-        if (!petsFile.exists()) {
-            petsFile.createNewFile()
-        }
-        return petsFile
-    }
-
-    @Singleton
-    @Provides
-    fun petLocalStorage(@Named("PetsFile")file: File): PetLocalStorageProvider {
-        return PetLocalStorageProvider(file)
-    }
 
     @Singleton
     @Provides

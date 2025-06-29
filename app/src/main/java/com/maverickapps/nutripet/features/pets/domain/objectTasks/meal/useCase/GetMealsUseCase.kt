@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase
 
 import com.maverickapps.nutripet.features.events.domain.useCase.CheckDayChangedUseCase
-import com.maverickapps.nutripet.features.pets.data.MealsRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.MealsRepository
 import javax.inject.Inject
 
 class GetMealsUseCase @Inject constructor(

@@ -9,11 +9,12 @@ import com.example.feedm.R
 import com.maverickapps.nutripet.features.notifications.domain.contract.ScheduleNotification
 import com.maverickapps.nutripet.features.notifications.domain.contract.ScheduleNotification.Companion.REMINDERS_CHANNEL_ID
 import com.maverickapps.nutripet.features.notifications.domain.receiver.MealNotification.Companion.MEAL_NOTIFICATION_ID
+import com.maverickapps.nutripet.features.pets.MainPetActivity
 
 class MealNotificationHelper : ScheduleNotification {
 
     override fun createNotification(context: Context) {
-        val intent = Intent(context, MealNotification::class.java).apply {
+        val intent = Intent(context, MainPetActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 

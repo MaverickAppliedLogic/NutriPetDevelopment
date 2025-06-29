@@ -6,7 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.maverickapps.nutripet.core.data.database.AppDatabase
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
 import com.maverickapps.nutripet.features.events.domain.useCase.CheckDayChangedUseCase
-import com.maverickapps.nutripet.features.pets.data.MealsRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.MealsRepository
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetMealsUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.UpdateMealsDayChangedUseCase
 import io.mockk.MockKAnnotations

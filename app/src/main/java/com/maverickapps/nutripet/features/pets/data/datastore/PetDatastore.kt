@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.core.data.localStorage
+package com.maverickapps.nutripet.features.pets.data.datastore
 
 
 import com.google.gson.Gson
@@ -7,7 +7,7 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetM
 import java.io.File
 import java.io.FileWriter
 
-class PetLocalStorageProvider(private val petsFile: File) {
+class PetDatastore(private val petsFile: File) {
 
     private val gson = Gson()
 
@@ -29,7 +29,6 @@ class PetLocalStorageProvider(private val petsFile: File) {
         FileWriter(petsFile).use { writer ->
             writer.write(json)
         }
-
     }
 
 

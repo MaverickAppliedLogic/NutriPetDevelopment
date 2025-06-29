@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.food.useCase
 
-import com.maverickapps.nutripet.features.pets.data.FoodRepository
+import com.maverickapps.nutripet.features.pets.data.repositories.FoodRepository
 import javax.inject.Inject
 
 class DeleteFoodUseCase @Inject constructor(

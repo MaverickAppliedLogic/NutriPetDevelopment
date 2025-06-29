@@ -32,8 +32,8 @@ import com.maverickapps.nutripet.core.ui.theme.NeutralDark
 import com.maverickapps.nutripet.core.ui.theme.NeutralLight
 import com.maverickapps.nutripet.core.ui.theme.SecondaryDarkest
 import com.maverickapps.nutripet.core.ui.theme.dimens
-import com.maverickapps.nutripet.features.pets.ui.view.components.alerts.ConfirmPetDialog
-import com.maverickapps.nutripet.features.pets.ui.view.components.alerts.UpdateDialog
+import com.maverickapps.nutripet.features.pets.ui.view.components.dialogs.ConfirmPetDialog
+import com.maverickapps.nutripet.core.ui.components.dialogs.updateDialogs.UpdateDialog
 import com.maverickapps.nutripet.features.pets.ui.view.screens.dashboardScreen.components.contentComponents.CustomBottomBar
 import com.maverickapps.nutripet.features.pets.ui.view.screens.dashboardScreen.components.contentComponents.PetDetails
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.DashboardViewModel
