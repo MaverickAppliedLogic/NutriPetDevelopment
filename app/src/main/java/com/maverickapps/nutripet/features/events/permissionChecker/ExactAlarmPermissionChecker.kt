@@ -11,8 +11,6 @@ class ExactAlarmPermissionChecker(
     private val alarmManager: AlarmManager
 ) {
 
-    private val thisContext = context
-
 
     fun isSchedulePermissionGranted(): Boolean {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()

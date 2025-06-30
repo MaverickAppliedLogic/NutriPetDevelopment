@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import com.maverickapps.nutripet.core.ui.theme.NutriPetTheme
-import com.maverickapps.nutripet.features.events.ui.viewmodel.EventsViewModel
 import com.maverickapps.nutripet.features.pets.ui.view.screens.addMealScreen.components.AddMealContent
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddMealViewmodel
 

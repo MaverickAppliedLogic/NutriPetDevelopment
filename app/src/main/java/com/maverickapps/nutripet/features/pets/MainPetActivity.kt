@@ -1,6 +1,5 @@
 package com.maverickapps.nutripet.features.pets
 
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.maverickapps.nutripet.core.navigation.NavigationWrapper
 import com.maverickapps.nutripet.core.ui.theme.NutriPetTheme
-import com.maverickapps.nutripet.features.events.domain.useCase.schedule.ScheduleDayChangerUseCase
 import com.maverickapps.nutripet.features.events.ui.permissionDialogs.notification.NotificationPermissionDialog
 import com.maverickapps.nutripet.features.events.ui.viewmodel.EventsViewModel
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddFoodViewModel
@@ -27,7 +25,6 @@ import com.maverickapps.nutripet.features.pets.ui.viewmodel.RegisterPetViewmodel
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.nutripet.ui.viewmodel.FoodsListViewmodel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainPetActivity : ComponentActivity() {
@@ -39,7 +36,6 @@ class MainPetActivity : ComponentActivity() {
     private val sharedDataViewmodel: SharedDataViewmodel by viewModels()
     private val eventsViewModel: EventsViewModel by viewModels()
 
-    @Inject lateinit var scheduleDayChangerUseCase: ScheduleDayChangerUseCase
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,16 +79,7 @@ class MainPetActivity : ComponentActivity() {
                 }
                 else{
                     if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
-                        val time = Calendar.getInstance().apply {
-                            set(Calendar.HOUR_OF_DAY, 0)
-                            set(Calendar.MINUTE, 0)
-                            set(Calendar.SECOND, 0)
-                            set(Calendar.MILLISECOND, 0)
-                        }
-                        if(time.timeInMillis < System.currentTimeMillis()){
-                            time.add(Calendar.DAY_OF_MONTH, 1)
-                        }
-                        scheduleDayChangerUseCase(time.timeInMillis)
+                       eventsViewModel.scheduleDayChanger()
                     }
                 }
                 NavigationWrapper(
