@@ -9,14 +9,11 @@ class MealNotification: BroadcastReceiver() {
 
     private val helper = MealNotificationHelper()
 
-    companion object{
-        const val MEAL_NOTIFICATION_ID = 1
-    }
-
     override fun onReceive(context: Context, intent: Intent?) {
         Log.d("MealNotification", "Broadcast recibido")
+        val notificationId = intent?.getIntExtra("notificationId", 0)
         helper.createNotificationChannel(context)
-        helper.createNotification(context)
+        helper.createNotification(context, notificationId?:0)
     }
 
 }

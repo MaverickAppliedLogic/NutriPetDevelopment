@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.features.events.scheduler.setter
+package com.maverickapps.nutripet.features.events.domain.notificationsEvents.setter
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -9,17 +9,22 @@ import android.util.Log
 import com.maverickapps.nutripet.features.events.contract.EventSetter
 import com.maverickapps.nutripet.features.notifications.domain.receiver.MealNotification
 
-class MealNotificationSetter(context: Context, alarmManager: AlarmManager) : EventSetter {
+class MealNotificationSetter(
+    context: Context, alarmManager: AlarmManager
+) : EventSetter {
 
     private val thisContext = context
     private val thisAlarmManager = alarmManager
 
-    override fun setEvent(time: Long) {
-        val intent = Intent(thisContext, MealNotification::class.java)
+
+    override fun setEvent(time: Long, eventId: Int) {
+        val intent = Intent(thisContext, MealNotification::class.java).apply {
+            putExtra("notificationId", eventId)
+        }
         Log.d("MealNotificationSetter", "Intent creado para MealNotification")
         val pendingIntent = PendingIntent.getBroadcast(
             thisContext,
-            MealNotification.MEAL_NOTIFICATION_ID,
+            eventId,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )

@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.maverickapps.nutripet.features.events.ui.viewmodel.PermissionsViewmodel
 import com.maverickapps.nutripet.features.pets.ui.view.screens.addFoodScreen.AddFoodScreen
 import com.maverickapps.nutripet.features.pets.ui.view.screens.addMealScreen.AddMealScreen
 import com.maverickapps.nutripet.features.pets.ui.view.screens.dashboardScreen.DashBoardScreen
@@ -32,7 +31,6 @@ fun NavigationWrapper(
     dashBoardViewModel: DashboardViewModel,
     addFoodViewModel: AddFoodViewModel,
     foodListViewModel: FoodsListViewmodel,
-    permissionsViewmodel: PermissionsViewmodel
 ) {
     val navController = rememberNavController()
     val needToUpdate by sharedDataViewmodel.needToUpdate.collectAsStateWithLifecycle()
@@ -102,7 +100,6 @@ fun NavigationWrapper(
             BackHandler { getBack() }
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
-                permissionsViewmodel = permissionsViewmodel,
                 mealId = mealId,
                 foodId = foodId,
                 petId = petId!!,

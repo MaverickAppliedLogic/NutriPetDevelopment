@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import com.maverickapps.nutripet.core.ui.theme.NutriPetTheme
-import com.maverickapps.nutripet.features.events.ui.viewmodel.PermissionsViewmodel
+import com.maverickapps.nutripet.features.events.ui.viewmodel.EventsViewModel
 import com.maverickapps.nutripet.features.pets.ui.view.screens.addMealScreen.components.AddMealContent
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddMealViewmodel
 
@@ -12,7 +12,6 @@ import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddMealViewmodel
 @Composable
 fun AddMealScreen(
     addMealViewmodel: AddMealViewmodel,
-    permissionsViewmodel: PermissionsViewmodel,
     mealId: Int?,
     petId: Int,
     foodId: Int?,
@@ -22,7 +21,6 @@ fun AddMealScreen(
     NutriPetTheme {
         AddMealContent(
             addMealViewmodel = addMealViewmodel,
-            permissionsViewmodel = permissionsViewmodel,
             mealId = mealId,
             petId = petId,
             foodId = foodId?:-1,

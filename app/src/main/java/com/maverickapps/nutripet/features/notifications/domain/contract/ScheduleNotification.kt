@@ -16,7 +16,7 @@ interface ScheduleNotification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 REMINDERS_CHANNEL_ID,
-                "Reminders",
+                "Meal Reminders",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Reminders for your pets"
@@ -29,6 +29,6 @@ interface ScheduleNotification {
         }
     }
 
-    fun createNotification(context: Context)
+    fun createNotification(context: Context, notificationId: Int)
 
 }

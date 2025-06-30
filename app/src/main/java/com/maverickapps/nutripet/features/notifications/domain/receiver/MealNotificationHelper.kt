@@ -8,12 +8,11 @@ import androidx.core.app.NotificationCompat
 import com.example.feedm.R
 import com.maverickapps.nutripet.features.notifications.domain.contract.ScheduleNotification
 import com.maverickapps.nutripet.features.notifications.domain.contract.ScheduleNotification.Companion.REMINDERS_CHANNEL_ID
-import com.maverickapps.nutripet.features.notifications.domain.receiver.MealNotification.Companion.MEAL_NOTIFICATION_ID
 import com.maverickapps.nutripet.features.pets.MainPetActivity
 
 class MealNotificationHelper : ScheduleNotification {
 
-    override fun createNotification(context: Context) {
+    override fun createNotification(context: Context, notificationId: Int) {
         val intent = Intent(context, MainPetActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -34,7 +33,7 @@ class MealNotificationHelper : ScheduleNotification {
             .build()
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(MEAL_NOTIFICATION_ID, notification)
+        manager.notify(notificationId, notification)
 
     }
 }
