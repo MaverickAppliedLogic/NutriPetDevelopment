@@ -12,9 +12,9 @@ class NotificationScheduler(context: Context, alarmManager: AlarmManager): Event
 
     private val mealNotificationSetter = MealNotificationSetter(thisContext, alarmManager)
 
-    override fun scheduleEvent(time: Long, eventId: Int) {
+    override fun scheduleEvent(time: Long, eventId: Int, extraData: String?) {
             Log.d("NotificationScheduler", "Scheduling event at $time")
-            mealNotificationSetter.setEvent(time, eventId)
+            mealNotificationSetter.setEvent(time, eventId, extraData)
     }
 }
 

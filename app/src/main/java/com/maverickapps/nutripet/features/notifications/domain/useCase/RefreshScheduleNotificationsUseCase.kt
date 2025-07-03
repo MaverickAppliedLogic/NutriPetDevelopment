@@ -7,7 +7,7 @@ class RefreshScheduleNotificationsUseCase @Inject constructor(
     private val getAllNotificationsUseCase: GetAllNotificationsUseCase,
     private val rescheduleNotificationsUseCase: RescheduleNotificationsUseCase
 ) {
-    operator fun invoke() {
+    suspend operator fun invoke() {
         val notifications = getAllNotificationsUseCase()
         rescheduleNotificationsUseCase(notifications)
     }

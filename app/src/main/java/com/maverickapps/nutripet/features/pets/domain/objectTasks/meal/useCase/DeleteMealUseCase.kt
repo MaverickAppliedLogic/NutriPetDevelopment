@@ -10,7 +10,7 @@ class DeleteMealUseCase @Inject constructor(
     private val deleteNotificationUseCase: DeleteNotificationUseCase,
     private val refreshScheduleNotificationsUseCase: RefreshScheduleNotificationsUseCase
 ){
-    suspend operator fun invoke(mealId: List<Int>){
+    suspend operator fun invoke(mealId: Int){
         mealsRepository.deleteMealForAPet(mealId)
         deleteNotificationUseCase(mealId.hashCode())
         refreshScheduleNotificationsUseCase()

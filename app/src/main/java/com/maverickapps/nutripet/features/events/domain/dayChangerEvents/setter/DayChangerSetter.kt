@@ -17,7 +17,7 @@ class DayChangerSetter(
     private val thisContext = context
     private val thisAlarmManager = alarmManager
 
-    override fun setEvent(time: Long, eventId: Int) {
+    override fun setEvent(time: Long, eventId: Int, extraData: String?) {
         val intent = Intent(thisContext, DayChanger::class.java)
         Log.d("DayChangerSetter", "Intent creado para DayChanger")
         val pendingIntent = PendingIntent.getBroadcast(

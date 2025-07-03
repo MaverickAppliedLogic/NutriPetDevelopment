@@ -29,6 +29,6 @@ interface ScheduleNotification {
         }
     }
 
-    fun createNotification(context: Context, notificationId: Int)
+    fun createNotification(context: Context, notificationId: Int, extraData: String? = null)
 
 }

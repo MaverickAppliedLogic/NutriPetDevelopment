@@ -28,15 +28,15 @@ class MealsRepository @Inject constructor(private val mealsDao: MealDao) {
         mealsDao.clearNotDailyMeals()
     }
 
-    suspend fun addMealForAPet(meal: MealModel) {
-        mealsDao.addMealForAPet(meal.toDatabase())
+    suspend fun addMealForAPet(meal: MealModel): Int {
+        return mealsDao.addMealForAPet(meal.toDatabase()).toInt()
     }
 
     suspend fun editMeal(meal: MealModel) {
         mealsDao.editMeal(meal.toDatabase())
     }
 
-    suspend fun deleteMealForAPet(mealId: List<Int>) {
+    suspend fun deleteMealForAPet(mealId: Int) {
         mealsDao.deleteMealForAPet(mealId)
     }
 }

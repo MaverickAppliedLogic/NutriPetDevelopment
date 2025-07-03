@@ -14,9 +14,10 @@ class AddMealUseCase @Inject constructor(
     private val refreshScheduleNotificationsUseCase: RefreshScheduleNotificationsUseCase
 ) {
     suspend operator fun invoke(mealModel: MealModel){
-        mealsRepository.addMealForAPet(mealModel)
+        val notificationId = mealsRepository.addMealForAPet(mealModel)
+        val mealNotification = mealModel.copy(mealId = notificationId)
         Log.d("AddMealUseCase", "Meal added: $mealModel")
-        insertNotificationUseCase(mealModel.toMealNotificationModel())
+        insertNotificationUseCase(mealNotification.toMealNotificationModel())
         refreshScheduleNotificationsUseCase()
     }
 }

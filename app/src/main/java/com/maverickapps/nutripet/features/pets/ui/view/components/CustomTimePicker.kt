@@ -40,7 +40,7 @@ fun CustomTimePicker(
     val timePickerState = rememberTimePickerState(
         initialHour = hour,
         initialMinute = minute,
-        is24Hour = false
+        is24Hour = true
     )
     Column(
         modifier = modifier,

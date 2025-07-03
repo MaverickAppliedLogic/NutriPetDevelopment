@@ -12,7 +12,7 @@ import com.maverickapps.nutripet.features.pets.MainPetActivity
 
 class MealNotificationHelper : ScheduleNotification {
 
-    override fun createNotification(context: Context, notificationId: Int) {
+    override fun createNotification(context: Context, notificationId: Int, extraData: String?) {
         val intent = Intent(context, MainPetActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -22,11 +22,13 @@ class MealNotificationHelper : ScheduleNotification {
 
         val notification = NotificationCompat.Builder(context, REMINDERS_CHANNEL_ID)
             .setSmallIcon(R.mipmap.icon_add_food)
-            .setContentTitle("Notification Title")
-            .setContentText("Notification Text")
+            .setContentTitle("¡Hora de comer! \uD83D\uDC36\uD83D\uDC31")
+            .setContentText("$extraData está esperando su comida. ¡No dejes que espere⏰!")
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("Much longer text that cannot fit one line...")
+                    .bigText("$extraData está esperando su comida. ¡No dejes que espere⏰!" +
+                            " Recuerda que mantener horarios regulares ayuda a su digestión y" +
+                            " bienestar\uD83D\uDC9A.")
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

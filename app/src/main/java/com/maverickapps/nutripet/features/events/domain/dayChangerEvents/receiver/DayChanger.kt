@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import com.maverickapps.nutripet.features.notifications.domain.useCase.RefreshScheduleNotificationsUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -16,6 +19,8 @@ class DayChanger  : BroadcastReceiver() {
         const val DAY_CHANGE_EVENT_ID = 3001
     }
     override fun onReceive(context: Context, intent: Intent) {
-        refreshScheduleNotificationsUseCase()
+        CoroutineScope(Dispatchers.IO).launch {
+            refreshScheduleNotificationsUseCase()
+        }
     }
 }

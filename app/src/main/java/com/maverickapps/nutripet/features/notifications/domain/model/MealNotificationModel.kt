@@ -5,8 +5,9 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.Mea
 
 data class MealNotificationModel(
     override val notificationId: Int,
-    override val time: Long
+    override val time: Long,
+    override val extraData: String?
 ) : ScheduledNotificationModel
 
 fun MealModel.toMealNotificationModel() =
-    MealNotificationModel(time = mealTime, notificationId = mealId.hashCode())
+    MealNotificationModel(time = mealTime, notificationId = mealId, extraData = petId.toString() )
