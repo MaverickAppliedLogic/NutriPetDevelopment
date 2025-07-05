@@ -16,9 +16,13 @@ class MealNotificationSetter(
     private val thisContext = context
     private val thisAlarmManager = alarmManager
 
-/*TODO Editar hora de mealNotification cuando una comida es editada*/
-    override fun setEvent(time: Long, eventId: Int, extraData: String?) {
-        var newTime = time
+
+    override fun setEvent(
+        time: Long,
+        eventId: Int,
+        extraData: String?,
+        needToBeCleared: Boolean
+    ) {
         val intent = Intent(thisContext, MealNotification::class.java).apply {
             putExtra("notificationId", eventId)
             putExtra("extraData", extraData)
@@ -30,22 +34,20 @@ class MealNotificationSetter(
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        thisAlarmManager.cancel(pendingIntent)
         Log.d("MealNotificationSetter", "PendingIntent creado")
-        if (time <= System.currentTimeMillis()) {
-            newTime = time + (24*60*60*1000L)
+        if (needToBeCleared) {
+            thisAlarmManager.cancel(pendingIntent)
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
             && thisAlarmManager.canScheduleExactAlarms()
+            && time > System.currentTimeMillis()
         ) {
             Log.d("MealNotificationSetter", "Alarma programada para $time")
-                thisAlarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    newTime,
-                    pendingIntent
-                )
-
+            thisAlarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                time,
+                pendingIntent
+            )
         }
     }
 }

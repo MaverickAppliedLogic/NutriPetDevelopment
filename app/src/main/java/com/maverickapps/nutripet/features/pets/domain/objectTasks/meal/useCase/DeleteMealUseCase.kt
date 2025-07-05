@@ -12,7 +12,7 @@ class DeleteMealUseCase @Inject constructor(
 ){
     suspend operator fun invoke(mealId: Int){
         mealsRepository.deleteMealForAPet(mealId)
-        deleteNotificationUseCase(mealId.hashCode())
+        deleteNotificationUseCase(mealId)
         refreshScheduleNotificationsUseCase()
     }
 }

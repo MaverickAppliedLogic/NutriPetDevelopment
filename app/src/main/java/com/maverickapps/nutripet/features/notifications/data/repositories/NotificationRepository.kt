@@ -20,15 +20,9 @@ class NotificationRepository @Inject constructor(
         notificationDatastore.insertAllScheduledNotifications(scheduledNotificationsList)
     }
 
-    fun insertNotification(scheduledNotification: MealNotificationModel) {
-        notificationDatastore.insertScheduledNotification(scheduledNotification)
-    }
 
     fun deleteAllNotifications() {
         notificationDatastore.deleteAllScheduledNotifications()
     }
 
-    fun deleteNotification(notificationId: Int) {
-        notificationDatastore.deleteScheduledNotification(notificationId)
-    }
 }

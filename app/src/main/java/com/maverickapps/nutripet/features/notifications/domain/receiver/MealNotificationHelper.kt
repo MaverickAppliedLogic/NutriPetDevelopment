@@ -21,14 +21,15 @@ class MealNotificationHelper : ScheduleNotification {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, flag)
 
         val notification = NotificationCompat.Builder(context, REMINDERS_CHANNEL_ID)
-            .setSmallIcon(R.mipmap.icon_add_food)
-            .setContentTitle("¡Hora de comer! \uD83D\uDC36\uD83D\uDC31")
-            .setContentText("$extraData está esperando su comida. ¡No dejes que espere⏰!")
+            .setSmallIcon(R.mipmap.ic_nutripet)
+            .setContentTitle("$extraData está mirando su plato... ¡y está vacío! \uD83D\uDE3F")
+            .setContentText("⏰¡No dejes que espere!")
+            .setAutoCancel(true)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("$extraData está esperando su comida. ¡No dejes que espere⏰!" +
-                            " Recuerda que mantener horarios regulares ayuda a su digestión y" +
-                            " bienestar\uD83D\uDC9A.")
+                    .bigText("⏰¡No dejes que espere!\n" +
+                            "\uD83D\uDC9A Recuerda que mantener horarios regulares ayuda a su digestión y" +
+                            " bienestar \uD83D\uDC36.")
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

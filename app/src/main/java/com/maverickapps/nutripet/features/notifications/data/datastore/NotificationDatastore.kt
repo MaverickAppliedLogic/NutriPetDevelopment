@@ -31,21 +31,9 @@ class NotificationDatastore(private val notificationsFile: File) {
         notificationsFile.writeText(json)
     }
 
-    fun insertScheduledNotification(scheduledNotification: MealNotificationModel) {
-        val updatedScheduledNotifications = getAllScheduledNotifications().toMutableList()
-        updatedScheduledNotifications.add(scheduledNotification)
-        val json = gson.toJson(updatedScheduledNotifications)
-        notificationsFile.writeText(json)
-    }
 
     fun deleteAllScheduledNotifications() {
         notificationsFile.writeText("")
     }
 
-    fun deleteScheduledNotification(notificationId: Int) {
-        val updatedScheduledNotifications = getAllScheduledNotifications().toMutableList()
-        updatedScheduledNotifications.removeIf { it.notificationId == notificationId }
-        val json = gson.toJson(updatedScheduledNotifications)
-        notificationsFile.writeText(json)
-    }
 }
