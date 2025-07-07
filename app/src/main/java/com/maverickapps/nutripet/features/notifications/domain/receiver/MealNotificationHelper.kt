@@ -27,9 +27,9 @@ class MealNotificationHelper : ScheduleNotification {
             .setAutoCancel(true)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("⏰¡No dejes que espere!\n" +
-                            "\uD83D\uDC9A Recuerda que mantener horarios regulares ayuda a su digestión y" +
-                            " bienestar \uD83D\uDC36.")
+                    .bigText("⏰ ¡No dejes que espere!\n" +
+                            "Recuerda que mantener horarios regulares ayuda a su digestión y" +
+                            " bienestar \uD83D\uDC9A.")
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
