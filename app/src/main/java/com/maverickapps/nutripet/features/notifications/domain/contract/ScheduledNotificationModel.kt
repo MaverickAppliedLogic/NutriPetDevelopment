@@ -1,7 +1,8 @@
 package com.maverickapps.nutripet.features.notifications.domain.contract
 
-interface ScheduledNotificationModel{
+interface ScheduledNotificationModel {
     val notificationId: Int
-    val time: Long
+    val hour: Int
+    val min: Int
     val extraData: String?
 }

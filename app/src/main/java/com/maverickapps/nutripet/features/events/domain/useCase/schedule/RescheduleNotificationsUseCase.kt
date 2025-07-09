@@ -11,19 +11,16 @@ class RescheduleNotificationsUseCase @Inject constructor(
 {
     suspend operator fun invoke(notifications: List<ScheduledNotificationModel>) {
         notifications.forEach {
-            val notificationTime = Calendar.getInstance().apply{ timeInMillis = it.time }
-            val hour = notificationTime.get(Calendar.HOUR_OF_DAY)
-            val minute = notificationTime.get(Calendar.MINUTE)
-
             val todayNotificationTime = Calendar.getInstance().apply{
-                set(Calendar.HOUR_OF_DAY, hour)
-                set(Calendar.MINUTE, minute)
+                set(Calendar.HOUR_OF_DAY, it.hour)
+                set(Calendar.MINUTE, it.min)
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
 
             Log.d("RescheduleNotificationsUseCase", "Notification to reschedule: ${it.extraData}")
-            Log.d("RescheduleNotificationsUseCase", "Rescheduling notification: ${it.notificationId}")
+            Log.d("RescheduleNotificationsUseCase",
+                "Rescheduling notification: ${it.hour}:${it.min}")
             scheduleNotificationUseCase(
                 todayNotificationTime,
                 it.notificationId,

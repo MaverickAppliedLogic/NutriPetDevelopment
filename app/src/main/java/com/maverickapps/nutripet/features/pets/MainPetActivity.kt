@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,8 @@ class MainPetActivity : ComponentActivity() {
     private val sharedDataViewmodel: SharedDataViewmodel by viewModels()
     private val eventsViewModel: EventsViewModel by viewModels()
 
+    //TODO revisar creación de notificaciones para comidas puntuales para el dia siguiente
+    //TODO revisar rescheduling de notificaciones cuando se apaga el movil y asi no depender de abrir la app
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,8 +81,10 @@ class MainPetActivity : ComponentActivity() {
                     )
                 }
                 else{
-                    if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
-                       eventsViewModel.scheduleDayChanger()
+                    LaunchedEffect(Unit) {
+                        if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
+                            eventsViewModel.scheduleDayChanger()
+                        }
                     }
                 }
                 NavigationWrapper(
