@@ -69,7 +69,7 @@ fun UpdateNotesDialog(
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     BulletPoint {
-                        Text("El peso de la mascota ya no se cambia automáticamente al editar.",
+                        Text("Ahora la selección de edad de mascota es más precisa.",
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -77,7 +77,7 @@ fun UpdateNotesDialog(
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
 
                     BulletPoint {
-                        Text("Ahora se puede seleccionar la opción 'Senior' correctamente.",
+                        Text("La edad se muestra correctamente en los detalles del perfil.",
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -85,37 +85,8 @@ fun UpdateNotesDialog(
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
 
                     BulletPoint {
-                        Text("Al editar, se asigna correctamente el animal previamente seleccionado.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("El botón 'Añadir' ya no queda oculto tras los controles del sistema.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("'Esterilizado' ahora se reconoce como campo válido al seleccionar 'No'.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("Solucionado un fallo que cerraba la app al cambiar a la primera mascota ",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("Corregido un error de formato en los ficheros que impedía abrir la aplicación",
+                        Text("Al editar los datos, el requerimiento calórico se actualiza" +
+                                " automáticamente según la nueva información.",
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -137,21 +108,10 @@ fun UpdateNotesDialog(
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     BulletPoint {
-                        Text("El texto de calorías aparece en rojo si se excede el límite.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("Los campos ya completados se marcan automáticamente al editar.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("'Esterilizado' ahora es obligatorio para calcular calorías.",
+                        Text("Ahora, al asignar horarios para las comidas de tus mascotas," +
+                                " la app te enviará notificaciones para que no se te pase ningún" +
+                                " momento.\uD83D\uDCE3\n Una forma más cómoda de cuidar su rutina sin tener que" +
+                                " recordarlo por tu cuenta.\uD83D\uDCC5 ✅",
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )

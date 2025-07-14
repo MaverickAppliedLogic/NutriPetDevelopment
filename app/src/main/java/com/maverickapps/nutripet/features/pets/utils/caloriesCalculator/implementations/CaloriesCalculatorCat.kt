@@ -24,9 +24,9 @@ class CaloriesCalculatorCat : CaloriesCalculator {
             else -> 0.1
         }
         when(pet.goal){
-            "Perdida de peso" -> variants -= 0.15
-            "Mantenimiento" -> variants -= 0.0
-            "Aumento de peso" -> variants += 0.15
+            "Bajar peso" -> variants -= 0.15
+            "Mantener" -> variants -= 0.0
+            "Subir peso" -> variants += 0.15
         }
         if(pet.sterilized){
             variants -= 0.10
