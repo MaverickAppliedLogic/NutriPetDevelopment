@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "382241546270",
+    "project_id": "nutripet-4304c",
+    "storage_bucket": "nutripet-4304c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382241546270:android:81baddd0cfc11427674e0f",
+        "android_client_info": {
+          "package_name": "com.maverickapps.nutripet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj1csVd5401IpxLoQAalioKVW4rPVt8dU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

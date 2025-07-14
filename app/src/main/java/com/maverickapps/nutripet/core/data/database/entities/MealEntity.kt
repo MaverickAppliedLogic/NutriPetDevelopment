@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.maverickapps.nutripet.petsFeature.domain.objectTasks.meal.model.MealModel
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.MealModel
 
 @Entity(
     tableName = "meal_table",

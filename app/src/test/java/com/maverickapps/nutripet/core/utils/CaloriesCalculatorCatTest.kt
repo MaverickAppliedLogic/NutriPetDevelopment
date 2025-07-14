@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.core.utils
 
-import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.maverickapps.nutripet.petsFeature.utils.CaloriesCalculatorCat
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetModel
+import com.maverickapps.nutripet.features.pets.utils.caloriesCalculator.implementations.CaloriesCalculatorCat
 import org.junit.Before
 import org.junit.Test
 

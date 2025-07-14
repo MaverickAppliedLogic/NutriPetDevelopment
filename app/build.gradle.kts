@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id ("com.google.gms.google-services")
     alias(libs.plugins.kotlin.android)
 }
 
@@ -16,8 +17,8 @@ android {
         applicationId = "com.maverickapps.nutripet"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.5"
+        versionCode = 5
+        versionName = "0.65"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -114,6 +115,11 @@ dependencies {
     // KSP (Kotlin Symbol Processing) dependencies
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.room.compiler)
+
+    //FireBase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.config.ktx)
 
     // UI tests
     androidTestImplementation(libs.androidx.junit)

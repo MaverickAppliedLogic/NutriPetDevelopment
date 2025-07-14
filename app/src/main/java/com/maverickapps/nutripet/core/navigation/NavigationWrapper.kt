@@ -1,6 +1,8 @@
 package com.maverickapps.nutripet.core.navigation
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -8,18 +10,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.addFoodScreen.AddFoodScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.addMealScreen.AddMealScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.dashboardScreen.DashBoardScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.foodListScreen.FoodListScreen
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.RegisterPetScreen
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.AddFoodViewModel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.AddMealViewmodel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.DashboardViewModel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.RegisterPetViewmodel
-import com.maverickapps.nutripet.petsFeature.ui.viewmodel.SharedDataViewmodel
+import com.maverickapps.nutripet.features.pets.ui.view.screens.addFoodScreen.AddFoodScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.addMealScreen.AddMealScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.dashboardScreen.DashBoardScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.foodListScreen.FoodListScreen
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.RegisterPetScreen
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddFoodViewModel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddMealViewmodel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.DashboardViewModel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.RegisterPetViewmodel
+import com.maverickapps.nutripet.features.pets.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.nutripet.ui.viewmodel.FoodsListViewmodel
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun NavigationWrapper(
     sharedDataViewmodel: SharedDataViewmodel,
@@ -27,18 +30,24 @@ fun NavigationWrapper(
     addMealViewmodel: AddMealViewmodel,
     dashBoardViewModel: DashboardViewModel,
     addFoodViewModel: AddFoodViewModel,
-    foodListViewModel: FoodsListViewmodel
+    foodListViewModel: FoodsListViewmodel,
 ) {
     val navController = rememberNavController()
+    val needToUpdate by sharedDataViewmodel.needToUpdate.collectAsStateWithLifecycle()
+    val recentlyUpdated by sharedDataViewmodel.isRecentlyUpdated.collectAsStateWithLifecycle()
     NavHost(navController = navController, startDestination = DashBoardScreen(false)) {
         composable<DashBoardScreen> {
             val shouldRefresh = it.toRoute<DashBoardScreen>().shouldRefresh ?: false
             DashBoardScreen(
                 dashBoardViewModel,
+                needToUpdate = needToUpdate,
+                showUpdateNotes = recentlyUpdated,
+                dialogSeen = { sharedDataViewmodel.updateDialogSeen() },
                 needToRefresh = shouldRefresh
             ) { destination, petId, mealId ->
                 when (destination) {
                     "RegisterPet" -> {
+                        sharedDataViewmodel.clearPetId()
                         navController.navigate(RegisterPet)
                     }
                     "AddMeal" -> {
@@ -58,15 +67,22 @@ fun NavigationWrapper(
         }
         composable<RegisterPet> {
             val petId by sharedDataViewmodel.selectedPetId.collectAsStateWithLifecycle()
-            RegisterPetScreen(
-                petId = petId,
-                registerPetViewmodel = registerPetViewModel
-            ) {
+            val getBack = {
                 navController.navigate(DashBoardScreen(shouldRefresh = true)) {
+                    println("borra")
                     registerPetViewModel.setInitialPet()
                     sharedDataViewmodel.clearPetId()
                     popUpTo<DashBoardScreen> { inclusive = true }
                 }
+            }
+            BackHandler {
+                getBack()
+            }
+            RegisterPetScreen(
+                petId = petId,
+                registerPetViewmodel = registerPetViewModel
+            ) {
+                getBack()
             }
         }
         composable<AddMeal> {
@@ -74,30 +90,21 @@ fun NavigationWrapper(
             val petId by sharedDataViewmodel.selectedPetId.collectAsStateWithLifecycle()
             val foodId by sharedDataViewmodel.selectedFoodId.collectAsStateWithLifecycle()
 
-            BackHandler {
+            val getBack = {
                 navController.navigate(DashBoardScreen(false)) {
                     sharedDataViewmodel.wipeData()
                     addMealViewmodel.setInitialMeal()
                     popUpTo<DashBoardScreen> { inclusive = true }
                 }
             }
+            BackHandler { getBack() }
             AddMealScreen(
                 addMealViewmodel = addMealViewmodel,
                 mealId = mealId,
                 foodId = foodId,
                 petId = petId!!,
-                navToFoodList = {
-                    navController.navigate(
-                        FoodList("FromAddMeal")
-                    )
-                },
-                navToBackStack = {
-                    navController.navigate(DashBoardScreen(false)) {
-                        sharedDataViewmodel.wipeData()
-                        addMealViewmodel.setInitialMeal()
-                        popUpTo<DashBoardScreen> { inclusive = true }
-                    }
-                })
+                navToFoodList = { navController.navigate(FoodList("FromAddMeal")) },
+                navToBackStack = { getBack() })
         }
         composable<AddFood> {
             val addFood = it.toRoute<AddFood>()
@@ -131,9 +138,7 @@ fun NavigationWrapper(
             AddFoodScreen(
                 addFoodViewModel = addFoodViewModel,
                 navToBackStack = { getBackDestination() },
-                navToFoodList = {
-                    getDestination()
-                })
+                navToFoodList = { getDestination() })
         }
         composable<FoodList> {
             val foodListOrigin = it.toRoute<FoodList>().origin
