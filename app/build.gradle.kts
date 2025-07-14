@@ -17,8 +17,8 @@ android {
         applicationId = "com.maverickapps.nutripet"
         minSdk = 24
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.65"
+        versionCode = 6
+        versionName = "0.66"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
