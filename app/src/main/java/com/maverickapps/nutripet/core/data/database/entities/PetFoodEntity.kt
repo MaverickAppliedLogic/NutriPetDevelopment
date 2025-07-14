@@ -3,7 +3,7 @@ package com.maverickapps.nutripet.core.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.maverickapps.nutripet.petsFeature.domain.objectTasks.petFood.model.PetFoodModel
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.petFood.model.PetFoodModel
 
 @Entity(
     tableName = "pet_food_table",

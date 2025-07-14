@@ -1,11 +1,12 @@
 package com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.util
 
-import com.maverickapps.nutripet.petsFeature.domain.objectTasks.pet.model.PetModel
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.PET_NAME_FIELD
-import com.maverickapps.nutripet.petsFeature.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.util.PetValidator
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetModel
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.ACTIVITY_FIELD
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.AGE_FIELD
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.GOAL_FIELD
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.PET_NAME_FIELD
+import com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScreen.utils.FormItemsInteractionsHandler.Companion.WEIGHT_FIELD
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import org.junit.Before

@@ -11,13 +11,14 @@ import com.maverickapps.nutripet.core.data.database.dao.FoodDao
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
 import com.maverickapps.nutripet.core.data.database.dao.PetDao
 import com.maverickapps.nutripet.core.data.database.dao.PetFoodDao
-import com.maverickapps.nutripet.core.data.local.PetLocalStorageProvider
+import com.maverickapps.nutripet.core.data.datastore.VersionDatastore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.io.File
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -25,6 +26,7 @@ import javax.inject.Singleton
 object DataModule {
 
     private const val USER_PREFERENCES_NAME = "user_preferences"
+
     @Singleton
     @Provides
     fun provideDataStore(@ApplicationContext context: Context) = PreferenceDataStoreFactory.create{
@@ -34,19 +36,21 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideFilesDir(@ApplicationContext context: Context): File {
-        val petsFile = File(context.filesDir, "pets")
-        if (!petsFile.exists()) {
-            petsFile.createNewFile()
+    @Named("UpdateFile")
+    fun provideVersionFilesDir(@ApplicationContext context: Context): File {
+        val updateFile = File(context.filesDir, "updateProvisionalState")
+        if (!updateFile.exists()) {
+            updateFile.createNewFile()
         }
-        return petsFile
+        return updateFile
     }
 
     @Singleton
     @Provides
-    fun petLocalStorage(file: File): PetLocalStorageProvider {
-        return PetLocalStorageProvider(file)
+    fun provideVersionDatastore(@Named("UpdateFile")file: File): VersionDatastore {
+        return VersionDatastore(file)
     }
+
 
     @Singleton
     @Provides

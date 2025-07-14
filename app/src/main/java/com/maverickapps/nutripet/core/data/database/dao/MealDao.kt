@@ -28,13 +28,13 @@ interface MealDao {
 //Individual elements
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMealForAPet(meal: MealEntity)
+    suspend fun addMealForAPet(meal: MealEntity): Long
 
     @Query("SELECT * FROM meal_table WHERE meal_id = :mealId")
     suspend fun getMealById(mealId: Int): MealEntity
 
-    @Query("DELETE FROM meal_table WHERE (meal_id in (:mealId))")
-    suspend fun deleteMealForAPet(mealId: List<Int>)
+    @Query("DELETE FROM meal_table WHERE meal_id == :mealId")
+    suspend fun deleteMealForAPet(mealId: Int)
 
     @Update
     suspend fun editMeal(meal: MealEntity)
