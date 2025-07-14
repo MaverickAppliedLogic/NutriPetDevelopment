@@ -45,12 +45,12 @@ fun AgeField(
     onAgeChanged: (Float) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val options = stringArrayResource(R.array.fa_arrayAgeSelected)
+    val options = (1..11).toList()
+    val ageStrings = stringArrayResource(R.array.fa_arrayAgeSelected)
     val preparedSelection = {
-        if (age == 0f) "Selecciona"
-        else if(age == 0.5f){options[0]}
-        else if(age in 1f..6f){options[1]}
-        else options[2]
+        if (age == 0f) ageStrings[0]
+        else if(age == 11f){ageStrings[2]}
+        else String.format(ageStrings[1], age.toInt())
     }
     FormField(
         label = "Edad",
@@ -106,17 +106,13 @@ fun AgeField(
                 ) {
                     options.forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(option) },
+                            text = {
+                                val ageString = if(option == 11) String.format(ageStrings[2])
+                                   else String.format(ageStrings[1], option)
+                                   Text(ageString)
+                                   },
                             onClick = {
-                               val preparedNewSelection = {
-                                    when(option){
-                                        options[0] -> 0.5f
-                                        options[1] -> 5f
-                                        options[2] -> 7f
-                                        else -> 0f
-                                    }
-                                }
-                                onAgeChanged(preparedNewSelection.invoke())
+                                onAgeChanged(option.toFloat())
                                 expanded = false
                             },
                             colors = MenuItemColors(
