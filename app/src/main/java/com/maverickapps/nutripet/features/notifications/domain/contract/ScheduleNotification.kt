@@ -20,6 +20,7 @@ interface ScheduleNotification {
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Reminders for your pets"
+                enableVibration(true)
             }
 
             val notificationManager: NotificationManager =

@@ -28,44 +28,62 @@ import com.maverickapps.nutripet.core.ui.theme.SecondaryDarkest
 @Composable
 fun PostPermissionDialog(
     modifier: Modifier = Modifier,
-    postPermissionDismiss: () ->Unit,
+    postPermissionDismiss: () -> Unit,
     postPermissionRequest: () -> Unit
-){
+) {
     AlertDialog(
         title = {
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
-                Icon(imageVector = Icons.Default.Notifications,
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Notifications,
                     contentDescription = null,
-                    modifier = Modifier.size(65.dp))
+                    modifier = Modifier.size(65.dp)
+                )
             }
         },
         text = {
-            Column(modifier = Modifier
-                .fillMaxHeight()
-                .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Center){
-                Text(text = "¿Permitir notificaciones?",
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "¿Permitir notificaciones?",
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    modifier = Modifier.fillMaxWidth())
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "Necesitamos tu permiso para enviarte recordatorios importantes," +
-                        " como las horas de comida de tu mascota.",
+                Text(
+                    text = "Necesitamos tu permiso para enviarte recordatorios importantes," +
+                            " como las horas de comida de tu mascota.",
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth())
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         },
         onDismissRequest = {},
-        dismissButton = {
-            Button(onClick = {postPermissionDismiss()}) {
-                Text(text = "Denegar")
-            }
-        },
         confirmButton = {
-            Button(onClick = postPermissionRequest) {
-                Text(text = "Permitir")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement =  Arrangement.Center) {
+                Spacer(modifier = Modifier.weight(1f,true))
+
+                Button(
+                    onClick = { postPermissionDismiss() }) {
+                    Text(text = "Denegar")
+                }
+                Spacer(modifier = Modifier.weight(1f,true))
+                Button(onClick = postPermissionRequest) {
+                    Text(text = "Permitir")
+                }
+                Spacer(modifier = Modifier.weight(1f,true))
+
             }
         },
         containerColor = NeutralDark,

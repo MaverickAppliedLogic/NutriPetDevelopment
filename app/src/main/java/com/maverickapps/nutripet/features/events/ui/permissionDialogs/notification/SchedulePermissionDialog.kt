@@ -61,14 +61,22 @@ fun SchedulePermissionDialog(
             }
         },
         onDismissRequest = {schedulePermissionDismiss()},
-        dismissButton = {
-            Button(onClick = {}) {
-                Text(text = "Denegar")
-            }
-        },
         confirmButton = {
-            Button(onClick = schedulePermissionRequest) {
-                Text(text = "Permitir")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement =  Arrangement.Center) {
+                Spacer(modifier = Modifier.weight(1f,true))
+
+                Button(
+                    onClick = { schedulePermissionDismiss() }) {
+                    Text(text = "Denegar")
+                }
+                Spacer(modifier = Modifier.weight(1f,true))
+                Button(onClick = schedulePermissionRequest ) {
+                    Text(text = "Permitir")
+                }
+                Spacer(modifier = Modifier.weight(1f,true))
+
             }
         },
         containerColor = NeutralDark,
