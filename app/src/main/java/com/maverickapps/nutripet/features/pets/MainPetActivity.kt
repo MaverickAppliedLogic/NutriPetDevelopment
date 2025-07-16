@@ -84,6 +84,7 @@ class MainPetActivity : ComponentActivity() {
                     LaunchedEffect(Unit) {
                         if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
                             eventsViewModel.scheduleDayChanger()
+                            eventsViewModel.fetchMealEvents()
                         }
                     }
                 }

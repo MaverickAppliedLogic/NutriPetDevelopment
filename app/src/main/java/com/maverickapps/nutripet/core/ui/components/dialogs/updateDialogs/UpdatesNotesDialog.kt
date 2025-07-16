@@ -37,13 +37,13 @@ fun UpdateNotesDialog(
             onDismissRequest = onDismiss,
             title = {
                 Box {
-                    Text(text = "🔔 Novedades de esta versión",
+                    Text(text = "🔔 Novedades de esta versión (0.7.1)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryDarkest,
                         modifier = Modifier.blur(3.dp).padding(3.dp)
                     )
-                    Text(text = "🔔 Novedades de esta versión",
+                    Text(text = "🔔 Novedades de esta versión (0.7.1)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = Primary,
@@ -69,7 +69,9 @@ fun UpdateNotesDialog(
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     BulletPoint {
-                        Text("Ahora la selección de edad de mascota es más precisa.",
+                        Text("Las notificaciones previamente creadas ahora se establecen" +
+                                " correctamente.",
+
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -77,22 +79,24 @@ fun UpdateNotesDialog(
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
 
                     BulletPoint {
-                        Text("La edad se muestra correctamente en los detalles del perfil.",
+                        Text("Al eliminar una comida puntual, su notificación ahora también" +
+                                " se elimina.",
+
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
                     BulletPoint {
-                        Text("Al editar los datos, el requerimiento calórico se actualiza" +
-                                " automáticamente según la nueva información.",
+                        Text("Al editar una comida puntual, la hora de notificación ahora se" +
+                                " actualiza como corresponde.",
+
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    Box{
+                    /*Box{
                         Text("Mejoras ✨",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
@@ -115,7 +119,7 @@ fun UpdateNotesDialog(
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
-                    }
+                    }*/
                 }
             },
             confirmButton = {

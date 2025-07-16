@@ -10,6 +10,7 @@ import com.maverickapps.nutripet.features.events.domain.useCase.exactAlarmPermis
 import com.maverickapps.nutripet.features.events.domain.useCase.notificationsPermissions.CheckNotificationPermissionUseCase
 import com.maverickapps.nutripet.features.events.domain.useCase.notificationsPermissions.RequesNotificationPermissionUseCase
 import com.maverickapps.nutripet.features.events.domain.useCase.schedule.ScheduleDayChangerUseCase
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.SendMealsToNotificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ class EventsViewModel @Inject constructor(
     private val requestExactAlarmPermissionUseCase: RequestExactAlarmPermissionUseCase,
     private val checkNotificationPermissionUseCase: CheckNotificationPermissionUseCase,
     private val requestPostPermissionUseCase: RequesNotificationPermissionUseCase,
-    private val scheduleDayChangerUseCase: ScheduleDayChangerUseCase
+    private val scheduleDayChangerUseCase: ScheduleDayChangerUseCase,
+    private val sendMealsToNotificationUseCase: SendMealsToNotificationUseCase
 ): ViewModel(){
 
     private val _mustRequestExactAlarmDialog = MutableStateFlow(true)
@@ -63,6 +65,10 @@ class EventsViewModel @Inject constructor(
             time.add(Calendar.DAY_OF_MONTH, 1)
         }
         scheduleDayChangerUseCase(time.timeInMillis)
+    }
+
+    suspend fun fetchMealEvents(){
+        sendMealsToNotificationUseCase()
     }
 
 }

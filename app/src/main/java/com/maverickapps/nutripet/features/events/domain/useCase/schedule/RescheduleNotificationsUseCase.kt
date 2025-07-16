@@ -18,7 +18,7 @@ class RescheduleNotificationsUseCase @Inject constructor(
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
 
-            Log.d("RescheduleNotificationsUseCase", "Notification to reschedule: ${it.extraData}")
+            Log.d("RescheduleNotificationsUseCase", "Notification to reschedule: ${it.notificationId}")
             Log.d("RescheduleNotificationsUseCase",
                 "Rescheduling notification: ${it.hour}:${it.min}")
             scheduleNotificationUseCase(
