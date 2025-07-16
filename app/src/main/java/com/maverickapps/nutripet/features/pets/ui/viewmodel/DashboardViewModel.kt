@@ -98,9 +98,9 @@ class DashboardViewModel @Inject constructor(
     }
 
 
-    fun deleteMeal(mealId: Int) {
+    fun deleteMeal(meal: MealModel) {
         viewModelScope.launch {
-            deleteMealUseCase(mealId)
+            deleteMealUseCase(meal)
             getMeals()
         }
     }

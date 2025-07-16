@@ -126,8 +126,9 @@ fun DashboardContent(
                 val pair = mealsWithFoods.find { it.first.mealId == id }
                 dashboardViewModel.editMeal(pair!!.first.copy(mealState = 1))
             },
-            onMealDeleteClicked = {
-                dashboardViewModel.deleteMeal(it)
+            onMealDeleteClicked = {id ->
+                val pair = mealsWithFoods.find { it.first.mealId == id }
+                dashboardViewModel.deleteMeal(pair!!.first)
             },
             modifier = Modifier
                 .padding(paddingValues)
