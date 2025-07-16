@@ -20,6 +20,7 @@ android {
         versionCode = 8
         versionName = "0.71"
 
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {

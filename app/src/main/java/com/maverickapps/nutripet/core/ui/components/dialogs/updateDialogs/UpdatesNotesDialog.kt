@@ -71,6 +71,7 @@ fun UpdateNotesDialog(
                     BulletPoint {
                         Text("Las notificaciones previamente creadas ahora se establecen" +
                                 " correctamente.",
+
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -80,6 +81,7 @@ fun UpdateNotesDialog(
                     BulletPoint {
                         Text("Al eliminar una comida puntual, su notificación ahora también" +
                                 " se elimina.",
+
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -88,6 +90,7 @@ fun UpdateNotesDialog(
                     BulletPoint {
                         Text("Al editar una comida puntual, la hora de notificación ahora se" +
                                 " actualiza como corresponde.",
+
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold
                         )
