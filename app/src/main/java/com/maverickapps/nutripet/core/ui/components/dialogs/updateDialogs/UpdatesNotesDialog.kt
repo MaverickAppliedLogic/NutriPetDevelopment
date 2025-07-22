@@ -68,28 +68,11 @@ fun UpdateNotesDialog(
                             modifier = Modifier.fillMaxWidth())
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    BulletPoint {
-                        Text("Las notificaciones previamente creadas ahora se establecen" +
-                                " correctamente.",
-
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("Al eliminar una comida puntual, su notificación ahora también" +
-                                " se elimina.",
-
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
                     BulletPoint {
-                        Text("Al editar una comida puntual, la hora de notificación ahora se" +
-                                " actualiza como corresponde.",
+                        Text("Al registrar una comida como ya consumida, la notificación " +
+                                "pendiente se cancela correctamente, evitando avisar de una comida" +
+                                " ya resuelta.",
 
                             color = SecondaryDarkest,
                             fontWeight = FontWeight.SemiBold

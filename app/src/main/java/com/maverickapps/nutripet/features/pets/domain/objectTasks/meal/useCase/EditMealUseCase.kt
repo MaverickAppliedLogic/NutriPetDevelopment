@@ -15,7 +15,7 @@ class EditMealUseCase @Inject constructor(
     suspend operator fun invoke(meal: MealModel) {
         mealRepository.editMeal(meal)
         Log.d("EditMealUseCase", "Meal edited: $meal")
-        if (!meal.isDailyMeal) {
+        if (!meal.isDailyMeal || meal.mealState == 0) {
             cancelNotificationUseCase(meal.mealId, meal.petId.toString())
         }
         sendMealsToNotificationUseCase()
