@@ -2,6 +2,7 @@ package com.maverickapps.nutripet.features.pets.ui.view.screens.registerPetScree
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,6 +66,7 @@ fun FormField(
                 start = if (state == WAITING) 0.dp else MaterialTheme.dimens.extraSmall4,
                 end = MaterialTheme.dimens.extraSmall4
             )
+            .clickable { onTrailingIconClicked() }
     ) {
         when (state) {
             WAITING ->

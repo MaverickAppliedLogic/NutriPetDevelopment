@@ -15,8 +15,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maverickapps.nutripet.core.ui.components.BulletPoint
@@ -68,35 +71,23 @@ fun UpdateNotesDialog(
                             modifier = Modifier.fillMaxWidth())
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    BulletPoint {
-                        Text("Las notificaciones previamente creadas ahora se establecen" +
-                                " correctamente.",
-
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("Al eliminar una comida puntual, su notificación ahora también" +
-                                " se elimina.",
-
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
                     BulletPoint {
-                        Text("Al editar una comida puntual, la hora de notificación ahora se" +
-                                " actualiza como corresponde.",
-
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Notificaciones inteligentes: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Ya no se mostrarán notificaciones de comidas que el " +
+                                        "usuario ya registró como consumidas. \uD83D\uDC49 " +
+                                        "Evitamos interrupciones innecesarias y enfocamos las " +
+                                        "alertas en lo importante")
+                            }
+                        })
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    /*Box{
+                    Box{
                         Text("Mejoras ✨",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
@@ -112,14 +103,20 @@ fun UpdateNotesDialog(
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     BulletPoint {
-                        Text("Ahora, al asignar horarios para las comidas de tus mascotas," +
-                                " la app te enviará notificaciones para que no se te pase ningún" +
-                                " momento.\uD83D\uDCE3\n Una forma más cómoda de cuidar su rutina sin tener que" +
-                                " recordarlo por tu cuenta.\uD83D\uDCC5 ✅",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }*/
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Interacción mejorada al editar mascotas: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Al registrar o modificar una mascota, ahora podés" +
+                                        " expandir y comprimir los campos del formulario tocando" +
+                                        " cualquier parte del encabezado del campo. \uD83D\uDC49 " +
+                                        "No hace " +
+                                        "falta acertar el ícono: más rápido, más cómodo.")
+                            }
+                        })
+                    }
                 }
             },
             confirmButton = {

@@ -19,12 +19,16 @@ class SendMealsToNotificationUseCase @Inject constructor(
         val notDailyMeals = emptyList<MealModel>().toMutableList()
         meals.forEach {
             Log.d("SendMealsToNotificationUseCase", "Meal: $it")
-            if (!it.isDailyMeal) {
-                notDailyMeals.add(it)
+            if (it.mealState == 0) {
                 meals.remove(it)
+            } else {
+                if (!it.isDailyMeal) {
+                    meals.remove(it)
+                    notDailyMeals.add(it)
+                }
             }
         }
-        insertAllNotificationsUseCase(meals.map{ it.toMealNotificationModel()})
+        insertAllNotificationsUseCase(meals.map { it.toMealNotificationModel() })
         refreshScheduleNotificationsUseCase()
         notDailyMeals.forEach {
             scheduleNotificationUseCase(

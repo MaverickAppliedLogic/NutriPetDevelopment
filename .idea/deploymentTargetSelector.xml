@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-07-14T09:57:28.192255800Z">
+        <DropdownSelection timestamp="2025-07-23T11:28:59.933045700Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\Vivo_API_34_xxhdpi.avd" />
@@ -13,6 +13,11 @@
         </DropdownSelection>
         <DialogSelection>
           <targets>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\13.5_Freeform_API_34.avd" />
+              </handle>
+            </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
                 <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\2.7_QVGA_slider_API_34.avd" />
@@ -35,12 +40,22 @@
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\Pixel_3a_API_35.avd" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
                 <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\Pixel_Tablet_API_35.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
                 <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\Pixel_XL_API_34.avd" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marce\.android\avd\Vivo_API_34_xxhdpi.avd" />
               </handle>
             </Target>
           </targets>
