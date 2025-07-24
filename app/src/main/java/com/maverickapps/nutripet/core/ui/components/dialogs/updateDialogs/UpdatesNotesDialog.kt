@@ -40,13 +40,13 @@ fun UpdateNotesDialog(
             onDismissRequest = onDismiss,
             title = {
                 Box {
-                    Text(text = "🔔 Novedades de esta versión (0.7.2)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.3)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryDarkest,
                         modifier = Modifier.blur(3.dp).padding(3.dp)
                     )
-                    Text(text = "🔔 Novedades de esta versión (0.7.2)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.3)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = Primary,
@@ -71,7 +71,6 @@ fun UpdateNotesDialog(
                             modifier = Modifier.fillMaxWidth())
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
                     BulletPoint {
                         Text(buildAnnotatedString {
                             withStyle(style = SpanStyle(color = SecondaryDarkest,
@@ -85,6 +84,23 @@ fun UpdateNotesDialog(
                                         "alertas en lo importante")
                             }
                         })
+                    }
+                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
+                    BulletPoint {
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Corrección de cierre inesperado al registrar comidas: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Se ha solucionado un error crítico que provocaba que la" +
+                                        " app se cerrara automáticamente al marcar una comida" +
+                                        " como consumida. \uD83D\uDC49 Ahora los registros se " +
+                                        "procesan correctamente, sin interrupciones ni pérdidas " +
+                                        "de progreso.")
+                            }
+                        })
+
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     Box{
