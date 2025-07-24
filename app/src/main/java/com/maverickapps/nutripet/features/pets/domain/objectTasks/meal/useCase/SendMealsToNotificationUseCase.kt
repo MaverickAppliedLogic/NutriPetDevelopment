@@ -17,14 +17,16 @@ class SendMealsToNotificationUseCase @Inject constructor(
     suspend operator fun invoke() {
         val meals = getAllMealsUseCase().toMutableList()
         val notDailyMeals = emptyList<MealModel>().toMutableList()
-        meals.forEach {
-            Log.d("SendMealsToNotificationUseCase", "Meal: $it")
-            if (it.mealState == 0) {
-                meals.remove(it)
+        val iterator = meals.iterator()
+        while (iterator.hasNext()) {
+            val meal = iterator.next()
+            Log.d("SendMealsToNotificationUseCase", "Meal: $meal")
+            if (meal.mealState == 0) {
+                iterator.remove()
             } else {
-                if (!it.isDailyMeal) {
-                    meals.remove(it)
-                    notDailyMeals.add(it)
+                if (!meal.isDailyMeal) {
+                    iterator.remove()
+                    notDailyMeals.add(meal)
                 }
             }
         }
