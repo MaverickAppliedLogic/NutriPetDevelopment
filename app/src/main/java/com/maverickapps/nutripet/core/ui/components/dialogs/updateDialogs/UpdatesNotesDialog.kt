@@ -40,13 +40,13 @@ fun UpdateNotesDialog(
             onDismissRequest = onDismiss,
             title = {
                 Box {
-                    Text(text = "🔔 Novedades de esta versión (0.7.1)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.2)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryDarkest,
                         modifier = Modifier.blur(3.dp).padding(3.dp)
                     )
-                    Text(text = "🔔 Novedades de esta versión (0.7.1)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.2)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = Primary,
