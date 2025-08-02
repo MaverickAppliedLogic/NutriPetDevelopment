@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.core.data
+package com.maverickapps.nutripet.core.data.repositories
 
 import com.maverickapps.nutripet.core.data.datastore.VersionDatastore
 import com.maverickapps.nutripet.core.data.services.firebase.remoteConfig.RemoteConfigService

@@ -14,7 +14,6 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.De
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetsUseCase
 import com.maverickapps.nutripet.features.pets.domain.otherTasks.useCase.CalculateCaloriesUseCase
 import com.maverickapps.nutripet.features.streak.domain.usecases.FetchStreakUseCase
-import com.maverickapps.nutripet.features.streak.domain.usecases.TryAuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
