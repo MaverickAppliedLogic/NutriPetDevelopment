@@ -6,8 +6,8 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authService: AuthService,
 ){
-    fun signInAnonymously(): String{
-        return authService.signInAnonymously()
+    suspend fun signInAnonymously(): String{
+        return authService.signInAnonymously().getOrNull()?: "e"
     }
 
     fun getUid() : String? {

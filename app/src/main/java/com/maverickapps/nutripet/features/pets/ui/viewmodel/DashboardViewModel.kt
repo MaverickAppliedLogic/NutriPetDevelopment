@@ -29,7 +29,6 @@ class DashboardViewModel @Inject constructor(
     private val getFoodsUseCase: GetFoodUseCase,
     private val calculateCaloriesUseCase: CalculateCaloriesUseCase,
     private val deleteMealUseCase: DeleteMealUseCase,
-    private val tryAuthUseCase: TryAuthUseCase,
     private val fetchStreakUseCase: FetchStreakUseCase
 ) : ViewModel() {
 
