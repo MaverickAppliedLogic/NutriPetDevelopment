@@ -6,5 +6,5 @@ import javax.inject.Inject
 class SignInAnonymouslyUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    operator fun invoke(): String = authRepository.signInAnonymously()
+    suspend operator fun invoke(): String = authRepository.signInAnonymously()
 }
