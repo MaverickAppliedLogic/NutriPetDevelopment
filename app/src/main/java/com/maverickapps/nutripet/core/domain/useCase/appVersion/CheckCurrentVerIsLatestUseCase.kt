@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.core.domain.useCase.appVersion
 
-import com.maverickapps.nutripet.core.data.VersionManageRepository
+import com.maverickapps.nutripet.core.data.repositories.VersionManageRepository
 import javax.inject.Inject
 
 class CheckCurrentVerIsLatestUseCase @Inject constructor(
