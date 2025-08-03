@@ -44,57 +44,59 @@ class MainPetActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
-            NutriPetTheme {
-                val showPostPermissionDialog by
+            val showSplashScreen by dashboardViewModel.showSplashScreen.collectAsState()
+            if(!showSplashScreen){
+                NutriPetTheme {
+                    val showPostPermissionDialog by
                     eventsViewModel.mustRequestPostPermissionDialog.collectAsState()
-                val showExactAlarmPermissionDialog by
+                    val showExactAlarmPermissionDialog by
                     eventsViewModel.mustRequestExactAlarmDialog.collectAsState()
-                var requestPostPermission by rememberSaveable {
-                    mutableStateOf(showPostPermissionDialog)
-                }
-                var requestExactAlarmPermission by rememberSaveable {
-                    mutableStateOf(showExactAlarmPermissionDialog)
-                }
+                    var requestPostPermission by rememberSaveable {
+                        mutableStateOf(showPostPermissionDialog)
+                    }
+                    var requestExactAlarmPermission by rememberSaveable {
+                        mutableStateOf(showExactAlarmPermissionDialog)
+                    }
 
-                if(requestPostPermission || requestExactAlarmPermission){
-                    NotificationPermissionDialog(
-                        postPermissionGranted = !requestPostPermission,
-                        schedulePermissionGranted = !requestExactAlarmPermission,
-                        postPermissionRequest = {
-                            eventsViewModel.requestPostPermission(this)
-                            requestPostPermission = false
-                                                },
-                        schedulePermissionRequest = {
-                            eventsViewModel.requestExactAlarmPermission()
-                            requestExactAlarmPermission = false
-                        },
-                        dismiss = {
-                            if(requestPostPermission){
+                    if(requestPostPermission || requestExactAlarmPermission){
+                        NotificationPermissionDialog(
+                            postPermissionGranted = !requestPostPermission,
+                            schedulePermissionGranted = !requestExactAlarmPermission,
+                            postPermissionRequest = {
+                                eventsViewModel.requestPostPermission(this)
                                 requestPostPermission = false
-                            }else{
+                            },
+                            schedulePermissionRequest = {
+                                eventsViewModel.requestExactAlarmPermission()
                                 requestExactAlarmPermission = false
+                            },
+                            dismiss = {
+                                if(requestPostPermission){
+                                    requestPostPermission = false
+                                }else{
+                                    requestExactAlarmPermission = false
+                                }
+                            },
+                            modifier = Modifier.fillMaxHeight(0.7f)
+                        )
+                    }
+                    else{
+                        LaunchedEffect(Unit) {
+                            if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
+                                eventsViewModel.scheduleDayChanger()
+                                eventsViewModel.fetchMealEvents()
                             }
-                        },
-                        modifier = Modifier.fillMaxHeight(0.7f)
-                    )
-                }
-                else{
-                    LaunchedEffect(Unit) {
-                        if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
-                            eventsViewModel.scheduleDayChanger()
-                            eventsViewModel.fetchMealEvents()
                         }
                     }
+                    NavigationWrapper(
+                        sharedDataViewmodel = sharedDataViewmodel,
+                        registerPetViewModel = registerPetViewModel,
+                        addMealViewmodel = addMealViewmodel,
+                        dashBoardViewModel = dashboardViewModel,
+                        addFoodViewModel = addFoodViewmodel,
+                        foodListViewModel = foodsListViewmodel,)
                 }
-                NavigationWrapper(
-                    sharedDataViewmodel = sharedDataViewmodel,
-                    registerPetViewModel = registerPetViewModel,
-                    addMealViewmodel = addMealViewmodel,
-                    dashBoardViewModel = dashboardViewModel,
-                    addFoodViewModel = addFoodViewmodel,
-                    foodListViewModel = foodsListViewmodel,)
             }
         }
     }

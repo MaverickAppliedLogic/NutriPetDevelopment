@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Feedm" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -13,5 +13,7 @@
         <item name="colorAccent">@color/red</item>
     </style>
 
-    <style name="Theme.Feedm" parent="Base.Theme.Feedm" />
+    <style name="SplashTheme" parent="Base.Theme.Feedm">
+        <item name="android:windowBackground">@color/orange</item>"
+    </style>
 </resources>
