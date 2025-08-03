@@ -27,11 +27,16 @@ class DashboardViewModel @Inject constructor(
     private val editMealUseCase: EditMealUseCase,
     private val getFoodsUseCase: GetFoodUseCase,
     private val calculateCaloriesUseCase: CalculateCaloriesUseCase,
-    private val deleteMealUseCase: DeleteMealUseCase,
+    private val deleteMealUseCase: DeleteMealUseCase
 ) : ViewModel() {
 
+    private val _showSplashScreen = MutableStateFlow(true)
+    val showSplashScreen: StateFlow<Boolean> = _showSplashScreen
+
     var selectedPetId = MutableStateFlow<Int?>(null)
-    var requiredCalories = MutableStateFlow<Int?>(null)
+
+    private val _requiredCalories = MutableStateFlow<Int?>(null)
+    val requiredCalories : StateFlow<Int?> = _requiredCalories
 
     private val _pets = MutableStateFlow<List<PetModel>>(emptyList())
     val pets: StateFlow<List<PetModel>> = _pets
@@ -50,10 +55,14 @@ class DashboardViewModel @Inject constructor(
             _pets.value = getPetsUseCase()
             setPetId(_pets.value.firstOrNull()?.petId)
             if (selectedPetId.value != null) {
-                getMeals()
-
+               getMeals()
             }
+            hideSplashScreen()
         }
+    }
+
+    private fun hideSplashScreen() {
+        _showSplashScreen.value = false
     }
 
     fun setPetId(petId: Int?) {
@@ -66,7 +75,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun calculateRequiredCalories(pet: PetModel) {
-        requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
+        _requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
     }
 
     fun deletePet(petId: Int) {
