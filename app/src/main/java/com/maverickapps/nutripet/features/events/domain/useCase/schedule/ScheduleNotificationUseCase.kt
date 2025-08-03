@@ -1,5 +1,6 @@
 package com.maverickapps.nutripet.features.events.domain.useCase.schedule
 
+import android.util.Log
 import com.maverickapps.nutripet.features.events.domain.notificationsEvents.scheduler.NotificationScheduler
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetByIdUseCase
 import javax.inject.Inject
@@ -14,6 +15,7 @@ class ScheduleNotificationUseCase @Inject constructor(
                                 extraData: String?,
                                 needToBeCleared: Boolean){
         val petName = getPetByIdUseCase(extraData?.toInt() ?: 0).petName
+        Log.d("ScheduleNotificationUseCase", "Scheduling notification $eventId at $time")
         notificationScheduler.scheduleEvent(time, eventId, petName, needToBeCleared)
     }
 }

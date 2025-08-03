@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.res.stringArrayResource
+import com.example.feedm.R
 import com.maverickapps.nutripet.core.ui.theme.Neutral
 import com.maverickapps.nutripet.core.ui.theme.NeutralLight
 import com.maverickapps.nutripet.core.ui.theme.dimens
@@ -119,7 +121,11 @@ fun PetDetails(
                 DataModule(
                     petSterilize = petSterilizedFormatted,
                     petGenre = petSelected.genre ?: "-",
-                    petAge = petSelected.age.toInt().toString()
+                    petAge =
+                    if (petSelected.age == 11f){
+                        stringArrayResource(R.array.fa_arrayAgeSelected)[2]
+                    }
+                    else petSelected.age.toInt().toString()
                 )
                 Spacer(Modifier.height(MaterialTheme.dimens.extraExtraLarge2))
             }

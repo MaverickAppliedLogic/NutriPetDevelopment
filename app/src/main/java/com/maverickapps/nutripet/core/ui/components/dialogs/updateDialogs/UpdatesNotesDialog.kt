@@ -15,8 +15,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maverickapps.nutripet.core.ui.components.BulletPoint
@@ -37,13 +40,13 @@ fun UpdateNotesDialog(
             onDismissRequest = onDismiss,
             title = {
                 Box {
-                    Text(text = "🔔 Novedades de esta versión",
+                    Text(text = "🔔 Novedades de esta versión (0.7.3)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryDarkest,
                         modifier = Modifier.blur(3.dp).padding(3.dp)
                     )
-                    Text(text = "🔔 Novedades de esta versión",
+                    Text(text = "🔔 Novedades de esta versión (0.7.3)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = Primary,
@@ -69,56 +72,35 @@ fun UpdateNotesDialog(
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     BulletPoint {
-                        Text("El peso de la mascota ya no se cambia automáticamente al editar.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Notificaciones inteligentes: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Ya no se mostrarán notificaciones de comidas que el " +
+                                        "usuario ya registró como consumidas. \uD83D\uDC49 " +
+                                        "Evitamos interrupciones innecesarias y enfocamos las " +
+                                        "alertas en lo importante")
+                            }
+                        })
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
+                    BulletPoint {
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Corrección de cierre inesperado al registrar comidas: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Se ha solucionado un error crítico que provocaba que la" +
+                                        " app se cerrara automáticamente al marcar una comida" +
+                                        " como consumida. \uD83D\uDC49 Ahora los registros se " +
+                                        "procesan correctamente, sin interrupciones ni pérdidas " +
+                                        "de progreso.")
+                            }
+                        })
 
-                    BulletPoint {
-                        Text("Ahora se puede seleccionar la opción 'Senior' correctamente.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("Al editar, se asigna correctamente el animal previamente seleccionado.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("El botón 'Añadir' ya no queda oculto tras los controles del sistema.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("'Esterilizado' ahora se reconoce como campo válido al seleccionar 'No'.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-
-                    BulletPoint {
-                        Text("Solucionado un fallo que cerraba la app al cambiar a la primera mascota ",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("Corregido un error de formato en los ficheros que impedía abrir la aplicación",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     Box{
@@ -137,24 +119,19 @@ fun UpdateNotesDialog(
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
                     BulletPoint {
-                        Text("El texto de calorías aparece en rojo si se excede el límite.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("Los campos ya completados se marcan automáticamente al editar.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
-                    BulletPoint {
-                        Text("'Esterilizado' ahora es obligatorio para calcular calorías.",
-                            color = SecondaryDarkest,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Interacción mejorada al editar mascotas: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Al registrar o modificar una mascota, ahora podés" +
+                                        " expandir y comprimir los campos del formulario tocando" +
+                                        " cualquier parte del encabezado del campo. \uD83D\uDC49 " +
+                                        "No hace " +
+                                        "falta acertar el ícono: más rápido, más cómodo.")
+                            }
+                        })
                     }
                 }
             },

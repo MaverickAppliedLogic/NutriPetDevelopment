@@ -12,6 +12,9 @@ interface MealDao {
 
 //Full List
 
+    @Query("SELECT * FROM meal_table")
+    suspend fun getAllMeals(): List<MealEntity>
+
     @Query("SELECT * FROM meal_table WHERE pet_id = :petId")
     suspend fun getMealsByPetId(petId: Int): List<MealEntity>
 

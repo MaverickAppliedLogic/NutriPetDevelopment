@@ -8,6 +8,10 @@ import javax.inject.Inject
 
 class MealsRepository @Inject constructor(private val mealsDao: MealDao) {
 
+    suspend fun getAllMeals(): List<MealModel> {
+        return mealsDao.getAllMeals().map { it.toDomain() }
+    }
+
     suspend fun getMealsByPetId(petId: Int): List<MealModel> {
        return mealsDao.getMealsByPetId(petId).map { it.toDomain() }
     }

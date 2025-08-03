@@ -1,5 +1,6 @@
 package com.maverickapps.nutripet.features.pets.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.food.model.FoodModel
@@ -45,6 +46,7 @@ class DashboardViewModel @Inject constructor(
 
     fun fetchData() {
         viewModelScope.launch {
+            Log.d("DashboardViewModel", "fetchData: Fetching data...")
             _pets.value = getPetsUseCase()
             setPetId(_pets.value.firstOrNull()?.petId)
             if (selectedPetId.value != null) {
@@ -63,7 +65,7 @@ class DashboardViewModel @Inject constructor(
 
     }
 
-    fun calculateRequiredCalories(pet: PetModel) {
+    private fun calculateRequiredCalories(pet: PetModel) {
         requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
     }
 
@@ -96,9 +98,9 @@ class DashboardViewModel @Inject constructor(
     }
 
 
-    fun deleteMeal(mealId: Int) {
+    fun deleteMeal(meal: MealModel) {
         viewModelScope.launch {
-            deleteMealUseCase(mealId)
+            deleteMealUseCase(meal)
             getMeals()
         }
     }

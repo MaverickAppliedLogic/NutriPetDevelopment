@@ -50,4 +50,23 @@ class MealNotificationSetter(
             )
         }
     }
+
+    fun cancelEvent(
+        eventId: Int,
+        extraData: String?,
+    ) {
+        val intent = Intent(thisContext, MealNotification::class.java).apply {
+            putExtra("notificationId", eventId)
+            putExtra("extraData", extraData)
+        }
+        Log.d("MealNotificationSetter", "Intent creado para eliminar MealNotification")
+        val pendingIntent = PendingIntent.getBroadcast(
+            thisContext,
+            eventId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        thisAlarmManager.cancel(pendingIntent)
+        Log.d("MealNotificationSetter", "Alarma cancelada")
+    }
 }

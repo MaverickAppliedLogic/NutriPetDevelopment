@@ -19,5 +19,9 @@ class NotificationScheduler(context: Context, alarmManager: AlarmManager): Event
             Log.d("NotificationScheduler", "Scheduling event at $time")
             mealNotificationSetter.setEvent(time, eventId, extraData, needToBeCleared)
     }
+
+    fun cancelEvent(eventId: Int, extraData: String?){
+        mealNotificationSetter.cancelEvent(eventId, extraData)
+    }
 }
 
