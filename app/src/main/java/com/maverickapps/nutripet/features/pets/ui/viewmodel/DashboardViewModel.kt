@@ -13,7 +13,6 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetM
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.DeletePetUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetsUseCase
 import com.maverickapps.nutripet.features.pets.domain.otherTasks.useCase.CalculateCaloriesUseCase
-import com.maverickapps.nutripet.features.streak.domain.usecases.FetchStreakUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,12 +27,16 @@ class DashboardViewModel @Inject constructor(
     private val editMealUseCase: EditMealUseCase,
     private val getFoodsUseCase: GetFoodUseCase,
     private val calculateCaloriesUseCase: CalculateCaloriesUseCase,
-    private val deleteMealUseCase: DeleteMealUseCase,
-    private val fetchStreakUseCase: FetchStreakUseCase
+    private val deleteMealUseCase: DeleteMealUseCase
 ) : ViewModel() {
 
+    private val _showSplashScreen = MutableStateFlow(true)
+    val showSplashScreen: StateFlow<Boolean> = _showSplashScreen
+
     var selectedPetId = MutableStateFlow<Int?>(null)
-    var requiredCalories = MutableStateFlow<Int?>(null)
+
+    private val _requiredCalories = MutableStateFlow<Int?>(null)
+    val requiredCalories : StateFlow<Int?> = _requiredCalories
 
     private val _pets = MutableStateFlow<List<PetModel>>(emptyList())
     val pets: StateFlow<List<PetModel>> = _pets
@@ -52,10 +55,14 @@ class DashboardViewModel @Inject constructor(
             _pets.value = getPetsUseCase()
             setPetId(_pets.value.firstOrNull()?.petId)
             if (selectedPetId.value != null) {
-                getMeals()
-
+               getMeals()
             }
+            hideSplashScreen()
         }
+    }
+
+    private fun hideSplashScreen() {
+        _showSplashScreen.value = false
     }
 
     fun setPetId(petId: Int?) {
@@ -68,7 +75,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun calculateRequiredCalories(pet: PetModel) {
-        requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
+        _requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
     }
 
     fun deletePet(petId: Int) {
