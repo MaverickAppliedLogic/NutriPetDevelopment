@@ -8,7 +8,7 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.food.useCase.G
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.MealModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.DeleteMealUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.EditMealUseCase
-import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetMealsUseCase
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetMealsByPetIdUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.DeletePetUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetsUseCase
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val getPetsUseCase: GetPetsUseCase,
     private val deletePetUseCase: DeletePetUseCase,
-    private val getMealsUseCase: GetMealsUseCase,
+    private val getMealsByPetIdUseCase: GetMealsByPetIdUseCase,
     private val editMealUseCase: EditMealUseCase,
     private val getFoodsUseCase: GetFoodUseCase,
     private val calculateCaloriesUseCase: CalculateCaloriesUseCase,
@@ -77,7 +77,7 @@ class DashboardViewModel @Inject constructor(
     }
     fun getMeals() {
         viewModelScope.launch {
-            val meals = getMealsUseCase(selectedPetId.value!!)
+            val meals = getMealsByPetIdUseCase(selectedPetId.value!!)
             getFoods(meals)
         }
     }
