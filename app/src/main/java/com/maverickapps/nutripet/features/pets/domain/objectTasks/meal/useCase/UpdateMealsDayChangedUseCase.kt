@@ -1,6 +1,5 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase
 
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
@@ -12,10 +11,7 @@ class UpdateMealsDayChangedUseCase @Inject constructor(
         val dailyMeals = getDailyMealsUseCase()
         coroutineScope {
             for (meal in dailyMeals) {
-               val mealEditing = async {
-                    editMealUseCase(meal.copy(mealState = 1))
-                }
-                mealEditing.await()
+                editMealUseCase(meal.copy(mealState = 1))
                 println("Meal ${meal.mealState} of ${meal.mealId} updated")
             }
         }
