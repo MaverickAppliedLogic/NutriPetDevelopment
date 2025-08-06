@@ -40,13 +40,13 @@ fun UpdateNotesDialog(
             onDismissRequest = onDismiss,
             title = {
                 Box {
-                    Text(text = "🔔 Novedades de esta versión (0.7.4)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.3)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryDarkest,
                         modifier = Modifier.blur(3.dp).padding(3.dp)
                     )
-                    Text(text = "🔔 Novedades de esta versión (0.7.4)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.3)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = Primary,
@@ -75,19 +75,35 @@ fun UpdateNotesDialog(
                         Text(buildAnnotatedString {
                             withStyle(style = SpanStyle(color = SecondaryDarkest,
                                 fontWeight = FontWeight.Bold)){
-                                append("Notificaciones que no saltaban: ")
+                                append("Notificaciones inteligentes: ")
                             }
                             withStyle(style = SpanStyle(color = SecondaryDarkest)){
-                                append("Se corrigió un error que impedía que las notificaciones " +
-                                        "se mostraran correctamente al día siguiente cuando se" +
-                                        " habían cancelado por registrar una comida como " +
-                                        "consumida. Ahora las alertas se restablecen como " +
-                                        "corresponde cada nuevo día.")
+                                append("Ya no se mostrarán notificaciones de comidas que el " +
+                                        "usuario ya registró como consumidas. \uD83D\uDC49 " +
+                                        "Evitamos interrupciones innecesarias y enfocamos las " +
+                                        "alertas en lo importante")
                             }
                         })
                     }
+                    Spacer(Modifier.height(MaterialTheme.dimens.extraSmall3))
+                    BulletPoint {
+                        Text(buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = SecondaryDarkest,
+                                fontWeight = FontWeight.Bold)){
+                                append("Corrección de cierre inesperado al registrar comidas: ")
+                            }
+                            withStyle(style = SpanStyle(color = SecondaryDarkest)){
+                                append("Se ha solucionado un error crítico que provocaba que la" +
+                                        " app se cerrara automáticamente al marcar una comida" +
+                                        " como consumida. \uD83D\uDC49 Ahora los registros se " +
+                                        "procesan correctamente, sin interrupciones ni pérdidas " +
+                                        "de progreso.")
+                            }
+                        })
+
+                    }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    /*Box{
+                    Box{
                         Text("Mejoras ✨",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
@@ -116,7 +132,7 @@ fun UpdateNotesDialog(
                                         "falta acertar el ícono: más rápido, más cómodo.")
                             }
                         })
-                    }*/
+                    }
                 }
             },
             confirmButton = {

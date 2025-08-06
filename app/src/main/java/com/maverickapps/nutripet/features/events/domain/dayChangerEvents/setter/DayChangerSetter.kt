@@ -32,9 +32,10 @@ class DayChangerSetter(
             && thisAlarmManager.canScheduleExactAlarms()
         ) {
             Log.d("DayChangerSetter", "Alarma programada para $time")
-            thisAlarmManager.setExactAndAllowWhileIdle(
+            thisAlarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 time,
+                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
         }    }
