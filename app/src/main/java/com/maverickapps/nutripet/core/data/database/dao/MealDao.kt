@@ -21,6 +21,9 @@ interface MealDao {
     @Query("DELETE FROM meal_table")
     suspend fun clearAllMeals()
 
+    @Query("DELETE FROM meal_table WHERE is_daily_meal = 0")
+    suspend fun clearNotDailyMeals()
+
     @Query("SELECT * FROM meal_table WHERE is_daily_meal = 1")
     suspend fun getDailyMeals(): List<MealEntity>
 
