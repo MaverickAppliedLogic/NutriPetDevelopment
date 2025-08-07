@@ -24,6 +24,7 @@ class MealNotificationSetter(
         needToBeCleared: Boolean
     ) {
         val intent = Intent(thisContext, MealNotification::class.java).apply {
+            setPackage(thisContext.packageName)
             putExtra("notificationId", eventId)
             putExtra("extraData", extraData)
         }

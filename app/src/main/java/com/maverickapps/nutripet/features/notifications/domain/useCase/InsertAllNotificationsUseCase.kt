@@ -1,5 +1,6 @@
 package com.maverickapps.nutripet.features.notifications.domain.useCase
 
+import android.util.Log
 import com.maverickapps.nutripet.features.notifications.data.repositories.NotificationRepository
 import com.maverickapps.nutripet.features.notifications.domain.model.MealNotificationModel
 import javax.inject.Inject
@@ -8,6 +9,7 @@ class InsertAllNotificationsUseCase @Inject constructor(
     private val repository: NotificationRepository
 ) {
     operator fun invoke(notifications: List<MealNotificationModel>) {
+        Log.d("InsertAllNotificationsUseCase", "Notifications: $notifications")
         repository.insertAllNotifications(notifications)
     }
 }

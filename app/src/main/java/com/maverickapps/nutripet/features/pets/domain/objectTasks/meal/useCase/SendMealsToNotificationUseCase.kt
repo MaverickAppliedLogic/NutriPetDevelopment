@@ -16,6 +16,7 @@ class SendMealsToNotificationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke() {
         val meals = getAllMealsUseCase().toMutableList()
+        Log.d("SendMealsToNotificationUseCase", "Meals: $meals")
         val notDailyMeals = emptyList<MealModel>().toMutableList()
         val iterator = meals.iterator()
         while (iterator.hasNext()) {
@@ -23,9 +24,11 @@ class SendMealsToNotificationUseCase @Inject constructor(
             Log.d("SendMealsToNotificationUseCase", "Meal: $meal")
             if (meal.mealState == 0) {
                 iterator.remove()
+                Log.d("SendMealsToNotificationUseCase", "Meal removed: $meal")
             } else {
                 if (!meal.isDailyMeal) {
                     iterator.remove()
+                    Log.d("SendMealsToNotificationUseCase", "Meal removed: $meal")
                     notDailyMeals.add(meal)
                 }
             }
