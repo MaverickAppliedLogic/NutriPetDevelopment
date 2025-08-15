@@ -75,7 +75,7 @@ fun UpdateNotesDialog(
                         Text(buildAnnotatedString {
                             withStyle(style = SpanStyle(color = SecondaryDarkest,
                                 fontWeight = FontWeight.Bold)){
-                                append("Notificaciones que no saltaban: ")
+                                append("Notificaciones ocultadas: ")
                             }
                             withStyle(style = SpanStyle(color = SecondaryDarkest)){
                                 append("Se corrigió un error que impedía que las notificaciones " +

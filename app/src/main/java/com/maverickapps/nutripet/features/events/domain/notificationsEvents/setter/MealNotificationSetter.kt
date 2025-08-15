@@ -20,35 +20,26 @@ class MealNotificationSetter(
     override fun setEvent(
         time: Long,
         eventId: Int,
-        extraData: String?,
-        needToBeCleared: Boolean
-    ) {
+        extraData: String?) {
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(time, null)
         val intent = Intent(thisContext, MealNotification::class.java).apply {
-            setPackage(thisContext.packageName)
             putExtra("notificationId", eventId)
             putExtra("extraData", extraData)
         }
-        Log.d("MealNotificationSetter", "Intent creado para MealNotification")
+        Log.d("MealNotificationSetter", "Intent creado para MealNotification $eventId")
         val pendingIntent = PendingIntent.getBroadcast(
             thisContext,
             eventId,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        Log.d("MealNotificationSetter", "PendingIntent creado")
-        if (needToBeCleared) {
-            thisAlarmManager.cancel(pendingIntent)
-        }
+        Log.d("MealNotificationSetter", "PendingIntent creado $pendingIntent")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
             && thisAlarmManager.canScheduleExactAlarms()
             && time > System.currentTimeMillis()
         ) {
             Log.d("MealNotificationSetter", "Alarma programada para $time")
-            thisAlarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                time,
-                pendingIntent
-            )
+            thisAlarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
         }
     }
 
@@ -60,14 +51,15 @@ class MealNotificationSetter(
             putExtra("notificationId", eventId)
             putExtra("extraData", extraData)
         }
-        Log.d("MealNotificationSetter", "Intent creado para eliminar MealNotification")
+        Log.d("MealNotificationSetter", "Intent creado para eliminar MealNotification $eventId")
         val pendingIntent = PendingIntent.getBroadcast(
             thisContext,
             eventId,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
+        Log.d("MealNotificationSetter", "PendingIntent creado eliminar $pendingIntent")
         thisAlarmManager.cancel(pendingIntent)
-        Log.d("MealNotificationSetter", "Alarma cancelada")
+        Log.d("MealNotificationSetter", "Alarma cancelada $eventId")
     }
 }

@@ -17,7 +17,7 @@ android {
         applicationId = "com.maverickapps.nutripet"
         minSdk = 24
         targetSdk = 35
-        versionCode = 11
+        versionCode = 12
         versionName = "0.74"
 
 
