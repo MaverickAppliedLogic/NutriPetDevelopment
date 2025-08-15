@@ -17,7 +17,7 @@ class DayChangerSetter(
     private val thisContext = context
     private val thisAlarmManager = alarmManager
 
-    override fun setEvent(time: Long, eventId: Int, extraData: String?, needToBeCleared: Boolean) {
+    override fun setEvent(time: Long, eventId: Int, extraData: String?) {
         val intent = Intent(thisContext, DayChanger::class.java)
         Log.d("DayChangerSetter", "Intent creado para DayChanger")
         val pendingIntent = PendingIntent.getBroadcast(
@@ -30,6 +30,7 @@ class DayChangerSetter(
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
             && thisAlarmManager.canScheduleExactAlarms()
+            && time > System.currentTimeMillis()
         ) {
             Log.d("DayChangerSetter", "Alarma programada para $time")
             thisAlarmManager.setExactAndAllowWhileIdle(

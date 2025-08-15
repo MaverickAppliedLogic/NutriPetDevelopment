@@ -7,6 +7,7 @@ import com.maverickapps.nutripet.core.data.database.AppDatabase
 import com.maverickapps.nutripet.core.data.database.dao.MealDao
 import com.maverickapps.nutripet.features.events.domain.useCase.CheckDayChangedUseCase
 import com.maverickapps.nutripet.features.pets.data.repositories.MealsRepository
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.DeleteNotDailyMealsUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.EditMealUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetDailyMealsUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetMealsByPetIdUseCase
@@ -29,6 +30,10 @@ class GetMealsByPetIdUseCaseTest {
     @MockK
     private lateinit var editMealUseCase: EditMealUseCase
 
+    @MockK
+    private lateinit var deleteNotDailyMealsUseCase: DeleteNotDailyMealsUseCase
+
+
     private lateinit var mealDao: MealDao
     private lateinit var db: AppDatabase
     private lateinit var mealsRepository: MealsRepository
@@ -46,7 +51,8 @@ class GetMealsByPetIdUseCaseTest {
         mealDao = db.getMealDao()
         mealsRepository = MealsRepository(mealDao)
         getDailyMealsUseCase = GetDailyMealsUseCase(mealsRepository)
-        updateMealsDayChangedUseCase = UpdateMealsDayChangedUseCase(getDailyMealsUseCase,editMealUseCase)
+        updateMealsDayChangedUseCase = UpdateMealsDayChangedUseCase(
+            getDailyMealsUseCase,deleteNotDailyMealsUseCase, editMealUseCase)
         getMealsByPetIdUseCase = GetMealsByPetIdUseCase(mealsRepository)
     }
 

@@ -45,6 +45,7 @@ class MainPetActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+
         setContent {
             NutriPetTheme {
                 val showPostPermissionDialog by
