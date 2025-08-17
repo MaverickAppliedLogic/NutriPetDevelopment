@@ -12,7 +12,7 @@ class DayChangerScheduler(context: Context, alarmManager: AlarmManager) : EventS
     private val dayChangerSetter = DayChangerSetter(thisContext, alarmManager)
 
     override fun scheduleEvent(time: Long, eventId: Int, extraData: String?, needToBeCleared: Boolean) {
-            dayChangerSetter.setEvent(time,eventId,null,needToBeCleared)
+            dayChangerSetter.setEvent(time,eventId,null)
     }
 
 }
