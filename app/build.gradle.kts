@@ -17,8 +17,8 @@ android {
         applicationId = "com.maverickapps.nutripet"
         minSdk = 24
         targetSdk = 35
-        versionCode = 10
-        versionName = "0.73"
+        versionCode = 12
+        versionName = "0.74"
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -121,7 +121,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics.ktx)
     implementation(libs.firebase.config.ktx)
-    implementation(libs.firebase.auth)
+    implementation(libs.google.firebase.auth)
 
     // UI tests
     androidTestImplementation(libs.androidx.junit)

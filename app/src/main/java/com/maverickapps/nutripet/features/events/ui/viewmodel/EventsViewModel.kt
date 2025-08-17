@@ -1,7 +1,6 @@
 package com.maverickapps.nutripet.features.events.ui.viewmodel
 
 import android.app.Activity
-import android.icu.util.Calendar
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
@@ -55,16 +54,7 @@ class EventsViewModel @Inject constructor(
     }
 
     fun scheduleDayChanger(){
-        val time = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-        if(time.timeInMillis < System.currentTimeMillis()){
-            time.add(Calendar.DAY_OF_MONTH, 1)
-        }
-        scheduleDayChangerUseCase(time.timeInMillis)
+        scheduleDayChangerUseCase()
     }
 
     suspend fun fetchMealEvents(){
