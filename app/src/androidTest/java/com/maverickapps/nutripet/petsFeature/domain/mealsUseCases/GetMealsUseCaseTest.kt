@@ -12,7 +12,6 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.G
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetMealsByPetIdUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.UpdateMealsDayChangedUseCase
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -22,9 +21,6 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class GetMealsByPetIdUseCaseTest {
-
-    @MockK
-    private lateinit var checkDayChangedUseCase: CheckDayChangedUseCase
 
     @MockK
     private lateinit var editMealUseCase: EditMealUseCase
@@ -63,9 +59,6 @@ class GetMealsByPetIdUseCaseTest {
     @Test
     fun itMustReturnAnEmptyList() {
         runBlocking {
-            //Given
-            coEvery { checkDayChangedUseCase()} returns true
-
             //When
             val list = getMealsByPetIdUseCase(1)
 
@@ -79,7 +72,6 @@ class GetMealsByPetIdUseCaseTest {
     fun itMustReturnAList() {
         runBlocking {
             //Given
-            coEvery { checkDayChangedUseCase()} returns false
 
             //When
             val list = getMealsByPetIdUseCase(1)
