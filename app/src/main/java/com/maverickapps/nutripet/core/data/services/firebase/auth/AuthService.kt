@@ -9,7 +9,7 @@ class AuthService {
 
    suspend fun signInAnonymously(): Result<String> {
         return if (auth.currentUser != null) {
-            Result.success("Already logged");
+            Result.success("Already logged")
         } else {
             suspendCancellableCoroutine { continuation ->
                 auth.signInAnonymously()
