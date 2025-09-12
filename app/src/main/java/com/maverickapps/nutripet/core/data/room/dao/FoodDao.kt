@@ -1,10 +1,10 @@
-package com.maverickapps.nutripet.core.data.database.dao
+package com.maverickapps.nutripet.core.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.maverickapps.nutripet.core.data.database.entities.FoodEntity
+import com.maverickapps.nutripet.core.data.room.entities.FoodEntity
 
 @Dao
 interface FoodDao {

@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.food.model
 
-import com.maverickapps.nutripet.core.data.database.entities.FoodEntity
+import com.maverickapps.nutripet.core.data.room.entities.FoodEntity
 
 data class FoodModel(
     val foodId: Int = 0,

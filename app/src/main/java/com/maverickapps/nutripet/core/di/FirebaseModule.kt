@@ -1,6 +1,7 @@
 package com.maverickapps.nutripet.core.di
 
 import com.maverickapps.nutripet.core.data.services.firebase.auth.AuthService
+import com.maverickapps.nutripet.core.data.services.firebase.firestore.FirestoreService
 import com.maverickapps.nutripet.core.data.services.firebase.remoteConfig.RemoteConfigService
 import com.maverickapps.nutripet.core.data.services.firebase.remoteConfig.implementations.RemoteConfigServiceLatestVerImpl
 import dagger.Module
@@ -23,5 +24,11 @@ object FirebaseModule {
     @Singleton
     fun provideAuthService(): AuthService{
         return AuthService()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirestoreService(): FirestoreService {
+        return FirestoreService()
     }
 }

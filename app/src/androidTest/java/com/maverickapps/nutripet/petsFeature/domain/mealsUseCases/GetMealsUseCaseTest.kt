@@ -3,8 +3,8 @@ package com.maverickapps.nutripet.petsFeature.domain.mealsUseCases
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.maverickapps.nutripet.core.data.database.AppDatabase
-import com.maverickapps.nutripet.core.data.database.dao.MealDao
+import com.maverickapps.nutripet.core.data.room.AppDatabase
+import com.maverickapps.nutripet.core.data.room.dao.MealDao
 import com.maverickapps.nutripet.features.pets.data.repositories.MealsRepository
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.DeleteNotDailyMealsUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.EditMealUseCase
