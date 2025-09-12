@@ -9,7 +9,7 @@ class AuthService {
 
    suspend fun signInAnonymously(): Result<String> {
         return if (auth.currentUser != null) {
-            Result.success("Already logged")
+            Result.success("Already logged");
         } else {
             suspendCancellableCoroutine { continuation ->
                 auth.signInAnonymously()
@@ -17,7 +17,8 @@ class AuthService {
                         val uid = result.user?.uid
                         if (uid != null) {
                             continuation.resume(
-                                Result.success(uid)) { _, _, _ -> }
+                                Result.success("Signed in with UID: $uid")) { _, _, _ ->
+                            }
                         } else {
                             continuation.resume(
                                 Result.failure(Exception("User ID is null"))){ _, _, _ -> }
@@ -25,7 +26,7 @@ class AuthService {
                     }
                     .addOnFailureListener { e ->
                         continuation.resume(
-                            Result.failure(Exception(e))){ _, _, _ -> }                    }
+                            Result.failure(Exception(e.toString()))){ _, _, _ -> }                    }
             }
         }
     }
