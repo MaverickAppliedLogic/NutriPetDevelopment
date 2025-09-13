@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.maverickapps.nutripet.features.events.domain.useCase.schedule.ScheduleDayChangerUseCase
+import com.maverickapps.nutripet.features.events.domain.useCase.streak.ResetStreakNewDayUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.UpdateMealsDayChangedUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +18,7 @@ class DayChanger  : BroadcastReceiver() {
 
     @Inject lateinit var scheduleDayChangerUseCase: ScheduleDayChangerUseCase
     @Inject lateinit var updateMealsDayChangedUseCase: UpdateMealsDayChangedUseCase
+    @Inject lateinit var resetStreakNewDayUseCase: ResetStreakNewDayUseCase
 
 
     companion object {
@@ -27,6 +29,7 @@ class DayChanger  : BroadcastReceiver() {
             Log.d("DayChanger", "Day changed")
             updateMealsDayChangedUseCase()
             scheduleDayChangerUseCase()
+            resetStreakNewDayUseCase()
         }
     }
 }

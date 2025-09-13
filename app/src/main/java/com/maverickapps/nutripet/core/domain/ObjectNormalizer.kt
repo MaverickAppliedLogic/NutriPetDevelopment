@@ -7,11 +7,13 @@ import com.maverickapps.nutripet.features.streak.domain.model.Streak
 fun Streak.toFirestoreStreak() =
     hashMapOf(
         "lastDate" to lastDate,
-        "currentDate" to currentDate,
-        "currentStreak" to currentStreak
+        "currentStreak" to currentStreak,
+        "alreadyFetched" to alreadyFetched
     )
 fun DocumentSnapshot.toStreak() =
-    Streak(userId = id,
+    Streak(
+        userId = id,
         lastDate = get("lastDate") as Long,
-        currentDate = get("currentDate") as Long,
-        currentStreak = get("currentStreak") as Int)
+        currentStreak = get("currentStreak") as Int,
+        alreadyFetched = get("alreadyFetched") as Boolean
+    )
