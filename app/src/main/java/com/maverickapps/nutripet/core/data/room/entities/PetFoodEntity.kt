@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.core.data.database.entities
+package com.maverickapps.nutripet.core.data.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

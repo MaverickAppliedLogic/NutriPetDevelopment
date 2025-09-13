@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.core.data.services.firebase.auth
+package com.maverickapps.nutripet.core.services.firebase.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.suspendCancellableCoroutine

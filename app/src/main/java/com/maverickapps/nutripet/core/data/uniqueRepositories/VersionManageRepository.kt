@@ -1,7 +1,7 @@
-package com.maverickapps.nutripet.core.data.repositories
+package com.maverickapps.nutripet.core.data.uniqueRepositories
 
 import com.maverickapps.nutripet.core.data.datastore.VersionDatastore
-import com.maverickapps.nutripet.core.data.services.firebase.remoteConfig.RemoteConfigService
+import com.maverickapps.nutripet.core.services.firebase.remoteConfig.RemoteConfigService
 import javax.inject.Inject
 
 class VersionManageRepository @Inject constructor(

@@ -15,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.maverickapps.nutripet.core.domain.useCase.auth.SignInAnonymouslyUseCase
 import com.maverickapps.nutripet.core.navigation.NavigationWrapper
 import com.maverickapps.nutripet.core.ui.theme.NutriPetTheme
 import com.maverickapps.nutripet.features.events.ui.permissionDialogs.notification.NotificationPermissionDialog
@@ -27,10 +26,6 @@ import com.maverickapps.nutripet.features.pets.ui.viewmodel.RegisterPetViewmodel
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.nutripet.ui.viewmodel.FoodsListViewmodel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainPetActivity : ComponentActivity() {
@@ -41,17 +36,13 @@ class MainPetActivity : ComponentActivity() {
     private val foodsListViewmodel: FoodsListViewmodel by viewModels()
     private val sharedDataViewmodel: SharedDataViewmodel by viewModels()
     private val eventsViewModel: EventsViewModel by viewModels()
-     @Inject lateinit var signInAnonymouslyUseCase: SignInAnonymouslyUseCase
+
     //TODO revisar creación de notificaciones para comidas puntuales para el dia siguiente
     //TODO revisar rescheduling de notificaciones cuando se apaga el movil y asi no depender de abrir la app
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CoroutineScope(Dispatchers.IO).launch {
-            val singInAnonymously = signInAnonymouslyUseCase()
-            println("Sing in result: $singInAnonymously")
-        }
         enableEdgeToEdge()
         setContent {
             val showSplashScreen by dashboardViewModel.showSplashScreen.collectAsState()

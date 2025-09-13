@@ -6,11 +6,11 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.maverickapps.nutripet.core.data.database.AppDatabase
-import com.maverickapps.nutripet.core.data.database.dao.FoodDao
-import com.maverickapps.nutripet.core.data.database.dao.MealDao
-import com.maverickapps.nutripet.core.data.database.dao.PetDao
-import com.maverickapps.nutripet.core.data.database.dao.PetFoodDao
+import com.maverickapps.nutripet.core.data.room.AppDatabase
+import com.maverickapps.nutripet.core.data.room.dao.FoodDao
+import com.maverickapps.nutripet.core.data.room.dao.MealDao
+import com.maverickapps.nutripet.core.data.room.dao.PetDao
+import com.maverickapps.nutripet.core.data.room.dao.PetFoodDao
 import com.maverickapps.nutripet.core.data.datastore.VersionDatastore
 import dagger.Module
 import dagger.Provides
