@@ -36,7 +36,7 @@ class MainPetActivity : ComponentActivity() {
     private val foodsListViewmodel: FoodsListViewmodel by viewModels()
     private val sharedDataViewmodel: SharedDataViewmodel by viewModels()
     private val eventsViewModel: EventsViewModel by viewModels()
-
+    
     //TODO revisar creación de notificaciones para comidas puntuales para el dia siguiente
     //TODO revisar rescheduling de notificaciones cuando se apaga el movil y asi no depender de abrir la app
 

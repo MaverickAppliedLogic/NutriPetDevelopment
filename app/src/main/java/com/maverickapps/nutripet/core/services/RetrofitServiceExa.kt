@@ -1,4 +1,4 @@
-package com.maverickapps.nutripet.core.data.services
+package com.maverickapps.nutripet.core.services
 
 
 import com.maverickapps.nutripet.core.domain.remoteResultModel.ExaRemoteResult

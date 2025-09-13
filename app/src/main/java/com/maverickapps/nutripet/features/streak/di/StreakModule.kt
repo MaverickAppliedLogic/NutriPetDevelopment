@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.streak.di
 
-import com.maverickapps.nutripet.core.data.firestore.streak.FirestoreStreakDataSource
-import com.maverickapps.nutripet.features.streak.contract.StreakRemoteDataSource
+import com.maverickapps.nutripet.core.data.firestore.streak.FirestoreStreakRepository
+import com.maverickapps.nutripet.features.streak.contract.StreakRemoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ object StreakModule {
 
     @Singleton
     @Provides
-    fun provideStreakRemoteDataSource(): StreakRemoteDataSource {
-        return FirestoreStreakDataSource()
+    fun provideStreakRemoteDataSource(): StreakRemoteRepository {
+        return FirestoreStreakRepository()
     }
 }

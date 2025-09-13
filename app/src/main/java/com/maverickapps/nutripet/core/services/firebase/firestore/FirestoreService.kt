@@ -1,13 +1,14 @@
-package com.maverickapps.nutripet.core.data.services.firebase.firestore
+package com.maverickapps.nutripet.core.services.firebase.firestore
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 
 class FirestoreService{
 
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
 
     fun getCollection(collectionName: String) : Task<QuerySnapshot> =
         db.collection(collectionName)
@@ -22,15 +23,19 @@ class FirestoreService{
                 println(it)
             }
 
-    fun createDocument(collectionName: String, documentObject: Any) =
+    fun getDocument(collectionName: String, documentId: String) : Task<DocumentSnapshot> =
         db.collection(collectionName)
-            .add(documentObject)
+            .document(documentId)
+            .get()
+
+    fun setDocument(collectionName: String, documentId: String, documentObject: Any) =
+        db.collection(collectionName)
+            .document(documentId)
+            .set(documentObject)
             .addOnSuccessListener {
-                println("Document created")
+                println("Document updated: $documentObject")
             }
             .addOnFailureListener{
                 println(it)
-
             }
-
 }
