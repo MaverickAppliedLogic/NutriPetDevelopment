@@ -5,7 +5,6 @@ import java.util.Calendar
 import javax.inject.Inject
 
 class FetchStreakUseCase @Inject constructor(
-    private val getStreakUseCase: GetStreakUseCase,
     private val updateStreakUseCase: UpdateStreakUseCase,
 ) {
     operator fun invoke(streak: Streak){
