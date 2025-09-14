@@ -13,6 +13,9 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetM
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.DeletePetUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetsUseCase
 import com.maverickapps.nutripet.features.pets.domain.otherTasks.useCase.CalculateCaloriesUseCase
+import com.maverickapps.nutripet.features.streak.domain.model.Streak
+import com.maverickapps.nutripet.features.streak.domain.usecases.FetchStreakUseCase
+import com.maverickapps.nutripet.features.streak.domain.usecases.GetStreakUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +30,9 @@ class DashboardViewModel @Inject constructor(
     private val editMealUseCase: EditMealUseCase,
     private val getFoodsUseCase: GetFoodUseCase,
     private val calculateCaloriesUseCase: CalculateCaloriesUseCase,
-    private val deleteMealUseCase: DeleteMealUseCase
+    private val deleteMealUseCase: DeleteMealUseCase,
+    private val getStreakUseCase: GetStreakUseCase,
+    private val fetchStreakUseCase: FetchStreakUseCase
 ) : ViewModel() {
 
     private val _showSplashScreen = MutableStateFlow(true)
@@ -43,6 +48,9 @@ class DashboardViewModel @Inject constructor(
 
     private val _mealsWithFoods = MutableStateFlow<List<Pair<MealModel, FoodModel?>>>(emptyList())
     val mealsWithFoods: StateFlow<List<Pair<MealModel, FoodModel?>>> = _mealsWithFoods
+
+    private val _streak = MutableStateFlow(getStreakUseCase())
+    val streak: StateFlow<Streak> = _streak
 
 
     init {
@@ -106,7 +114,6 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-
     fun deleteMeal(meal: MealModel) {
         viewModelScope.launch {
             deleteMealUseCase(meal)
@@ -116,8 +123,14 @@ class DashboardViewModel @Inject constructor(
 
     fun editMeal(meal: MealModel) {
         viewModelScope.launch {
+            if (meal.mealState == 0) fetchStreak(_streak.value.copy(alreadyFetched = true))
             editMealUseCase(meal)
             getMeals()
         }
+    }
+
+    private fun fetchStreak(streak: Streak){
+        fetchStreakUseCase(streak)
+        _streak.value = getStreakUseCase()
     }
 }

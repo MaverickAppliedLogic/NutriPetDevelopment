@@ -1,5 +1,6 @@
 package com.maverickapps.nutripet.features.dataSync
 
+import android.util.Log
 import com.maverickapps.nutripet.features.dataSync.streak.domain.SyncStreakUseCase
 import javax.inject.Inject
 
@@ -8,5 +9,6 @@ class SyncDataUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(userId: String){
         syncStreakUseCase(userId)
+        Log.i("Streak Sync", "Streak sync exec")
     }
 }

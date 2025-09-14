@@ -2,6 +2,7 @@ package com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model
 
 import com.maverickapps.nutripet.core.data.room.entities.MealEntity
 
+
 data class MealModel(
     val mealId : Int = 0,
     val petId: Int,

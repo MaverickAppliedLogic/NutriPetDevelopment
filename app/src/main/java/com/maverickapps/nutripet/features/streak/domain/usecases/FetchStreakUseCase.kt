@@ -1,21 +1,20 @@
 package com.maverickapps.nutripet.features.streak.domain.usecases
 
+import com.maverickapps.nutripet.features.streak.domain.model.Streak
 import java.util.Calendar
 import javax.inject.Inject
 
 class FetchStreakUseCase @Inject constructor(
     private val getStreakUseCase: GetStreakUseCase,
-    private val updateStreakUseCase: UpdateStreakUseCase
+    private val updateStreakUseCase: UpdateStreakUseCase,
 ) {
-    operator fun invoke(){
+    operator fun invoke(streak: Streak){
         val today = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
-
-        val streak = getStreakUseCase()
 
         val lastDateCalendar = Calendar.getInstance().apply {
             timeInMillis = streak.lastDate
@@ -33,9 +32,14 @@ class FetchStreakUseCase @Inject constructor(
             daysBetween == 1 ->
                 streak.copy(lastDate = today, currentStreak = streak.currentStreak + 1)
             else ->
-                streak
+                if (streak.currentStreak == 0) {
+                    streak.copy(lastDate = today, currentStreak = 1)
+                }else{
+                    streak
+                }
         }
 
         updateStreakUseCase(updatedStreak)
+
     }
 }
