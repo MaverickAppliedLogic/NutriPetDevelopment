@@ -15,5 +15,4 @@ class UpdateMealsDayChangedUseCase @Inject constructor(
         }
         deleteNotDailyMealsUseCase()
     }
-
 }

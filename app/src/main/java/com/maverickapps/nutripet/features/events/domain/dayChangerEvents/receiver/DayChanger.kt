@@ -16,8 +16,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DayChanger  : BroadcastReceiver() {
 
-    @Inject lateinit var scheduleDayChangerUseCase: ScheduleDayChangerUseCase
     @Inject lateinit var updateMealsDayChangedUseCase: UpdateMealsDayChangedUseCase
+    @Inject lateinit var scheduleDayChangerUseCase: ScheduleDayChangerUseCase
     @Inject lateinit var resetStreakNewDayUseCase: ResetStreakNewDayUseCase
 
 
