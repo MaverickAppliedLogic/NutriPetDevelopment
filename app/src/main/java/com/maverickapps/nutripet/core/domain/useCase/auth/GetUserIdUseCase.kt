@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.core.domain.useCase.auth
 
-import com.maverickapps.nutripet.core.data.repositories.AuthRepository
+import com.maverickapps.nutripet.core.data.uniqueRepositories.AuthRepository
 import javax.inject.Inject
 
 class GetUserIdUseCase @Inject constructor(

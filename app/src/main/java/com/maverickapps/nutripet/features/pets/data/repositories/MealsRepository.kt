@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.data.repositories
 
-import com.maverickapps.nutripet.core.data.database.dao.MealDao
-import com.maverickapps.nutripet.core.data.database.entities.toDatabase
+import com.maverickapps.nutripet.core.data.room.dao.MealDao
+import com.maverickapps.nutripet.core.data.room.entities.toDatabase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.MealModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.toDomain
 import javax.inject.Inject

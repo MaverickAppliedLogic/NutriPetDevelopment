@@ -1,4 +1,42 @@
 package com.maverickapps.nutripet.features.streak.domain.usecases
 
-class FetchStreakUseCase {
+import com.maverickapps.nutripet.features.streak.domain.model.Streak
+import java.util.Calendar
+import javax.inject.Inject
+
+class FetchStreakUseCase @Inject constructor(
+    private val updateStreakUseCase: UpdateStreakUseCase,
+) {
+    operator fun invoke(streak: Streak){
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        println("Today $today")
+        var lastDateCalendar = Calendar.getInstance().apply {
+            timeInMillis = streak.lastDate
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        println("Last date $lastDateCalendar")
+        if (lastDateCalendar < 0) lastDateCalendar = today
+        val daysBetween = ((today - lastDateCalendar) / (1000 * 60 * 60 * 24)).toInt()
+        println("daysBetween $daysBetween")
+        val updatedStreak = when {
+            daysBetween > 1 ->
+                streak.copy(lastDate = today, currentStreak = 0)
+            daysBetween == 1 ->
+                streak.copy(lastDate = today, currentStreak = streak.currentStreak + 1)
+            else ->
+                if (streak.currentStreak == 0) { streak.copy(lastDate = today, currentStreak = 1) }
+                else{ streak }
+        }
+
+        updateStreakUseCase(updatedStreak)
+
+    }
 }

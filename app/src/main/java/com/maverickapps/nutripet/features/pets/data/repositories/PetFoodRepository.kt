@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.data.repositories
 
-import com.maverickapps.nutripet.core.data.database.dao.PetFoodDao
-import com.maverickapps.nutripet.core.data.database.entities.toDatabase
+import com.maverickapps.nutripet.core.data.room.dao.PetFoodDao
+import com.maverickapps.nutripet.core.data.room.entities.toDatabase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.petFood.model.PetFoodModel
 import jakarta.inject.Inject
 

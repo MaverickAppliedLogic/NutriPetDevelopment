@@ -33,10 +33,9 @@ class DayChangerSetter(
             && time > System.currentTimeMillis()
         ) {
             Log.d("DayChangerSetter", "Alarma programada para $time")
-            thisAlarmManager.setRepeating(
+            thisAlarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 time,
-                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
         }    }
