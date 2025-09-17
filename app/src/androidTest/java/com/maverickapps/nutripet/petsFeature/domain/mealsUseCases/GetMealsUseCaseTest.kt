@@ -29,10 +29,6 @@ class GetMealsByPetIdUseCaseTest {
     private lateinit var deleteNotDailyMealsUseCase: DeleteNotDailyMealsUseCase
 
 
-    @MockK
-    private lateinit var deleteNotDailyMealsUseCase: DeleteNotDailyMealsUseCase
-
-
     private lateinit var mealDao: MealDao
     private lateinit var db: AppDatabase
     private lateinit var mealsRepository: MealsRepository
