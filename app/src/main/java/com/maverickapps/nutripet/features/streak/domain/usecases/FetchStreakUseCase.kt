@@ -14,28 +14,26 @@ class FetchStreakUseCase @Inject constructor(
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
-
-        val lastDateCalendar = Calendar.getInstance().apply {
+        println("Today $today")
+        var lastDateCalendar = Calendar.getInstance().apply {
             timeInMillis = streak.lastDate
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
-        val daysBetween =
-            ((today - lastDateCalendar) / (1000 * 60 * 60 * 24)).toInt()
-
+        println("Last date $lastDateCalendar")
+        if (lastDateCalendar < 0) lastDateCalendar = today
+        val daysBetween = ((today - lastDateCalendar) / (1000 * 60 * 60 * 24)).toInt()
+        println("daysBetween $daysBetween")
         val updatedStreak = when {
             daysBetween > 1 ->
                 streak.copy(lastDate = today, currentStreak = 0)
             daysBetween == 1 ->
                 streak.copy(lastDate = today, currentStreak = streak.currentStreak + 1)
             else ->
-                if (streak.currentStreak == 0) {
-                    streak.copy(lastDate = today, currentStreak = 1)
-                }else{
-                    streak
-                }
+                if (streak.currentStreak == 0) { streak.copy(lastDate = today, currentStreak = 1) }
+                else{ streak }
         }
 
         updateStreakUseCase(updatedStreak)

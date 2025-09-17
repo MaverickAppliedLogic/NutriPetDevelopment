@@ -35,7 +35,7 @@ class FirestoreStreakSource : StreakRemoteSource {
 
     override suspend fun setStreak(streak: Streak) {
         firestoreService = FirestoreService()
-        val documentName = streak.userId.substring(8,streak.userId.length-1)
+        val documentName = streak.userId
         firestoreService.setDocument("streak",
             documentId = documentName,streak.toFirestoreStreak())
     }

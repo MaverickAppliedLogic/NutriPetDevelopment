@@ -65,6 +65,8 @@ class DashboardViewModel @Inject constructor(
             if (selectedPetId.value != null) {
                getMeals()
             }
+            getStreak()
+            println("Streak: ${_streak.value}")
             hideSplashScreen()
         }
     }
@@ -122,15 +124,26 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun editMeal(meal: MealModel) {
+        println("State: ${meal.mealState}")
+
         viewModelScope.launch {
-            if (meal.mealState == 0) fetchStreak(_streak.value.copy(alreadyFetched = true))
+            if (meal.mealState == 0){
+                println("Meal state XD: ${meal.mealState}")
+                fetchStreak(_streak.value.copy(alreadyFetched = true))
+            }
             editMealUseCase(meal)
             getMeals()
         }
     }
 
-    private fun fetchStreak(streak: Streak){
-        fetchStreakUseCase(streak)
+    private fun getStreak(){
         _streak.value = getStreakUseCase()
+
+    }
+
+    private fun fetchStreak(streak: Streak){
+        println("Streak viewmodel $streak")
+        fetchStreakUseCase(streak)
+        getStreak()
     }
 }

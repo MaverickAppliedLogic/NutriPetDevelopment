@@ -8,7 +8,7 @@ class ResetStreakNewDayUseCase @Inject constructor(
     private val getStreakUseCase: GetStreakUseCase,
     private val updateStreakUseCase: UpdateStreakUseCase
 ) {
-    operator fun invoke(){
+   operator fun invoke(){
         val streak = getStreakUseCase()
         updateStreakUseCase(streak.copy(alreadyFetched = false))
     }

@@ -7,7 +7,7 @@ class AuthRepository @Inject constructor(
     private val authService: AuthService,
 ){
     suspend fun signInAnonymously(): String{
-        return authService.signInAnonymously().toString()
+        return authService.signInAnonymously().getOrNull()?:""
     }
 
     fun getUid() : String? {
