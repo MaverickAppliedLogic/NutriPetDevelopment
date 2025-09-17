@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.mealsFeature.data
 
-import com.maverickapps.nutripet.core.data.database.dao.MealDao
-import com.maverickapps.nutripet.core.data.database.entities.MealEntity
+import com.maverickapps.nutripet.core.data.room.dao.MealDao
+import com.maverickapps.nutripet.core.data.room.entities.MealEntity
 import com.maverickapps.nutripet.features.pets.data.repositories.MealsRepository
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.MealModel
 import io.mockk.MockKAnnotations

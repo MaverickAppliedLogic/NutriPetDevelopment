@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.data.repositories
 
-import com.maverickapps.nutripet.core.data.database.dao.PetDao
-import com.maverickapps.nutripet.core.data.database.entities.PetEntity
+import com.maverickapps.nutripet.core.data.room.dao.PetDao
+import com.maverickapps.nutripet.core.data.room.entities.PetEntity
 import com.maverickapps.nutripet.features.pets.data.datastore.PetDatastore
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.toDomain

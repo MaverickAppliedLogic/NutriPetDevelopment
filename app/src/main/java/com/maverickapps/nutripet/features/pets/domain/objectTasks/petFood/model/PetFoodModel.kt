@@ -1,6 +1,6 @@
 package com.maverickapps.nutripet.features.pets.domain.objectTasks.petFood.model
 
-import com.maverickapps.nutripet.core.data.database.entities.PetFoodEntity
+import com.maverickapps.nutripet.core.data.room.entities.PetFoodEntity
 
 data class PetFoodModel (
     val petId: Int,

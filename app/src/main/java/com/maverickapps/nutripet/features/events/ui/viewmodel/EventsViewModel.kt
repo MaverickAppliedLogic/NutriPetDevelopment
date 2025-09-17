@@ -2,7 +2,6 @@ package com.maverickapps.nutripet.features.events.ui.viewmodel
 
 import android.app.Activity
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.maverickapps.nutripet.features.events.domain.useCase.exactAlarmPermissions.CheckExactAlarmPermissionUseCase
@@ -55,7 +54,6 @@ class EventsViewModel @Inject constructor(
     }
 
     fun scheduleDayChanger(){
-        Log.d("EventsViewModel", "Scheduling day changer")
         scheduleDayChangerUseCase()
     }
 

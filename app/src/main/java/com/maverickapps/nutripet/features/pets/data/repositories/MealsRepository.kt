@@ -1,7 +1,7 @@
 package com.maverickapps.nutripet.features.pets.data.repositories
 
-import com.maverickapps.nutripet.core.data.database.dao.MealDao
-import com.maverickapps.nutripet.core.data.database.entities.toDatabase
+import com.maverickapps.nutripet.core.data.room.dao.MealDao
+import com.maverickapps.nutripet.core.data.room.entities.toDatabase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.MealModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.toDomain
 import javax.inject.Inject
@@ -26,6 +26,10 @@ class MealsRepository @Inject constructor(private val mealsDao: MealDao) {
 
     suspend fun getDailyMeals(): List<MealModel> {
         return mealsDao.getDailyMeals().map { it.toDomain() }
+    }
+
+    suspend fun clearNotDailyMeals() {
+        mealsDao.clearNotDailyMeals()
     }
 
     suspend fun addMealForAPet(meal: MealModel): Int {

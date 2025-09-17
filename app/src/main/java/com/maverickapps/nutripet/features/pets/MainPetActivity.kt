@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,8 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.maverickapps.nutripet.core.domain.useCase.auth.SignInAnonymouslyUseCase
 import com.maverickapps.nutripet.core.navigation.NavigationWrapper
 import com.maverickapps.nutripet.core.ui.theme.NutriPetTheme
+import com.maverickapps.nutripet.features.dataSync.SyncDataUseCase
 import com.maverickapps.nutripet.features.events.ui.permissionDialogs.notification.NotificationPermissionDialog
 import com.maverickapps.nutripet.features.events.ui.viewmodel.EventsViewModel
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.AddFoodViewModel
@@ -26,6 +29,10 @@ import com.maverickapps.nutripet.features.pets.ui.viewmodel.RegisterPetViewmodel
 import com.maverickapps.nutripet.features.pets.ui.viewmodel.SharedDataViewmodel
 import com.maverickapps.nutripet.ui.viewmodel.FoodsListViewmodel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainPetActivity : ComponentActivity() {
@@ -37,6 +44,9 @@ class MainPetActivity : ComponentActivity() {
     private val sharedDataViewmodel: SharedDataViewmodel by viewModels()
     private val eventsViewModel: EventsViewModel by viewModels()
 
+    @Inject lateinit var signInAnonymouslyUseCase: SignInAnonymouslyUseCase
+    @Inject lateinit var syncDataUseCase: SyncDataUseCase
+
     //TODO revisar creación de notificaciones para comidas puntuales para el dia siguiente
     //TODO revisar rescheduling de notificaciones cuando se apaga el movil y asi no depender de abrir la app
 
@@ -44,61 +54,74 @@ class MainPetActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-
+        CoroutineScope(Dispatchers.IO).launch {
+            val userId = signInAnonymouslyUseCase()
+            if(userId != "") syncDataUseCase(userId)
+        }
         setContent {
-            NutriPetTheme {
-                val showPostPermissionDialog by
-                    eventsViewModel.mustRequestPostPermissionDialog.collectAsState()
-                val showExactAlarmPermissionDialog by
-                    eventsViewModel.mustRequestExactAlarmDialog.collectAsState()
-                var requestPostPermission by rememberSaveable {
-                    mutableStateOf(showPostPermissionDialog)
+            val showSplashScreen by dashboardViewModel.showSplashScreen.collectAsState()
+            if(!showSplashScreen){
+                NutriPetTheme {
+                    PermissionDialog()
+                    NavigationWrapper(
+                        sharedDataViewmodel = sharedDataViewmodel,
+                        registerPetViewModel = registerPetViewModel,
+                        addMealViewmodel = addMealViewmodel,
+                        dashBoardViewModel = dashboardViewModel,
+                        addFoodViewModel = addFoodViewmodel,
+                        foodListViewModel = foodsListViewmodel,)
                 }
-                var requestExactAlarmPermission by rememberSaveable {
-                    mutableStateOf(showExactAlarmPermissionDialog)
-                }
+            }
+        }
+    }
 
-                if(requestPostPermission || requestExactAlarmPermission){
-                    NotificationPermissionDialog(
-                        postPermissionGranted = !requestPostPermission,
-                        schedulePermissionGranted = !requestExactAlarmPermission,
-                        postPermissionRequest = {
-                            eventsViewModel.requestPostPermission(this)
-                            requestPostPermission = false
-                                                },
-                        schedulePermissionRequest = {
-                            eventsViewModel.requestExactAlarmPermission()
-                            requestExactAlarmPermission = false
-                        },
-                        dismiss = {
-                            if(requestPostPermission){
-                                requestPostPermission = false
-                            }else{
-                                requestExactAlarmPermission = false
-                            }
-                        },
-                        modifier = Modifier.fillMaxHeight(0.7f)
-                    )
-                }
-                else{
-                    LaunchedEffect(Unit) {
-                        if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
-                            eventsViewModel.scheduleDayChanger()
-                            eventsViewModel.fetchMealEvents()
-                        }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @Composable
+    fun PermissionDialog(){
+        val showPostPermissionDialog by
+        eventsViewModel.mustRequestPostPermissionDialog.collectAsState()
+        val showExactAlarmPermissionDialog by
+        eventsViewModel.mustRequestExactAlarmDialog.collectAsState()
+        var requestPostPermission by rememberSaveable {
+            mutableStateOf(showPostPermissionDialog)
+        }
+        var requestExactAlarmPermission by rememberSaveable {
+            mutableStateOf(showExactAlarmPermissionDialog)
+        }
+
+        if(requestPostPermission || requestExactAlarmPermission){
+            NotificationPermissionDialog(
+                postPermissionGranted = !requestPostPermission,
+                schedulePermissionGranted = !requestExactAlarmPermission,
+                postPermissionRequest = {
+                    eventsViewModel.requestPostPermission(this)
+                    requestPostPermission = false
+                },
+                schedulePermissionRequest = {
+                    eventsViewModel.requestExactAlarmPermission()
+                    requestExactAlarmPermission = false
+                },
+                dismiss = {
+                    if(requestPostPermission){
+                        requestPostPermission = false
+                    }else{
+                        requestExactAlarmPermission = false
                     }
+                },
+                modifier = Modifier.fillMaxHeight(0.7f)
+            )
+        }
+        else{
+            LaunchedEffect(Unit) {
+                if(!showPostPermissionDialog && !showExactAlarmPermissionDialog){
+                    eventsViewModel.scheduleDayChanger()
+                    eventsViewModel.fetchMealEvents()
                 }
-                NavigationWrapper(
-                    sharedDataViewmodel = sharedDataViewmodel,
-                    registerPetViewModel = registerPetViewModel,
-                    addMealViewmodel = addMealViewmodel,
-                    dashBoardViewModel = dashboardViewModel,
-                    addFoodViewModel = addFoodViewmodel,
-                    foodListViewModel = foodsListViewmodel,)
             }
         }
     }
 }
+
+
 
 

@@ -13,6 +13,9 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.model.PetM
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.DeletePetUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetsUseCase
 import com.maverickapps.nutripet.features.pets.domain.otherTasks.useCase.CalculateCaloriesUseCase
+import com.maverickapps.nutripet.features.streak.domain.model.Streak
+import com.maverickapps.nutripet.features.streak.domain.usecases.FetchStreakUseCase
+import com.maverickapps.nutripet.features.streak.domain.usecases.GetStreakUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,16 +31,26 @@ class DashboardViewModel @Inject constructor(
     private val getFoodsUseCase: GetFoodUseCase,
     private val calculateCaloriesUseCase: CalculateCaloriesUseCase,
     private val deleteMealUseCase: DeleteMealUseCase,
+    private val getStreakUseCase: GetStreakUseCase,
+    private val fetchStreakUseCase: FetchStreakUseCase
 ) : ViewModel() {
 
+    private val _showSplashScreen = MutableStateFlow(true)
+    val showSplashScreen: StateFlow<Boolean> = _showSplashScreen
+
     var selectedPetId = MutableStateFlow<Int?>(null)
-    var requiredCalories = MutableStateFlow<Int?>(null)
+
+    private val _requiredCalories = MutableStateFlow<Int?>(null)
+    val requiredCalories : StateFlow<Int?> = _requiredCalories
 
     private val _pets = MutableStateFlow<List<PetModel>>(emptyList())
     val pets: StateFlow<List<PetModel>> = _pets
 
     private val _mealsWithFoods = MutableStateFlow<List<Pair<MealModel, FoodModel?>>>(emptyList())
     val mealsWithFoods: StateFlow<List<Pair<MealModel, FoodModel?>>> = _mealsWithFoods
+
+    private val _streak = MutableStateFlow(getStreakUseCase())
+    val streak: StateFlow<Streak> = _streak
 
 
     init {
@@ -50,10 +63,16 @@ class DashboardViewModel @Inject constructor(
             _pets.value = getPetsUseCase()
             setPetId(_pets.value.firstOrNull()?.petId)
             if (selectedPetId.value != null) {
-                getMeals()
-
+               getMeals()
             }
+            getStreak()
+            println("Streak: ${_streak.value}")
+            hideSplashScreen()
         }
+    }
+
+    private fun hideSplashScreen() {
+        _showSplashScreen.value = false
     }
 
     fun setPetId(petId: Int?) {
@@ -66,7 +85,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun calculateRequiredCalories(pet: PetModel) {
-        requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
+        _requiredCalories.value = calculateCaloriesUseCase(pet).toInt()
     }
 
     fun deletePet(petId: Int) {
@@ -97,7 +116,6 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-
     fun deleteMeal(meal: MealModel) {
         viewModelScope.launch {
             deleteMealUseCase(meal)
@@ -106,9 +124,26 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun editMeal(meal: MealModel) {
+        println("State: ${meal.mealState}")
+
         viewModelScope.launch {
+            if (meal.mealState == 0){
+                println("Meal state XD: ${meal.mealState}")
+                fetchStreak(_streak.value.copy(alreadyFetched = true))
+            }
             editMealUseCase(meal)
             getMeals()
         }
+    }
+
+    private fun getStreak(){
+        _streak.value = getStreakUseCase()
+
+    }
+
+    private fun fetchStreak(streak: Streak){
+        println("Streak viewmodel $streak")
+        fetchStreakUseCase(streak)
+        getStreak()
     }
 }
