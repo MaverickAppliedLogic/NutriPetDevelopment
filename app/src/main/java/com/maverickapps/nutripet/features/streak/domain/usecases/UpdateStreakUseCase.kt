@@ -14,7 +14,6 @@ class UpdateStreakUseCase @Inject constructor(
 ) {
    operator fun invoke(streak: Streak) {
         streakRepository.setLocalStreak(streak)
-       println("User: $streak")
        CoroutineScope(Dispatchers.IO).launch {
            if (streak.userId!=""){
                println("Sync streak called")
