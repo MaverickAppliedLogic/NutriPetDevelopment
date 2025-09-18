@@ -32,7 +32,9 @@ fun MealData(
     rationIsValid: Boolean,
     navToFoodList: () -> Unit,
     addButtonClicked: () -> Unit,
-    onRationChanged: (String) -> Unit) {
+    onRationChanged: (String) -> Unit,
+    petName: String
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = modifier
@@ -40,7 +42,9 @@ fun MealData(
                 .background(color = Neutral),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            FoodField(food = food,
+            FoodField(
+                petName = petName,
+                food = food,
                 errorAppearing = foodIsValid,
                 modifier = Modifier.weight(0.3f, true), navToFoodList = {navToFoodList()})
             DataField(

@@ -7,6 +7,7 @@ import com.maverickapps.nutripet.features.pets.domain.objectTasks.food.useCase.G
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.model.MealModel
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.AddMealUseCase
 import com.maverickapps.nutripet.features.pets.domain.objectTasks.meal.useCase.GetMealByIdUseCase
+import com.maverickapps.nutripet.features.pets.domain.objectTasks.pet.useCase.GetPetByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,7 @@ class AddMealViewmodel @Inject constructor(
     private val addMealUseCase: AddMealUseCase,
     private val getFoodUseCase: GetFoodUseCase,
     private val getMealUseCase: GetMealByIdUseCase,
+    private val getPetByIdUseCase: GetPetByIdUseCase
 ) : ViewModel() {
 
 
@@ -41,10 +43,13 @@ class AddMealViewmodel @Inject constructor(
     private val _mealToBeAdded = MutableStateFlow(initialMeal)
     private val _foodSelected = MutableStateFlow(initialSelectedFood)
     private val _mealIsValid = MutableStateFlow(Pair<String?, Boolean>(null, true))
+    private val _petName = MutableStateFlow("")
 
     val mealToBeAdded: StateFlow<MealModel> = _mealToBeAdded
     val foodSelected: StateFlow<FoodModel> = _foodSelected
     val mealIsValid: StateFlow<Pair<String?, Boolean>> = _mealIsValid
+    val petName: StateFlow<String> = _petName
+
 
     fun setInitialMeal() {
         _foodSelected.value = initialSelectedFood
@@ -56,6 +61,12 @@ class AddMealViewmodel @Inject constructor(
         viewModelScope.launch {
             _mealToBeAdded.value = mealModel
             validateMeal()
+        }
+    }
+
+    fun getPet(petId: Int) {
+        viewModelScope.launch {
+            _petName.value = getPetByIdUseCase(petId).petName
         }
     }
 

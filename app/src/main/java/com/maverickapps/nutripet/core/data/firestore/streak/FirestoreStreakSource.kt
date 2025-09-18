@@ -19,15 +19,15 @@ class FirestoreStreakSource : StreakRemoteSource {
 
         return if (streak.isSuccess) { //Check if the operation was successful
             streak.getOrNull()?.toStreak()?: //Check if the document exists
-            Streak("No such document", //Else returns an empty Streak giving reason
+            Streak("", //Else returns an empty Streak
                 0,
                 0,
                 false)
 
         }
         else{
-            Streak("Failed data retrieving", //If operation failed returns an empty
-                0,                          // Streak giving reason
+            Streak("", //If operation failed returns an empty Streak
+                0,
                 0,
                 false)
         }
