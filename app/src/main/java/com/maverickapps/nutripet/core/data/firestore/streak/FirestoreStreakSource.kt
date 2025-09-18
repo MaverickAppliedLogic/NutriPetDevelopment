@@ -20,6 +20,7 @@ class FirestoreStreakSource : StreakRemoteSource {
         return if (streak.isSuccess) { //Check if the operation was successful
             streak.getOrNull()?.toStreak()?: //Check if the document exists
             Streak("", //Else returns an empty Streak
+
                 0,
                 0,
                 false)
@@ -28,6 +29,7 @@ class FirestoreStreakSource : StreakRemoteSource {
         else{
             Streak("", //If operation failed returns an empty Streak
                 0,
+
                 0,
                 false)
         }
