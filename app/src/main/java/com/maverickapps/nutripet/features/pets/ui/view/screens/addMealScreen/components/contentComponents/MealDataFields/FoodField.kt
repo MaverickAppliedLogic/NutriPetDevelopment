@@ -41,6 +41,7 @@ fun FoodField(
     errorAppearing: Boolean,
     navToFoodList: () -> Unit,
     modifier: Modifier = Modifier,
+    petName: String,
 ) {
     Row(
         modifier = modifier
@@ -54,7 +55,7 @@ fun FoodField(
     ) {
         Column {
             Text(
-                text = "Añadir Comida",
+                text = "Añadir Comida para \n$petName",
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 color = Primary,
                 modifier = Modifier.padding(MaterialTheme.dimens.extraSmall3)

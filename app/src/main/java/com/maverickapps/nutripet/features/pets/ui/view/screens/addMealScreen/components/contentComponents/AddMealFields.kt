@@ -34,7 +34,8 @@ fun AddMealFields(
     addButtonClicked: (Boolean) -> Unit,
     onRationChanged: (String) -> Unit,
     onMealTimeChanged: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    petName: String
 ) {
     var timePickerIsVisible by remember { mutableStateOf(false) }
     var openDialog by remember { mutableStateOf(false) }
@@ -42,6 +43,7 @@ fun AddMealFields(
     var rationIsValid by remember { mutableStateOf(true) }
 
     MealData(
+        petName = petName,
         ration = rationFormatted,
         food = food,
         foodIsValid = !foodIsValid,
