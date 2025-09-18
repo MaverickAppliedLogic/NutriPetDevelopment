@@ -40,13 +40,13 @@ fun UpdateNotesDialog(
             onDismissRequest = onDismiss,
             title = {
                 Box {
-                    Text(text = "🔔 Novedades de esta versión (0.7.4)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.5)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryDarkest,
                         modifier = Modifier.blur(3.dp).padding(3.dp)
                     )
-                    Text(text = "🔔 Novedades de esta versión (0.7.4)",
+                    Text(text = "🔔 Novedades de esta versión (0.7.5)",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = Primary,
@@ -75,19 +75,15 @@ fun UpdateNotesDialog(
                         Text(buildAnnotatedString {
                             withStyle(style = SpanStyle(color = SecondaryDarkest,
                                 fontWeight = FontWeight.Bold)){
-                                append("Notificaciones no visibles: ")
+                                append("Correcciones menores: ")
                             }
                             withStyle(style = SpanStyle(color = SecondaryDarkest)){
-                                append("Se corrigió un error que impedía que las notificaciones " +
-                                        "se mostraran correctamente al día siguiente cuando se" +
-                                        " habían cancelado por registrar una comida como " +
-                                        "consumida. Ahora las alertas se restablecen como " +
-                                        "corresponde cada nuevo día.")
+                                append("Se corrigieron pequeños erorres de rendimiento.")
                             }
                         })
                     }
                     Spacer(Modifier.height(MaterialTheme.dimens.small1))
-                    /*Box{
+                    Box{
                         Text("Mejoras ✨",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
@@ -106,17 +102,14 @@ fun UpdateNotesDialog(
                         Text(buildAnnotatedString {
                             withStyle(style = SpanStyle(color = SecondaryDarkest,
                                 fontWeight = FontWeight.Bold)){
-                                append("Interacción mejorada al editar mascotas: ")
+                                append("Mayor claridad al añadir comidas a una mascota: ")
                             }
                             withStyle(style = SpanStyle(color = SecondaryDarkest)){
-                                append("Al registrar o modificar una mascota, ahora podés" +
-                                        " expandir y comprimir los campos del formulario tocando" +
-                                        " cualquier parte del encabezado del campo. \uD83D\uDC49 " +
-                                        "No hace " +
-                                        "falta acertar el ícono: más rápido, más cómodo.")
+                                append("Ahora en la pantalla de agregar comida se indica a que" +
+                                        " mascota se le va a añadir la comida.")
                             }
                         })
-                    }*/
+                    }
                 }
             },
             confirmButton = {

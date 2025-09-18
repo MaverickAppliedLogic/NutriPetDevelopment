@@ -35,7 +35,10 @@ fun AddMealContent(
         else mutableStateOf(String.format(Locale.getDefault(), "%.0f", mealToBeAdded.ration))
 
     }
+    val petName by addMealViewmodel.petName.collectAsStateWithLifecycle()
+
     addMealViewmodel.mealToBeAddedChanged(mealToBeAdded.copy(petId = petId))
+    addMealViewmodel.getPet(petId)
     LaunchedEffect(mealId) {
         if (mealId != null){
             addMealViewmodel.getMeal(mealId)
@@ -47,6 +50,7 @@ fun AddMealContent(
 
     Scaffold {
         AddMealFields(
+            petName = petName,
             mealIsValid = mealIsValid,
             rationFormatted = rationFormatted,
             mealTime = mealToBeAdded.mealTime,
