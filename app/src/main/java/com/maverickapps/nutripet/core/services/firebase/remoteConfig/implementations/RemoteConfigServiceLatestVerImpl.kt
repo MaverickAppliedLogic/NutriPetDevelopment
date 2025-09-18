@@ -1,5 +1,6 @@
 package com.maverickapps.nutripet.core.services.firebase.remoteConfig.implementations
 
+import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
@@ -19,10 +20,16 @@ class RemoteConfigServiceLatestVerImpl : RemoteConfigService {
     }
 
     override suspend fun fetchValues(): Boolean {
-        return remoteConfig.fetchAndActivate().await()
+        return try {
+            remoteConfig.fetchAndActivate().await()
+        } catch (e: Exception) {
+            Log.e("RemoteConfig", "Fetch failed: ${e.message}")
+            false
+        }
     }
 
-    override fun getLatestVersion(): Double {
+
+    override suspend fun getLatestVersion(): Double {
         return remoteConfig.getDouble("latestVersion")
     }
 }

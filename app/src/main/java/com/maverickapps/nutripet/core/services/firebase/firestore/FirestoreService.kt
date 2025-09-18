@@ -23,10 +23,6 @@ class FirestoreService{
                 println(it)
             }
 
-    fun getDocument(collectionName: String, documentId: String) : Task<DocumentSnapshot> =
-        db.collection(collectionName)
-            .document(documentId)
-            .get()
 
     fun setDocument(collectionName: String, documentId: String, documentObject: Any) =
         db.collection(collectionName)
